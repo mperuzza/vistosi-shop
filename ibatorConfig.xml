@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ibatorConfiguration
+  PUBLIC "-//Apache Software Foundation//DTD Apache iBATIS Ibator Configuration 1.0//EN"
+  "http://ibatis.apache.org/dtd/ibator-config_1_0.dtd">
+
+
+<ibatorConfiguration>
+  <classPathEntry location="C:/driver/JDBC/jConnect-6_0/classes/jconn3.jar" />
+  <classPathEntry location="${build.home}" />
+  <!--classPathEntry location="C:/driver/JDBC/Microsoft SQL Server 2005 JDBC Driver/sqljdbc_2.0/enu/sqljdbc4.jar" /-->
+
+  <ibatorContext  id="vistosi" targetRuntime="Ibatis2Java5">
+    <!--jdbcConnection driverClass="com.sybase.jdbc2.jdbc.SybDriver"
+        connectionURL="jdbc:sybase:Tds:77.93.255.19:2630?ServiceName=gessi_eprogen"
+        userId="dba"
+        password="sql">
+    </jdbcConnection-->
+    <!--jdbcConnection driverClass="com.sybase.jdbc3.jdbc.SybDriver"
+        connectionURL="jdbc:sybase:Tds:localhost:2681?ServiceName=portal_vistosi"
+        userId="dba"
+        password="sql">
+    </jdbcConnection-->
+    <!--jdbcConnection driverClass="com.sybase.jdbc3.jdbc.SybDriver"
+        connectionURL="jdbc:sybase:Tds:192.168.1.168:2681?ServiceName=av_vistosi"
+        userId="dba"
+        password="sql">
+    </jdbcConnection-->
+    <!--jdbcConnection driverClass="com.sybase.jdbc3.jdbc.SybDriver"
+        connectionURL="jdbc:sybase:Tds:109.168.95.233:11639/portal_vistosi_test"
+        userId="dba"
+        password="sql">
+    </jdbcConnection-->
+    <jdbcConnection driverClass="com.sybase.jdbc3.jdbc.SybDriver"
+        connectionURL="jdbc:sybase:Tds:109.168.95.233:11638/portal_vistosi"
+        userId="dba"
+        password="sql">
+    </jdbcConnection>
+    <!--jdbcConnection driverClass="com.sybase.jdbc3.jdbc.SybDriver"
+        connectionURL="jdbc:sybase:Tds:rpin-hp:2681?ServiceName=vistosi"
+        userId="dba"
+        password="sql">
+    </jdbcConnection-->
+    <!--jdbcConnection driverClass="com.sybase.jdbc3.jdbc.SybDriver"
+        connectionURL="jdbc:sybase:Tds:77.93.255.21:2688?ServiceName=portal_vistosi_test"
+        userId="dba"
+        password="sql">
+    </jdbcConnection-->
+    <!--jdbcConnection driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+        connectionURL="jdbc:sqlserver://10.224.126.11"
+        userId="pgmr"
+        password="ht85mr45">
+    </jdbcConnection-->
+
+    <javaTypeResolver >
+      <property name="forceBigDecimals" value="false" />
+    </javaTypeResolver>
+
+    <javaModelGenerator targetPackage="com.ateikon.internet.eprogen.domain" targetProject="${src.home}">
+      <property name="enableSubPackages" value="true" />
+      <property name="trimStrings" value="true" />
+      <property name="rootClass" value="com.ateikon.internet.generic.domain.BaseTableBean" />
+    </javaModelGenerator>
+
+    <sqlMapGenerator targetPackage="com.ateikon.internet.eprogen.dao.ibatis.maps"  targetProject="${src.home}">
+      <property name="enableSubPackages" value="true" />
+    </sqlMapGenerator>
+
+    <!--daoGenerator type="SPRING" targetPackage="com.ateikon.internet.eprogen.dao"  targetProject="${src.home}">
+      <property name="enableSubPackages" value="true" />
+      <property name="rootClass" value="com.ateikon.internet.eprogen.dao.ibatis.SqlMapBaseCRUDDao" />
+    </daoGenerator-->
+
+    <!--table schema="pgmr" tableName="articoli" domainObjectName="Articoli">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="articoli_abbinati" domainObjectName="Articoli_abbinati">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="articoli_finiture" domainObjectName="Articoli_finiture">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="articoli_linea" domainObjectName="Articoli_linea">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="cliente" domainObjectName="Cliente">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="collezioni" domainObjectName="Collezioni">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="collezioni_abbinate" domainObjectName="Collezioni_abbinate">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="componenti_commerciali" domainObjectName="Componenti_commerciali">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="finiture" domainObjectName="Finiture">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="foto_sezioni" domainObjectName="Foto_sezioni">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="gruppo_tipologia" domainObjectName="Gruppo_tipologia">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="linee" domainObjectName="Linee">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="lingue" domainObjectName="Lingue">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="listino_cliente" domainObjectName="Listino_cliente">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="nazioni" domainObjectName="Nazioni">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="province" domainObjectName="Province">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="sottogruppo_tipologia" domainObjectName="Sottogruppo_tipologia">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="tipi_allegati" domainObjectName="Tipi_allegati">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="tipi_prodotto" domainObjectName="Tipi_prodotto">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="tipo_finitura" domainObjectName="Tipo_finitura">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="utenti_cliente" domainObjectName="Utenti_cliente">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="utenti" domainObjectName="Utenti">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="valute" domainObjectName="Valute">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="voce_selezione" domainObjectName="Voce_selezione">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="wishlist_posi" domainObjectName="Wishlist_posi">
+      <property name="useActualColumnNames" value="true"/>
+      <generatedKey column="id" sqlStatement="SYBASE"/>
+    </table>
+    <table schema="pgmr" tableName="wishlist_test" domainObjectName="Wishlist_test">
+      <property name="useActualColumnNames" value="true"/>
+      <generatedKey column="id" sqlStatement="SYBASE"/>
+    </table-->
+    <!--table schema="pgmr" tableName="atk_messaggio" domainObjectName="Atk_messaggio">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="atk_msgcont" domainObjectName="Atk_msgcont">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="atk_msgdest" domainObjectName="Atk_msgdest">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="atk_msgfile" domainObjectName="Atk_msgfile">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+
+    <!--table schema="pgmr" tableName="vist_classi" domainObjectName="Vist_classi">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="vist_colori_vetro" domainObjectName="Vist_colori_vetro">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="vist_elettrificazioni" domainObjectName="Vist_elettrificazioni">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="vist_famiglia" domainObjectName="Vist_famiglia">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="vist_finit_mont" domainObjectName="Vist_finit_mont">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="vist_finit_vetro" domainObjectName="Vist_finit_vetro">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="vist_fuori_standard" domainObjectName="Vist_fuori_standard">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="vist_iva" domainObjectName="Vist_iva">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="vist_paesi" domainObjectName="Vist_paesi">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="vist_premi" domainObjectName="Vist_premi">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="vist_revisioni" domainObjectName="Vist_revisioni">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="vist_rosoni" domainObjectName="Vist_rosoni">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="vist_scadenziario" domainObjectName="Vist_scadenziario">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="vist_semilavorati" domainObjectName="Vist_semilavorati">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="vist_tipi" domainObjectName="Vist_tipi">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="vist_tipi_scad" domainObjectName="Vist_tipi_scad">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="vist_var1" domainObjectName="Vist_var1">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="vist_var2" domainObjectName="Vist_var2">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="vist_var3" domainObjectName="Vist_var3">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="mrp_arch_articoli" domainObjectName="Mrp_arch_articoli">
+      <property name="useActualColumnNames" value="true"/>
+      <property name="rootClass" value="com.ateikon.internet.eprogen.domain.pgmr.Mrp_arch_articoliBase"/>
+    </table-->
+    <!-- OLD table schema="pgmr" tableName="mrp_arch_articoli" domainObjectName="Mrp_arch_articoli" >
+        <property name="rootClass" value="com.ateikon.internet.eprogen.domain.pgmr.BaseMrp_arch_articoli"/>
+    </table-->
+
+    <!--table schema="pgmr" tableName="web_ord_test" domainObjectName="Web_ord_test">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="web_ord_positito" domainObjectName="Web_ord_positito">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+
+    <!--table schema="pgmr" tableName="ep_utente" domainObjectName="Ep_utente">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="ep_subutente" domainObjectName="Ep_subutente">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="ep_subutente_uloc" domainObjectName="Ep_subutente_uloc">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="archclie" domainObjectName="Archclie">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="archenti" domainObjectName="Archenti">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="assofiscal" domainObjectName="Assofiscal">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="lis_listino" domainObjectName="Lis_listino">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="mrp_file_giacenza" domainObjectName="Mrp_file_giacenza">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="vist_cp_collezioni" domainObjectName="Vist_cp_collezioni">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="web_ord_test_note" domainObjectName="Web_ord_test_note">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="web_ord_posi_note" domainObjectName="Web_ord_posi_note">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+
+    <!--table schema="pgmr" tableName="vist_etichette" domainObjectName="Vist_etichette">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="vist_articoli_img" domainObjectName="Vist_articoli_img">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="vist_articoli_ricambi" domainObjectName="Vist_articoli_ricambi">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+
+
+    <!--table schema="pgmr" tableName="vist_filtro_articoli" domainObjectName="Vist_filtro_articoli">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="cms_promozioni" domainObjectName="Cms_promozioni">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="cms_promozioni_cliente" domainObjectName="Cms_promozioni_cliente">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+
+    <!--table schema="pgmr" tableName="unitalocali" domainObjectName="Unitalocali">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="archagen" domainObjectName="Archagen">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="mrp_arch_stato" domainObjectName="Mrp_arch_stato">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="mrp_arch_articoli_ul" domainObjectName="Mrp_arch_articoli_ul">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="vist_offerte" domainObjectName="Vist_offerte">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="archrubrica" domainObjectName="Archrubrica">
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+    <table schema="pgmr" tableName="archrubrica_condc_note" domainObjectName="Archrubrica_condc_note">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="archrubrica_tipo" domainObjectName="Archrubrica_tipo">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="clieatti" domainObjectName="Clieatti">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="vist_condc_grpatti_note" domainObjectName="Vist_condc_grpatti_note">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+
+    <!--table schema="pgmr" tableName="cliegrpatti" domainObjectName="Cliegrpatti">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="vist_condc_acc" domainObjectName="Vist_condc_acc">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="vist_condc_atti" domainObjectName="Vist_condc_atti">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="vist_condc_acc_posi" domainObjectName="Vist_condc_acc_posi">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="vist_condc_grpatti_par" domainObjectName="Vist_condc_grpatti_par">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="vist_nazioni_ref" domainObjectName="Vist_nazioni_ref">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="atk_lingua" domainObjectName="Atk_lingua">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="ep_costanti" domainObjectName="Ep_costanti">
+      <property name="useActualColumnNames" value="true"/>
+    </table-->
+    <!--table schema="pgmr" tableName="vist_articoli_datiextra" domainObjectName="Vist_articoli_datiextra">
+      <property name="useActualColumnNames" value="false"/>
+    </table-->
+    <!--table schema="pgmr" tableName="ep_posts" domainObjectName="Ep_posts">
+      <property name="useActualColumnNames" value="false"/>
+    </table-->
+
+  </ibatorContext >
+</ibatorConfiguration>

@@ -1,0 +1,9 @@
+    <c:if test="${!empty messages}">
+        <div class="message fade-ffff00" id="msg" onclick="$(this).dispose()">
+			<c:forEach var="msg" items="${messages}">
+			<img src="img/iconInformation.gif" alt="Info" class="icon" />
+				<c:out value="${msg}" escapeXml="false"/><br />
+			</c:forEach>
+		</div>
+		<c:remove var="messages" scope="session"/>
+    </c:if>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- The SQL in these maps files has purposely been typed with more verbosity than is actually required.
+ For example, many of the selects could have just used SELECT * FROM... instead of listing all of the columns.
+ This is to demonstrate that even complex SQL can be handled and coded and formatted the way SQL was meant
+ to be (i.e. not a bunch of concatenated strings in a Java class). -->
+
+<sqlMap namespace="UnitaLocale">
+  <sql id="ulFields">
+  SELECT u.*,
+         e.fseleg,
+         p.dsprov,
+         p.cdprov_m,
+         n.cdnazi_m,
+         n.dsnazi                    
+    FROM ${owner}enteuniloc e,
+         ${owner}unitalocali u,
+         ${owner}province p,
+         ${owner}nazioni n
+   WHERE e.cdunil = u.cdunil 
+     AND u.cdprov = p.cdprov(+)
+     AND u.cdnazi = n.cdnazi(+) 
+  </sql>  
+
+  <typeAlias alias="unitaLocale" type="com.ateikon.internet.generic.domain.UnitaLocale"/> 
+  
+  <cacheModel id="oneDayUL" type="LRU">
+    <flushInterval hours="24"/>
+  </cacheModel>
+  
+  <resultMap id="unitaLocaleResult" class="unitaLocale">
+    <result property="cdunil" column="cdunil"/>
+    <result property="cdunil_m" column="cdunil_m"/>
+    <result property="dsunil" column="dsunil"/>
+    <result property="comune" column="comune"/>
+    <result property="cap" column="cap"/>
+    <result property="indiri" column="indiri"/>
+    <result property="dsprov" column="dsprov"/>
+    <result property="dsnazi" column="dsnazi"/>
+    <result property="cdprov" column="cdprov"/>
+    <result property="cdnazi" column="cdnazi"/>      
+    <result property="cdprov_m" column="cdprov_m"/>
+    <result property="cdnazi_m" column="cdnazi_m"/>    
+    <result property="email" column="email"/>
+    <result property="ntelef" column="ntelef"/>
+    <result property="nfaxsi" column="nfaxsi"/>
+    <result property="wwwpage" column="wwwpage"/>
+    <result property="cdazie" column="cdazie"/>
+    <result property="cddipa" column="cddipa"/>
+    <!--result property="cdtaut" column="cdtaut"/-->
+  </resultMap>  
+  
+  <select id="getUnitaLocaleByCdusul" resultMap="unitaLocaleResult" parameterClass="map">
+    <include refid="ulFields"/>
+       AND e.cdente = #cdente:VARCHAR# 
+       AND e.cdusul = #cdusul:VARCHAR#
+  </select>
+
+  <select id="getUnitaLocaleByFseleg" resultMap="unitaLocaleResult" parameterClass="map">
+    <include refid="ulFields"/>      
+       AND e.cdente = #cdente:VARCHAR# 
+       AND e.fseleg = #fseleg:VARCHAR#
+  </select>
+  
+  <select id="getUnitaLocali" resultMap="unitaLocaleResult" parameterClass="string">
+    <include refid="ulFields"/>
+       AND e.cdente = #cdente:VARCHAR# 
+  </select>  
+  
+  <insert id="insertUniLoc" parameterClass="unitaLocale">
+    INSERT INTO pgmr.unitalocali (    cdunil   
+                                    , cdunil_m          
+                                    , dsunil          
+                                    , indiri       
+                                    , cap        
+                                    , comune       
+                                    , cdprov       
+                                    , cdnazi        
+                                    , ntelef        
+                                    , nfaxsi        
+                                    , email        
+                                    , cdazie         
+                                    , cddipa          
+                                    , profil    
+                                    , dtinse        
+                                    , dtulag )
+                         VALUES  (    #cdunil:VARCHAR#
+                                    , #cdunil_m:VARCHAR#
+                                    , #dsunil:VARCHAR#
+                                    , #indiri:VARCHAR#
+                                    , #cap:VARCHAR#
+                                    , #comune:VARCHAR#
+                                    , #cdprov:VARCHAR#
+                                    , #cdnazi:VARCHAR#
+                                    , #ntelef:VARCHAR#
+                                    , #nfaxsi:VARCHAR#
+                                    , #email:VARCHAR#
+                                    , #cdazie:VARCHAR#
+                                    , #cddipa:VARCHAR#
+                                    , #profil:VARCHAR#
+                                    , #dtinse:TIMESTAMP#
+                                    , #dtulag:TIMESTAMP# )                
+   </insert> 
+  
+  <!-- updates -->
+  <update id="updateUniLoc" parameterClass="unitaLocale">
+    UPDATE pgmr.unitalocali SET 
+                dtulag = #dtulag:TIMESTAMP#
+            <isNotEmpty prepend="," property="indiri">
+                indiri = #indiri:VARCHAR#
+            </isNotEmpty>
+            <isNotEmpty prepend="," property="cap">
+                cap = #cap:VARCHAR#
+            </isNotEmpty>  
+            <isNotEmpty prepend="," property="comune">
+                comune = #comune:VARCHAR#
+            </isNotEmpty>   
+            <isNotEmpty prepend="," property="cdprov">
+                cdprov = #cdprov:VARCHAR#
+            </isNotEmpty>  
+            <isNotEmpty prepend="," property="cdnazi">
+                cdnazi = #cdnazi:VARCHAR#
+            </isNotEmpty> 
+            <isNotEmpty prepend="," property="ntelef">
+                ntelef = #ntelef:VARCHAR#
+            </isNotEmpty>
+            <isNotEmpty prepend="," property="nfaxsi">
+                nfaxsi = #nfaxsi:VARCHAR#
+            </isNotEmpty>        
+            <isNotEmpty prepend="," property="email">
+                email = #email:VARCHAR#
+            </isNotEmpty>                                                          
+      WHERE cdunil = #cdunil:VARCHAR#                       
+   </update>    
+   
+  <delete id="deleteItem" parameterClass="unitaLocale">
+    DELETE FROM ${owner}unitalocali 
+	      WHERE cdunil = #cdunil:VARCHAR#
+  </delete>    
+</sqlMap>

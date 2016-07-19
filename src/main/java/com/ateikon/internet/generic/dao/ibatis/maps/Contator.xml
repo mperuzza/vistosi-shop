@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="contator">
+
+  <typeAlias alias="contator" type="com.ateikon.internet.generic.domain.Contator"/>
+
+  <resultMap id="contatorResult" class="contator">
+    <result property="cdazie" column="CDAZIE"/>
+    <result property="prname" column="PRNAME"/>
+    <result property="annoco" column="ANNOCO"/>
+    <result property="nprogr" column="NPROGR" nullValue="0"/>
+  </resultMap>
+  
+  <select id="ckExists" resultClass="int" parameterClass="map">
+        SELECT COUNT(*) 
+        FROM ${owner}CONTATOR  
+        WHERE CDAZIE = #cdazie:VARHCAR# 
+          AND PRNAME = #prname:VARHCAR# 
+          AND ANNOCO = #annoco:VARCHAR#     
+  </select>
+  
+  <insert id="insertItem" parameterClass="contator">
+      INSERT INTO ${owner}CONTATOR(
+                                    CDAZIE,
+                                    PRNAME,
+                                    ANNOCO,
+                                    NPROGR) 
+                           VALUES ( #cdazie:VARHCAR#,
+                                    #prname:VARHCAR#,
+                                    #annoco:VARCHAR#,
+                                    #nprogr:NUMERIC#)      
+  </insert>
+  
+  <select id="selectContator" resultMap="contatorResult" parameterClass="map">
+    SELECT * 
+      FROM ${owner}CONTATOR  
+     WHERE CDAZIE = #cdazie:VARCHAR# 
+       AND PRNAME = #prname:VARCHAR# 
+       AND ANNOCO = #annoco:VARCHAR# 
+    FOR UPDATE     
+  </select>
+
+  <update id="updateItem" parameterClass="contator">
+    UPDATE ${owner}CONTATOR 
+       SET NPROGR = #nprogr:NUMERIC#  
+     WHERE CDAZIE = #cdazie:VARCHAR# 
+       AND PRNAME = #prname:VARCHAR# 
+       AND ANNOCO = #annoco:VARCHAR# 
+  </update>
+
+</sqlMap>

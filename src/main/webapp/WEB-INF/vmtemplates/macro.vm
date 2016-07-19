@@ -1,0 +1,1 @@
+#macro(msg $code)$resources.getMessage($code,null,$locale)#end

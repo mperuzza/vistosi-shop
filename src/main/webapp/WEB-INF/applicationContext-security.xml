@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.4.xsd">
+
+    <http auto-config="false" entry-point-ref="authenticationProcessingFilterEntryPoint" access-denied-page="/app/403">
+    	<!--form-login login-processing-url="/static/j_spring_security_check" login-page="/static/login.jsp" /-->
+        <!--logout logout-url="/static/j_spring_security_logout"/-->
+        <!--intercept-url pattern="/rsvp/**" access="ROLE_ADMIN"/-->
+        <intercept-url pattern="/403" access="IS_AUTHENTICATED_REMEMBERED" />
+        <intercept-url pattern="/setclie" access="IS_AUTHENTICATED_REMEMBERED" />
+        <intercept-url pattern="/resources/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <intercept-url pattern="/static/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <intercept-url pattern="/js/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <intercept-url pattern="/extlogin/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <intercept-url pattern="/login**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <intercept-url pattern="/images/articoli/vetro/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <!--intercept-url pattern="/**" access="IS_AUTHENTICATED_REMEMBERED" /-->
+        <!--intercept-url pattern="/immagininontrovate" access="ROLE_ADMIN" /-->
+        <intercept-url pattern="/fullCart" access="ROLE_CLIE,ROLE_ANONYMOUS" />
+        <intercept-url pattern="/miniCart" access="ROLE_CLIE,ROLE_ANONYMOUS" />
+        <intercept-url pattern="/*Cart" access="ROLE_CLIE" />
+        <intercept-url pattern="/promo" access="ROLE_CLIE" />
+        <intercept-url pattern="/conditions" access="ROLE_CLIE" />
+        <intercept-url pattern="/catalogo_*" access="ROLE_CLIE" />
+        <intercept-url pattern="/**" access="ROLE_ANONYMOUS,ROLE_CLIE" />
+        <anonymous />
+        <http-basic />
+        <!--remember-me /-->
+        <!--remember-me services-ref="rememberMeServices" /-->
+    </http>
+
+    <!--beans:bean id="userTypeFilter" class="com.ateikon.internet.eprogen.web.security.UserTypeFilter">
+        <custom-filter position="LAST"/>
+    </beans:bean-->
+
+    <beans:bean id="shopUserDetailsService" class="com.ateikon.internet.eprogen.web.security.ShopUserDetailsService">
+            <beans:property name="ep_utenteDAO" ref="ep_utenteDAO" />
+            <beans:property name="archclieDAO" ref="archclieDAO" />
+            <beans:property name="archentiDAO" ref="archentiDAO" />
+            <beans:property name="archagenDAO" ref="archagenDAO" />
+            <beans:property name="vist_filtro_articoliDAO" ref="vist_filtro_articoliDAO" />
+    </beans:bean>
+
+    <beans:bean id="passwordEncoder" class="com.ateikon.internet.eprogen.web.security.Ep_utentePasswordEncoder"/>
+
+    <beans:bean id="authenticationProcessingFilter" class="com.ateikon.internet.eprogen.web.security.AtkAuthenticationProcessingFilter">
+        <custom-filter position="AUTHENTICATION_PROCESSING_FILTER" />
+        <beans:property name="authenticationFailureUrl" value="/login?login_error=t" />
+        <beans:property name="defaultTargetUrl" value="/" />
+        <beans:property name="filterProcessesUrl" value="/static/j_spring_security_check" />
+        <beans:property name="authenticationManager" ref="authenticationManager" />
+        <beans:property name="rememberMeServices" ref="rememberMeServices" />
+    </beans:bean>
+
+    <beans:bean id="authenticationProcessingFilterEntryPoint"
+		class="org.springframework.security.ui.webapp.AuthenticationProcessingFilterEntryPoint">
+        <beans:property name="loginFormUrl" value="/login" />
+        <beans:property name="forceHttps" value="false" />
+    </beans:bean>
+
+    <!--beans:bean id="rememberMeProcessingFilter" class="com.richardadamdean.myapp.auth.MyRememberMeProcessingFilter">
+      <custom-filter position="REMEMBER_ME_FILTER" />
+      <beans:property name="rememberMeServices" ref="rememberMeServices"/>
+      <beans:property name="authenticationManager" ref="authenticationManager" />
+    </beans:bean-->
+
+    <beans:bean id="rememberMeProcessingFilter"
+        class="com.ateikon.internet.eprogen.web.security.AtkRememberMeProcessingFilter">
+            <custom-filter position="REMEMBER_ME_FILTER" />
+            <beans:property name="rememberMeServices" ref="rememberMeServices"/>
+            <beans:property name="authenticationManager" ref="authenticationManager" />
+    </beans:bean>
+
+    <beans:bean id="rememberMeServices" class="org.springframework.security.ui.rememberme.TokenBasedRememberMeServices">
+      <beans:property name="userDetailsService" ref="shopUserDetailsService"/>
+      <beans:property name="key" value="vistosi-shop"/>
+    </beans:bean>
+
+    <beans:bean id="rememberMeAuthenticationProvider"
+        class="org.springframework.security.providers.rememberme.RememberMeAuthenticationProvider">
+      <custom-authentication-provider />
+      <beans:property name="key" value="vistosi-shop"/>
+    </beans:bean>
+
+
+
+
+    <!--beans:bean id="rememberMeServices" class="org.springframework.security.ui.rememberme.TokenBasedRememberMeServices">
+        <beans:property name="userDetailsService" ref="shopUserDetailsService"/>
+        <beans:property name="tokenValiditySeconds" value="604800"/>
+        <beans:property name="key" value="vistosi-shop"/>
+        <beans:property name="parameter" value="rememberMe"/>
+    </beans:bean-->
+
+    <!--bean id="rememberMeProcessingFilter"
+        class="org.springframework.security.ui.rememberme.RememberMeProcessingFilter">
+      <property name="rememberMeServices" ref="rememberMeServices"/>
+      <property name="authenticationManager" ref="theAuthenticationManager" />
+    </bean>
+
+
+    <bean id="rememberMeAuthenticationProvider"
+        class="org.springframework.security.providers.rememberme.RememberMeAuthenticationProvider">
+      <property name="key" value="springRocks"/>
+    </bean-->
+    <authentication-manager alias="authenticationManager" />
+
+    <authentication-provider user-service-ref="shopUserDetailsService">
+        <password-encoder ref="passwordEncoder">
+          <salt-source system-wide="atkciao"/>
+        </password-encoder>
+    </authentication-provider>
+
+
+    <beans:bean id="logoutFilter" class="org.springframework.security.ui.logout.LogoutFilter">
+            <custom-filter position="LOGOUT_FILTER" />
+            <beans:property name="filterProcessesUrl" value="/static/j_spring_security_logout" />
+            <beans:constructor-arg value="/" />
+            <!-- URL redirected to after logout -->
+            <beans:constructor-arg>
+                    <beans:list>
+                            <beans:ref bean="rememberMeServices" />
+                            <!-- I add a bean here to perform some custom tasks when the user logs out -->
+                            <beans:bean class="org.springframework.security.ui.logout.SecurityContextLogoutHandler"/>
+                    </beans:list>
+            </beans:constructor-arg>
+    </beans:bean>
+    	<!-- SHA-256 values can be produced using 'echo -n your_desired_password | sha256sum' (using normal *nix environments) -->
+    	<!--  password-encoder hash="sha-256"/-->
+        <!-- user-service>
+            <user name="admin" password="8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918" authorities="ROLE_ADMIN"/>
+	        <user name="user" password="04f8996da763b7a969b1028ee3007569eaf3a635486ddab211d512c85b9df8fb" authorities="ROLE_USER"/>
+	    </user-service-->
+        <!--user-service>
+           	<user name="pgmr" password="admin" authorities="ROLE_ADMIN"/>        
+	    </user-service-->
+
+	<!--/authentication-provider-->
+
+</beans:beans>

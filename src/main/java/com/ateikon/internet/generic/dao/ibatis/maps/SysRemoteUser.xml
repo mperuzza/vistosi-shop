@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="SysRemoteUser">
+
+  <typeAlias alias="sysRemoteUser" type="com.ateikon.internet.generic.domain.SysRemoteUser"/>
+
+  <cacheModel id="oneDaySysRemoteUser" type="LRU">
+    <flushInterval hours="24"/>
+  </cacheModel>
+  
+  <resultMap id="sysRemoteUserResult" class="sysRemoteUser">
+    <result property="address" column="cdutente"/>
+    <result property="dsaddress" column="dsutente"/>
+    <result property="time_received" column="time_received"/>
+  </resultMap>      
+
+  <select id="getSysRemoteUser" resultMap="sysRemoteUserResult" parameterClass="map">
+      SELECT b.cdutente, 
+             b.dsutente, 
+             a.time_received
+        FROM sys.sysremoteuser a, 
+             $owner_web$utente b       
+       WHERE a.address = b.cdutente
+            <isNotEmpty prepend="AND" property="cdazie">
+                b.cdazie = #cdazie#
+            </isNotEmpty>
+   ORDER BY a.time_received DESC         
+  </select>
+    
+  <!--
+  <insert id="insertAzienda" parameterClass="map">
+    INSERT INTO ${owner}azienda (   )
+                         values (   )
+  </insert>
+ 
+  <update id="updateAzienda" parameterClass="map">
+      UPDATE ${owner}azienda SET  dtulag = #tpatt.dtulag:TIMESTAMP#
+                             dstpatt = #tpatt.dstpatt:VARCHAR#                         
+    WHERE cdtpatt = #tpatt.cdtpatt:VARCHAR#
+  </update>     
+
+  <delete id="deleteAzienda" parameterClass="map">
+    DELETE FROM ${owner}azienda WHERE cdazie = #cdazie:VARCHAR#                                
+  </delete>   -->
+
+</sqlMap>

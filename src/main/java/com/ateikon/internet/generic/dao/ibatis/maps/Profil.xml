@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- The SQL in these maps files has purposely been typed with more verbosity than is actually required.
+ For example, many of the selects could have just used SELECT * FROM... instead of listing all of the columns.
+ This is to demonstrate that even complex SQL can be handled and coded and formatted the way SQL was meant
+ to be (i.e. not a bunch of concatenated strings in a Java class). -->
+
+<sqlMap namespace="Profil">
+
+  <typeAlias alias="profil" type="com.ateikon.internet.generic.domain.Profil"/> 
+  
+  <cacheModel id="oneDayProfil" type="LRU">
+    <flushInterval hours="24"/>
+  </cacheModel>
+  
+  <resultMap id="profilResult" class="profil">
+    <result property="parametro" column="parametro"/>
+    <result property="valore" column="valore"/>
+  </resultMap>  
+  
+  
+  <select id="getAtkPargen" resultMap="pargenResult" parameterClass="string">
+    SELECT web.atk_pargen.*
+      FROM web.atk_pargen
+     WHERE web.atk_pargen.parametro = #value#
+  </select>
+  
+</sqlMap>

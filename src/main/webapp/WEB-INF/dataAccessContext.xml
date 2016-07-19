@@ -1,0 +1,266 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+        http://www.springframework.org/schema/aop 
+        http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName"><value>${jdbc.driverClassName}</value></property>
+        <property name="url"><value>${jdbc.url}</value></property>
+        <property name="username"><value>${jdbc.username}</value></property>
+        <property name="password"><value>${jdbc.password}</value></property>      
+    </bean>
+        
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource"><ref local="dataSource"/></property>
+    </bean>
+    
+    <!-- SqlMap setup for iBATIS Database Layer -->
+    <bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+        <property name="configLocation"><value>WEB-INF/sql-map-config.xml</value></property>
+        <property name="dataSource"><ref local="dataSource"/></property>
+    </bean>
+    
+    <!-- generics -->    
+    <bean id="tabsetDao" class="com.ateikon.internet.generic.dao.ibatis.SqlMapTabsetDao">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+        <property name="profil"><ref local="defaultProfile"/></property>
+    </bean>	  
+    
+    <bean id="pargenDao" class="com.ateikon.internet.generic.dao.ibatis.SqlMapAtkPargenDao">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+        <property name="profil"><ref local="defaultProfile"/></property>
+    </bean>	
+    
+    <!--bean id="keypoolDao" class="com.ateikon.internet.generic.dao.ibatis.SqlMapKeypoolDao">
+    <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean-->	          
+    
+    <bean id="keypoolsDao" class="com.ateikon.internet.generic.dao.ibatis.SqlMapKeypoolsDao">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+        <property name="tabsetDao"><ref local="tabsetDao"/></property>
+        <property name="pargenDao"><ref local="pargenDao"/></property>
+        <property name="profil"><ref local="defaultProfile"/></property>
+    </bean>	
+    
+    <!--bean id="contatorDao" class="com.ateikon.internet.generic.dao.ibatis.SqlMapContatorDao">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+        <property name="profil"><ref local="defaultProfile"/></property>
+    </bean-->	    
+    
+    <bean id="costanti_commDao" class="com.ateikon.internet.eprogen.dao.pgmr.Costanti_commDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+        <!--property name="keypoolsDao"><ref local="keypoolsDao"/></property>
+        <property name="profil"><ref local="defaultProfile"/></property-->
+    </bean>	
+    
+    <bean id="defaultProfile" class="com.ateikon.internet.generic.domain.Profil" scope="session"> <!--init-method="init"-->    
+        <property name="owner"><value>${owner}</value></property>
+        <property name="cdazie"><value>${cdazie}</value></property>
+        <property name="cddipa"><value>${cddipa}</value></property>
+        <property name="profil"><value>${profil}</value></property>
+        <aop:scoped-proxy/>
+    </bean>
+        
+    <!--bean id="nazioneDao" class="com.ateikon.internet.generic.dao.ibatis.SqlMapNazioneDao">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>  
+    
+    <bean id="provinciaDao" class="com.ateikon.internet.generic.dao.ibatis.SqlMapProvinciaDao">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean--> 
+        
+    <bean id="atkTabellaDao" class="com.ateikon.internet.generic.dao.ibatis.SqlMapAtkTabellaDao">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+        <property name="profil"><ref local="defaultProfile"/></property>
+    </bean> 
+    
+    <!-- eprogen -->    
+    <!--bean id="utenteDao" class="com.ateikon.internet.eprogen.dao.web.UtenteDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+        <property name="keypoolsDao"><ref local="keypoolsDao"/></property>        
+        <property name="profil"><ref local="defaultProfile"/></property>
+    </bean-->
+    
+
+    <!--bean id="ep_promoDao" class="com.ateikon.internet.eprogen.dao.pgmr.Ep_promoDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+        <property name="keypoolsDao"><ref local="keypoolsDao"/></property>
+        <property name="profil"><ref local="defaultProfile"/></property>
+    </bean-->
+
+    <bean id="unitalocaliDao" class="com.ateikon.internet.eprogen.dao.pgmr.UnitalocaliDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+        <property name="profil"><ref local="defaultProfile"/></property>
+    </bean>
+
+    <bean id="ep_contatorDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Ep_contatorDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+        <property name="profil"><ref local="defaultProfile"/></property>
+    </bean>
+    <bean id="ep_logDao" class="com.ateikon.internet.eprogen.dao.pgmr.Ep_logDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+        <property name="ep_contatorDAO"><ref local="ep_contatorDAO"/></property>
+        <property name="profil"><ref local="defaultProfile"/></property>
+    </bean>
+    <bean id="ep_log_tipoDao" class="com.ateikon.internet.eprogen.dao.pgmr.Ep_log_tipoDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+        <property name="profil"><ref local="defaultProfile"/></property>
+    </bean>
+    
+    <!-- Vistosi -->
+    <bean id="vist_tipiDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Vist_tipiDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="vist_famigliaDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Vist_famigliaDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="vist_colori_vetroDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Vist_colori_vetroDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="vist_finit_montDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Vist_finit_montDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="vist_finit_vetroDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Vist_finit_vetroDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="vist_var1DAO" class="com.ateikon.internet.eprogen.dao.pgmr.Vist_var1DAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="vist_var2DAO" class="com.ateikon.internet.eprogen.dao.pgmr.Vist_var2DAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="vist_var3DAO" class="com.ateikon.internet.eprogen.dao.pgmr.Vist_var3DAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="vist_cp_collezioniDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Vist_cp_collezioniDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="vist_elettrificazioniDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Vist_elettrificazioniDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="vist_semilavoratiDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Vist_semilavoratiDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="mrp_arch_articoliDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Mrp_arch_articoliDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="mrp_file_giacenzaDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Mrp_file_giacenzaDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="ep_utenteDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Ep_utenteDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="archclieDAO" class="com.ateikon.internet.eprogen.dao.pgmr.ArchclieDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="archentiDAO" class="com.ateikon.internet.eprogen.dao.pgmr.ArchentiDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="archagenDAO" class="com.ateikon.internet.eprogen.dao.pgmr.ArchagenDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="assofiscalDAO" class="com.ateikon.internet.eprogen.dao.pgmr.AssofiscalDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="lis_listinoDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Lis_listinoDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="web_ord_testDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Web_ord_testDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="web_ord_posititoDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Web_ord_posititoDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="web_ord_test_noteDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Web_ord_test_noteDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="web_ord_posi_noteDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Web_ord_posi_noteDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="vist_etichetteDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Vist_etichetteDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="vist_articoli_imgDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Vist_articoli_imgDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="vist_articoli_ricambiDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Vist_articoli_ricambiDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="vist_filtro_articoliDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Vist_filtro_articoliDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="cms_promozioniDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Cms_promozioniDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="cms_promozioni_clienteDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Cms_promozioni_clienteDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="designerDAO" class="com.ateikon.internet.eprogen.dao.pgmr.DesignerDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="ep_subutenteDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Ep_subutenteDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="mrp_arch_statoDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Mrp_arch_statoDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="mrp_arch_articoli_ulDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Mrp_arch_articoli_ulDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="vist_offerteDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Vist_offerteDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="archrubricaDAO" class="com.ateikon.internet.eprogen.dao.pgmr.ArchrubricaDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="archrubrica_tipoDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Archrubrica_tipoDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="archrubrica_condc_noteDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Archrubrica_condc_noteDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="clieattiDAO" class="com.ateikon.internet.eprogen.dao.pgmr.ClieattiDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="cliegrpattiDAO" class="com.ateikon.internet.eprogen.dao.pgmr.CliegrpattiDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="vist_condc_grpatti_noteDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Vist_condc_grpatti_noteDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="vist_condc_grpatti_parDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Vist_condc_grpatti_parDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="vist_condc_attiDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Vist_condc_attiDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="vist_condc_accDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Vist_condc_accDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+        <property name="keypoolsDao"><ref local="keypoolsDao"/></property>
+        <property name="profil"><ref local="defaultProfile"/></property>
+    </bean>
+    <bean id="vist_condc_acc_posiDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Vist_condc_acc_posiDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+        <property name="keypoolsDao"><ref local="keypoolsDao"/></property>
+        <property name="profil"><ref local="defaultProfile"/></property>
+    </bean>
+    <bean id="vist_nazioni_refDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Vist_nazioni_refDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="atk_linguaDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Atk_linguaDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="vist_articoli_datiextraDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Vist_articoli_datiextraDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="ep_costantiDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Ep_costantiDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+    <bean id="ep_postsDAO" class="com.ateikon.internet.eprogen.dao.pgmr.Ep_postsDAOImpl">
+        <property name="sqlMapClient"><ref local="sqlMapClient"/></property>
+    </bean>
+        
+</beans>

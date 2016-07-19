@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 3.0//EN" "http://tuckey.org/res/dtds/urlrewrite3.0.dtd">
+<urlrewrite default-match-type="wildcard">
+	<rule>
+		<from>/resources/**</from>
+		<to>/resources/$1</to>
+	</rule>
+	<rule>
+		<from>/static/**</from>
+		<to>/$1</to>
+	</rule>
+	<rule>
+		<from>/catAdmin_*</from>
+		<to>/catAdmin_$1</to>
+	</rule>
+	<rule>
+		<from>/catLogin*</from>
+		<to>/catLogin$1</to>
+	</rule>
+	<rule match-type="regex">
+		<from>^/([a-z]{2})$</from>
+		<to>/app/index?lang=$1</to>
+	</rule>
+	<rule>
+		<from>/</from>
+		<to>/app/index</to>
+	</rule>
+	
+	<rule>
+		<from>/search/tipologia/*/</from>
+		<to>/app/search/tipologia/$1/collezione/-/famiglia/-/</to>
+	</rule>
+	<rule>
+		<from>/search/collezione/*/</from>
+		<to>/app/search/tipologia/-/collezione/$1/famiglia/-/</to>
+	</rule>
+	<rule>
+		<from>/search/famiglia/*/</from>
+		<to>/app/search/tipologia/-/collezione/-/famiglia/$1/</to>
+	</rule>
+	<rule>
+		<from>/search/tipologia/*/famiglia/*/</from>
+                <!--from>^/search/tipologia/([a-zA-Z]+)/famiglia/([a-zA-Z]+)$</from-->
+		<to>/app/search/tipologia/$1/collezione/-/famiglia/$2/</to>
+	</rule>
+	<rule>
+		<from>/search/tipologia/*/collezione/*/</from>
+		<to>/app/search/tipologia/$1/collezione/$2/famiglia/-/</to>
+	</rule>
+	<rule>
+		<from>/search/collezione/*/famiglia/*/</from>
+		<to>/app/search/tipologia/-/collezione/$1/famiglia/$2/</to>
+	</rule>
+	<rule>
+		<from>/zzz_eprogen_replace.jsp</from>
+		<to>/zzz_eprogen_replace.jsp</to>
+	</rule>
+	<rule>
+		<from>/zzz_msgmod.jsp</from>
+		<to>/zzz_msgmod.jsp</to>
+	</rule>
+        <rule match-type="regex">
+		<from>^/([a-z]{2})/(.*)$</from>
+		<to type="redirect">%{context-path}/$2?lang=$1</to>
+	</rule>        
+	<rule>
+		<from>/**</from>
+		<to>/app/$1</to>
+	</rule>
+	<outbound-rule>
+		<from>/app/**</from>
+		<to>/$1</to>
+	</outbound-rule>	
+</urlrewrite>

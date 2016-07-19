@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="AtkTabella">
+
+  <cacheModel id="oneDayAtkTabella" type="LRU">
+    <flushInterval hours="24"/>
+  </cacheModel>
+  
+  <typeAlias alias="atkTabella" type="com.ateikon.internet.generic.domain.AtkTabella"/>
+
+  <select id="getAtkTabella" resultClass="atkTabella" parameterClass="map">
+      SELECT a.*         
+        FROM $owner_web$atk_tabella a
+        <dynamic prepend="WHERE">
+            <isNotEmpty prepend="AND" property="cdtabella">
+                a.cdtabella = #cdtabella#
+            </isNotEmpty>
+            <isNotEmpty prepend="AND" property="dsoggetto">
+                a.dsoggetto = #dsoggetto#
+            </isNotEmpty>                    
+            <isNotEmpty prepend="AND" property="cdazie">
+                a.cdazie = #cdazie#
+            </isNotEmpty>
+            <isNotEmpty prepend="AND" property="fgsync">
+                a.fgsync = #fgsync#
+            </isNotEmpty>            
+        </dynamic>
+   ORDER BY a.dtsync DESC
+  </select>
+    
+  <!--
+  <insert id="insertAzienda" parameterClass="map">
+    INSERT INTO ${owner}azienda (   )
+                         values (   )
+  </insert>
+ 
+  <update id="updateAzienda" parameterClass="map">
+      UPDATE ${owner}azienda SET  dtulag = #tpatt.dtulag:TIMESTAMP#
+                             dstpatt = #tpatt.dstpatt:VARCHAR#                         
+    WHERE cdtpatt = #tpatt.cdtpatt:VARCHAR#
+  </update>     
+
+  <delete id="deleteAzienda" parameterClass="map">
+    DELETE FROM ${owner}azienda WHERE cdazie = #cdazie:VARCHAR#                                
+  </delete>   -->
+
+</sqlMap>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- The SQL in these maps files has purposely been typed with more verbosity than is actually required.
+ For example, many of the selects could have just used SELECT * FROM... instead of listing all of the columns.
+ This is to demonstrate that even complex SQL can be handled and coded and formatted the way SQL was meant
+ to be (i.e. not a bunch of concatenated strings in a Java class). -->
+
+<sqlMap namespace="nazioni">
+
+  <typeAlias alias="nazione" type="com.ateikon.internet.generic.domain.Nazione"/>
+
+  <cacheModel id="oneDayNazioni" type="LRU">
+    <flushInterval hours="24"/>
+  </cacheModel>
+    
+  <resultMap id="nazioneResult" class="nazione">
+    <result property="cdnazione" column="cdnazi"/>
+    <result property="cdnazione_m" column="cdnazi_m"/>
+    <result property="dsnazione" column="dsnazi"/>
+    <!--result property="continente" column="cdcont" select="getContinenteByCd"/-->
+  </resultMap>
+  
+
+  <select id="getNazioni" resultMap="nazioneResult" cacheModel="oneDayNazioni">
+      SELECT * 
+        FROM pgmr.nazioni
+      ORDER BY dsnazi
+  </select>
+
+  <select id="getNazioneByCd" resultMap="nazioneResult" parameterClass="string">
+      SELECT * 
+        FROM pgmr.nazioni
+       WHERE pgmr.nazioni.cdnazi = #value:VARCHAR#
+  </select>
+
+  <insert id="insertNazioneItem" parameterClass="nazione">
+    INSERT INTO pgmr.nazioni ( cdnazi, cdnazi_m, dsnazi, cdcont, cdazie, cddipa, profil, dtinse, dtulag)
+    values ( #cdnazione:VARCHAR#, #cdnazione_m:VARCHAR#, #dsnazione:VARCHAR#, #cdcont:VARCHAR#, #cdazie#, #cddipa#, #profil#, #dtinse:TIMESTAMP#, #dtulag:TIMESTAMP# )
+  </insert>
+ 
+  <update id="updateNazioneItem" parameterClass="nazione">
+    UPDATE pgmr.nazioni SET 
+                                dtulag = #dtulag:TIMESTAMP#
+                                <isNotEmpty prepend="," property="cdnazione_m">
+                                cdnazi_m = #cdnazione_m:VARCHAR#
+                                </isNotEmpty>
+                                <isNotEmpty prepend="," property="dsnazione">
+                                dsnazi = #dsnazione:VARCHAR#
+                                </isNotEmpty>
+                                <isNotEmpty prepend="," property="cdcont">
+                                cdcont = #cdcont:VARCHAR#
+                                </isNotEmpty>
+     WHERE cdnazi = #cdnazione:VARCHAR#
+  </update>     
+
+  <delete id="deleteNazioneItem" parameterClass="string">
+    DELETE FROM pgmr.nazioni 
+          WHERE cdnazi = #cdnazi:VARCHAR#
+  </delete>    
+    
+</sqlMap>

@@ -1,0 +1,545 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.ateikon.internet.eprogen.web.spring;
+
+import com.ateikon.internet.eprogen.domain.Vist_vetro;
+import com.ateikon.internet.eprogen.domain.logic.VistosiShopManager;
+import com.ateikon.internet.eprogen.domain.pgmr.Mrp_arch_articoli;
+import com.ateikon.internet.eprogen.domain.pgmr.Mrp_arch_stato;
+import com.ateikon.internet.eprogen.domain.pgmr.Vist_articoli_img;
+import com.ateikon.internet.eprogen.domain.pgmr.Vist_colori_vetro;
+import com.ateikon.internet.eprogen.domain.pgmr.Vist_elettrificazioni;
+import com.ateikon.internet.eprogen.domain.pgmr.Vist_famiglia;
+import com.ateikon.internet.eprogen.domain.pgmr.Vist_finit_mont;
+import com.ateikon.internet.eprogen.web.form.SchedaArticolo;
+import com.ateikon.internet.eprogen.web.security.ShopUser;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.security.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.support.RequestContext;
+import org.springframework.web.servlet.support.RequestContextUtils;
+import org.springframework.web.util.WebUtils;
+
+/**
+ *
+ * @author emiliano
+ */
+@Controller
+@RequestMapping("/scheda-{dsfam}-{cdtipo}/{cdfam}/**")
+//@SessionAttributes(types=SchedaArticolo.class)
+public class SchedaArticoloController {
+
+    private Log log = LogFactory.getLog(this.getClass());
+
+
+    @Autowired
+    private VistosiShopManager vistosiShopManager;
+
+    public void setVistosiShopManager(VistosiShopManager vistosiShopManager) {
+        this.vistosiShopManager = vistosiShopManager;
+    }
+
+
+    @InitBinder
+    public void initBinder(WebDataBinder dataBinder) {
+        dataBinder.registerCustomEditor( String.class, null, new StringTrimmerEditor(true));
+    }
+
+    private void getReferenceData(SchedaArticolo scheda, HttpServletRequest request, Model model, String cdvisttp, String cdvistfam){
+
+
+
+
+        //menu data
+        Map pars = new HashMap();
+
+        ShopUser user = (ShopUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        pars.put("cdclas_aList", user.getCdclas_aFilter()); //filtro solo articoli listino
+        pars.put("fgweb", "S");
+
+        WebUtils.setSessionAttribute(request,"famigliaFilter", vistosiShopManager.getVist_famigliaByKey(cdvistfam));
+        pars.put("cdvistfam", cdvistfam);
+        //estraggo tutti i tipi delle famiglia, la scheda è solo per famiglia
+        model.addAttribute("tipologie", vistosiShopManager.findVist_tipi(pars));
+        //model.addAttribute("tipologie", vistosiShopManager.getVist_tipi()); TODO - revert last version
+
+        WebUtils.setSessionAttribute(request, "tipologiaFilter", vistosiShopManager.getVist_tipiByKey(cdvisttp));
+        pars.put("cdvisttp", cdvisttp);
+        /*
+        Vist_tipi f_tipologia = (Vist_tipi)WebUtils.getSessionAttribute(request, "tipologiaFilter");
+        if(f_tipologia!=null){
+            pars.put("cdvisttp", f_tipologia.getCdvisttp());
+        }*/
+        /*
+        Vist_famiglia f_famiglia = (Vist_famiglia)WebUtils.getSessionAttribute(request, "famigliaFilter");
+        if(f_famiglia!=null){
+            pars.put("cdvistfam", f_famiglia.getCdvistfam());
+        }*/
+        Vist_colori_vetro f_colore = (Vist_colori_vetro)WebUtils.getSessionAttribute(request, "coloreFilter");
+        if(f_colore!=null){
+            pars.put("cdvistcolv", f_colore.getCdvistcolv());
+        }
+        Vist_finit_mont f_finit = (Vist_finit_mont)WebUtils.getSessionAttribute(request, "finituraFilter");
+        if(f_finit!=null){
+            pars.put("cdvistfinm", f_finit.getCdvistfinm());
+        }
+
+
+        //model.addAttribute("tipologie", vistosiShopManager.getVist_tipi());
+        model.addAttribute("famiglie", vistosiShopManager.findVist_famiglia(pars));
+        //model.addAttribute("famiglie", vistosiShopManager.getVist_famiglia());  TODO - revert last version
+        
+        //model.addAttribute("collezioni", vistosiShopManager.getVist_cp_collezioni());  TODO - revert last version
+        
+        model.addAttribute("colori", vistosiShopManager.findVist_colori_vetro(pars));
+        model.addAttribute("partmet", vistosiShopManager.findVist_finit_mont(pars));
+        
+        //model.addAttribute("stati", vistosiShopManager.getAvailableStates());  TODO - revert last version
+
+        //articoli
+//        String cdalias =
+        Map artPars = new HashMap();
+        artPars.put("cdvisttp", pars.get("cdvisttp"));
+        artPars.put("cdvistfam", pars.get("cdvistfam"));
+        List<Mrp_arch_articoli> articoli = vistosiShopManager.selectMrp_arch_articoliByPars(pars);
+        ArrayList<Mrp_arch_articoli> galleryArticoli = new ArrayList();
+
+        WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(request);
+        String path = "images/articoli/foto/";
+
+        //String cddesigner = null;  TODO - revert last version
+
+        for (Mrp_arch_articoli mrp_arch_articoli : articoli) {
+
+//            if(cddesigner==null && mrp_arch_articoli.getCddesigner()!=null){  TODO - revert last version
+//                cddesigner = mrp_arch_articoli.getCddesigner();  TODO - revert last version
+//            }  TODO - revert last version
+            try {
+                String realPath = WebUtils.getRealPath(ctx.getServletContext(), path + mrp_arch_articoli.getCdartm().replace('/', '-') + ".jpg");
+                log.debug(realPath);
+                File f = new File(realPath);
+                if( f.exists()){
+                    log.debug("esiste");
+                    galleryArticoli.add(mrp_arch_articoli);
+                }
+            } catch (FileNotFoundException ex) {
+                
+            }
+        }
+
+//        log.debug("cddesigner: "+ cddesigner);  TODO - revert last version
+//        if(cddesigner!=null){  TODO - revert last version
+//            model.addAttribute("designer", vistosiShopManager.getDesigner(cddesigner));  TODO - revert last version
+//        }  TODO - revert last version
+
+        for (Mrp_arch_articoli mrp_arch_articoli : galleryArticoli) {
+            
+            mrp_arch_articoli.setVist_tipi(vistosiShopManager.getVist_tipiByKey(mrp_arch_articoli.getCdvisttp()));
+            mrp_arch_articoli.setVist_famiglia(vistosiShopManager.getVist_famigliaByKey(mrp_arch_articoli.getCdvistfam()));
+            mrp_arch_articoli.setVist_var1(vistosiShopManager.getVist_var1ByKey(mrp_arch_articoli.getCdvistv1()));
+            mrp_arch_articoli.setVist_var1(vistosiShopManager.getVist_var1ByKey(mrp_arch_articoli.getCdvistv1()));
+            mrp_arch_articoli.setVist_var2(vistosiShopManager.getVist_var2ByKey(mrp_arch_articoli.getCdvistv2()));
+            mrp_arch_articoli.setVist_var3(vistosiShopManager.getVist_var3ByKey(mrp_arch_articoli.getCdvistv3()));
+            mrp_arch_articoli.setVist_finit_mont(vistosiShopManager.getVist_finit_montByKey(mrp_arch_articoli.getCdvistfinm()));
+            mrp_arch_articoli.setVist_colori_vetro(vistosiShopManager.getVist_colori_vetroByKey(mrp_arch_articoli.getCdvistcolv()));
+            mrp_arch_articoli.setVist_finit_vetro(vistosiShopManager.getVist_finit_vetroByKey(mrp_arch_articoli.getCdvistfinv()));
+
+            if(user.getIsSpecList()){
+
+                Vist_elettrificazioni elet = vistosiShopManager.getVist_elettrificazioniByKey(mrp_arch_articoli.getCdvistelet());
+                if(elet!=null && elet.getCdul()!=null){
+                    Vist_elettrificazioni altElet = vistosiShopManager.getVist_elettrificazioniByKey(elet.getCdul());
+                    mrp_arch_articoli.setVist_elettrificazioni(altElet);
+                }
+            }else{
+                mrp_arch_articoli.setVist_elettrificazioni(vistosiShopManager.getVist_elettrificazioniByKey(mrp_arch_articoli.getCdvistelet()));
+            }
+
+        }
+//        for (Mrp_arch_articoli mrp_arch_articoli : galleryArticoli) {
+//
+//        }
+
+
+        //model.addAttribute("articoliO", articoli);
+        model.addAttribute("articoli", galleryArticoli);
+
+        
+
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public String setupForm(@PathVariable("cdtipo") String cdvisttp, @PathVariable("cdfam") String cdvistfam,
+                            @RequestParam(value="cdarti", required=false) String cdarti,
+                            @RequestParam(value="cdartiric", required=false) String cdartiric,
+                            HttpServletRequest request, Model model){
+
+        SchedaArticolo scheda = new SchedaArticolo();
+
+        //scheda.setArticolo(vistosiShopManager.getMrp_arch_articoliByKey(cdarti));
+        model.addAttribute("scheda", scheda);
+
+        Vist_famiglia famiglia = vistosiShopManager.getVist_famigliaByKey(cdvistfam);
+        model.addAttribute("famiglia", famiglia);
+        WebUtils.setSessionAttribute(request,"famigliaFilter", famiglia);
+
+        getReferenceData(scheda, request, model, cdvisttp, cdvistfam);
+
+
+        String cdalias = StringUtils.rightPad(cdvistfam, 5) + cdvisttp + "%";
+        Map pars = new HashMap();
+        pars.put("cdalias", cdalias);
+
+        log.debug("cdalias: " + cdalias);
+        model.addAttribute("modelli", vistosiShopManager.getModelli(pars));
+
+        if(cdarti!=null){
+            Mrp_arch_articoli articolo = vistosiShopManager.getMrp_arch_articoliByKey(cdarti);
+            model.addAttribute("articolo", articolo);
+
+        }
+            if(cdartiric!=null){
+                model.addAttribute("isRicambio", vistosiShopManager.isRicambio(cdartiric));
+                model.addAttribute("ricambio",vistosiShopManager.getMrp_arch_articoliByKey(cdartiric));
+                //if(StringUtils.isNotEmpty(cdartiric)) model.addAttribute("ricambio",vistosiShopManager.getRicambio(cdartiric)); TODO - revert last version
+            }
+
+
+        return "scheda";
+    }
+
+    @RequestMapping(value="articolo.*", method = RequestMethod.GET)
+    public String getArticolo(
+            @PathVariable("cdtipo") String cdvisttp, @PathVariable("cdfam") String cdvistfam,
+            @RequestParam(value="cdvistv1", required=true) String cdvistv1,
+            @RequestParam(value="cdvistv2", required=true) String cdvistv2,
+            @RequestParam(value="cdvistv3", required=true) String cdvistv3,
+            @RequestParam(value="cdvistfinm", required=false) String cdvistfinm,
+            @RequestParam(value="cdvistfinv", required=false) String cdvistfinv,
+            @RequestParam(value="cdvistcolv", required=false) String cdvistcolv,
+            @RequestParam(value="cdvistelet", required=false) String cdvistelet,
+            @RequestParam(value="cdartiric", required=false) String cdartiric,
+            @RequestParam(value="firstReq", required=false, defaultValue="false") Boolean firstReq,
+            HttpServletRequest request, Model model){
+
+        log.debug("firstReq="+ firstReq);
+        ShopUser user = (ShopUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SchedaArticolo scheda = new SchedaArticolo();
+
+        
+        Map pars = new HashMap();
+        pars.put("cdvisttp", cdvisttp);
+        pars.put("cdvistfam", cdvistfam);
+        pars.put("cdvistv1", cdvistv1);
+        pars.put("cdvistv2", cdvistv2);
+        pars.put("cdvistv3", cdvistv3);
+
+
+        pars.put("cdclas_aList", user.getCdclas_aFilter());
+
+        //options
+        log.debug("cdvistfinm="+ cdvistfinm);
+        log.debug("cdvistfinv="+ cdvistfinv);
+        log.debug("cdvistcolv="+ cdvistcolv);
+        log.debug("cdvistelet="+ cdvistelet);
+        log.debug("cdvistv1="+ cdvistv1);
+        pars.put("cdvistfinm", cdvistfinm);
+        pars.put("cdvistfinv", cdvistfinv);
+        pars.put("cdvistcolv", cdvistcolv);
+        pars.put("cdvistelet", cdvistelet);
+        pars.put("fgweb", "S");
+        
+
+        List<Vist_vetro> vist_vetro = vistosiShopManager.findVist_vetro(pars); 
+        
+//        for (Vist_vetro vist_vetro_item : vist_vetro) {  TODO - revert last version
+//            Map stpars = new HashMap(pars);
+//            if(vist_vetro_item.getCol().getCdvistcolv()!=null){
+//                stpars.put("cdvistcolv", vist_vetro_item.getCol().getCdvistcolv());
+//            }
+//            if(vist_vetro_item.getFin().getCdvistfinv()!=null){
+//                stpars.put("cdvistfinv", vist_vetro_item.getFin().getCdvistfinv());
+//            }
+//            
+//            List<Mrp_arch_stato> stlist = vistosiShopManager.selectDistinctByPars(stpars);
+//            
+//            if(!stlist.isEmpty() && stlist.size()==1 && "S".equals(stlist.get(0).getVist_fgrgb())){
+//                vist_vetro_item.setStato(stlist.get(0));
+//            }             
+//        }  TODO - revert last version
+        scheda.setVetro(vist_vetro); 
+        
+        //scheda.setColori_vetro(vistosiShopManager.findVist_colori_vetro(pars));
+
+        List<Vist_elettrificazioni> elettrificazioni = vistosiShopManager.findVist_elettrificazioni(pars);
+
+        if(user.getIsSpecList()){
+
+            String cdulPrec = null;
+            for (Iterator<Vist_elettrificazioni> it = elettrificazioni.iterator(); it.hasNext();) {
+                Vist_elettrificazioni vist_elettrificazioni = it.next();
+                if(cdulPrec!=null && cdulPrec.equals(vist_elettrificazioni.getCdul())) it.remove();
+                else {
+                    cdulPrec = vist_elettrificazioni.getCdul();
+                    
+//                    Map stpars = new HashMap(pars);  TODO - revert last version
+//                    stpars.put("cdvistelet", vist_elettrificazioni.getCdvistelet());
+//                    
+//                    List<Mrp_arch_stato> stlist = vistosiShopManager.selectDistinctByPars(stpars);
+//
+//                    if(!stlist.isEmpty() && stlist.size()==1 && "S".equals(stlist.get(0).getVist_fgrgb())){
+//                        vist_elettrificazioni.setStato(stlist.get(0));
+//                    }            TODO - revert last version            
+                }
+
+            }
+        }
+//        else{   TODO - revert last version
+//            for (Vist_elettrificazioni vist_elettrificazioni : elettrificazioni) {
+//                Map stpars = new HashMap(pars);
+//                stpars.put("cdvistelet", vist_elettrificazioni.getCdvistelet());
+//
+//                List<Mrp_arch_stato> stlist = vistosiShopManager.selectDistinctByPars(stpars);
+//
+//                if(!stlist.isEmpty() && stlist.size()==1 && "S".equals(stlist.get(0).getVist_fgrgb())){
+//                    vist_elettrificazioni.setStato(stlist.get(0));
+//                }               
+//            }
+//        }   TODO - revert last version
+        
+        
+
+        scheda.setElettrificazioni(elettrificazioni);
+        
+        
+        List<Vist_finit_mont> vist_finit_mont = vistosiShopManager.findVist_finit_mont(pars);
+        
+//        for (Vist_finit_mont vist_finit_mont_item : vist_finit_mont) {  TODO - revert last version
+//            Map stpars = new HashMap(pars);
+//            stpars.put("cdvistfinm", vist_finit_mont_item.getCdvistfinm());
+//            
+//            List<Mrp_arch_stato> stlist = vistosiShopManager.selectDistinctByPars(stpars);
+//            
+//            if(!stlist.isEmpty() && stlist.size()==1 && "S".equals(stlist.get(0).getVist_fgrgb())){
+//                vist_finit_mont_item.setStato(stlist.get(0));
+//            }             
+//        }  TODO - revert last version
+        scheda.setFinit_mont(vist_finit_mont);        
+        
+        
+        
+        scheda.setFinit_vetro(vistosiShopManager.findVist_finit_vetro(pars));
+        scheda.setVarianti1(vistosiShopManager.findVist_var1(pars));
+//        ModelAndView mav = new ModelAndView();
+//        mav.setViewName("xmlcontent");
+//        mav.addObject("sampleContentList", "doh!");
+
+        if(!firstReq){
+
+
+            if(user.getIsSpecList() && StringUtils.isNotBlank(cdvistelet)){
+                Vist_elettrificazioni eletSpec = vistosiShopManager.getVist_elettrificazioniByKey(cdvistelet);
+
+                log.debug(eletSpec);
+                Map ulPars = new HashMap();
+                ulPars.putAll(pars);
+
+                pars.put("cdvistelet", eletSpec.getCdul());
+
+                List<Mrp_arch_articoli> arts = vistosiShopManager.selectMrp_arch_articoliByPars(pars);
+
+                if(!arts.isEmpty()){
+                    scheda.setArticoli(arts);
+                    if(arts.size()==1 && (StringUtils.isBlank(cdvistcolv) && StringUtils.isBlank(cdvistfinv))){
+
+                        Vist_elettrificazioni altElet = vistosiShopManager.getVist_elettrificazioniAlternative(cdvistelet);
+                        pars.put("cdvistelet", altElet.getCdvistelet());
+
+                        List<Mrp_arch_articoli> eu_arts = vistosiShopManager.selectMrp_arch_articoliByPars(pars);
+
+                        if(eu_arts.size()>1) {
+                            scheda.setArticoli(eu_arts);
+                        }else{
+                            scheda.setArticolo(arts.get(0));
+                            log.debug("get etichette");
+                            scheda.setEtichette(vistosiShopManager.getEtichette(scheda.getArticolo().getCdarti()));
+                            log.debug("get ricambi");
+                            scheda.setRicambi(vistosiShopManager.getRicambi(scheda.getArticolo().getCdarti()));
+                            scheda.setRicambio(vistosiShopManager.getMrp_arch_articoliByKey(cdartiric));
+                            //if(StringUtils.isNotEmpty(cdartiric)) scheda.setRicambio(vistosiShopManager.getRicambio(scheda.getArticolo().getCdarti(), cdartiric));  TODO - revert last version
+                        }
+                    }
+                }else{
+
+                    Vist_elettrificazioni altElet = vistosiShopManager.getVist_elettrificazioniAlternative(cdvistelet);
+                    pars.put("cdvistelet", altElet.getCdvistelet());
+
+                    arts = vistosiShopManager.selectMrp_arch_articoliByPars(pars);
+                    scheda.setArticoli(arts);
+                    if(arts.size()==1){
+                        scheda.setArticolo(arts.get(0));
+                        log.debug("get etichette");
+                        scheda.setEtichette(vistosiShopManager.getEtichette(scheda.getArticolo().getCdarti()));
+                        log.debug("get ricambi");
+                        scheda.setRicambi(vistosiShopManager.getRicambi(scheda.getArticolo().getCdarti()));
+                        scheda.setRicambio(vistosiShopManager.getMrp_arch_articoliByKey(cdartiric));
+                        //if(StringUtils.isNotEmpty(cdartiric)) scheda.setRicambio(vistosiShopManager.getRicambio(scheda.getArticolo().getCdarti(), cdartiric));  TODO - revert last version
+                    }
+                }
+
+
+            }else{
+
+                List<Mrp_arch_articoli> arts = vistosiShopManager.selectMrp_arch_articoliByPars(pars);
+                scheda.setArticoli(arts);
+                if(arts.size()==1){
+                    scheda.setArticolo(arts.get(0));
+                    log.debug("get etichette");
+                    scheda.setEtichette(vistosiShopManager.getEtichette(scheda.getArticolo().getCdarti()));
+                    log.debug("get ricambi");
+                    scheda.setRicambi(vistosiShopManager.getRicambi(scheda.getArticolo().getCdarti()));
+                    scheda.setRicambio(vistosiShopManager.getMrp_arch_articoliByKey(cdartiric));
+                    //if(StringUtils.isNotEmpty(cdartiric)) scheda.setRicambio(vistosiShopManager.getRicambio(scheda.getArticolo().getCdarti(), cdartiric));  TODO - revert last version
+                }
+
+            }
+
+        }
+
+
+//        if(scheda.getArticolo()!=null){     TODO - revert last version
+//
+//
+//            WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(request);
+//
+//            String path_techsheet = "fileresources/techsheet/";
+//            String techsheet  = vistosiShopManager.getSchedaTec(scheda.getArticolo().getCdvisttp(), scheda.getArticolo().getCdvistfam(),scheda.getArticolo().getCdvistv1()
+//                                                                            , scheda.getArticolo().getCdvistv2(), scheda.getArticolo().getCdvistv3(), scheda.getArticolo().getCdvistelet());
+//            if(StringUtils.isNotEmpty(techsheet)){
+//                try {
+//                    String path_to_techsheet = WebUtils.getRealPath(ctx.getServletContext(), path_techsheet + techsheet);
+//                    File f = new File(path_to_techsheet);
+//                    log.debug(path_to_techsheet);
+//                    Vist_articoli_img vist_articoli_img = new Vist_articoli_img();
+//                    vist_articoli_img.setPathschtec(techsheet);
+//                    if( f.exists()){
+//                        vist_articoli_img.setPathschtecExists(Boolean.TRUE);
+//                    }
+//                    scheda.getArticolo().setVist_articoli_img(vist_articoli_img);
+//                } catch (Exception ex) {
+//                    log.error("file techsheet non trovato");
+//                }
+//            }
+//            //ricerca modelli
+//            Vist_famiglia vist_fam = vistosiShopManager.getVist_famigliaByKey(scheda.getArticolo().getCdvistfam());
+//
+//            log.debug("filedis >>>" + scheda.getArticolo().getVist_filedis());
+//            
+//            
+//            String path_modello = "fileresources/models";
+//            String path_3D = path_modello + "/3D/";
+//            //String nome_modello = vist_fam.getCdvistfam_mPad() + scheda.getArticolo().getCdvisttp() + scheda.getArticolo().getCdvistv1Pad() + scheda.getArticolo().getCdvistv2Pad() + scheda.getArticolo().getCdvistv3Pad() +"-";
+//            String nome_modello = scheda.getArticolo().getVist_filedis();
+//            //igs
+//            String igs = path_3D + nome_modello + ".zip";
+//            try {
+//                String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), igs);
+//                File f = new File(path_to_filemodel);
+//                log.debug(path_to_filemodel);
+//                scheda.getArticolo().setModel3D_igs(igs);
+//                if( f.exists()){
+//                    scheda.getArticolo().setModel3D_igsExists(Boolean.TRUE);
+//                }
+//            } catch (FileNotFoundException ex) {
+//                log.error("file " + igs + " non trovato");
+//            }
+//            //eprt
+//            String eprt = path_3D + nome_modello + ".EPRT";
+//            try {
+//                String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), eprt);
+//                File f = new File(path_to_filemodel);
+//                log.debug(path_to_filemodel);
+//                scheda.getArticolo().setModel3D_eprt(eprt);
+//                if( f.exists()){
+//                    scheda.getArticolo().setModel3D_eprtExists(Boolean.TRUE);
+//                }
+//            } catch (FileNotFoundException ex) {
+//                log.error("file " + eprt + " non trovato");
+//            }
+//            //easm
+//            String easm = path_3D + nome_modello + ".EASM";
+//            try {
+//                String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), easm);
+//                File f = new File(path_to_filemodel);
+//                log.debug(path_to_filemodel);
+//                scheda.getArticolo().setModel3D_easm(easm);
+//                if( f.exists()){
+//                    scheda.getArticolo().setModel3D_easmExists(Boolean.TRUE);
+//                }
+//            } catch (FileNotFoundException ex) {
+//                log.error("file " + easm + " non trovato");
+//            }
+//
+//            String path_2D = path_modello + "/2D/";
+//            //dwg cm
+//            RequestContext rc = new RequestContext(request);
+//            String dwg_vers = "cm/";
+//            if("en".equals(rc.getLocale().getLanguage())){
+//                dwg_vers = "po/";
+//            }
+//            String dwg = path_2D + dwg_vers + nome_modello + ".dwg";
+//            try {
+//                String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), dwg);
+//                File f = new File(path_to_filemodel);
+//                log.debug(path_to_filemodel);
+//                scheda.getArticolo().setModel2D_dwg(dwg);
+//                if( f.exists()){
+//                    scheda.getArticolo().setModel2D_dwgExists(Boolean.TRUE);
+//                }
+//            } catch (FileNotFoundException ex) {
+//                log.error("file " + dwg + " non trovato");
+//            }
+//
+//
+//
+//
+//
+//
+//        }   TODO - revert last version
+
+
+        model.addAttribute("scheda", scheda);
+        
+        return "articolo";
+
+    }
+
+
+
+
+
+}

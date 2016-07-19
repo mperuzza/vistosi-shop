@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="tabset">
+
+  <cacheModel id="oneDayTabset" type="LRU">
+    <flushInterval hours="24"/>
+  </cacheModel>
+  
+  <typeAlias alias="tabset" type="com.ateikon.internet.generic.domain.Tabset"/>
+
+  <resultMap id="tabsetResult" class="tabset">
+    <result property="cdprogr" column="cdprogr"/>
+  </resultMap>  
+  
+  <select id="getTabset" resultMap="tabsetResult" parameterClass="map">
+      SELECT a.*         
+        FROM ${owner}tabset a
+        <dynamic prepend="WHERE">
+            <isNotEmpty prepend="AND" property="tabella">
+                a.tabella = #tabella#
+            </isNotEmpty>
+        </dynamic>
+  </select>
+    
+  <!--
+  <insert id="insertAzienda" parameterClass="map">
+    INSERT INTO ${owner}azienda (   )
+                         values (   )
+  </insert>
+ 
+  <update id="updateAzienda" parameterClass="map">
+      UPDATE ${owner}azienda SET  dtulag = #tpatt.dtulag:TIMESTAMP#
+                             dstpatt = #tpatt.dstpatt:VARCHAR#                         
+    WHERE cdtpatt = #tpatt.cdtpatt:VARCHAR#
+  </update>     
+
+  <delete id="deleteAzienda" parameterClass="map">
+    DELETE FROM ${owner}azienda WHERE cdazie = #cdazie:VARCHAR#                                
+  </delete>   -->
+
+</sqlMap>

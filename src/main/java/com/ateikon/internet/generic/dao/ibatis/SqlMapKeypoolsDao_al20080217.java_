@@ -1,0 +1,284 @@
+package com.ateikon.internet.generic.dao.ibatis;
+
+import com.ateikon.internet.eprogen.dao.ibatis.SqlMapBaseDao;
+import com.ateikon.internet.generic.dao.AtkPargenDao;
+import com.ateikon.internet.generic.dao.TabsetDao;
+import com.ateikon.internet.generic.domain.AtkPargen;
+import com.ateikon.internet.generic.domain.BaseTableBean;
+import com.ateikon.internet.generic.domain.Keypools;
+import com.ateikon.internet.generic.domain.Tabset;
+import java.math.BigInteger;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import org.springframework.dao.DataAccessException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.dao.DataRetrievalFailureException;
+
+public class SqlMapKeypoolsDao extends SqlMapBaseDao {
+    
+    /** Logger for this class and subclasses */
+    private Log log = LogFactory.getLog(this.getClass());
+    
+    private TabsetDao tabsetDao;
+    
+    private AtkPargenDao pargenDao;
+    
+    public void setTabsetDao(TabsetDao tabsetDao) {
+        this.tabsetDao = tabsetDao;
+    }
+    
+    public void setPargenDao(AtkPargenDao pargenDao) {
+        this.pargenDao = pargenDao;
+    }
+    
+    
+    private String getCdprog(String nomeTabella) throws DataAccessException{
+        Tabset t = this.tabsetDao.getItem(nomeTabella.toUpperCase());
+        if(t==null){
+            throw new DataRetrievalFailureException("Error: Tabset not found for " + nomeTabella + ".");
+        }
+        return  t.getCdprogr();
+    }
+    
+    private String getCdagenConst(String cdazie) throws DataAccessException{
+        Map pars = new HashMap();
+        pars.put( "cdazie", cdazie);
+        pars.put( "parametro", "K_KEYPOOL_WEB");
+        AtkPargen p = this.pargenDao.getAtkPargen(pars);
+        if(p==null){
+            throw new DataRetrievalFailureException("Error: AtkPargen not found for K_KEYPOOL_WEB.");
+        }
+        return  p.getValore();
+    }
+    
+    private boolean isKey(String cddipa, String cdagen, String keyname) throws DataAccessException{
+        Map pars = new HashMap();
+        pars.put( "cddipa", cddipa);
+        pars.put( "cdagen", cdagen);
+        pars.put( "keyname", keyname);
+        pars.put( "owner_web", getProfil().getOwner_web());
+        Integer tot_rec = (Integer)getSqlMapClientTemplate().queryForObject( "keypools.checkKey", pars);
+        
+        if(tot_rec==null || tot_rec.intValue()<=0){
+            throw new DataRetrievalFailureException("Error: Key "+keyname+" not found in Keypools.");
+        }
+        return true;
+    }
+    
+    private boolean isKeyGest(String cddipa, String cdazie, String keyname) throws DataAccessException{
+        Map pars = new HashMap();
+        pars.put( "cddipa", cddipa);
+        pars.put( "cdazie", cdazie);
+        pars.put( "keyname", keyname);
+        pars.put( "owner_web", getProfil().getOwner_web());
+        Integer tot_rec = (Integer)getSqlMapClientTemplate().queryForObject( "keypools.checkKey", pars);
+        
+        if(tot_rec==null || tot_rec.intValue()<=0){
+            throw new DataRetrievalFailureException("Error: Key "+keyname+" not found in Keypools.");
+        }
+        return true;
+    }    
+    
+    private void updateKey(Keypools k) throws DataAccessException{
+        k.setDtulag(new Date());
+        Map pars = new HashMap();
+        pars.put( "keypools", k);
+        pars.put( "owner_web", getProfil().getOwner_web());
+        getSqlMapClientTemplate().update( "keypools.updateKeypools", pars, 1);
+    }
+    
+    private Keypools getKeypools(Keypools k) throws DataAccessException{
+        Map pars = new HashMap();
+        pars.put( "keypools", k);
+        pars.put( "owner_web", getProfil().getOwner_web());
+        return (Keypools)getSqlMapClientTemplate().queryForObject( "keypools.getKeypools", pars);                
+    }
+    /**
+     * This is a generic sequence ID generator that is based on a database
+     * table called 'SEQUENCE', which contains two columns (NAME, NEXTID).
+     * This approach should work with any database.
+     * @param name the name of the sequence
+     * @return the next ID
+     */
+    public long getNextId(String tabella, BaseTableBean btb) throws DataAccessException {
+        //BaseTableBean btb = (BaseTableBean)o;
+        /* get cdprog */
+        String cdprog = getCdprog(tabella);
+        cdprog = cdprog.toUpperCase();
+        /* get cdagen const */
+        String cdagen_const = getCdagenConst(btb.getCdazie());
+        /* check key exists */
+        if(!isKey(btb.getCddipa(), cdagen_const, cdprog)) return -1;
+        
+        Keypools keypools = new Keypools(cdprog, btb.getCddipa(), cdagen_const);
+        keypools = getKeypools(keypools);
+        log.debug("-- " + keypools);
+        
+        if (keypools == null) {
+            throw new DataRetrievalFailureException("Error: A null sequence was returned from the database (could not get next " + tabella + " sequence).");
+        }
+        
+        long ll_inizio1 = 0;
+        long ll_fine1   = 0;
+        long ll_inizio2 = 0;
+        long ll_fine2   = 0;
+        
+        if(keypools.getInit1()==null
+                || keypools.getInit2()==null
+                || keypools.getFine1()==null
+                || keypools.getFine2()==null){
+            throw new DataRetrievalFailureException("Error: A null sequence was returned from the database (could not get next " + cdprog + " sequence - ck1).");
+        }else{
+            ll_inizio1 = keypools.getInit1().longValue();
+            ll_inizio2 = keypools.getInit2().longValue();
+            ll_fine1   = keypools.getFine1().longValue();
+            ll_fine2   = keypools.getFine2().longValue();
+        }
+        
+        long ll_key  = -1;
+        long ll_key1 = ll_inizio1 + 1;
+        long ll_key2 = ll_inizio2 + 1;
+        
+        if (ll_key1 > ll_fine1) ll_key1 = 0;
+        if (ll_key2 > ll_fine2) ll_key2 = 0;
+        
+        
+        // Per nessuna chiave disponibile ritorno un errore
+        if (ll_key1 == 0 && ll_key2 == 0){
+            throw new DataRetrievalFailureException("Error: A null sequence was returned from the database (could not get next " + cdprog + " sequence - ck2).");
+        }
+        
+        // Per tutte e due i valori validi cerco il valore, minore, disponibile per la chiave
+        if (ll_key1 > 0 && ll_key2 > 0){
+            if (ll_key1 < ll_key2){
+                ll_key = ll_key1;
+            }else {
+                ll_key = ll_key2;
+            }
+        }
+        
+        // Ritorno la chiave valida se l'altra è esaurita
+        if (ll_key1 > 0 && ll_key2 == 0){
+            ll_key = ll_key1;
+        }
+        
+        if (ll_key2 > 0 && ll_key1 == 0 ){
+            ll_key = ll_key2;
+        }
+        
+        Keypools next = new Keypools(cdprog, cdagen_const);
+        // Ritorno la chiave valida se l'altra è esaurita
+        if (ll_key == ll_key1){
+            
+            next.setInit1(new Long(ll_key));
+            next.setCddipa(btb.getCddipa());
+            
+        }else if (ll_key == ll_key2){
+            
+            next.setInit2(new Long(ll_key));
+            
+        }else {
+            throw new DataRetrievalFailureException("Error: A null sequence was returned from the database (could not get next " + cdprog + " sequence - ck3).");
+        }
+        
+        
+        // aggiorno la key-pool
+        updateKey(next);
+        
+        return ll_key;
+        
+    }
+    
+   public long getNextIdGest(String tabella, BaseTableBean btb) throws DataAccessException {
+        //BaseTableBean btb = (BaseTableBean)o;
+        /* get cdprog */
+        String cdprog = getCdprog(tabella);
+        cdprog = cdprog.toUpperCase();
+        /* get cdagen const */
+        //String cdagen_const = getCdagenConst(btb.getCdazie());
+        /* check key exists */
+        if(!isKeyGest(btb.getCddipa(), btb.getCdazie(), cdprog)) return -1;
+        
+        Keypools keypools = new Keypools(cdprog, btb.getCddipa(), btb.getCdazie(), null);
+        keypools = getKeypools(keypools);
+        log.debug("-- " + keypools);
+        
+        if (keypools == null) {
+            throw new DataRetrievalFailureException("Error: A null sequence was returned from the database (could not get next " + tabella + " sequence).");
+        }
+        
+        long ll_inizio1 = 0;
+        long ll_fine1   = 0;
+        long ll_inizio2 = 0;
+        long ll_fine2   = 0;
+        
+        if(keypools.getInit1()==null
+                || keypools.getInit2()==null
+                || keypools.getFine1()==null
+                || keypools.getFine2()==null){
+            throw new DataRetrievalFailureException("Error: A null sequence was returned from the database (could not get next " + cdprog + " sequence - ck1).");
+        }else{
+            ll_inizio1 = keypools.getInit1().longValue();
+            ll_inizio2 = keypools.getInit2().longValue();
+            ll_fine1   = keypools.getFine1().longValue();
+            ll_fine2   = keypools.getFine2().longValue();
+        }
+        
+        long ll_key  = -1;
+        long ll_key1 = ll_inizio1 + 1;
+        long ll_key2 = ll_inizio2 + 1;
+        
+        if (ll_key1 > ll_fine1) ll_key1 = 0;
+        if (ll_key2 > ll_fine2) ll_key2 = 0;
+        
+        
+        // Per nessuna chiave disponibile ritorno un errore
+        if (ll_key1 == 0 && ll_key2 == 0){
+            throw new DataRetrievalFailureException("Error: A null sequence was returned from the database (could not get next " + cdprog + " sequence - ck2).");
+        }
+        
+        // Per tutte e due i valori validi cerco il valore, minore, disponibile per la chiave
+        if (ll_key1 > 0 && ll_key2 > 0){
+            if (ll_key1 < ll_key2){
+                ll_key = ll_key1;
+            }else {
+                ll_key = ll_key2;
+            }
+        }
+        
+        // Ritorno la chiave valida se l'altra è esaurita
+        if (ll_key1 > 0 && ll_key2 == 0){
+            ll_key = ll_key1;
+        }
+        
+        if (ll_key2 > 0 && ll_key1 == 0 ){
+            ll_key = ll_key2;
+        }
+        
+        Keypools next = new Keypools(cdprog, null, btb.getCdazie(), null);
+        // Ritorno la chiave valida se l'altra è esaurita
+        if (ll_key == ll_key1){
+            
+            next.setInit1(new Long(ll_key));
+            next.setCddipa(btb.getCddipa());
+            
+        }else if (ll_key == ll_key2){
+            
+            next.setInit2(new Long(ll_key));
+            
+        }else {
+            throw new DataRetrievalFailureException("Error: A null sequence was returned from the database (could not get next " + cdprog + " sequence - ck3).");
+        }
+        
+        
+        // aggiorno la key-pool
+        updateKey(next);
+        
+        return ll_key;
+        
+    }    
+    
+}

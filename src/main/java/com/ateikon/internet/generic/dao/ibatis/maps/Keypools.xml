@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- The SQL in these maps files has purposely been typed with more verbosity than is actually required.
+ For example, many of the selects could have just used SELECT * FROM... instead of listing all of the columns.
+ This is to demonstrate that even complex SQL can be handled and coded and formatted the way SQL was meant
+ to be (i.e. not a bunch of concatenated strings in a Java class). -->
+
+<sqlMap namespace="keypools">
+
+  <typeAlias alias="keypools" type="com.ateikon.internet.generic.domain.Keypools"/>
+
+  <resultMap id="kpResult" class="keypools">
+    <result property="init1" column="init1" nullValue="-1"/>
+    <result property="init2" column="init2" nullValue="-1"/>
+    <result property="fine1" column="fine1" nullValue="-1"/>
+    <result property="fine2" column="fine2" nullValue="-1"/>
+  </resultMap>
+
+  <select id="checkKey" resultClass="int" parameterClass="map">
+        SELECT count(*)
+          FROM ${owner}keypools 
+         WHERE keyname = #keyname#
+         <isNotEmpty prepend="AND" property="cddipa">
+               cddipa  = #cddipa#        
+         </isNotEmpty>
+         <isNotEmpty prepend="AND" property="cdazie">
+               cdazie  = #cdazie#        
+         </isNotEmpty>         
+         <isNotEmpty prepend="AND" property="cdagen">
+               cdagen  = #cdagen#        
+         </isNotEmpty>
+  </select>
+  
+  <select id="getKeypools" resultMap="kpResult" parameterClass="map">
+    SELECT * 
+      FROM ${owner}keypools
+      <dynamic prepend="WHERE">
+        <isNotEmpty prepend="AND" property="keypools.name">
+            keyname = #keypools.name# 
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="keypools.cddipa">
+            cddipa = #keypools.cddipa# 
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="keypools.cdazie">
+            cdazie = #keypools.cdazie# 
+        </isNotEmpty>        
+        <isNotEmpty prepend="AND" property="keypools.cdagen">
+            cdagen = #keypools.cdagen# 
+        </isNotEmpty>
+      </dynamic>
+     FOR UPDATE
+  </select>
+
+  <update id="updateKeypools" parameterClass="map">
+    UPDATE ${owner}keypools 
+       SET dtulag  = #keypools.dtulag:TIMESTAMP# 
+       <isNotEmpty prepend="," property="keypools.init1">    
+           init1   = #keypools.init1:NUMERIC#
+       </isNotEmpty>
+       <isNotEmpty prepend="," property="keypools.init2">    
+           init2   = #keypools.init2:NUMERIC#
+       </isNotEmpty>
+     WHERE keyname = #keypools.name:VARCHAR#
+       <isNotEmpty prepend="AND" property="keypools.cdagen"> 
+           cdagen  = #keypools.cdagen:VARCHAR#
+       </isNotEmpty>
+       <isNotEmpty prepend="AND" property="keypools.cdazie">    
+           cdazie  = #keypools.cdazie:VARCHAR#
+       </isNotEmpty>       
+       <isNotEmpty prepend="AND" property="keypools.cddipa">    
+           cddipa  = #keypools.cddipa:VARCHAR#
+       </isNotEmpty>
+  </update>
+
+</sqlMap>

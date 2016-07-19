@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Azienda">
+
+  <cacheModel id="oneDayAzienda" type="LRU">
+    <flushInterval hours="24"/>
+  </cacheModel>
+  
+  <typeAlias alias="azienda" type="com.ateikon.internet.generic.domain.Azienda"/>
+
+  <select id="getAziende" resultClass="azienda" parameterClass="map">
+      SELECT a.*         
+        FROM ${owner}azienda a
+        <dynamic prepend="WHERE">
+            <isNotEmpty prepend="AND" property="cdazie">
+                a.cdazie = #cdazie#
+            </isNotEmpty>
+        </dynamic>
+   ORDER BY a.tarags
+  </select>
+    
+  <!--
+  <insert id="insertAzienda" parameterClass="map">
+    INSERT INTO ${owner}azienda (   )
+                         values (   )
+  </insert>
+ 
+  <update id="updateAzienda" parameterClass="map">
+      UPDATE ${owner}azienda SET  dtulag = #tpatt.dtulag:TIMESTAMP#
+                             dstpatt = #tpatt.dstpatt:VARCHAR#                         
+    WHERE cdtpatt = #tpatt.cdtpatt:VARCHAR#
+  </update>     
+
+  <delete id="deleteAzienda" parameterClass="map">
+    DELETE FROM ${owner}azienda WHERE cdazie = #cdazie:VARCHAR#                                
+  </delete>   -->
+
+</sqlMap>

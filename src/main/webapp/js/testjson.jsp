@@ -1,0 +1,1 @@
+<%@page contentType="text/javascript"%>[{"title": "Uploads from everyone"}]

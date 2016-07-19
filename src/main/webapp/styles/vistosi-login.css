@@ -1,0 +1,579 @@
+/* 
+    Document   : vistosi-login
+    Created on : 12-giu-2012, 10.27.51
+    Author     : pdefranceschi
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+/*
+
+CSS for Mocha UI
+
+Theme: Default
+
+Copyright:
+	Copyright (c) 2007-2009 Greg Houston, <http://greghoustondesign.com/>.
+
+License:
+	MIT-style license.
+
+Note:	
+	If you are adding MochaUI to an existing site, this CSS file may not be necessary.
+
+*/
+
+/* Reset */
+
+ul,ol,dl,li,dt,dd,h1,h2,h3,h4,h5,h6,form,body,html,p,blockquote,fieldset,input,object,iframe { margin: 0; padding: 0;}
+a img,:link img,:visited img { border: none; }
+table { border-collapse: collapse; border-spacing: 0; }
+:focus { outline: none; }
+
+/* Structure */
+
+body {
+	text-align: left;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	font-size: 12px;
+	line-height: 18px;
+	color: #333;	
+}
+
+/* Typography */
+	
+h2, h3, h4 {
+	margin: 0;
+	padding: 0 0 5px 0;
+	font-size: 12px;
+	font-weight: bold;
+}
+	
+h2 {
+	font-size: 14px;
+	font-weight: bold;
+}
+	
+h3 {
+	font-size: 13px;
+	font-weight: bold;
+}
+
+h4 {
+	font-size: 11px;
+}
+
+a {
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+p {
+	margin: 0;
+	padding: 0 0 9px 0;
+}
+
+.lite {
+	color: #999;
+}
+
+/* Lists */
+
+ul {
+	list-style: outside;
+	margin: 0 0 9px 16px;
+	list-style-type: disc;
+}
+
+dt {
+	font-weight: bold;
+}
+
+dd {
+	padding: 0 0 9px 0;
+}
+
+/* Menus */
+
+.menu-right li {
+	list-style-type: none;
+	display: inline;	
+	margin: 0 0 0 15px;
+}
+
+/* Forms */
+
+form fieldset {
+	border: 2px solid #e5e5e5;
+	clear: both;
+	margin-bottom: 9px;
+	overflow: hidden;
+	padding: 9px 18px;
+}
+
+form legend {
+	background: #e5e5e5;
+	color: #262626;
+	margin-bottom: 9px;
+	padding: 2px 11px;
+}
+
+form label {
+	font-weight:600;
+	margin-right: 6px;
+	text-align: right;
+	width: 50px;
+        font-size: 11px;
+}
+
+textarea, input, select {
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	font-size: 12px;
+	vertical-align: middle;		
+}
+
+.input {
+	border: 1px solid #CBCBCB;
+        height: 25px;
+        width: 200px;	
+}
+
+form button {
+	vertical-align: middle;	
+}
+
+
+* html .button {
+	padding: 3px 1px;		
+}
+
+.searchField {
+	width: 150px;
+	overflow: hidden;
+	line-height: 15px; 
+	margin: 0;
+	padding: 4px 0 3px 5px;
+	border: 1px solid #808080;	
+	border-right: 0;
+	vertical-align: middle;
+	-moz-border-radius-topleft: 3px;
+	-moz-border-radius-bottomleft: 3px;				
+}
+
+.searchButton {
+	-moz-border-radius-topleft: 0;
+	-moz-border-radius-bottomleft: 0;		
+}	
+
+* html .toolbox .searchField, * html .toolbox .searchButton { /* IE6 Hack */
+	margin-top: -1px;		
+}
+
+* html .toolbox .button { /* IE6 Hack */
+	vertical-align: top;
+	margin-top: 0;			
+}
+
+*:first-child+html .toolbox .searchField, *:first-child+html .toolbox .searchButton { /* IE7 Hack */
+	margin-top: -1px;	
+}
+
+*:first-child+html .toolbox .button { /* IE7 Hack */
+	vertical-align: top;
+	margin-top: 0;	
+}
+
+.formRow {
+	margin: 0 0 8px 0;
+}
+
+.buttonRow {
+	margin-bottom: 10px;	
+}
+
+/* Code */
+
+pre {
+	background-color: #f2f2f2;
+	color: #070;
+	display: block;
+	font-family: 'Courier New', Courier, monospace;
+	font-size: 11px;
+	overflow: auto;
+	margin: 0 0 10px 0;
+	padding: 10px;
+	border: 1px solid #ddd;	
+}
+
+/* Status Messages */
+.error,
+.notice, 
+.success    { padding: 8px; margin-bottom: 10px; border: 2px solid #ddd; }
+.error      { background: #FBE3E4; color: #D12F19; border-color: #FBC2C4; }
+.notice     { background: #FFF6BF; color: #817134; border-color: #FFD324; }
+.success    { background: #E6EFC2; color: #529214; border-color: #C6D880; }
+.error a    { color: #D12F19; }
+.notice a   { color: #817134; }
+.success a  { color: #529214; }
+
+/* Dividers */
+
+hr {
+	background-color: #d3d3d3;
+	color: #ccc;
+	height: 1px;
+	border: 0px;
+}
+
+/* Misc */
+
+.nobr {
+	white-space: nowrap;
+}
+
+/*
+
+Core.css for Mocha UI
+
+Theme: Default
+
+Copyright:
+	Copyright (c) 2007-2009 Greg Houston, <http://greghoustondesign.com/>.
+	
+License:
+	MIT-style license.
+
+Required by:
+	Layout.js
+ 
+*/
+
+/* Layout
+---------------------------------------------------------------- */
+
+html, body {
+	background: #fff;	
+        height: 100%;
+}	
+
+body {
+	margin: 0; /* Required */
+}
+
+#desktop {
+	position: relative;
+	min-width: 400px; /* Helps keep header content from wrapping */
+	height: 100%;
+	min-height: 100%;
+	overflow: hidden;
+	cursor: default; /* Fix for issue in IE7. IE7 wants to use the I-bar text cursor */
+}
+
+#desktopHeader {
+	background: #000;
+}
+
+#desktopTitlebarWrapper {
+	position: relative;	
+	height:60px;
+	overflow: hidden;
+        padding-top: 10px;
+        padding-bottom: 10px;
+}
+
+#desktopTitlebar {
+	/*padding: 7px 8px 6px 8px;*/
+	/*height: 32px;*/
+	height:33px;
+	background: url(../images/logo_login.gif) no-repeat;
+	background-position: 0 0;
+	margin:15px 0 0 40px ;
+}
+
+#desktopTitlebar h1.applicationTitle {
+	display: none;
+	margin: 0;
+	padding: 0 5px 0 0;
+	font-size: 20px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #fff;
+}
+
+#desktopTitlebar h2.tagline {
+	padding: 7px 0 0 0;	
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;    
+	color: #d4dce4;    
+	font-weight: bold;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+#desktopTitlebar h2.tagline .taglineEm {
+	color: #fff;
+	font-weight: bold;
+}
+
+#topNav {
+	font-size: 12px;
+	position: absolute;
+	right: 0;
+	top: 0;
+	color: #999;
+	text-align: right;
+	padding: 35px 20px 0 0;
+}
+
+#topNav a {
+	color: #fff;
+	font-weight: normal;
+}
+
+#topNav a:hover {
+	text-decoration: none;
+	border-bottom: 1px dotted #FFF;
+}
+
+
+li.divider {
+	margin-top: 2px;
+	padding-top: 3px;	
+	border-top: 1px solid #ebebeb;
+}	
+
+#pageWrapper {
+	position: relative;
+	overflow: hidden; /* This can be set to hidden or auto */
+	border-top: 1px solid #d4d4d4;
+	border-bottom: 1px solid #d4d4d4;	
+}
+
+/* Footer */
+
+#desktopFooterWrapper {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 20px;
+	overflow: hidden;
+}
+
+#desktopFooter {
+	font-size: 12px;
+	padding: 0px 8px 0 8px;
+	background: #f1f1f1;
+}
+
+
+
+/* Panel Layout
+---------------------------------------------------------------- */
+
+/* Columns */
+
+.column {
+	position: relative;	
+	float: left;
+	overflow: hidden; /* Required by IE6 */
+}
+
+/* Panels */
+
+.panel {
+	position: relative;
+	overflow: auto;
+	background: #FFF;	
+	border-bottom: 1px solid #b9b9b9;
+}
+
+.panel.collapsed {
+	border-bottom: 0;	
+}
+
+.panelAlt {
+	background: #f2f2f2;	
+}
+
+.bottomPanel {
+	border-bottom: 0;	
+}	
+
+.pad {
+	padding: 0;
+}
+
+#mainPanel {
+	background: #fff; 	
+}	
+
+
+.icon16 {
+	margin: 4px 0 0 2px;
+	cursor: pointer;
+}
+
+.panel-footerWrapper {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	background: #f9f9f9;
+	height: 30px;
+	overflow: hidden;
+	border-top: 1px solid #b9b9b9;
+}
+
+.panel-footer {
+	padding: 1px 0 0 8px;	
+}
+
+.panel-footerContent {
+	margin-top: 5px;
+}	
+
+/* Column and Panel Handles */	
+
+.horizontalHandle {
+	height: 0px;
+	line-height: 1px;
+	font-size: 1px;
+	overflow: hidden;
+}
+
+.horizontalHandle.detached .handleIcon {
+	background: transparent;	
+}
+
+.horizontalHandle .handleIcon {	
+	margin: 0 auto;
+	height: 4px;
+	line-height: 1px;
+	font-size: 1px;
+	overflow: hidden;
+	/*background: url(../images/handle-icon-horizontal.gif) center center no-repeat;*/
+}
+
+.columnHandle {
+	min-height: 10px;	
+	float: left;
+	width: 1px;
+	overflow: hidden;
+	/*background: #c0c0c0 url(../images/handle-icon.gif) center center no-repeat;*/
+	background: #d4d4d4;
+	border-top: 0;
+	border-bottom: 0;
+}
+
+/* Toolboxes */
+
+.toolbox {
+	float: right;
+	margin-top:0;
+	padding: 0;
+	height: 19px;
+	overflow: hidden;
+	text-align: right;
+}
+
+.panel-header-toolbox {
+}
+
+div.toolbox.divider { /* Have to specify div here for IE6's sake 
+	/*background: url(../images/toolbox-divider.gif) repeat-y;*/
+	padding-left: 8px;
+}
+
+.toolbox img.disabled {
+	cursor: default;
+}
+
+.iconWrapper {
+	display: inline-block;
+	height: 22px;
+	min-width: 22px;
+	overflow: hidden;
+	border: 1px solid transparent;
+}
+
+* html .iconWrapper {
+	padding: 1px;
+	border: 0;
+}
+
+.iconWrapper img {
+	cursor: pointer;
+	margin: 0;
+	padding: 3px;
+}
+
+.iconWrapper:hover {
+	border: 1px solid #a0a0a0;
+	-moz-border-radius: 3px;	
+}
+
+/* custom style for left menu */
+#sideColumn1 .panel-collapse{
+    background: url(../images/close_bar_close.gif) left top no-repeat !important;
+    width: 16px !important;
+    height: 16px !important;
+    margin: 0;
+}
+#sideColumn1 .toolbox{
+    height: 16px;
+    margin-top:10px;
+    margin-right: 5px;
+}
+
+#sideColumn1 .horizontalHandle{
+    height: 0;
+}
+
+#div_login {
+    border: 1px solid #CFCFCF;
+    padding: 30px 10px 10px;
+    width: 360px;
+}
+
+.mano {
+    cursor: pointer;
+}
+
+#proceed{
+    background-color: #2597CB;
+    border-color: #2597CB;
+    border-style: solid;
+    border-width: 2px 10px;
+    color: #FFFFFF;
+    font-weight: 600;
+}
+
+#reset{
+    background-color: #999999;
+    border-color: #999999;
+    border-style: solid;
+    border-width: 2px 10px;
+    color: #FFFFFF;
+    font-weight: 600;
+}
+
+h1 {
+    color: #000000;
+    font-size: 28px;
+    font-weight: 900;
+    line-height: 28px;
+    margin: 0 0 15px;
+    padding: 0;
+}
+

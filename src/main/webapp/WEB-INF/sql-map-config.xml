@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+    <!-- application properties -->
+    <properties resource="ateikon_sql.properties"/>
+    
+    <settings cacheModelsEnabled="false"
+    enhancementEnabled="false"
+    useStatementNamespaces="true"
+    lazyLoadingEnabled="true"
+    />
+    
+    <!-- alias -->
+    
+    <!-- standard -->
+    <sqlMap resource="com/ateikon/internet/generic/dao/ibatis/maps/Keypools.xml"/>
+    <!--sqlMap resource="com/ateikon/internet/generic/dao/ibatis/maps/Contator.xml"/-->
+    <sqlMap resource="com/ateikon/internet/generic/dao/ibatis/maps/Tabset.xml"/>
+    <!--sqlMap resource="com/ateikon/internet/generic/dao/ibatis/maps/Costante.xml"/-->
+    <!--sqlMap resource="com/ateikon/internet/generic/dao/ibatis/maps/AtkPargen.xml"/-->
+    <!--sqlMap resource="com/ateikon/internet/generic/dao/ibatis/maps/UnitaLocale.xml"/-->
+    <!--sqlMap resource="com/ateikon/internet/generic/dao/ibatis/maps/Nazione.xml"/>
+    <sqlMap resource="com/ateikon/internet/generic/dao/ibatis/maps/Provincia.xml"/>
+    <sqlMap resource="com/ateikon/internet/generic/dao/ibatis/maps/AtkTabella.xml"/-->
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/PGMR_UNITALOCALI_SqlMap.xml"/>
+    
+    <!-- vistosi -->
+    <!--sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_classi_SqlMap.xml"/-->
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_colori_vetro_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_elettrificazioni_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_famiglia_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_finit_mont_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_finit_vetro_SqlMap.xml"/>
+    <!--sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_fuori_standard_SqlMap.xml"/-->
+    <!--sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_iva_SqlMap.xml"/-->
+    <!--sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_paesi_SqlMap.xml"/-->
+    <!--sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_premi_SqlMap.xml"/-->
+    <!--sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_revisioni_SqlMap.xml"/-->
+    <!--sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_scadenziario_SqlMap.xml"/-->
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_semilavorati_SqlMap.xml"/>
+    <!--sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_tipi_scad_SqlMap.xml"/-->
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_tipi_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_var1_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_var2_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_var3_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_cp_collezioni_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_mrp_arch_articoli_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_mrp_file_giacenza_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_ep_utente_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_ep_subutente_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_ep_subutente_uloc_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_archclie_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_archenti_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_archagen_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_assofiscal_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_lis_listino_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_web_ord_test_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_web_ord_test_note_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_web_ord_positito_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_web_ord_posi_note_SqlMap.xml"/>
+    
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_ep_contator_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_ep_log_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_ep_log_tipo_SqlMap.xml"/>    
+
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_etichette_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_articoli_img_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_articoli_ricambi_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_filtro_articoli_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_offerte_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_cms_promozioni_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_cms_promozioni_cliente_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_designer_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_mrp_arch_stato_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_mrp_arch_articoli_ul_SqlMap.xml"/>
+    
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_archrubrica_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_archrubrica_condc_note_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_archrubrica_tipo_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_clieatti_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_cliegrpatti_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_condc_grpatti_note_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_condc_grpatti_par_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_condc_acc_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_condc_acc_posi_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_condc_atti_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_nazioni_ref_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_atk_lingua_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_vist_articoli_datiextra_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_ep_costanti_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_costanti_comm_SqlMap.xml"/>
+    <sqlMap resource="com/ateikon/internet/eprogen/dao/ibatis/maps/pgmr/pgmr_ep_posts_SqlMap.xml"/>
+
+</sqlMapConfig>

@@ -1,0 +1,248 @@
+<html>
+    <head>
+        <title>Vetreria Vistosi</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <style type="text/css">
+            <!--
+            body{
+                margin:0;
+                padding:0;
+                font-family: Arial, Helvetica, sans-serif;
+                font-size:12px;
+            }
+            #wrapper{
+                width:709px;
+                margin:10px;
+            }
+            .body_div{
+                margin-top:40px;
+                text-align:justify;
+            }
+            table{
+                border-collapse: collapse;
+                border-spacing:0;
+            }
+            h4{
+                font-size:14px;}
+
+            h3{
+                font-size:18px;
+                padding-bottom:10px;}
+
+            .body_div p{font-size:12px; line-height:14px;}
+
+            .css_foot {font-size: 11px; font-weight: normal; color: #000; text-align:justify;}
+            .privacy {font-size: 9px; font-weight: normal; color: #b8b8b8; text-align:justify;}
+            .foot{
+                width:709px;
+                text-align: justify;
+                margin-top:20px;
+            }
+            .head{
+                width:709px;
+                height:50px;
+                margin-bottom:40px;
+            }
+            .alert {
+                font-size:16px;
+                color:#FF0000;
+            }
+            .parametri, .report{font-size: 12px;}
+            .parametri table{
+
+            }
+            .report{
+                border-top: 1px solid #ccc;
+                border-bottom: 1px solid #ccc;
+                border-left: 1px solid #ccc;
+            }
+            .report th, .report td{padding:5px; border-right:1px solid #ccc;}
+            .parametri tr, .report tr{
+                height:25px;
+            }
+            .parametri td, .parametri th, .report td, .report th{
+                border-bottom: 1px solid #ccc;
+                padding-top:10px;
+                padding-bottom:10px;
+            }
+            .dettaglio th{
+                font-size:10px;
+                color:#999;
+                /*text-align:left;*/
+                border-bottom: 1px solid #999;
+                padding-bottom:10px;
+                vertical-align:top;
+            }
+            .dettaglio td{
+                color:#000000;
+                font-size:10px;
+                padding-bottom:10px;
+                padding-top:10px;
+                padding-left: 3px;
+                vertical-align:top;
+            }
+            tr.dettaglio2 {
+                font-size:10px;
+                color:#000;
+                /*text-align:left;*/
+                border-bottom: 1px solid #000;
+                vertical-align:bottom;
+            }
+            .nota-cli {
+                border:1px solid #CCCCCC;
+            }
+            .nota-cli p { 
+                font-size:10px;
+                line-height:14px;
+                padding-left:10px;
+                padding-right:10px;
+            }
+
+            .al{
+                text-align:left;
+            }
+            .ar{
+                text-align:right;
+            }
+            .report1 {font-size: 12px;}
+            a:link, a:visited{
+                color:#000;
+            }
+            a:hover, a:active{
+                color:#000;
+            }
+
+            .clearfix:after {
+                clear: both;
+                content: ".";
+                display: block;
+                height: 0;
+                visibility: hidden;
+            }
+            #stati-cnt {
+                font-size: 12px;
+                padding: 5px 0 0 0;
+            }
+            .legenda-marker{
+                width: 16px;
+                height: 16px;
+                float: left;
+                margin-right: 5px;
+            }
+            .head-legenda{
+                font-weight: bold;
+                float: left;
+            }
+            h4{
+                margin: 0;
+            }
+
+            .cart-stato{
+                padding: 4px;
+                font-weight: bold;
+                color:#FFFFFF;
+            }
+            -->
+        </style>
+    </head>
+
+    <body>
+
+        <div id="wrapper">
+            <div id="head"><a href="http://www.vistosi.it/portal"><img src="http://www.vistosi.it/portal/themes/vistosi/images/head-notifiche-vistosi.jpg" width="709" height="71" border="0"></a></div>
+            <div class="body_div">
+                <h3>Wishlist</h3>
+                <p><strong>$!sender</strong> ti invia la seguente wishlist:</p>
+                <div id="cart-cnt">
+                    <table>                        
+                        #foreach( $item in $cart.ord_posititos )
+                        #if ($foreach.first)
+                        <thead>
+                            <tr>
+                                <th class="al">modello</th>
+                                <th style="width:80px" class="al">Varianti</th>
+                                <th class="al">Finitura<br>del<br>diffusore</th>
+                                <th class="al">Finitura<br>montatura</th>
+
+                                <th class="al">Elet.</th>
+                                <th nowrap="nowrap" style="width:60px" class="al">peso<br>lordo</th>
+                                <th nowrap="nowrap" style="width:60px" class="al">peso<br>netto</th>
+                                <th nowrap="nowrap" class="ar">volume<br>mc</th>
+                                <th nowrap="nowrap" class="al">Codice articolo</th>
+
+                            </tr>
+                        </thead>
+                        #end
+
+                        <tr>$s_locale
+                            #if ("it" == $s_locale)
+                             #set ($descrfam = $item.articolo.vist_famiglia.dsvistfam )
+                            #elseif ("en" == $s_locale)
+                            
+                            #elseif ("de"==$s_locale)
+                            
+                            #elseif ("es"==$s_locale)
+                            
+                            #elseif ("fr"==$s_locale)
+                            
+                            #else 
+                            
+                            #end
+                            
+                            
+                            #set ($dsfam = "dsvistfam$atkLangSfx")
+                            #set ($dstp = "dsextvisttp$atkLangSfx")
+                            #set ($dsextfam = "dsextvistfam$atkLangSfx")
+                            #set ($dscolv = "dsextvistcolv$atkLangSfx")
+                            #set ($dsvetro = "dsextvistvetro$atkLangSfx")
+                            #set ($dselet = "dsextvistelet$atkLangSfx")
+                            #set ($dsfinm = "dsextvistfinm$atkLangSfx")
+                            #set ($dsfinv = "dsextvistfinv$atkLangSfx")                            
+                            #set ($dsv1 = "dsextvistv1$atkLangSfx")
+                            #set ($dsv2 = "dsextvistv2$atkLangSfx")
+                            #set ($dsv3 = "dsextvistv3$atkLangSfx")             
+                            $dsfam
+                            #set( $temp = $item.articolo.vist_famiglia )
+
+                            #set( $list = [1,2,3] )
+                            #set( $object = '$list' )
+                            #set( $method = 'size()' )
+                            $render.eval("${object}.$method")
+
+
+                            #set ($obj = "\$item.articolo.vist_famiglia.$dsfam") 
+                            a $render.eval($render.eval("$obj"))
+                            b $render.eval("$item.articolo.vist_famiglia.dsvistfam")
+                            
+                            $languageId
+                            $item.articolo.vist_famiglia[$languageId]
+                            
+                            $descrfam
+
+                            <td class="cart-b">$render.eval($render.eval("\$item.articolo.vist_famiglia.$dsfam")) $item.articolo.vist_famiglia.dsvistfam $item.articolo.cdvisttp
+                            </td>
+
+                        </tr>
+                        #end
+                    </table>
+
+                </div>
+            </div>
+            <div class="foot">
+                <p class="privacy">NOTE: 1) Il presente portale &egrave; nuovissimo e, se pur ottimamente testato, potrebbe presentare delle imprecisioni, per questa ragione Vetreria Vistosi Srl declina qualsiasi responsabilit&agrave; in merito ad eventuali inconvenienti causati dai dati pubblicati nel presente portale. 2) Spese di trasporto addebitate in fattura, se previste. 3) Contributo RAEE addebitato in fattura, se previsto.
+                    <br/>
+                    <br/>Questa mail &egrave; generata automaticamente, quindi non risponda a questo indirizzo.
+                    <br>
+                    <br/>
+                    Questo messaggio e i suoi allegati sono indirizzati esclusivamente alle persone indicate. La diffusione, copia o qualsiasi altra azione derivante dalla conoscenza di queste informazioni sono rigorosamente vietate. Qualora abbia ricevuto questo documento per errore La preghiamo cortesemente di darne immediata comunicazione al mittente e di provvedere alla sua distruzione, Grazie.<br>
+                    <br>
+                    Ai sensi del D.Lgs. 196/2003, i Vostri dati personali anagrafici e fiscali, acquisiti direttamente e/o tramite terzi dalla Vetreria Vistosi Srl titolare del trattamento, vengono trattati in forma cartacea, informatica, telematica per esigenze contrattuali e di legge, nonché per consentire una efficace gestione dei rapporti
+                    commerciali. I dati potranno essere comunicati alla nostra rete agenti, istituti di credito, professionisti, consulenti e aziende che operano nel settore trasporti. Il mancato conferimento dei dati, ove non obbligatorio, verr&agrave; valutato di volta in volta dalla Vetreria Vistosi Srl e determiner&agrave; le conseguenti decisioni rapportate
+                    all'importanza dei dati richiesti rispetto alla gestione del rapporto commerciale. L'interessato potr&agrave; esercitare tutti i diritti di cui all'art. 7 del d.lgs.vo n. 196/2003 (tra cui i diritti di accesso, rettifica, aggiornamento, di opposizione al trattamento e di cancellazione).</p>
+            </div>
+        </div>
+    </body>
+</html>
+
+
+

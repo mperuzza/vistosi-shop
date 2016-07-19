@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : views.xml
+    Created on : 24 novembre 2006, 15.33
+    Author     : emi
+    Description:
+        Purpose of the document follows.
+-->
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans>
+    
+    <bean name="genericXMLView" class="com.ateikon.internet.eprogen.web.xmlview.GenericXMLView">
+    </bean>
+    
+
+    <!--bean name="articolo" class="net.sf.json.spring.web.servlet.view.JsonView"/-->
+    <!--bean name="articolo" class="org.springframework.js.json.jackson.JacksonJsonView">
+        <property name="url" value="articolo" />
+    </bean-->
+
+    
+</beans>

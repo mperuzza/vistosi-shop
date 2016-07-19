@@ -1,0 +1,445 @@
+<html>
+    <head>
+        <title>Vetreria Vistosi</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <style type="text/css">
+            <!--
+            body{
+                margin:0;
+                padding:0;
+                font-family: Arial, Helvetica, sans-serif;
+                font-size:12px;
+            }
+            #wrapper{
+                width:709px;
+                margin:10px;
+            }
+            .body_div{
+                margin-top:40px;
+                text-align:justify;
+            }
+            table{
+                border-collapse: collapse;
+                border-spacing:0;
+            }
+            h4{
+                font-size:14px;}
+
+            h3{
+                font-size:18px;
+                padding-bottom:10px;}
+
+            .body_div p{font-size:12px; line-height:14px;}
+
+            .css_foot {font-size: 11px; font-weight: normal; color: #000; text-align:justify;}
+            .privacy {font-size: 9px; font-weight: normal; color: #b8b8b8; text-align:justify;}
+            .foot{
+                width:709px;
+                text-align: justify;
+                margin-top:20px;
+            }
+            .head{
+                width:709px;
+                height:50px;
+                margin-bottom:40px;
+            }
+            .alert {
+                font-size:16px;
+                color:#FF0000;
+            }
+            .parametri, .report{font-size: 12px;}
+            .parametri table{
+
+            }
+            .report{
+                border-top: 1px solid #ccc;
+                border-bottom: 1px solid #ccc;
+                border-left: 1px solid #ccc;
+            }
+            .report th, .report td{padding:5px; border-right:1px solid #ccc;}
+            .parametri tr, .report tr{
+                height:25px;
+            }
+            .parametri td, .parametri th, .report td, .report th{
+                border-bottom: 1px solid #ccc;
+                padding-top:10px;
+                padding-bottom:10px;
+            }
+            .dettaglio th{
+                font-size:10px;
+                color:#999;
+                /*text-align:left;*/
+                border-bottom: 1px solid #999;
+                padding-bottom:10px;
+                vertical-align:top;
+            }
+            .dettaglio td{
+                color:#000000;
+                font-size:10px;
+                padding-bottom:10px;
+                padding-top:10px;
+                padding-left: 3px;
+                vertical-align:top;
+            }
+            tr.dettaglio2 {
+                font-size:10px;
+                color:#000;
+                /*text-align:left;*/
+                border-bottom: 1px solid #000;
+                vertical-align:bottom;
+            }
+            .nota-cli {
+                border:1px solid #CCCCCC;
+            }
+            .nota-cli p { 
+                font-size:10px;
+                line-height:14px;
+                padding-left:10px;
+                padding-right:10px;
+            }
+
+            .al{
+                text-align:left;
+            }
+            .ar{
+                text-align:right;
+            }
+            .report1 {font-size: 12px;}
+            a:link, a:visited{
+                color:#000;
+            }
+            a:hover, a:active{
+                color:#000;
+            }
+
+            .clearfix:after {
+                clear: both;
+                content: ".";
+                display: block;
+                height: 0;
+                visibility: hidden;
+            }
+            #stati-cnt {
+                font-size: 12px;
+                padding: 5px 0 0 0;
+            }
+            .legenda-marker{
+                width: 16px;
+                height: 16px;
+                float: left;
+                margin-right: 5px;
+            }
+            .head-legenda{
+                font-weight: bold;
+                float: left;
+            }
+            h4{
+                margin: 0;
+            }
+
+
+            #cart-cnt table {
+                border-collapse: collapse;
+                border-spacing: 0;
+                width: 100%;
+                vertical-align: baseline;
+            }
+
+            #cart-cnt th,  #cart-cnt td{
+                vertical-align: baseline;
+                border-width: 0;
+            }
+
+            #cart-cnt th {
+                color: #999999;
+                font-size: 11px;
+                font-weight: normal;
+                padding-bottom: 12px;
+                padding-left: 4px;
+                padding-right: 4px;
+                text-transform: capitalize;
+                vertical-align: baseline;
+            }
+            #cart-cnt td {
+                font-size: 11px;
+                padding: 4px;
+                vertical-align: top;
+            }
+            .cart-b {
+                font-weight: bold;
+                height: 20px;
+            }
+
+            .cart-stato{
+                padding: 4px;
+                font-weight: bold;
+                color:#000;
+            }
+            .riga {
+    border-top: 1px solid #000000;
+}           
+            .note{
+                margin: 10px 0;
+                font-size: 12px;
+                color: #000;
+            }
+            -->
+        </style>
+    </head>
+
+    <body>
+
+        <div id="wrapper">
+            <div id="head"><a href="http://www.vistosi.it"><img src="http://www.vistosi.it/portal/themes/vistosi/images/head-notifiche-vistosi.jpg" width="709" height="71" border="0"></a></div>
+            <div class="body_div">
+                <h3>Wishlist</h3>
+                <p><strong>$!sender</strong> #msg("wishlist.sender"):</p>
+                <div class="head-legenda"  style="padding-bottom:15px;">Legenda:</div><br /><br />                               
+                    <table class="dettaglio" border="0">                                               
+                        <tbody>
+                            <tr>                                                           
+                                <td  style="background-color: rgb(0,153,255); margin:0 5px 0 0; padding: 0px; border:0px none; height:16px; width:16px;" ></td>
+                                #foreach( $item in $legenda)
+                                    #if ("it" == $s_locale)
+                                    <td style="padding:0 10px 0 5px;  font-size:12px; height:16px; margin: 0px; border:0px none;"> ${item.dsstato}</td>
+                                    #elseif ("en"==$s_locale)
+                                    <td style="padding:0 10px 0 5px;  font-size:12px; height:16px; margin: 0px; border:0px none;"> ${item.dsstato_en}</td>
+                                    #elseif ("de"==$s_locale)
+                                    <td style="padding:0 10px 0 5px;  font-size:12px; height:16px; margin: 0px; border:0px none;"> ${item.dsstato_de}</td>
+                                    #elseif ("fr"==$s_locale)
+                                    <td style="padding:0 10px 0 5px;  font-size:12px; height:16px; margin: 0px; border:0px none;"> ${item.dsstato_fr}</td>
+                                    #elseif ("es"==$s_locale)
+                                    <td style="padding:0 10px 0 5px;  font-size:12px; height:16px; margin: 0px; border:0px none;"> ${item.dsstato_es}</td>
+                                    #else
+                                    <td style="padding:0 10px 0 5px;  font-size:12px; height:16px; margin: 0px; border:0px none;"> ${item.dsstato}</td>
+                                    #end
+                                #end
+                            </tr>
+                        </tbody>  
+                    </table>
+                <br />
+                <div id="cart-cnt">
+                    <table class="parametri">                        
+                        #foreach( $item in $cart.ord_posititos )
+                        #if ($foreach.first)
+                        <thead>
+                            <tr>
+                                <th class="al">#msg("model")</th>
+                                <th style="width:80px" class="al">#msg("varianti")</th>
+                                <th class="al">#msg("col.vetro")</th>
+                                <th class="al">#msg("fin.mont")</th>
+
+                                <th class="al">#msg("elettr.short")</th>
+                                <th nowrap="nowrap" style="width:60px" class="al">#msg("peso.lordo")</th>
+                                <th nowrap="nowrap" style="width:60px" class="al">#msg("peso.netto")</th>
+                                <th nowrap="nowrap" class="ar">#msg("volume")</th>
+                                <th nowrap="nowrap" class="al">#msg("art.cdartm")</th>
+                                <th nowrap="nowrap" class="al">#msg("qta")</th>
+
+                            </tr>
+                        </thead>
+                        #end
+                        <tr class="riga"> 
+                            #if ($item.cdartirif)
+                            #set( $filedis = $item.articolo.datiRicambio.imgv_filename)
+                            #elseif ($item.articolo.vist_filedis)
+                            #set( $filedis = "${item.articolo.vist_filedis}.jpg")
+                            #else
+                            #set( $filedis = "${item.articolo.vist_famiglia.cdvistfam_mPad}${item.articolo.cdvisttp}${item.articolo.cdvistv1Pad}${item.articolo.cdvistv2Pad}${item.articolo.cdvistv3Pad}-.jpg")
+                            #end   
+
+                            #if ($item.cdartirif && $item.articolorif)
+                            #set( $schedaURL = "${applicationURL}/scheda-${item.articolorif.vist_famiglia.dsvistfam}-${item.articolorif.cdvisttp}/${item.articolorif.cdvistfam}/?cdarti=${item.articolorif.cdarti}&cdartiric=${item.cdarti}")
+                            #else 
+                            #set( $schedaURL = "${applicationURL}/scheda-${item.articolo.vist_famiglia.dsvistfam}-${item.articolo.cdvisttp}/${item.articolo.cdvistfam}/?cdarti=${item.articolo.cdarti}")
+                            #end                                
+                            <td><a href="$schedaURL"><img width="80" alt="$item.articolo.dsarti" title="$item.articolo.dsarti" src="$applicationURL/static/images/articoli/disegnitecnici/thumb/$filedis"></a></td>
+                            <td></td>
+                            <td><img width="80" src="$applicationURL/images/articoli/vetro/${item.articolo.vist_famiglia.cdvistfam_m}_${item.articolo.cdvisttp}_$!{item.articolo.cdvistv1}_${item.articolo.cdvistcolv}$!{item.articolo.cdvistfinv}.jpg"></td>
+                            <td><img width="80" src="$applicationURL/static/images/articoli/montature/${item.articolo.cdvistfinm}.jpg"></td>
+                            <td></td>
+
+                            <td colspan="6">
+                                <div>
+                                    #if ($item.articolo.vist_articoli_img && $item.articolo.vist_articoli_img.pathschtecExists) 
+                                    <a href="$downloadUrl&tipo_richiesta=si_res&file_req=fileresources/assembling_instructions/$item.articolo.vist_articoli_img.pathschtec"/><img src="$applicationURL/static/images/pdf-icon.gif"/></a>
+                                    #else
+                                    <a href="$downloadUrl&tipo_richiesta=no_res&file_req=fileresources/assembling_instructions/$item.articolo.vist_articoli_img.pathschtec" target="_blank"><img src="$applicationURL/static/images/no-pdf-icon.gif"/></a>
+                                    #end
+                                    #if ($item.articolo.model2D_dwgExists)
+                                    <a href="$downloadUrl&tipo_richiesta=si_res&file_req=$item.articolo.model2D_dwg" target="_blank"><img src="$applicationURL/static/images/dwg-icon.gif"/></a>
+                                    #else
+                                    <a href="$downloadUrl&tipo_richiesta=no_res&file_req=$item.articolo.model2D_dwg" target="_blank"><img src="$applicationURL/static/images/no-dwg-icon.gif"/></a>
+                                    #end 
+                                    #if ($item.articolo.model3D_easmExists)
+                                    <a href="$downloadUrl&tipo_richiesta=si_res&file_req=$item.articolo.model3D_easm" target="_blank"><img src="$applicationURL/static/images/easm-icon.gif"/></a>
+                                    #else
+                                    <a href="$downloadUrl&tipo_richiesta=no_res&file_req=$item.articolo.model3D_easm" target="_blank"><img src="$applicationURL/static/images/no-easm-icon.gif"/></a>
+                                    #end 
+                                    #if ($item.articolo.model3D_igsExists)
+                                    <a href="$downloadUrl&tipo_richiesta=si_res&file_req=$item.articolo.model3D_igs" target="_blank"><img src="$applicationURL/static/images/iges-icon.gif"/></a>
+                                    #else
+                                    <a href="$downloadUrl&tipo_richiesta=no_res&file_req=$item.articolo.model3D_igs" target="_blank"><img src="$applicationURL/static/images/no-iges-icon.gif"/></a>
+                                    #end
+                                    #if ($item.articolo.energyClass)
+                                    <a href="${eprogenUrl}epRichiesta_download_energyclass.jsp?cdarti=$item.articolo.cdarti&cdling=$cdling" target="_blank"><img src="$applicationURL/static/images/ce-icon.gif"/></a>
+                                    #end
+                                    #if ($item.articolo.specsheetExists)
+                                    <a href="$applicationURL/specsheet/$item.articolo.cdartm" target="_blank"><img src="$applicationURL/static/images/tech-icon.gif"/></a> 
+                                    #else
+                                    <a href="$downloadUrl&tipo_richiesta=no_res&file_req=specsheet/$item.articolo.cdartm" target="_blank"><img src="$applicationURL/static/images/no-tech-icon.gif"/></a> 
+                                    #end   
+                                    #foreach( $cert in $item.articolo.certList )
+                                    <a href="${portalUrl}download/$cert.file?f=$cert.file" target="_blank"><img src='$applicationURL/static/images/articoli/specsheetres/dati/${cert.get("img")}.jpg' height="36px" alt="cert"/></a>
+                                    #end
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            #if ("it" == $s_locale)
+                            #set ($dsfam = $item.articolo.vist_famiglia.dsvistfam )
+                            #set ($dscolv = $item.articolo.vist_colori_vetro.dsextvistcolv)
+                            #set ($dselet = $item.articolo.vist_elettrificazioni.dsextvistelet)
+                            #set ($dsfinm = $item.articolo.vist_finit_mont.dsextvistfinm)
+                            #set ($dsfinv = $item.articolo.vist_finit_vetro.dsextvistfinv)                            
+                            #set ($dsv1 = $item.articolo.vist_var1.dsextvistv1)
+                            #set ($dsv2 = $item.articolo.vist_var2.dsextvistv2)
+                            #set ($dsv3 = $item.articolo.vist_var3.dsextvistv3)                             
+                            #elseif ("en" == $s_locale)
+                            #set ($dsfam = $item.articolo.vist_famiglia.dsvistfam_eng )
+                            #set ($dscolv = $item.articolo.vist_colori_vetro.dsextvistcolv_eng)
+                            #set ($dselet = $item.articolo.vist_elettrificazioni.dsextvistelet_eng)
+                            #set ($dsfinm = $item.articolo.vist_finit_mont.dsextvistfinm_eng)
+                            #set ($dsfinv = $item.articolo.vist_finit_vetro.dsextvistfinv_eng)                            
+                            #set ($dsv1 = $item.articolo.vist_var1.dsextvistv1_eng)
+                            #set ($dsv2 = $item.articolo.vist_var2.dsextvistv2_eng)
+                            #set ($dsv3 = $item.articolo.vist_var3.dsextvistv3_eng) 
+                            #elseif ("de"==$s_locale)
+                            #set ($dsfam = $item.articolo.vist_famiglia.dsvistfam_ted )
+                            #set ($dscolv = $item.articolo.vist_colori_vetro.dsextvistcolv_ted)
+                            #set ($dselet = $item.articolo.vist_elettrificazioni.dsextvistelet_ted)
+                            #set ($dsfinm = $item.articolo.vist_finit_mont.dsextvistfinm_ted)
+                            #set ($dsfinv = $item.articolo.vist_finit_vetro.dsextvistfinv_ted)                            
+                            #set ($dsv1 = $item.articolo.vist_var1.dsextvistv1_ted)
+                            #set ($dsv2 = $item.articolo.vist_var2.dsextvistv2_ted)
+                            #set ($dsv3 = $item.articolo.vist_var3.dsextvistv3_ted) 
+                            #elseif ("es"==$s_locale)
+                            #set ($dsfam = $item.articolo.vist_famiglia.dsvistfam_spa )
+                            #set ($dscolv = $item.articolo.vist_colori_vetro.dsextvistcolv_spa)
+                            #set ($dselet = $item.articolo.vist_elettrificazioni.dsextvistelet_spa)
+                            #set ($dsfinm = $item.articolo.vist_finit_mont.dsextvistfinm_spa)
+                            #set ($dsfinv = $item.articolo.vist_finit_vetro.dsextvistfinv_spa)                            
+                            #set ($dsv1 = $item.articolo.vist_var1.dsextvistv1_spa)
+                            #set ($dsv2 = $item.articolo.vist_var2.dsextvistv2_spa)
+                            #set ($dsv3 = $item.articolo.vist_var3.dsextvistv3_spa) 
+                            #elseif ("fr"==$s_locale)
+                            #set ($dsfam = $item.articolo.vist_famiglia.dsvistfam_fra )
+                            #set ($dscolv = $item.articolo.vist_colori_vetro.dsextvistcolv_fra)
+                            #set ($dselet = $item.articolo.vist_elettrificazioni.dsextvistelet_fra)
+                            #set ($dsfinm = $item.articolo.vist_finit_mont.dsextvistfinm_fra)
+                            #set ($dsfinv = $item.articolo.vist_finit_vetro.dsextvistfinv_fra)                            
+                            #set ($dsv1 = $item.articolo.vist_var1.dsextvistv1_fra)
+                            #set ($dsv2 = $item.articolo.vist_var2.dsextvistv2_fra)
+                            #set ($dsv3 = $item.articolo.vist_var3.dsextvistv3_fra) 
+                            #else 
+                            #set ($dsfam = $item.articolo.vist_famiglia.dsvistfam )
+                            #set ($dscolv = $item.articolo.vist_colori_vetro.dsextvistcolv)
+                            #set ($dselet = $item.articolo.vist_elettrificazioni.dsextvistelet)
+                            #set ($dsfinm = $item.articolo.vist_finit_mont.dsextvistfinm)
+                            #set ($dsfinv = $item.articolo.vist_finit_vetro.dsextvistfinv)                            
+                            #set ($dsv1 = $item.articolo.vist_var1.dsextvistv1)
+                            #set ($dsv2 = $item.articolo.vist_var2.dsextvistv2)
+                            #set ($dsv3 = $item.articolo.vist_var3.dsextvistv3) 
+                            #end
+
+                            <td class="cart-b">$dsfam $item.articolo.cdvisttp
+                                #if ($item.cdartirif)
+                                <br/>ricambio $item.articolo.datiRicambio.numv
+                                #end</td>
+                            <td class="cart-b">
+                                #if ($item.articolo.vist_var1)
+                                $!dsv1.toLowerCase()
+                                #else
+                                $!item.articolo.cdvistv1
+                                #end
+                                #if ($item.articolo.vist_var2)
+                                $!dsv2.toLowerCase()
+                                #else
+                                $!item.articolo.cdvistv2
+                                #end
+                                #if ($item.articolo.vist_var3)
+                                $!dsv3.toLowerCase()
+                                #else
+                                $!item.articolo.cdvistv3
+                                #end
+                            </td>
+                            <td style="text-transform: capitalize; " class="cart-b">$!dscolv.toLowerCase()
+                                #if ($dsfinv)
+                                <br/>$!dsfinv.toLowerCase()
+                                #end</td>
+                            <td style="text-transform: capitalize; " class="cart-b">$!dsfinm.toLowerCase()</td>
+
+                            <td style="text-transform: capitalize" class="cart-b">$!dselet.toLowerCase()</td>
+                            <td nowrap="" class="ar"><div style="float:left; margin-right: 2px">Kg</div> $!number.format('#,##0.00',$item.articolo.nrpeso_l, $locale)</td>
+                            <td nowrap="" class="ar"><div style="float:left; margin-right: 2px">Kg</div> $!number.format('#,##0.00',$item.articolo.nrpeso_n, $locale)</td>
+                            <td nowrap="" class="ar">$!number.format('#,##0.00',$item.articolo.vlunlt, $locale)</td>
+                            <td class="al"><span class="cart-stato" #if ($item.articolo.stato) style="color:#fff; background-color: rgb($item.articolo.stato.vist_rgb_r,$item.articolo.stato.vist_rgb_g,$item.articolo.stato.vist_rgb_b);" #end>$item.articolo.cdartm</span></td>
+                            <td nowrap="" class="ar">$!number.format('#,##0.##',$item.qtatot, $locale)</td>
+                        </tr>
+                        #end
+                    </table>
+                    <div class="note">
+                        $!note
+                    </div>
+                </div>
+            </div>
+            #if ($banner)
+            <p>$banner</p>
+            #end
+            <div class="foot">
+                <p class="privacy">
+                    #if ("it" == $s_locale)
+                    Questa mail &egrave; generata automaticamente, quindi non risponda a questo indirizzo.
+                    <br /><br />
+                    Questo messaggio e i suoi allegati sono indirizzati esclusivamente alle persone indicate. La diffusione, copia o qualsiasi altra azione derivante dalla conoscenza di queste informazioni sono rigorosamente vietate. Qualora abbia ricevuto questo documento per errore La preghiamo cortesemente di darne immediata comunicazione al mittente e di provvedere alla sua distruzione, Grazie. 
+                    <br /><br />
+                    Ai sensi del D.Lgs. 196/2003, i Vostri dati personali anagrafici e fiscali, acquisiti direttamente e/o tramite terzi dalla Vetreria Vistosi Srl titolare del trattamento, vengono trattati in forma cartacea, informatica, telematica per esigenze contrattuali e di legge, nonch&eacute; per consentire una efficace gestione dei rapporti commerciali. I dati potranno essere comunicati alla nostra rete agenti, istituti di credito, professionisti, consulenti e aziende che operano nel settore trasporti. Il mancato conferimento dei dati, ove non obbligatorio, verr&agrave; valutato di volta in volta dalla Vetreria Vistosi Srl e determiner&agrave; le conseguenti decisioni rapportate all'importanza dei dati richiesti rispetto alla gestione del rapporto commerciale. L'interessato potr&agrave; esercitare tutti i diritti di cui all'art. 7 del d.lgs.vo n. 196/2003 (tra cui i diritti di accesso, rettifica, aggiornamento, di opposizione al trattamento e di cancellazione).
+                    #elseif ("en" == $s_locale)
+                    This mail is generated automatically, so do not reply to this address.
+                    <br /><br />
+                    This message and its attachments are addressed exclusively to the persons indicated. The disclosing, copying or any other action deriving from knowing this information is rigorously forbidden. If you have received this document by mistake, please immediately inform the sender and destroy this document. 
+                    <br /><br />
+                    Pursuant to Leg. D. 196/2003, your personal and tax details acquired, directly and/or through third party, by Vetreria Vistosi Srl, owner of the processing are treated in paper, computing and telematic form for contractual and legal requirements, as well as to enable an efficient management of the commercial relationships. The data can be communicated to our network of agents, credit institutes, professionals, consultants and companies working in the transport sector. The missing conferment of this data, where not compulsory, will be evaluated by Vetreria Vistosi Srl from time to time and will determine the consequent decisions in relation to the importance of the requested data compared to the managing of the commercial relationship. The interested party can exercise all rights of which in art. 7 of Leg. D. n. 1936/2003 (among which the rights to access, rectify, update, oppose to the treatment or the deletion).
+                    #elseif ("de"==$s_locale)
+                    Diese Mail wurde automatisch generiert, antworten Sie bitte nicht darauf 
+                    <br /><br />
+                    Diese Mail und deren Anlagen sind ausschliesslich an die angegebenen Personen gerichtet. Die Verbreitung, Kopie oder jedwede andere Tat, die aus diesen Informationen stammen sind strengstens verboten. Falls Sie f&auml;lschlicherweise diese Nachricht erhalten haben, bitten wir Sie diese zu vernichten und den Absender sofort davon zu unterrichten. Danke 
+                    <br /><br />
+                    Laut dem Dekret Nr. 196/2003, werden alle Ihre pers&ouml;nlichen anagrafischen und steuerlichen Daten, die direkt oder durch Dritte von Vetreria Vistosi Srl , in schriftlicher, datenverarbeitender und telematischer Form aquiriert worden sind, aus gesetzlichen und kommerziellen Gr&uuml;nden, behandelt. Die Daten k&ouml;nnen an unser Vertreternetz, Kreditinstitute, freiberuflichen Mitarbeiter, Berater und Transportunternehmen, die in unserem Fachgebiet arbeiten, mitgeteilt werden.Die Fehlende Mitteilung der Daten, wo nicht obligatorisch, wird von Mal zu Mal von Vetreria Vistosi Srl beurteilt und wird die Folgeentscheidungen, die der Wichtigkeit der Mitteilung der gefragten Daten zur Instandhaltung der kommerzielen Beziehung unterstellt ist, nach sich ziehen. Die interessierte Person kann alle Rechte nach Art.7 des Gesetzesdekretes Nr. 196/2003 (unter anderem das Recht nach R&uuml;cktritt, &Auml;nderung, Erneuerung, Widerstand und Tilgung) aus&uuml;ben.
+                    #elseif ("es"==$s_locale)
+                    Este mail se genera autom&aacute;ticamente, por lo tanto no responda a esta direcci&oacute;n
+                    <br /><br />
+                    Este mensaje y sus adjuntos est&aacute;n dirigidos exclusivamente a las personas indicadas. La difusi&oacute;n, copia o cualquier otra acci&oacute;n derivada del conocimiento de estas informaciones est&aacute;n estrictamente prohibidas. Si ha recibido este documento por error le solicitamos tenga a bien informar inmediatamente al remitente y proveer a su destrucci&oacute;n. Gracias. 
+                    <br /><br />
+                    De acuerdo con el D. Leg. 196/2003, sus datos personales civiles y fiscales, incorporados directamente y/o mediante terceros por la Vidrier&iacute;a Vistosi Srl titular del procesamiento, son tratados en papel, en registro inform&aacute;tico y telem&aacute;tico por exigencias contractuales y de ley, como as&iacute; tambi&eacute;n para permitir una eficaz gesti&oacute;n de las relaciones comerciales. Los datos podr&aacute;n ser comunicados a nuestra red de agentes, institutos de cr&eacute;dito, profesionales, asesores y empresas que operan en el sector del transporte. La falta de entrega de los datos, donde no es obligatoria, ser&aacute; evaluada de vez en vez por la Vidrier&iacute;a Vistosi Srl y determinar&aacute; las decisiones en relaci&oacute;n a la importancia de los datos solicitados respecto a la gesti&oacute;n de la relaci&oacute;n comercial. El interesado podr&aacute; ejercitar todos los derechos seg&uacute;n el art. 7 del d.leg. n. 196/2003 (entre los que se cuentan los derechos de acceso, rectificaci&oacute;n, actualizaci&oacute;n, oposici&oacute;n al tratamiento y cancelaci&oacute;n).
+                    #elseif ("fr"==$s_locale)
+                    Ce courrier a &eacute;t&eacute; cr&eacute;&eacute; automatiquement, pri&egrave;re de ne pas r&eacute;pondre &agrave; ce courrier.
+                    <br /><br />
+                    Ce message et ses annexes sont adress&eacute;s exclusivement aux personnes indiqu&eacute;es. La diffusion, la copie ou toute autre action qui d&eacute;coulerait du fait de conna&icirc;tre ces informations sont rigoureusement d&eacute;fendues. Au cas o&ugrave; vous ayez re&ccedil;u ce document par erreur nous vous prions d'informer l'exp&eacute;diteur et d'avoir soin de le d&eacute;truire. Merci. 
+                    <br /><br />
+                    Selon le D.L. 196/2003, vos donn&eacute;es personnelles et fiscales, acquises directement et/ou par des tiers par Vetreria Vistosi Srl titulaire du service, sont gard&eacute;es sur feuille, par outil informatique et t&eacute;l&eacute;matique, par exigence de contrat et de la loi aussi bien que pour consentir une gestion efficace des rapports commerciaux. Ces donn&eacute;es pourront &ecirc;tre communiqu&eacute;es &agrave; notre r&eacute;seau d'agents, aux &eacute;tablissements de cr&eacute;dit bancaire, aux professionnels, aux conseillers et aux entreprises qui travaillent dans le secteur des transports. Vetreria Vistosi Srl prendra chaque fois en consid&eacute;ration le manque de donn&eacute;es, lorsqu'elles ne sont pas consid&eacute;r&eacute;es obligatoires, et par cons&eacute;quent d&eacute;cidera de l'importance des dites donn&eacute;es requises pour la gestion du rapport commercial. La personne int&eacute;ress&eacute;e pourra exercer tous les droits pr&eacute;vus &agrave; l'art.7 du d.l. n. 196/2003 (entre autres le droit d'acc&egrave;s, de rectification, de mise &agrave; jour, d'opposition au traitement et d'annulation).
+                    #else
+                    Questa mail &egrave; generata automaticamente, quindi non risponda a questo indirizzo.
+                    <br /><br />
+                    Questo messaggio e i suoi allegati sono indirizzati esclusivamente alle persone indicate. La diffusione, copia o qualsiasi altra azione derivante dalla conoscenza di queste informazioni sono rigorosamente vietate. Qualora abbia ricevuto questo documento per errore La preghiamo cortesemente di darne immediata comunicazione al mittente e di provvedere alla sua distruzione, Grazie. 
+                    <br /><br />
+                    Ai sensi del D.Lgs. 196/2003, i Vostri dati personali anagrafici e fiscali, acquisiti direttamente e/o tramite terzi dalla Vetreria Vistosi Srl titolare del trattamento, vengono trattati in forma cartacea, informatica, telematica per esigenze contrattuali e di legge, nonch&eacute; per consentire una efficace gestione dei rapporti commerciali. I dati potranno essere comunicati alla nostra rete agenti, istituti di credito, professionisti, consulenti e aziende che operano nel settore trasporti. Il mancato conferimento dei dati, ove non obbligatorio, verr&agrave; valutato di volta in volta dalla Vetreria Vistosi Srl e determiner&agrave; le conseguenti decisioni rapportate all'importanza dei dati richiesti rispetto alla gestione del rapporto commerciale. L'interessato potr&agrave; esercitare tutti i diritti di cui all'art. 7 del d.lgs.vo n. 196/2003 (tra cui i diritti di accesso, rettifica, aggiornamento, di opposizione al trattamento e di cancellazione).                    
+                    #end
+                </p>
+            </div>
+        </div>
+    </body>
+</html>
+
+
+

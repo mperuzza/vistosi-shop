@@ -1,0 +1,282 @@
+lang.sfx=it
+# Page titles
+index.title=e-progen ~ Ateikon  
+
+
+# Messages used for labels, errors and success messages
+request.sent=Richiesta inoltrata.
+privacy.title=Informazioni sulla Privacy
+privacy.disclaimer=Le informazioni a noi pervenute saranno considerate strettamente confidenziali. In conformit\u00E0 con la legge 675/96 sulla tutela dei dati personali,  Ateikon s.r.l. le comunica che le informazioni che vorr\u00E0 liberamente trasmetterci saranno archiviate elettronicamente.Ai sensi dell'Art. 13 della suddetta legge, \u00E8 riconosciuto alla Sua persona il diritto in qualunque momento di accedere ai dati comunicati per aggiornarli, modificarli o cancellarli contattando il numero telefonico +39 0422 452101 o il numero di fax +39 0422 452138 o l'e-mail ateikon@ateikon.com.
+
+print=stampa
+
+required.fields=Campi richiesti
+
+form.mode.insert=Inserimento riga
+form.mode.modify=Modifica riga
+
+user.saved=L''utente <strong>{0}</strong> &egrave; stato registrato con successo.
+user.missing=Nessun utente trovato con questo codice.
+user.deleted=L''utente <strong>{0}</strong> &egrave; stato eliminato.
+
+user.data=Dati utente
+user.registration=Registrazione nuovo utente
+user.alreadyUser=Sei gi\u00E0 nostro cliente ma non ricordi o non hai ricevuto la password? <a href="ricPwd.do" title="Richiesta password">Clicca qui</a>
+user.passwordRequest=Richiesta password
+#user profile details
+user.id=Codice utente
+user.nome=Nome
+user.cognome=Cognome
+user.username=Username
+user.dsutente=Nome e Cognome
+user.password=Password
+user.confirm.password=Conferma password
+user.ragsoc=Ragione Sociale
+user.pariva=Partita IVA
+user.indiri=Indirizzo
+user.cap=CAP
+user.comune=Comune
+user.provincia=Provincia
+user.nazione=Nazione
+user.contacts=Contatti
+user.email=Email
+user.telefono=Telefono
+user.cellulare=Cellulare
+user.sitointernet=Sito internet
+user.fax=Fax
+user.nota=Nota
+user.birthday=Data di nascita
+user.msg=Messaggio
+utente.username=Username
+utente.pwd=Password
+
+#Articolo
+art.dsarti=Descrizione articolo
+art.cdartm=Cd. articolo
+art.nota=Nota
+art.dsprezzo=Descrizione prezzo
+art.barcode=Barcode
+art.notfound=Nessun articolo trovato
+
+#Cliente
+cliente=Cliente
+
+
+positito.qta=Quantit\u00E0
+
+dtulag=Dt. ultimo agg.
+dtinse=Dt. inserimento
+
+date.format=dd/MM/yyyy
+dateTime.format=dd/MM/yyyy HH:mm
+
+totale=Totale
+dalle=Dalle
+alle=Alle
+data.da=da
+data.a=a
+anno=Anno
+mese=Mese
+giorno=Giorno
+
+dsit=Descr. italiano
+dsen=Descr. inglese
+dses=Descr. spagnolo
+dsfr=Descr. francese
+dsde=Descr. tedesco
+
+title = Titolo
+content = Contenuto
+description = Descrizione
+dssconto = Descr. sconto
+dtinse= Dt. inserimento
+type = Tipo
+fg_pubblica=Visibile a tutti
+fg_sezione=Sezione
+fg_prenota=Prenotabile
+qta=Quantit\u00E0
+annotazioni=Annotazioni
+
+#vistosi
+mail.sent=Mail inviata
+sendFoto.subject=Segnalazione foto
+cart=Carrello
+
+
+upload.fileTypeNotPermitted=Tipo file non permesso
+file.deleted=File eliminato
+
+#calendar labels
+calendar.summary=Calendario
+calendar.prev=Mese precedente
+calendar.next=Mese successivo
+calendar.today=Oggi
+calendar.monthView=Vista mese
+
+#generic action
+item.saved={0} salvat{1}
+item.deleted={0} eliminat{1}
+
+
+back=indietro
+
+#table labels
+table.norecord=Nessun record trovato
+#icons
+icon.detail=Dettaglio
+#Buttons label
+button.prenota=Prenota ora
+button.send=Invia
+button.save=Salva
+button.save.cart=Salva il carrello
+button.update=Aggiorna
+button.delete=Elimina
+button.new=Nuovo
+button.edit=Modifica
+button.addrow=Aggiungi riga
+button.prev=&laquo; Indietro
+button.next=Avanti &raquo;
+button.cancel=Annulla
+button.finish=Concludi
+button.print=Stampa
+button.mail = Invia mail
+button.search = Cerca
+# -- validator errors --
+errors.required={0} e'' un campo richiesto
+errors.forn.required= Compilare almeno uno tra {0} o {1}
+errors.qta={0} {1} deve essere un valore >= 0.
+errors.notFound={0} non trovato.
+errors.notApproved=Account registrato in attesa di approvazione.
+errors.undefined={0} non specificata/o.
+errors.minlength={0} deve essere minore di {1} caratteri.
+errors.maxlength={0} deve essere maggiore di {1} caratteri.
+errors.invalid={0} non valida.
+errors.twofields=Il campo {0} non ha lo stesso valore del campo {1}
+errors.used=L''{0} inserit{1} &egrave; gi&agrave; stat{1} registrat{1}
+errors.sendmail=Errore nel server. Mail non inviata
+errors.password.mismatch=Passwod e conferma password non sono uguali, per favore riprovare.
+
+errors.byte={0} deve essere un byte.
+errors.short={0} deve essere uno shortint.
+errors.integer={0} deve essere un intero.
+errors.long={0} deve essere un long.
+errors.float={0} deve essere un float (decimale).
+errors.double={0} deve essere un double (decimale con virgola).
+
+errors.date={0} is not a date.
+errors.range={0} is not in the range {1} through {2}.
+errors.creditcard={0} is an invalid credit card number.
+errors.email={0} indirizzo mail non valido
+errors.deleting=Errore nell'eliminazione
+errors.saving=Errore nel salvataggio in db.
+
+typeMismatch.java.lang.Double=Previsto un decimale
+typeMismatch.java.math.BigDecimal=Previsto un decimale
+typeMismatch.java.lang.Long=Previsto un intero
+typeMismatch.java.lang.Integer=Previsto un intero
+typeMismatch.java.lang.Short=Previsto un intero (max 4 cifre)
+typeMismatch.java.util.Date=Formato data non corretto
+
+button.complete.cart=Completa l'ordine
+select.type=Seleziona tipologia
+select.family=Seleziona famiglia
+filter.by=Filtra per
+collection=Collezione
+fin.mont=Finitura montatura
+col.vetro=Tonalit\u00E0 vetro
+pages=pagine
+listino=listino
+sconto=sconto
+netto=netto
+articoli=articol{0}
+plural=i
+singular.m=o
+price=prezzo
+subtotale=Subtotale
+disponibilita=Disponibilit\u00E0
+button.order=Ordina
+ricambio=ricambio
+choose.model=Scegli modello
+model=modello
+fin.vetro=finitura vetro
+elettr=lampadine
+choose=Seleziona
+selected.params=con i parametri selezionati
+peso.lordo=peso lordo
+peso.netto=peso netto
+volume=volume
+ordine=ordine
+unitario=unitario
+search.by=Cerca per
+ragsoc=ragione sociale
+include.blocked=includi bloccati
+clienti=client{0}
+no.item.found=Nessun {0} trovato
+singular.f=e
+blocked=bloccato
+no.authorize=Non si dispone dei diritti necessari per accedere alla pagina richiesta
+cliente.select=Selezionare un cliente
+cliente.accesso=Cliente di accesso
+click.change.cliente=Clicca per cambiare cliente
+user=Utente
+purchasing.conditions=Condizioni di acquisto
+customer.service=Assistenza clienti
+conditions=condizioni
+view=visualizza
+hide=nascondi
+varianti=Varianti
+cart.product.destination=Destinazione merce
+cart.payment=Pagamento
+cart.confirm.order=Conferma ordine
+nota=Nota
+promo.code=Codice promozione
+no.item.cart=Non ci sono articoli in carrello
+display.price=Visualizzazione prezzi
+display.price.disclaimer=Per procedere alla conclusione dell'ordine \u00E8 necessario attivare la visualizzazione completa delle condizioni di vendita.<br/>Attivarle?
+confirm.delete=Conferma cancellazione
+confirm.delete.disclaimer=Sei sicuro di voler eliminare la riga selezionata:<br/>{title}<br/>dal carrello?
+cart.dm.dtcons=Data consegna
+cart.dati.fatt=Dati fatturazione
+cart.dm.ragsoc=Ragione Sociale
+cart.dm.pariva=Partita IVA
+cart.dm.indiri=Indirizzo
+cart.dm.cap=CAP
+cart.dm.comune=Comune
+cart.dm.provincia=Provincia
+cart.dm.nazione=Nazione
+cart.dm.contacts=Contatti
+cart.dm.email=Email
+cart.dm.telefono=Telefono
+cart.dm.cellulare=Cellulare
+cart.dm.sitointernet=Sito internet
+cart.dm.fax=Fax
+cart.dati.dm=Dati destinazione merce
+cart.sl.ragsoc=Ragione Sociale
+cart.sl.pariva=Partita IVA
+cart.sl.indiri=Indirizzo
+cart.sl.cap=CAP
+cart.sl.comune=Comune
+cart.sl.provincia=Provincia
+cart.sl.nazione=Nazione
+cart.sl.contacts=Contatti
+cart.sl.email=Email
+cart.sl.telefono=Telefono
+cart.sl.cellulare=Cellulare
+cart.sl.sitointernet=Sito internet
+cart.sl.fax=Fax
+cart.dm.different=Se diversa dagli indirizzi sopra indicati
+note=Note
+nota.internal=Nota ad uso interno
+cart.back=Torna al carrello
+days='Domenica', 'Lunedi', 'Martedi', 'Mercoledi', 'Giovedi', 'Venerdi', 'Sabato'
+months='Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'
+cart.congratulations=Complimenti
+cart.end=La ringraziamo per aver scelto i nostri prodotti. <br/>Il suo ordine \u00E8 stato inoltrato con successo al nostro ufficio commerciale. <br>Ogni successiva comunicazione riguardo all''ordine appena effettuato <br>dovr\u00E0 fare riferimento al seguente N. ORDINE <strong style="color:red"> {0} </strong>. <br/>Una copia dell''ordine appena effettuato le verr\u00E0 inviata nella sua <br/>e-mail personale, la invitiamo pertanto a verificarne il corretto contenuto.
+promo.title=Offerte e promozioni
+no.promo=Nessuna promozione in corso
+advanced.search.title=Ricerca avanzata
+advanced.search.result=Trova risultati
+advanced.search.containing=che contengano questa <strong>parola</strong>
+advanced.search.belonging=appartenenti a questa
+typology=tipologia
+family=famiglia

@@ -1,0 +1,46 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:choose>
+    <c:when test="${rowType == 'Car'}">
+        <c:set var="totNrpesoL">totNrpeso_l${rowType}</c:set>    
+        <c:set var="totNrpesoN">totNrpeso_n${rowType}</c:set>    
+        <c:set var="totVolume">totVolume${rowType}</c:set>    
+        <c:set var="totQta">totQta${rowType}</c:set>    
+        <c:set var="totListino">totListino${rowType}</c:set>    
+        <c:set var="totSconto">totSconto${rowType}</c:set>    
+        <c:set var="totListinoNetto">totListinoNetto${rowType}</c:set> 
+                     <tr class="riga cart-tfoot-2">
+                        <td colspan="5" class="cart-b ar tot"><spring:message code="totale_car" text="Totale carrello"/>:</td>
+                        <td class="ar tot-q" style="padding-right: 15px" nowrap><div style="float:left; margin-right: 2px">Kg</div><fmt:formatNumber value="${cart[totNrpesoL]}" pattern="#,##0.00"/></td>
+                        <td class="ar tot-q" style="padding-right: 15px" nowrap><div style="float:left; margin-right: 2px">Kg</div><fmt:formatNumber value="${cart[totNrpesoN]}" pattern="#,##0.00"/></td>
+                        <td class="ar tot-q"><fmt:formatNumber value="${cart[totVolume]}" pattern="#,##0.00"/></td>
+                        <td class="ar tot-q"></td>
+                        <td class="ar tot-q"><strong><fmt:formatNumber value="${cart[totQta]}" pattern="#,##0.##"/></strong></td>
+                        <td class="ar tot-netto"><fmt:formatNumber value="${cart[totListino]}" pattern="#,##0.00"/></td>
+                        <td class="ar tot" style="font-weight: normal"><c:if test="${cookie.view_net_price.value == 'S' && !hideCond}"><fmt:formatNumber value="${cart[totSconto]}" pattern="#,##0.00"/></c:if></td>
+                        <td class="ar">&nbsp;</td>
+                        <td colspan="2" class="ar tot-netto"><c:if test="${cookie.view_net_price.value == 'S' && !hideCond}"><fmt:formatNumber value="${cart[totListinoNetto]}" pattern="#,##0.00"/></c:if></td>
+                    </tr>
+
+    </c:when>
+    <c:when test="${rowType != 'Car'}">
+        <c:set var="totNrpesoL">totNrpeso_l${rowType}</c:set>    
+        <c:set var="totNrpesoN">totNrpeso_n${rowType}</c:set>    
+        <c:set var="totVolume">totVolume${rowType}</c:set>    
+        <c:set var="totQta">totQta${rowType}</c:set>    
+        <c:set var="totListino">totListino${rowType}</c:set>    
+        <c:set var="totSconto">totSconto${rowType}</c:set>    
+        <c:set var="totListinoNetto">totListinoNetto${rowType}</c:set>    
+        <tr class="riga cart-tfoot-2-car <c:if test="${fgpromo=='S'}">offtot</c:if>">
+                    <td colspan="5" class="cart-b ar tot"><spring:message code="totale" text="Totale"/>:</td>
+                    <td class="ar tot-q" style="padding-right: 15px" nowrap><div style="float:left; margin-right: 2px">Kg</div><fmt:formatNumber value="${cart[totNrpesoL]}" pattern="#,##0.00"/></td>
+                    <td class="ar tot-q" style="padding-right: 15px" nowrap><div style="float:left; margin-right: 2px">Kg</div><fmt:formatNumber value="${cart[totNrpesoN]}" pattern="#,##0.00"/></td>
+                    <td class="ar tot-q"><fmt:formatNumber value="${cart[totVolume]}" pattern="#,##0.00"/></td>
+                    <td class="ar tot-q"></td>
+                    <td class="ar tot-q"><strong><fmt:formatNumber value="${cart[totQta]}" pattern="#,##0.##"/></strong></td>
+                    <td class="ar tot-netto"><fmt:formatNumber value="${cart[totListino]}" pattern="#,##0.00"/></td>
+                    <td class="ar tot" style="font-weight: normal"><c:if test="${cookie.view_net_price.value == 'S' && !hideCond}"><fmt:formatNumber value="${cart[totSconto]}" pattern="#,##0.00"/></c:if></td>
+                    <td class="ar">&nbsp;</td>
+                    <td colspan="2" class="ar tot-netto"><c:if test="${cookie.view_net_price.value == 'S' && !hideCond}"><fmt:formatNumber value="${cart[totListinoNetto]}" pattern="#,##0.00"/></c:if></td>
+                </tr>
+    </c:when>
+</c:choose>
