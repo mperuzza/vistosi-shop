@@ -229,14 +229,14 @@ public class SpecSheetGenerica {
 
 //            }
 //            Mrp_arch_articoli art = vistosiShopManager.getArticoloByCdartm(cdartm);
-//            Vist_articoli_datiextra datiExtra = vistosiShopManager.getDatiExtraByCdartm(art.getCdartm());
+            Vist_articoli_datiextra datiExtra = vistosiShopManager.getDatiExtraByCdartm(art.getCdartm());
             PdfPTable tableContainer = null;
             PdfPTable tableBody = null;
             PdfPTable tableRight = null;
             PdfPCell cell = null;
             Paragraph paragraph = null;
 
-            float[] columnWidth = {380, 180};
+            float[] columnWidth = {widthBody, widthRight};
             tableContainer = new PdfPTable(2);
             tableContainer.setTotalWidth(columnWidth);
             tableContainer.setLockedWidth(true);
@@ -270,8 +270,22 @@ public class SpecSheetGenerica {
                 finiture.addCell(getFinituraMontatura(art, vist_finit_mont, request, document, writer));
             }
             tableBodycentral.addCell(finiture);
-            tableBodycentral.addCell(new PdfPCell(new Paragraph("pippo", new Font(baseFontBold, 10))));
+            
+            PdfPTable elettrificazioni = new PdfPTable(1);
+            finiture.setWidthPercentage(100);
+            elettrificazioni.addCell(new PdfPCell(new Paragraph("ELETTRIFICAZIONI", new Font(baseFontBold, 10))));
+            elettrificazioni.addCell(new PdfPCell(new Paragraph("ELETTRIFICAZIONI LED", new Font(baseFontBold, 10))));
 
+            if (datiExtra != null) {
+                
+                cell = new PdfPCell();
+                PdfPTable marcature = getMarcature(art, datiExtra, request, document, writer);
+                cell.addElement(marcature);
+                elettrificazioni.addCell(cell);
+            }
+            
+            tableBodycentral.addCell(elettrificazioni);
+            
             tableBody.addCell(tableBodycentral);
 
             tableRight = new PdfPTable(1);
@@ -290,12 +304,20 @@ public class SpecSheetGenerica {
 //            PdfPTable table3D = get3D(art, request, document, writer);
 
 //            tableBody.getDefaultCell().setPaddingBottom(3);
-            tableRight.addCell(tableCertificazioni);
+            cell = new PdfPCell();
+            cell.addElement(tableCertificazioni);
+            tableRight.addCell(cell);
 //            tableRight.addCell(new PdfPCell(new Paragraph("pippo", new Font(baseFontBold, 10))));
             tableRight.getDefaultCell().setBorderWidth(0f);
-            tableRight.addCell(tableNote);
-            tableRight.addCell(getDisegnoDim(art, request, document, writer));
-            tableRight.addCell(getQR(art, request, document, writer));
+            cell = new PdfPCell();
+            cell.addElement(tableNote);
+            tableRight.addCell(cell);
+            cell = new PdfPCell();
+            cell.addElement(getDisegnoDim(art, request, document, writer));
+            tableRight.addCell(cell);
+            cell = new PdfPCell();
+            cell.addElement(getQR(art, request, document, writer));
+            tableRight.addCell(cell);
 //            tableRight.addCell(table3D);
 //            tableRight.addCell(getDimensioni(art, request, document, writer));
 //            if (datiExtra != null) {
@@ -1361,13 +1383,14 @@ public class SpecSheetGenerica {
         float[] columnWidth = {190, 190};
 
         PdfPTable tableCnt = new PdfPTable(1);
-        tableCnt.setWidthPercentage(100);
+        //tableCnt.setWidthPercentage(100);
         tableCnt.getDefaultCell().setBorder(PdfPCell.RECTANGLE);
         tableCnt.getDefaultCell().setBorderWidth(.0f);
         tableCnt.getDefaultCell().setPaddingTop(.0f);
         tableCnt.getDefaultCell().setPaddingRight(.0f);
         tableCnt.getDefaultCell().setPaddingBottom(5);
         tableCnt.getDefaultCell().setPaddingLeft(.0f);
+        tableCnt.getDefaultCell().setBackgroundColor(BaseColor.MAGENTA);
 
         cell = new PdfPCell();
         cell.setFixedHeight(15);
@@ -1408,7 +1431,7 @@ public class SpecSheetGenerica {
                             //img.scalePercent(50);
                             PdfPCell pdfPCell = new PdfPCell();
                             pdfPCell.setFixedHeight(13);
-                            pdfPCell.setBorderWidth(0f);
+                            pdfPCell.setBorderWidth(.5f);
                             pdfPCell.setPadding(0f);
                             pdfPCell.setHorizontalAlignment(Element.ALIGN_LEFT);
                             pdfPCell.addElement(img);
@@ -1452,7 +1475,7 @@ public class SpecSheetGenerica {
                                 //img.scalePercent(50);
                                 PdfPCell pdfPCell = new PdfPCell();
                                 pdfPCell.setFixedHeight(13);
-                                pdfPCell.setBorderWidth(0f);
+                                pdfPCell.setBorderWidth(.5f);
                                 pdfPCell.setPadding(0f);
                                 pdfPCell.setHorizontalAlignment(Element.ALIGN_LEFT);
                                 pdfPCell.addElement(img);
