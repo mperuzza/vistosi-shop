@@ -1051,7 +1051,13 @@
                         <a href="#${t.cdvistv1}|${t.cdvistv2}|${t.cdvistv3}|${t.cdvistcolv}|${t.cdvistfinv}|${t.cdvistfinm}|${t.cdvistelet}|${t.vist_filedis}" class="tipz art-thumb" title="::${fn:substringBefore(t.vist_filedis, "-")}" rel="${fn:replace(t.vist_filedis, " ", "")}">
                             <img src="<c:url value='/static/images/articoli/disegnitecnici/thumb/${(useSpeclist)?"po/":""}${t.vist_filedis}.jpg'/>" title=""/>
                             <div class="clickedOverlay"></div>
-                        </a>                            
+                        </a>
+                            <c:url value="/specsheetgenerica/${famigliaFilter.cdvistfam}/${tipologiaFilter.cdvisttp}" var="specgen">
+                                <c:param name="cdvistv1" value="${t.cdvistv1}"/>
+                                <c:param name="cdvistv2" value="${t.cdvistv2}"/>
+                                <c:param name="cdvistv3" value="${t.cdvistv3}"/>
+                            </c:url>
+                            <a href="${specgen}" target="_blank">specsheet</a>
                     </div>
                     <c:if test='${t.cdvistv1==articoli[0].cdvistv1 && t.cdvistv2==articoli[0].cdvistv2 && t.cdvistv3==articoli[0].cdvistv3}'><script type="text/javascript">disClick = $('thumb${t.cdvistv1}${t.cdvistv2}${t.cdvistv3}');</script></c:if>
                 </c:forEach>

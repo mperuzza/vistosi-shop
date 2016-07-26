@@ -773,6 +773,16 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
                 crit.andCdclas_aIn(cdclas_aList);
             }
         }
+        if (pars.get("cdrepa_escl_List") != null) {
+            try {
+                List<String> cdrepa_escl_List = (List<String>) pars.get("cdrepa_escl_List");
+                if (cdrepa_escl_List.size() > 0) {
+                    crit.andCdrepaNotIn(cdrepa_escl_List);
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
         if (pars.get("cdvisttp") != null) {
             crit.andCdvisttpEqualTo((String) pars.get("cdvisttp"));
         }
@@ -823,6 +833,8 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
                 crit.andCdvistv3IsNull();
             }
         }
+
+        example.setOrderByClause("cdvistelet");
 
         List list = this.mrp_arch_articoliDAO.selectByExample(example);
 
@@ -1980,19 +1992,22 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
             ShopUser user = (ShopUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             pars.put("cdclas_aList", user.getCdclas_aFilter()); //filtro solo articoli listino
 
+        } else if (GeoIPInterceptor.getCountry(request).equals("US")) {
+            pars.put("cdclas_aList", VistosiShopManager.DEFAULT_CDCLAS_A_EUUS); //filtro eu + us
         } else {
-            if (GeoIPInterceptor.getCountry(request).equals("US")) {
-                pars.put("cdclas_aList", VistosiShopManager.DEFAULT_CDCLAS_A_EUUS); //filtro eu + us
-            } else {
-                pars.put("cdclas_aList", VistosiShopManager.DEFAULT_CDCLAS_A); //filtro solo articoli eu
-            }
+            pars.put("cdclas_aList", VistosiShopManager.DEFAULT_CDCLAS_A); //filtro solo articoli eu
         }
+    }
+
+    public void addCdrepaFilter(Map pars, HttpServletRequest request) {
+
+        pars.put("cdrepa_escl_List", Arrays.asList(cdrepa_escl_List));
     }
 
     public boolean checkSpecsheetExists(Mrp_arch_articoli art, WebApplicationContext ctx, RequestContext rc) {
 
         try {
-                       
+
             List<String> possibleFilenameList = new ArrayList<String>();
             String filename = art.getVist_filedis();
             possibleFilenameList.add(filename);
@@ -2001,13 +2016,13 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
                     || "ULL".equals(art.getCdclas_a())
                     || "LOU".equals(art.getCdclas_a())) {
 
-                possibleFilenameList.add(0, filename+"UL");
-                possibleFilenameList.add(0, filename+art.getCdvistelet()+"UL");
+                possibleFilenameList.add(0, filename + "UL");
+                possibleFilenameList.add(0, filename + art.getCdvistelet() + "UL");
             } else {
                 filename += art.getCdvistelet();
                 possibleFilenameList.add(0, filename);
-            }            
-            
+            }
+
             for (String file : possibleFilenameList) {
 
                 String realPathPdf = WebUtils.getRealPath(ctx.getServletContext(), SpecSheet.ROOT_RES + "/risorse/" + file + ".pdf");
@@ -2020,10 +2035,9 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
                 if (fPdf.exists() /*&& fU3D.exists()*/ && fXlsx.exists()) {
                     return true;
-                }                                
+                }
 
             }
-            
 
         } catch (FileNotFoundException ex) {
             Logger.getLogger(VistosiShopManagerImpl.class.getName()).log(Level.SEVERE, null, ex);

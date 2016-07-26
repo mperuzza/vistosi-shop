@@ -6,17 +6,14 @@ package com.ateikon.internet.eprogen.web.spring;
 
 import com.ateikon.internet.eprogen.domain.Vist_vetro;
 import com.ateikon.internet.eprogen.domain.logic.VistosiShopManager;
-import com.ateikon.internet.eprogen.domain.pgmr.DesignerWithBLOBs;
 import com.ateikon.internet.eprogen.domain.pgmr.Mrp_arch_articoli;
 import com.ateikon.internet.eprogen.domain.pgmr.Mrp_arch_stato;
 import com.ateikon.internet.eprogen.domain.pgmr.Vist_articoli_datiextra;
-import com.ateikon.internet.eprogen.domain.pgmr.Vist_colori_vetro;
 import com.ateikon.internet.eprogen.domain.pgmr.Vist_elettrificazioni;
 import com.ateikon.internet.eprogen.domain.pgmr.Vist_famiglia;
 import com.ateikon.internet.eprogen.domain.pgmr.Vist_finit_mont;
-import com.ateikon.internet.eprogen.domain.pgmr.Vist_finit_vetro;
-import com.ateikon.internet.eprogen.web.interceptor.GeoIPInterceptor;
 import com.ateikon.internet.eprogen.web.security.ShopUser;
+import com.ateikon.internet.generic.domain.BaseTableBean;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -28,6 +25,7 @@ import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.BarcodeQRCode;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfAction;
 import com.itextpdf.text.pdf.PdfAnnotation;
@@ -40,6 +38,7 @@ import com.itextpdf.text.pdf.PdfName;
 import com.itextpdf.text.pdf.PdfNumber;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStream;
 import com.itextpdf.text.pdf.PdfString;
@@ -55,11 +54,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
-import javafx.scene.layout.Border;
+import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.beanutils.BeanComparator;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -105,14 +106,22 @@ public class SpecSheetGenerica {
     Font fontCategoria = null;
     java.text.NumberFormat numFormat = null;
     java.text.NumberFormat przFormat = null;
+
+    HashMap<String, String> tipoLampadine = new HashMap<String, String>();
+
+    String pathimg = ROOT_RES + "dati/";
+    //path immagini lampadine
+    String pathlampimg = ROOT_RES + "lampadine/";
+
 //    float widthBody = 440f;
 //    float widthRight = 120f;
     //int widthPage = 560;
-
     @RequestMapping(value = "/specsheetgenerica/{cdvistfam}/{cdvisttp}")
     public void createPDF(@PathVariable("cdvistfam") String cdvistfam, @PathVariable("cdvisttp") String cdvisttp, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         siteRoot = WebUtils.getRealPath(request.getSession().getServletContext(), "/");
+        WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(request);
+        Locale locale = RequestContextUtils.getLocale(request);
 
         //String cdartm = (String) request.getParameter("cdartm");
         baseFont = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.EMBEDDED);
@@ -149,9 +158,19 @@ public class SpecSheetGenerica {
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 
+        tipoLampadine.put("A", "ALO");
+        tipoLampadine.put("F", "FL");
+        tipoLampadine.put("L", "LED");
+        tipoLampadine.put("E", "ES");
+        tipoLampadine.put("I", "IOD");
+
         try {
 
             PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
+
+            PageEventHelper event = new PageEventHelper(ctx.getServletContext(), locale);
+            writer.setPageEvent(event);
+
             document.open();
 
             String testo = "";
@@ -164,59 +183,23 @@ public class SpecSheetGenerica {
             }
 
             vistosiShopManager.addCdclasFilter(pars, request);
+            vistosiShopManager.addCdrepaFilter(pars, request);
+            pars.put("fgweb", "S");
             pars.put("fgweb", "S");
             pars.put("cdvisttp", cdvisttp);
             pars.put("cdvistfam", cdvistfam);
-            pars.put("cdvistv1", ServletRequestUtils.getStringParameter(request, "cdvistv1"));
-            pars.put("cdvistv2", ServletRequestUtils.getStringParameter(request, "cdvistv2"));
-            pars.put("cdvistv3", ServletRequestUtils.getStringParameter(request, "cdvistv3"));
+            pars.put("cdvistv1", StringUtils.trimToNull(ServletRequestUtils.getStringParameter(request, "cdvistv1")));
+            pars.put("cdvistv2", StringUtils.trimToNull(ServletRequestUtils.getStringParameter(request, "cdvistv2")));
+            pars.put("cdvistv3", StringUtils.trimToNull(ServletRequestUtils.getStringParameter(request, "cdvistv3")));
 
-            //recupero articoli
-//            if (((!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS") && user != null && user.getIsSpecList())
-//                    || (AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS") && GeoIPInterceptor.getCountry(request).equals("US")))
-//                    && StringUtils.isNotBlank(cdvistelet)) {
-//                Vist_elettrificazioni eletSpec = vistosiShopManager.getVist_elettrificazioniByKey(cdvistelet);
-//
-//                Map ulPars = new HashMap();
-//                ulPars.putAll(pars);
-//
-//                pars.put("cdvistelet", eletSpec.getCdul());
-//
-//                pars.put("cdclas_aList", (user != null) ? user.getCdclas_aFilterBase() : vistosiShopManager.DEFAULT_CDCLAS_A_US);
-//
-//                List<Mrp_arch_articoli> arts = vistosiShopManager.selectMrp_arch_articoliByPars(pars);
-//
-//                if (!arts.isEmpty()) {
-//                    scheda.setArticoli(arts);                    
-//                    
-//                } else {
-//                    log.debug("per filtro UL articolo non trovato, vengono aggiunti i filtri listino europa");
-//                    Vist_elettrificazioni altElet = vistosiShopManager.getVist_elettrificazioniAlternative(cdvistelet);
-//                    pars.put("cdvistelet", (altElet != null) ? altElet.getCdvistelet() : cdvistelet);
-//
-//                    pars.put("cdclas_aList", (user != null) ? user.getCdclas_aFilter() : vistosiShopManager.DEFAULT_CDCLAS_A_EUUS);
-//
-//                    arts = vistosiShopManager.selectMrp_arch_articoliByPars(pars);
-//                    scheda.setArticoli(arts);
-//                    if (arts.size() == 1) {
-//                        scheda.setArticolo(arts.get(0));
-//                        log.debug("get etichette");
-//                        //scheda.setEtichette(vistosiShopManager.getEtichette(scheda.getArticolo().getCdarti()));
-//                        log.debug("get ricambi");
-//                        scheda.setRicambi(vistosiShopManager.getRicambi(scheda.getArticolo().getCdarti()));
-//                        //scheda.setRicambio(vistosiShopManager.getMrp_arch_articoliByKey(cdartiric));
-//                        if (StringUtils.isNotEmpty(cdartiric)) {
-//                            scheda.setRicambio(vistosiShopManager.getRicambio(scheda.getArticolo().getCdarti(), cdartiric));
-//                        }
-//                    }
-//                }
-//
-//            } else {
             List<Mrp_arch_articoli> arts = vistosiShopManager.selectMrp_arch_articoliByPars(pars);
 
             Mrp_arch_articoli art = arts.get(0);
 
             List<Vist_elettrificazioni> vist_elettrificazioni = vistosiShopManager.findVist_elettrificazioni(pars);
+            //sort by country descr
+            BeanComparator comp = new BeanComparator("dsextvistelet");
+            Collections.sort(vist_elettrificazioni, comp);
             List<Vist_vetro> vist_vetro = vistosiShopManager.findVist_vetro(pars);
             List<Vist_finit_mont> vist_finit_mont = vistosiShopManager.findVist_finit_mont(pars);
 
@@ -224,9 +207,10 @@ public class SpecSheetGenerica {
 
             pars.put("cdvistelet", cdvistelet);
 
-            arts = vistosiShopManager.selectMrp_arch_articoliByPars(pars);
+            vistosiShopManager.addCdrepaFilter(pars, request);
+            List<Mrp_arch_articoli> artsByElet = vistosiShopManager.selectMrp_arch_articoliByPars(pars);
 
-            art = arts.get(0);
+            art = artsByElet.get(0);
 
 //            }
 //            Mrp_arch_articoli art = vistosiShopManager.getArticoloByCdartm(cdartm);
@@ -241,6 +225,7 @@ public class SpecSheetGenerica {
             tableContainer = new PdfPTable(2);
             tableContainer.setTotalWidth(columnWidth);
             tableContainer.setLockedWidth(true);
+            tableContainer.setExtendLastRow(true);
             tableContainer.getDefaultCell().setBorder(PdfPCell.RECTANGLE);
             tableContainer.getDefaultCell().setBorderWidth(0f);
             tableContainer.getDefaultCell().setPadding(.0f);
@@ -248,7 +233,7 @@ public class SpecSheetGenerica {
             tableBody = new PdfPTable(1);
             tableBody.setWidthPercentage(100);
 //            tableBody.getDefaultCell().setBorder(PdfPCell.RECTANGLE);
-            tableBody.getDefaultCell().setBorderWidth(1f);
+            tableBody.getDefaultCell().setBorderWidth(0f);
             tableBody.getDefaultCell().setPadding(0f);
             tableBody.getDefaultCell().setPaddingBottom(3);
 
@@ -258,6 +243,62 @@ public class SpecSheetGenerica {
             tableBody.getDefaultCell().setPaddingBottom(0);
             PdfPTable tableDisegno = getDisegno(art, request, document, writer);
             tableBody.addCell(tableDisegno);
+
+            //sovrappone la descrizione della tipologia elettrificazione raffigurata nel disegno tecnico
+            float leftSpacing = 5f;
+            float iconWidth = 15f;
+            PdfPTable disegnoDescrInner = new PdfPTable(2);
+            Chunk chunk = new Chunk("QUESTA IMMAGINE SI RIFERISCE ALLA VERSIONE ", new Font(baseFont, 7));
+            float widthPoint = chunk.getWidthPoint();
+            disegnoDescrInner.setTotalWidth(new float[]{widthPoint + leftSpacing, iconWidth});
+            disegnoDescrInner.getDefaultCell().setHorizontalAlignment(Element.ALIGN_RIGHT);
+            disegnoDescrInner.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
+            disegnoDescrInner.getDefaultCell().setPaddingTop(4f);
+            disegnoDescrInner.getDefaultCell().setPaddingBottom(4f);
+            disegnoDescrInner.getDefaultCell().setBorderWidth(.0f);
+            disegnoDescrInner.getDefaultCell().setBorderWidthTop(.25f);
+            disegnoDescrInner.getDefaultCell().setBorderWidthLeft(.25f);
+            disegnoDescrInner.getDefaultCell().setUseAscender(true);
+            disegnoDescrInner.getDefaultCell().setUseDescender(false);
+            disegnoDescrInner.addCell(new Phrase(chunk));
+
+            if (datiExtra != null) {
+                String flag = BeanUtils.getSimpleProperty(datiExtra, "arwFlagStampa1");
+                flag = StringUtils.trimToEmpty(flag);
+
+                String nomeimg = BeanUtils.getSimpleProperty(datiExtra, "arwSimbAttacco1");
+                String[] split = nomeimg.split("\\\\");
+                String acronimoLampada = (tipoLampadine.get(split[0]) != null ? tipoLampadine.get(split[0]) : split[0]) + ".jpg";
+                nomeimg = split[1];
+
+                String realPathAcronimo = WebUtils.getRealPath(ctx.getServletContext(), pathimg + acronimoLampada);
+                File fAcronimo = new File(realPathAcronimo);
+
+                if (fAcronimo.exists()) {
+                    Image image = Image.getInstance(realPathAcronimo);
+                    image.setAlignment(Image.TEXTWRAP | Image.ALIGN_CENTER);
+                    cell = new PdfPCell(image, true);
+                    cell.setFixedHeight(10);
+                    cell.setBorderWidthTop(.25f);
+                    cell.setBorderWidthRight(.0f);
+                    cell.setBorderWidthBottom(.0f);
+                    cell.setBorderWidthLeft(.0f);
+                    cell.setPaddingTop(0f);
+                    cell.setPaddingRight(2f);
+                    cell.setPaddingBottom(0f);
+                    cell.setPaddingLeft(2f);
+                    cell.setUseAscender(true);
+                    cell.setUseDescender(false);
+                    cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                    cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                    disegnoDescrInner.addCell(cell);
+                }
+
+            }
+
+            disegnoDescrInner.setTotalWidth(widthPoint + leftSpacing + iconWidth);
+            disegnoDescrInner.writeSelectedRows(0, -1, document.leftMargin() + 420f - (widthPoint + leftSpacing + iconWidth) - 7, document.getPageSize().getHeight() - 456,
+                    writer.getDirectContent());
 
             PdfPTable tableBodycentral = new PdfPTable(2);
             //float[] columnWidthTableBodycentral = {widthBody * 0.45f, widthBody * 0.55f};
@@ -274,47 +315,108 @@ public class SpecSheetGenerica {
             if (!vist_finit_mont.isEmpty() && vist_finit_mont.get(0).getCdvistfinm() != null) {
                 finiture.addCell(getFinituraMontatura(art, vist_finit_mont, request, document, writer));
             }
-            tableBodycentral.addCell(finiture);
 
-            PdfPTable elettrificazioni = new PdfPTable(1);
-            elettrificazioni.setWidthPercentage(100);
-            //elettrificazioni.getDefaultCell().setBackgroundColor(BaseColor.DARK_GRAY);
-            elettrificazioni.getDefaultCell().setHorizontalAlignment(Element.ALIGN_LEFT);
-            elettrificazioni.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
-            elettrificazioni.getDefaultCell().setPadding(0f);
-            cell = new PdfPCell(new Paragraph("ELETTRIFICAZIONI", new Font(baseFontBold, 10)));
-            cell.setBorder(PdfPCell.NO_BORDER);
-            elettrificazioni.addCell(cell);
-            cell = new PdfPCell(new Paragraph("ELETTRIFICAZIONI LED", new Font(baseFontBold, 10)));
-            cell.setBorder(PdfPCell.NO_BORDER);
-            elettrificazioni.addCell(cell);
+            cell = new PdfPCell();
+            cell.setBorderWidth(0f);
+            cell.addElement(finiture);
+            tableBodycentral.addCell(cell);
 
             if (datiExtra != null) {
 
+                List<Map> led = new ArrayList<>();
+                List<Map> notLed = new ArrayList<>();
+
+                String prevCdvistelet = "";
+
+                for (Mrp_arch_articoli art_item : arts) {
+
+                    if (!prevCdvistelet.equals(art_item.getCdvistelet())) {
+
+                        Vist_articoli_datiextra datiExtra_item = vistosiShopManager.getDatiExtraByCdartm(art_item.getCdartm());
+
+                        String flag = BeanUtils.getSimpleProperty(datiExtra, "arwFlagStampa1");
+                        flag = StringUtils.trimToEmpty(flag);
+                        String tipo_attacco = BeanUtils.getSimpleProperty(datiExtra_item, "arwTipoAttacco1");
+                        tipo_attacco = StringUtils.trimToEmpty(tipo_attacco);
+
+                        if ("S".equals(flag)) {
+
+                            Map m = new HashMap<String, BaseTableBean>();
+                            m.put("art", art_item);
+                            m.put("ext", datiExtra_item);
+
+                            if ("LED".equals(tipo_attacco)) {
+                                led.add(m);
+                            } else {
+                                notLed.add(m);
+                            }
+
+                            prevCdvistelet = art_item.getCdvistelet();
+                        }
+
+                    }
+                }
+
+                PdfPTable elettrificazioni = new PdfPTable(1);
+                elettrificazioni.setWidthPercentage(100);
+                //elettrificazioni.getDefaultCell().setBackgroundColor(BaseColor.DARK_GRAY);
+                elettrificazioni.getDefaultCell().setHorizontalAlignment(Element.ALIGN_LEFT);
+                elettrificazioni.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
+                elettrificazioni.getDefaultCell().setPadding(0f);
+                elettrificazioni.setExtendLastRow(true);
+                cell = new PdfPCell(new Paragraph("ELETTRIFICAZIONI", new Font(baseFontBold, 8)));
+                cell.setBorder(PdfPCell.NO_BORDER);
+                elettrificazioni.addCell(cell);
+
+                for (Map mapItem : notLed) {
+
+                    cell = new PdfPCell();
+                    PdfPTable lampadine = getLampadine((Mrp_arch_articoli) mapItem.get("art"), (Vist_articoli_datiextra) mapItem.get("ext"), request, document, writer);
+                    cell.setBorderWidth(0f);
+                    cell.addElement(lampadine);
+                    elettrificazioni.addCell(cell);
+
+                }
+
+                cell = new PdfPCell(new Paragraph("ELETTRIFICAZIONI LED", new Font(baseFontBold, 8)));
+                cell.setBorder(PdfPCell.NO_BORDER);
+                elettrificazioni.addCell(cell);
+
+                for (Map mapItem : led) {
+
+                    cell = new PdfPCell();
+                    PdfPTable lampadine = getLampadine((Mrp_arch_articoli) mapItem.get("art"), (Vist_articoli_datiextra) mapItem.get("ext"), request, document, writer);
+                    cell.setBorderWidth(0f);
+                    cell.addElement(lampadine);
+                    elettrificazioni.addCell(cell);
+
+                }
+
                 cell = new PdfPCell();
                 cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+                cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
                 cell.setBorder(PdfPCell.NO_BORDER);
                 cell.setBorderWidth(0f);
                 cell.setPadding(0f);
                 PdfPTable marcature = getMarcature(art, datiExtra, request, document, writer);
                 cell.addElement(marcature);
                 elettrificazioni.addCell(cell);
+
+                tableBodycentral.addCell(elettrificazioni);
             }
 
-            tableBodycentral.addCell(elettrificazioni);
-
+            tableBody.getDefaultCell().setBorderWidth(.0f);
             tableBody.addCell(tableBodycentral);
 
             tableRight = new PdfPTable(1);
             tableRight.setWidthPercentage(100);
             tableRight.getDefaultCell().setBorder(PdfPCell.RECTANGLE);
-            tableRight.getDefaultCell().setBorderColor(BaseColor.GREEN);
             tableRight.getDefaultCell().setBorderWidth(0f);
             tableRight.getDefaultCell().setPaddingTop(0);
             tableRight.getDefaultCell().setPaddingRight(0);
             tableRight.getDefaultCell().setPaddingBottom(4);
             tableRight.getDefaultCell().setPaddingLeft(10);
-            tableRight.setExtendLastRow(false);
+            tableRight.setExtendLastRow(true);
 
             PdfPTable tableCertificazioni = getCertificazioni(request, document, writer);
             PdfPTable tableNote = getNote(art, request, document, writer);
@@ -322,27 +424,38 @@ public class SpecSheetGenerica {
 
 //            tableBody.getDefaultCell().setPaddingBottom(3);
             cell = new PdfPCell();
+            cell.setBorderWidth(0f);
             cell.addElement(tableCertificazioni);
             tableRight.addCell(cell);
 //            tableRight.addCell(new PdfPCell(new Paragraph("pippo", new Font(baseFontBold, 10))));
             tableRight.getDefaultCell().setBorderWidth(0f);
             cell = new PdfPCell();
+            cell.setBorderWidth(0f);
             cell.addElement(tableNote);
             tableRight.addCell(cell);
-            cell = new PdfPCell();
-            cell.addElement(getDisegnoDim(art, request, document, writer));
-            tableRight.addCell(cell);
-            cell = new PdfPCell();
-            cell.addElement(getQR(art, request, document, writer));
-            tableRight.addCell(cell);
-//            tableRight.addCell(table3D);
-//            tableRight.addCell(getDimensioni(art, request, document, writer));
-//            if (datiExtra != null) {
-//                tableRight.addCell(getMarcature(art, datiExtra, request, document, writer));
-//                tableRight.addCell(getLampadine(art, datiExtra, request, document, writer));
-//            }
 
+            PdfPTable tableRightBottom = new PdfPTable(1);
+            tableRightBottom.setWidthPercentage(100);
+            tableRightBottom.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
+
+            cell = new PdfPCell();
+            cell.setBorder(PdfPCell.NO_BORDER);
+            cell.setPadding(0f);
+            cell.addElement(getDisegnoDim(art, request, document, writer));
+            tableRightBottom.addCell(cell);
+            cell = new PdfPCell();
+            cell.setBorder(PdfPCell.NO_BORDER);
+            cell.setPadding(0f);
+            cell.addElement(getQR(art, request, document, writer));
+            tableRightBottom.addCell(cell);
+            tableRight.getDefaultCell().setPaddingLeft(0);
             tableRight.getDefaultCell().setPaddingBottom(0);
+
+            cell = new PdfPCell();
+            cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
+            cell.setBorderWidth(0f);
+            cell.addElement(tableRightBottom);
+            tableRight.addCell(cell);
 
             tableContainer.addCell(tableBody);
             tableContainer.addCell(tableRight);
@@ -357,6 +470,8 @@ public class SpecSheetGenerica {
 
         } catch (Exception e) {
             System.err.println(e.getMessage());
+
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
 
     }
@@ -437,7 +552,7 @@ public class SpecSheetGenerica {
 
         paragraph = new Paragraph(cdvisttp + vist_famiglia.getCdvistfam_m(), new Font(baseFont, 9));
         defaultCell.setBorderWidthRight(0);
-        defaultCell.setPaddingRight(0);
+        defaultCell.setPaddingRight(5);
         tableDati.addCell(paragraph);
 
         tableHeader.addCell(tableDati);
@@ -510,19 +625,21 @@ public class SpecSheetGenerica {
         table.setWidths(new int[]{1, 2});
         table.getDefaultCell().setBorder(PdfPCell.RECTANGLE);
         table.getDefaultCell().setBorderWidth(0f);
-        table.getDefaultCell().setBackgroundColor(BaseColor.YELLOW);
 
-        Image img = null;
+        BarcodeQRCode qrcode = new BarcodeQRCode("http://www.vistosi.it", 1, 1, null);
+        Image qr_image = qrcode.getImage();
 
-        String realPath = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "csq-iqnet.jpg");
-        img = Image.getInstance(realPath);
-        img.setAlignment(Image.TEXTWRAP | Image.ALIGN_LEFT);
+//        Image img = null;
+//        String realPath = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "csq-iqnet.jpg");
+//        img = Image.getInstance(realPath);
+//        img.setAlignment(Image.TEXTWRAP | Image.ALIGN_LEFT);
         //img.scalePercent(5);
-
-        cell = new PdfPCell(img, true);
+        cell = new PdfPCell(qr_image, true);
         cell.setFixedHeight(25f);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
         cell.setBorderWidth(0f);
-        cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        cell.setPadding(1f);
         table.addCell(cell);
 
         PdfPTable text = new PdfPTable(1);
@@ -593,6 +710,7 @@ public class SpecSheetGenerica {
         cell.setBorder(PdfPCell.NO_BORDER);
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         cell.setVerticalAlignment(Element.ALIGN_CENTER);
+        cell.setPaddingBottom(7);
         cell.addElement(img);
 
         tableDisegno.addCell(cell);
@@ -624,7 +742,7 @@ public class SpecSheetGenerica {
             String xls = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + file + (byLang ? "_" + rc.getLocale().getLanguage() : "") + ".xlsx");
 
             if (new File(pdf).exists() && new File(xls).exists()) {
-                return art.getCdvistelet();
+                return vist_elettrificazioni.get(0).getCdvistelet();
             }
         }
 
@@ -1051,6 +1169,8 @@ public class SpecSheetGenerica {
                 String finitura = StringUtils.trimToEmpty(montatura.getCdvistfinm());
                 cell.addElement(new Paragraph(finitura, new Font(baseFontBold, 8)));
                 blockTable.addCell(cell);
+
+                table.addCell(blockTable);
             }
 
             table.completeRow();
@@ -1071,9 +1191,9 @@ public class SpecSheetGenerica {
 
         float[] columnWidth = {190, 190};
 
-        table = new PdfPTable(3);
+        table = new PdfPTable(4);
         table.setWidthPercentage(100);
-        table.setWidths(new int[]{1, 1, 4});
+        table.setWidths(new float[]{.1f, .1f, .1f, .7f});
         table.getDefaultCell().setBorder(PdfPCell.RECTANGLE);
         table.getDefaultCell().setBorderWidth(0f);
         table.getDefaultCell().setPadding(0f);
@@ -1082,27 +1202,16 @@ public class SpecSheetGenerica {
         cell = new PdfPCell();
         cell.setFixedHeight(15);
         cell.setBorderWidth(.0f);
-        cell.setColspan(3);
+        cell.setColspan(4);
         cell.setPadding(0f);
         cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-        Paragraph paragraph1 = new Paragraph(messageSource.getMessage("lampadine", null, rc.getLocale()).toUpperCase() + ":", new Font(baseFontBold, 8));
-        cell.addElement(paragraph1);
-        table.addCell(cell);
-
+//        Paragraph paragraph1 = new Paragraph(messageSource.getMessage("lampadine", null, rc.getLocale()).toUpperCase() + ":", new Font(baseFontBold, 8));
+//        cell.addElement(paragraph1);
+//        table.addCell(cell);
         //creazione mappa img iniziali
-        HashMap<String, String> tipoLampadine = new HashMap<String, String>();
-        tipoLampadine.put("A", "ALO");
-        tipoLampadine.put("F", "FL");
-        tipoLampadine.put("L", "LED");
-        tipoLampadine.put("E", "ES");
-        tipoLampadine.put("I", "IOD");
         if (datiExtra != null) {
             Image img = null;
-
-            String pathimg = ROOT_RES + "dati/";
-            //path immagini lampadine
-            String pathlampimg = ROOT_RES + "lampadine/";
 
             //lampadina principale
             //int start = 1;
@@ -1182,7 +1291,7 @@ public class SpecSheetGenerica {
                         //TODO sostituirlo con l'icona della lampadina quando le passeranno
                         String qtaPotenza = BeanUtils.getSimpleProperty(datiExtra, "arwQtaPotenza" + pos);
                         String potenza = BeanUtils.getSimpleProperty(datiExtra, "arwPotenza" + pos);
-                        //String voltaggio = BeanUtils.getSimpleProperty(datiExtra, "arwVoltaggio" + i);
+                        String voltaggio = BeanUtils.getSimpleProperty(datiExtra, "arwVoltaggio" + pos);
 
                         /*String descrizione = StringUtils.trimToEmpty(tipoAttacco)
                          + " " + StringUtils.trimToEmpty(qtaPotenza) + "x" + StringUtils.trimToEmpty(potenza)
@@ -1194,8 +1303,22 @@ public class SpecSheetGenerica {
                             pdfPCell = new PdfPCell(new Paragraph(descrizione, new Font(baseFont, 7)));
                             pdfPCell.setBorderWidth(0f);
                             pdfPCell.setPaddingTop(4f);
+                            pdfPCell.setNoWrap(true);
                             table.addCell(pdfPCell);
+                        } else {
+                            table.addCell("");
                         }
+
+                        if (StringUtils.isNotBlank(voltaggio)) {
+                            pdfPCell = new PdfPCell(new Paragraph(voltaggio, new Font(baseFont, 7)));
+                            pdfPCell.setBorderWidth(0f);
+                            pdfPCell.setPaddingTop(4f);
+                            pdfPCell.setNoWrap(true);
+                            table.addCell(pdfPCell);
+                        } else {
+                            table.addCell("");
+                        }
+
                     }
                 } catch (FileNotFoundException ex) {
                     //log.debug("not exists");
@@ -1205,16 +1328,16 @@ public class SpecSheetGenerica {
             //separo le due tabelle
             Paragraph space = new Paragraph("");
             PdfPCell spaceCell = new PdfPCell(space);
-            spaceCell.setColspan(3);
+            spaceCell.setColspan(4);
             spaceCell.setFixedHeight(5f);
             spaceCell.setBorderWidth(0f);
             table.addCell(spaceCell);
 
             //alternative
             boolean empty = true;
-            PdfPTable innerTable = new PdfPTable(3);
+            PdfPTable innerTable = new PdfPTable(4);
             innerTable.setWidthPercentage(100);
-            innerTable.setWidths(new int[]{1, 1, 4});
+            innerTable.setWidths(new float[]{.1f, .1f, .1f, .7f});
             innerTable.getDefaultCell().setBorder(PdfPCell.RECTANGLE);
             innerTable.getDefaultCell().setBorderWidth(0f);
             innerTable.getDefaultCell().setPaddingTop(2);
@@ -1228,7 +1351,7 @@ public class SpecSheetGenerica {
             cell = new PdfPCell();
             //cell.setFixedHeight(11);
             cell.setBorderWidth(.0f);
-            cell.setColspan(3);
+            cell.setColspan(4);
             cell.setPadding(4);
             cell.setUseAscender(true);
             cell.setUseDescender(false);
@@ -1253,6 +1376,7 @@ public class SpecSheetGenerica {
                         pdfPCell.setBorderWidth(0f);
                         pdfPCell.setPadding(0f);
                         pdfPCell.setPaddingLeft(10);
+                        pdfPCell.setPaddingBottom(10);
 
                         String nomeimg = BeanUtils.getSimpleProperty(datiExtra, "arwSimbAttacco" + bidx);
                         String[] split = nomeimg.split("\\\\");
@@ -1269,7 +1393,7 @@ public class SpecSheetGenerica {
                             if (5 != bidx) {
                                 pdfPCell = new PdfPCell(new Paragraph("+", new Font(baseFont, 7)));
                                 pdfPCell.setBorderWidth(0f);
-                                pdfPCell.setPaddingTop(4f);
+                                pdfPCell.setPaddingTop(3f);
                                 pdfPCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
                                 innerTable.addCell(pdfPCell);
                             } else if (fAcronimo.exists()) {
@@ -1278,7 +1402,7 @@ public class SpecSheetGenerica {
                                     pdfPCell = new PdfPCell();
                                     pdfPCell.setHorizontalAlignment(Element.ALIGN_LEFT);
                                     pdfPCell.setFixedHeight(17f);
-                                    pdfPCell.setPadding(2);
+                                    pdfPCell.setPadding(3f);
 
                                     pdfPCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
                                     pdfPCell.setImage(img);
@@ -1294,7 +1418,7 @@ public class SpecSheetGenerica {
                                 pdfPCell = new PdfPCell();
                                 pdfPCell.setHorizontalAlignment(Element.ALIGN_LEFT);
                                 pdfPCell.setFixedHeight(17f);
-                                pdfPCell.setPadding(2);
+                                pdfPCell.setPadding(3f);
 
                                 pdfPCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
                                 pdfPCell.setImage(img);
@@ -1312,7 +1436,7 @@ public class SpecSheetGenerica {
                                 pdfPCell = new PdfPCell();
                                 pdfPCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
                                 pdfPCell.setFixedHeight(17f);
-                                pdfPCell.setPadding(0f);
+                                pdfPCell.setPadding(3f);
 
                                 pdfPCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
                                 pdfPCell.addElement(img);
@@ -1324,7 +1448,7 @@ public class SpecSheetGenerica {
                             pdfPCell = new PdfPCell(new Phrase(""));
                             pdfPCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
                             pdfPCell.setFixedHeight(17f);
-                            pdfPCell.setPadding(0f);
+                            pdfPCell.setPadding(3f);
                             pdfPCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
                             pdfPCell.setBorderWidth(0f);
                             innerTable.addCell(pdfPCell);
@@ -1333,6 +1457,7 @@ public class SpecSheetGenerica {
                         //descrizione
                         String qtaPotenza = BeanUtils.getSimpleProperty(datiExtra, "arwQtaPotenza" + bidx);
                         String potenza = BeanUtils.getSimpleProperty(datiExtra, "arwPotenza" + bidx);
+                        String voltaggio = BeanUtils.getSimpleProperty(datiExtra, "arwVoltaggio" + bidx);
                         String descrizione = StringUtils.trimToEmpty(qtaPotenza) + "x" + StringUtils.trimToEmpty(potenza);
                         descrizione = StringUtils.trim(descrizione);
 
@@ -1340,8 +1465,19 @@ public class SpecSheetGenerica {
                             pdfPCell = new PdfPCell(new Paragraph(descrizione, new Font(baseFont, 7)));
                             pdfPCell.setBorderWidth(0f);
                             pdfPCell.setPaddingTop(4f);
+                            pdfPCell.setNoWrap(true);
                             innerTable.addCell(pdfPCell);
                             empty = false;
+                        }
+
+                        if (StringUtils.isNotBlank(voltaggio)) {
+                            pdfPCell = new PdfPCell(new Paragraph(voltaggio, new Font(baseFont, 7)));
+                            pdfPCell.setBorderWidth(0f);
+                            pdfPCell.setPaddingTop(4f);
+                            pdfPCell.setNoWrap(true);
+                            innerTable.addCell(pdfPCell);
+                        } else {
+                            innerTable.addCell("");
                         }
 
                     }
@@ -1353,7 +1489,7 @@ public class SpecSheetGenerica {
                     //separo le due tabelle
                     Paragraph space1 = new Paragraph("");
                     PdfPCell spaceCell1 = new PdfPCell(space1);
-                    spaceCell1.setColspan(3);
+                    spaceCell1.setColspan(4);
                     spaceCell1.setFixedHeight(2f);
                     spaceCell1.setBorderWidth(0f);
                     innerTable.addCell(spaceCell1);
@@ -1370,11 +1506,12 @@ public class SpecSheetGenerica {
                 table.addCell(cell);
                 cell = new PdfPCell();
                 cell.setPadding(0);
-                cell.setColspan(2);
+                cell.setColspan(3);
                 if (empty) {
                     cell.setBorderWidth(0f);
                     cell.addElement(new Phrase(""));
                 } else {
+                    cell.setBorderWidth(0f);
                     cell.addElement(innerTable);
                 }
                 table.addCell(cell);
@@ -1524,7 +1661,6 @@ public class SpecSheetGenerica {
             PdfPTable dimensioni = getDimensioni(art, request, document, writer);
             cell = new PdfPCell();
             cell.setBorder(PdfPCell.NO_BORDER);
-            cell.setBackgroundColor(BaseColor.YELLOW);
             cell.setPadding(0f);
             cell.addElement(dimensioni);
             tableCnt.addCell(cell);
@@ -1557,7 +1693,7 @@ public class SpecSheetGenerica {
         cellCnt.setPaddingRight(5);
         cellCnt.setPaddingBottom(2);
         cellCnt.setPaddingLeft(5);
-        cellCnt.setBackgroundColor(BaseColor.LIGHT_GRAY);
+        //cellCnt.setBackgroundColor(BaseColor.LIGHT_GRAY);
 
         table = new PdfPTable(2);
         table.setWidthPercentage(100);
@@ -1572,26 +1708,26 @@ public class SpecSheetGenerica {
         defaultCell.setUseDescender(false);
         defaultCell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-        Paragraph paragraph1 = new Paragraph(messageSource.getMessage("volume", null, rc.getLocale()).toUpperCase(), new Font(baseFontBold, 8));
+        Paragraph paragraph1 = new Paragraph(messageSource.getMessage("volume", null, rc.getLocale()).toUpperCase(), new Font(baseFontBold, 7));
         table.addCell(paragraph1);
 
-        Paragraph paragraph2 = new Paragraph("Mc " + numFormat.format(art.getVlunlt()), new Font(baseFont, 8));
+        Paragraph paragraph2 = new Paragraph("Mc " + numFormat.format(art.getVlunlt()), new Font(baseFont, 7));
         defaultCell.setPaddingRight(0);
         table.addCell(paragraph2);
 
-        Paragraph paragraph3 = new Paragraph(messageSource.getMessage("peso.lordo", null, rc.getLocale()).toUpperCase(), new Font(baseFontBold, 8));
+        Paragraph paragraph3 = new Paragraph(messageSource.getMessage("peso.lordo", null, rc.getLocale()).toUpperCase(), new Font(baseFontBold, 7));
         defaultCell.setPaddingRight(5);
         table.addCell(paragraph3);
 
-        Paragraph paragraph4 = new Paragraph("Kg " + numFormat.format(art.getNrpeso_l()), new Font(baseFont, 8));
+        Paragraph paragraph4 = new Paragraph("Kg " + numFormat.format(art.getNrpeso_l()), new Font(baseFont, 7));
         defaultCell.setPaddingRight(0);
         table.addCell(paragraph4);
 
-        Paragraph paragraph5 = new Paragraph(messageSource.getMessage("peso.netto", null, rc.getLocale()).toUpperCase(), new Font(baseFontBold, 8));
+        Paragraph paragraph5 = new Paragraph(messageSource.getMessage("peso.netto", null, rc.getLocale()).toUpperCase(), new Font(baseFontBold, 7));
         defaultCell.setPaddingRight(5);
         table.addCell(paragraph5);
 
-        Paragraph paragraph6 = new Paragraph("Kg " + numFormat.format(art.getNrpeso_n()), new Font(baseFont, 8));
+        Paragraph paragraph6 = new Paragraph("Kg " + numFormat.format(art.getNrpeso_n()), new Font(baseFont, 7));
         defaultCell.setPaddingRight(0);
         table.addCell(paragraph6);
         table.completeRow();
@@ -1802,4 +1938,67 @@ public class SpecSheetGenerica {
             return "";
         }
     }
+
+    //Event helper per il footer
+    public class PageEventHelper extends PdfPageEventHelper {
+
+        private Locale locale;
+        private ServletContext ctx;
+        private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+        private Boolean suppressEvent = true;
+
+        public Boolean getSuppressEvent() {
+            return suppressEvent;
+        }
+
+        public void setSuppressEvent(Boolean suppressEvent) {
+            this.suppressEvent = suppressEvent;
+        }
+
+        public void onEndPage(PdfWriter writer, Document document) {
+
+            /**
+             * *************************************************************
+             * footer
+             * ************************************************************
+             */
+            PdfPTable foot = new PdfPTable(1);
+
+//                foot.setTotalWidth(document.getPageSize().width()-document.leftMargin()-document.rightMargin());
+            foot.setTotalWidth(document.getPageSize().getWidth() - document.leftMargin() - document.rightMargin());
+            foot.getDefaultCell().setBorder(0);
+            foot.getDefaultCell().setPadding(0f);
+            foot.getDefaultCell().setPaddingTop(4f);
+            foot.getDefaultCell().setBorderWidth(0f);
+            //foot.getDefaultCell().setBorderWidthTop(1f);
+            //foot.getDefaultCell().setBorderColorTop(new BaseColor(243, 148, 47));
+            //foot.getDefaultCell().setBorderColorTop(new BaseColor(0, 0, 0));
+
+            //foot.getDefaultCell().setHorizontalAlignment(Element.ALIGN_LEFT);
+            /*if (viewPrice) {
+                 foot.addCell(new Paragraph((locale.equals(Locale.ITALIAN) ? "I prezzi sono da intendersi al netto dell'IVA" : "All indicated prices are intended without VAT"), new Font(bfHelv35, 10)));
+                 } else {
+                 foot.addCell("");
+                 }*/
+            foot.getDefaultCell().setHorizontalAlignment(Element.ALIGN_JUSTIFIED_ALL);
+
+            Paragraph paragraph = new Paragraph();
+            paragraph.add(new Chunk("Vetreria Vistosi Srl - Via G. Galilei, 9-9/A-11 - 31021 Mogliano V.to - Treviso - Italy - Tel. +39 041 5903480 - Fax +39 041 5900992 - www.vistosi.it - vistosi@vistosi.it", new Font(baseFont, 6, Font.NORMAL, BaseColor.GRAY)));
+
+            foot.addCell(paragraph);
+            foot.writeSelectedRows(0, -1, document.leftMargin(), document.bottomMargin(),
+                    writer.getDirectContent());
+
+        }
+
+        public PageEventHelper(ServletContext ctx, Locale locale) {
+
+            this.locale = locale;
+
+            this.ctx = ctx;
+
+        }
+    }
+
 }

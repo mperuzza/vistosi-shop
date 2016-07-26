@@ -158,6 +158,8 @@ public interface VistosiShopManager extends BaseManager{
     Map getDatiExtraLampMap(Vist_articoli_datiextra datiExtra, WebApplicationContext ctx);
 
     void addCdclasFilter(Map pars, HttpServletRequest request);
+    
+    void addCdrepaFilter(Map pars, HttpServletRequest request);
 
     boolean checkSpecsheetExists(Mrp_arch_articoli art, WebApplicationContext ctx, RequestContext rc);
 
