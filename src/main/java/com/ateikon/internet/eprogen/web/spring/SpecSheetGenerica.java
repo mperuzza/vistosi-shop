@@ -710,7 +710,7 @@ public class SpecSheetGenerica {
         cell.setBorder(PdfPCell.NO_BORDER);
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         cell.setVerticalAlignment(Element.ALIGN_CENTER);
-        cell.setPaddingBottom(7);
+        cell.setPaddingBottom(10);
         cell.addElement(img);
 
         tableDisegno.addCell(cell);

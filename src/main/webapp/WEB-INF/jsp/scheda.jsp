@@ -1052,15 +1052,17 @@
                             <img src="<c:url value='/static/images/articoli/disegnitecnici/thumb/${(useSpeclist)?"po/":""}${t.vist_filedis}.jpg'/>" title=""/>
                             <div class="clickedOverlay"></div>
                         </a>
-                            <c:url value="/specsheetgenerica/${famigliaFilter.cdvistfam}/${tipologiaFilter.cdvisttp}" var="specgen">
-                                <c:param name="cdvistv1" value="${t.cdvistv1}"/>
-                                <c:param name="cdvistv2" value="${t.cdvistv2}"/>
-                                <c:param name="cdvistv3" value="${t.cdvistv3}"/>
-                            </c:url>
-                            <a href="${specgen}" target="_blank">specsheet</a>
                     </div>
                     <c:if test='${t.cdvistv1==articoli[0].cdvistv1 && t.cdvistv2==articoli[0].cdvistv2 && t.cdvistv3==articoli[0].cdvistv3}'><script type="text/javascript">disClick = $('thumb${t.cdvistv1}${t.cdvistv2}${t.cdvistv3}');</script></c:if>
                 </c:forEach>
+                <c:forEach items="${modellidis}" var="t" varStatus="s">                    
+                    <c:url value="/specsheetgenerica/${famigliaFilter.cdvistfam}/${tipologiaFilter.cdvisttp}" var="specgen">
+                        <c:param name="cdvistv1" value="${t.cdvistv1}"/>
+                        <c:param name="cdvistv2" value="${t.cdvistv2}"/>
+                        <c:param name="cdvistv3" value="${t.cdvistv3}"/>
+                    </c:url>
+                     <a href="${specgen}" target="_blank" style="font-size: 12px;color: gray;text-decoration: none;display: inline-block;border: 1px solid #E3E3E3;padding: 2px;">specsheet ${fn:replace(fn:substringBefore(t.vist_filedis, "-"), famigliaFilter.cdvistfam, '')}</a>
+                </c:forEach>    
                 <script type="text/javascript">
 
                     function iniTipz(cnt){
