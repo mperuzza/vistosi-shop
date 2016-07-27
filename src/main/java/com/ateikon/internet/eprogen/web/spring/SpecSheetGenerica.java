@@ -334,24 +334,26 @@ public class SpecSheetGenerica {
 
                         Vist_articoli_datiextra datiExtra_item = vistosiShopManager.getDatiExtraByCdartm(art_item.getCdartm());
 
-                        String flag = BeanUtils.getSimpleProperty(datiExtra, "arwFlagStampa1");
-                        flag = StringUtils.trimToEmpty(flag);
-                        String tipo_attacco = BeanUtils.getSimpleProperty(datiExtra_item, "arwTipoAttacco1");
-                        tipo_attacco = StringUtils.trimToEmpty(tipo_attacco);
+                        if (datiExtra_item != null) {
+                            String flag = BeanUtils.getSimpleProperty(datiExtra, "arwFlagStampa1");
+                            flag = StringUtils.trimToEmpty(flag);
+                            String tipo_attacco = BeanUtils.getSimpleProperty(datiExtra_item, "arwTipoAttacco1");
+                            tipo_attacco = StringUtils.trimToEmpty(tipo_attacco);
 
-                        if ("S".equals(flag)) {
+                            if ("S".equals(flag)) {
 
-                            Map m = new HashMap<String, BaseTableBean>();
-                            m.put("art", art_item);
-                            m.put("ext", datiExtra_item);
+                                Map m = new HashMap<String, BaseTableBean>();
+                                m.put("art", art_item);
+                                m.put("ext", datiExtra_item);
 
-                            if ("LED".equals(tipo_attacco)) {
-                                led.add(m);
-                            } else {
-                                notLed.add(m);
+                                if ("LED".equals(tipo_attacco)) {
+                                    led.add(m);
+                                } else {
+                                    notLed.add(m);
+                                }
+
+                                prevCdvistelet = art_item.getCdvistelet();
                             }
-
-                            prevCdvistelet = art_item.getCdvistelet();
                         }
 
                     }
