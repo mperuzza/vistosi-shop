@@ -466,7 +466,9 @@ public class SpecSheet {
         String filename = art.getVist_filedis();
         possibleFilenameList.add(filename);
 
-        if ("UL".equals(art.getCdclas_a())) {
+        if ("UL".equals(art.getCdclas_a())
+                || "LOU".equals(art.getCdclas_a())
+                || "ULL".equals(art.getCdclas_a())) {
 
             possibleFilenameList.add(0, filename + "UL");
             possibleFilenameList.add(0, filename + art.getCdvistelet() + "UL");

@@ -733,17 +733,19 @@ public class SpecSheetGenerica {
 
         String suffix = "";
 
-        if ("UL".equals(art.getCdclas_a())) {
+        if ("UL".equals(art.getCdclas_a())
+                || "LOU".equals(art.getCdclas_a())
+                || "ULL".equals(art.getCdclas_a())) {
             suffix = "UL";
-            possibleFilenameList.add(filename + suffix);
+            possibleFilenameList.add(0, filename + suffix);
         }
 
         for (String file : possibleFilenameList) {
 
-            String pdf = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + file + ".pdf");
-            String xls = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + file + (byLang ? "_" + rc.getLocale().getLanguage() : "") + ".xlsx");
+            //String pdf = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + file + ".pdf");
+            //String xls = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + file + (byLang ? "_" + rc.getLocale().getLanguage() : "") + ".xlsx");
 
-            if (new File(pdf).exists() && new File(xls).exists()) {
+            if (checkResourcesExists(ctx.getServletContext(), file, byLang, rc.getLocale().getLanguage())) {
                 return vist_elettrificazioni.get(0).getCdvistelet();
             }
         }
@@ -751,15 +753,27 @@ public class SpecSheetGenerica {
         for (Vist_elettrificazioni elettrificazione : vist_elettrificazioni) {
 
             String file = filename + elettrificazione.getCdvistelet() + suffix;
-            String pdf = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + file + ".pdf");
-            String xls = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + file + (byLang ? "_" + rc.getLocale().getLanguage() : "") + ".xls");
+            //String pdf = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + file + ".pdf");
+            //String xls = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + file + (byLang ? "_" + rc.getLocale().getLanguage() : "") + ".xls");
 
-            if (new File(pdf).exists() && new File(xls).exists()) {
+            if (checkResourcesExists(ctx.getServletContext(), file, byLang, rc.getLocale().getLanguage())) {
                 return elettrificazione.getCdvistelet();
             }
         }
 
         return art.getCdvistelet();
+    }
+
+    private boolean checkResourcesExists(ServletContext ctx, String file, boolean byLang, String lang) throws FileNotFoundException{
+
+        String pdf = WebUtils.getRealPath(ctx, ROOT_RES + "/risorse/" + file + ".pdf");
+        String xls = WebUtils.getRealPath(ctx, ROOT_RES + "/risorse/" + file + (byLang ? "_" + lang : "") + ".xls");
+
+        if (new File(pdf).exists() && new File(xls).exists()) {
+            return true;
+        }
+        
+        return false;
     }
 
     private String getResourcesPath(Mrp_arch_articoli art, HttpServletRequest request, boolean byLang, String ext) throws FileNotFoundException {
