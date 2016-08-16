@@ -122,7 +122,7 @@ public class SpecSheet {
         przFormat = java.text.NumberFormat.getInstance(java.util.Locale.ITALY);
 
         response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition", "inline;filename=\"" + cdartm + ".pdf\"");
+        response.setHeader("Content-Disposition", "attachment;filename=\"" + cdartm + ".pdf\"");
 
         Document document = new Document();
         document.setPageSize(PageSize.A4);

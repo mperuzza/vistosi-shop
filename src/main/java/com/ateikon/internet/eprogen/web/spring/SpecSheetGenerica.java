@@ -149,7 +149,7 @@ public class SpecSheetGenerica {
         przFormat = java.text.NumberFormat.getInstance(java.util.Locale.ITALY);
 
         response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition", "inline;filename=\"" + cdvisttp + cdvistfam + ".pdf\"");
+        response.setHeader("Content-Disposition", "attachment;filename=\"" + cdvisttp + cdvistfam + ".pdf\"");
 
         Document document = new Document();
         document.setPageSize(PageSize.A4);
@@ -193,12 +193,12 @@ public class SpecSheetGenerica {
                 user = (ShopUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             }
 
-            if(StringUtils.isNotBlank(cdclas_a)){
-                pars.put("cdclas_aList",  Arrays.asList(new String[]{cdclas_a}));                
-            }else{
+            if (StringUtils.isNotBlank(cdclas_a)) {
+                pars.put("cdclas_aList", Arrays.asList(new String[]{cdclas_a}));
+            } else {
                 vistosiShopManager.addCdclasFilter(pars, request);
             }
-            
+
             vistosiShopManager.addCdrepaFilter(pars, request);
             pars.put("fgweb", "S");
             pars.put("cdvisttp", cdvisttp);
@@ -337,10 +337,12 @@ public class SpecSheetGenerica {
                     elettrificazioni.addCell(cell);
 
                 }
-                if(elettrificazioni.size()==1) elettrificazioni.deleteLastRow();
-                
+                if (elettrificazioni.size() == 1) {
+                    elettrificazioni.deleteLastRow();
+                }
+
                 int notLedRows = elettrificazioni.size();
-                
+
                 cell = new PdfPCell(new Paragraph("ELETTRIFICAZIONI LED", new Font(baseFontBold, 8)));
                 cell.setBorder(PdfPCell.NO_BORDER);
                 elettrificazioni.addCell(cell);
@@ -354,8 +356,10 @@ public class SpecSheetGenerica {
                     elettrificazioni.addCell(cell);
 
                 }
-                if(elettrificazioni.size() - notLedRows ==1) elettrificazioni.deleteLastRow();
-                
+                if (elettrificazioni.size() - notLedRows == 1) {
+                    elettrificazioni.deleteLastRow();
+                }
+
                 cell = new PdfPCell();
                 cell.setHorizontalAlignment(Element.ALIGN_LEFT);
                 cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
@@ -590,7 +594,18 @@ public class SpecSheetGenerica {
         table.getDefaultCell().setBorder(PdfPCell.RECTANGLE);
         table.getDefaultCell().setBorderWidth(0f);
 
-        BarcodeQRCode qrcode = new BarcodeQRCode("http://www.vistosi.it", 1, 1, null);
+        String fg_eurusa = "";
+        if ("UL".equals(art.getCdclas_a())
+                || "LOU".equals(art.getCdclas_a())
+                || "ULL".equals(art.getCdclas_a())) {
+            fg_eurusa = "U";
+        } else if ("L".equals(art.getCdclas_a())
+                || "LO".equals(art.getCdclas_a())
+                || "LL".equals(art.getCdclas_a())) {
+            fg_eurusa = "E";
+        }
+
+        BarcodeQRCode qrcode = new BarcodeQRCode("http://www.vistosi.it/download-area/download-2d-3d.html?cdvistfam=" + art.getCdvistfam() + "&cdvisttp=" + art.getCdvisttp() + "&fg_eur_usa=" + fg_eurusa, 1, 1, null);
         Image qr_image = qrcode.getImage();
 
 //        Image img = null;
@@ -1349,7 +1364,6 @@ public class SpecSheetGenerica {
                             pdfPCell.setBorderWidth(0f);
                             table.addCell(pdfPCell);
                         }*/
-
                         //descrizione
                         //String tipoAttacco = BeanUtils.getSimpleProperty(datiExtra, "arwTipoAttacco" + i); 
                         //TODO sostituirlo con l'icona della lampadina quando le passeranno
@@ -1517,7 +1531,6 @@ public class SpecSheetGenerica {
                             pdfPCell.setBorderWidth(0f);
                             innerTable.addCell(pdfPCell);
                         }*/
-
                         //descrizione
                         String qtaPotenza = BeanUtils.getSimpleProperty(datiExtra, "arwQtaPotenza" + bidx);
                         String potenza = BeanUtils.getSimpleProperty(datiExtra, "arwPotenza" + bidx);
