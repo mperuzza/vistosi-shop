@@ -151,6 +151,7 @@ public class SpecSheetGenerica {
         response.setContentType("application/pdf");
         response.setHeader("Content-Disposition", "attachment;filename=\"" + cdvisttp + cdvistfam + ".pdf\"");
 
+        
         Document document = new Document();
         document.setPageSize(PageSize.A4);
         document.setMargins(24, 24, 24, 24);
@@ -194,7 +195,12 @@ public class SpecSheetGenerica {
             }
 
             if (StringUtils.isNotBlank(cdclas_a)) {
-                pars.put("cdclas_aList", Arrays.asList(new String[]{cdclas_a}));
+                if(vistosiShopManager.DEFAULT_CDCLAS_A.contains(cdclas_a)){
+                    pars.put("cdclas_aList", vistosiShopManager.DEFAULT_CDCLAS_A);
+                }else if (vistosiShopManager.DEFAULT_CDCLAS_A_US.contains(cdclas_a)){
+                    pars.put("cdclas_aList", vistosiShopManager.DEFAULT_CDCLAS_A_US);
+                }
+                
             } else {
                 vistosiShopManager.addCdclasFilter(pars, request);
             }
@@ -206,6 +212,8 @@ public class SpecSheetGenerica {
             pars.put("cdvistv1", StringUtils.trimToNull(cdvistv1));
             pars.put("cdvistv2", StringUtils.trimToNull(cdvistv2));
             pars.put("cdvistv3", StringUtils.trimToNull(cdvistv3));
+            
+            response.setHeader("Content-Disposition", "attachment;filename=\"" + cdvistfam + cdvisttp + " " + cdvistv1 + cdvistv2 + cdvistv3 + ".pdf\"");
 
             List<Mrp_arch_articoli> arts = vistosiShopManager.selectMrp_arch_articoliByPars(pars);
 
@@ -251,7 +259,7 @@ public class SpecSheetGenerica {
             tableBody.getDefaultCell().setPadding(0f);
             tableBody.getDefaultCell().setPaddingBottom(3);
 
-            PdfPTable tableHeader = getHeader(famiglia, cdvisttp, request, document, writer);
+            PdfPTable tableHeader = getHeader(famiglia, cdvisttp, cdvistv1, cdvistv2, cdvistv3, request, document, writer);
             tableBody.addCell(tableHeader);
             tableBody.getDefaultCell().setBorderWidth(0.2f);
             tableBody.getDefaultCell().setPaddingBottom(0);
@@ -451,7 +459,7 @@ public class SpecSheetGenerica {
 //
 //        createPDF(StringUtils.substringAfter(pathInfo, "/specsheet/"), request, response);
 //    }
-    public PdfPTable getHeader(Vist_famiglia vist_famiglia, String cdvisttp, HttpServletRequest request, Document document, PdfWriter writer) throws DocumentException, IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    public PdfPTable getHeader(Vist_famiglia vist_famiglia, String cdvisttp, String cdvistv1, String cdvistv2, String cdvistv3, HttpServletRequest request, Document document, PdfWriter writer) throws DocumentException, IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 
         WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(request);
         RequestContext rc = new RequestContext(request);
@@ -518,7 +526,7 @@ public class SpecSheetGenerica {
         defaultCell.setPaddingRight(5);
         tableDati.addCell(paragraph);
 
-        paragraph = new Paragraph(cdvisttp + vist_famiglia.getCdvistfam_m(), new Font(baseFont, 9));
+        paragraph = new Paragraph(cdvisttp + (cdvistv1!=null? " " + cdvistv1: "") + (cdvistv2!=null? " " + cdvistv2: "") + (cdvistv3!=null? " " + cdvistv3: "")  + vist_famiglia.getCdvistfam_m(), new Font(baseFont, 9));
         defaultCell.setBorderWidthRight(0);
         defaultCell.setPaddingRight(5);
         tableDati.addCell(paragraph);
