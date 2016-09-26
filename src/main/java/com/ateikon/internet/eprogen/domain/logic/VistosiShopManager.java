@@ -24,7 +24,7 @@ public interface VistosiShopManager extends BaseManager{
     
     public static List<String> DEFAULT_CDCLAS_A = Arrays.asList(new String[]{"L", "LO", "LL"});
     public static List<String> DEFAULT_CDCLAS_A_EUUS = Arrays.asList(new String[]{"L", "LO", "LL", "UL", "ULL"});
-    public static List<String> DEFAULT_CDCLAS_A_US = Arrays.asList(new String[]{"UL", "ULL"});
+    public static List<String> DEFAULT_CDCLAS_A_US = Arrays.asList(new String[]{"UL", "LOU", "ULL"});
     
     List<Vist_tipi> getVist_tipi();
     List<Vist_tipi> findVist_tipi(Map pars);
