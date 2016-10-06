@@ -16,7 +16,6 @@ import com.ateikon.internet.eprogen.domain.pgmr.Vist_articoli_img;
 import com.ateikon.internet.eprogen.domain.pgmr.Vist_colori_vetro;
 import com.ateikon.internet.eprogen.domain.pgmr.Vist_cp_collezioni;
 import com.ateikon.internet.eprogen.domain.pgmr.Vist_elettrificazioni;
-import com.ateikon.internet.eprogen.domain.pgmr.Vist_etichette;
 import com.ateikon.internet.eprogen.domain.pgmr.Vist_famiglia;
 import com.ateikon.internet.eprogen.domain.pgmr.Vist_finit_mont;
 import com.ateikon.internet.eprogen.domain.pgmr.Vist_finit_vetro;
@@ -184,7 +183,7 @@ public class SchedaArticoloController {
             mrp_arch_articoli.setVist_tipi(vistosiShopManager.getVist_tipiByKey(mrp_arch_articoli.getCdvisttp()));
             mrp_arch_articoli.setVist_famiglia(vistosiShopManager.getVist_famigliaByKey(mrp_arch_articoli.getCdvistfam()));
             mrp_arch_articoli.setVist_var1(vistosiShopManager.getVist_var1ByKey(mrp_arch_articoli.getCdvistv1()));
-            mrp_arch_articoli.setVist_var1(vistosiShopManager.getVist_var1ByKey(mrp_arch_articoli.getCdvistv1()));
+            //mrp_arch_articoli.setVist_var1(vistosiShopManager.getVist_var1ByKey(mrp_arch_articoli.getCdvistv1()));
             mrp_arch_articoli.setVist_var2(vistosiShopManager.getVist_var2ByKey(mrp_arch_articoli.getCdvistv2()));
             mrp_arch_articoli.setVist_var3(vistosiShopManager.getVist_var3ByKey(mrp_arch_articoli.getCdvistv3()));
             mrp_arch_articoli.setVist_finit_mont(vistosiShopManager.getVist_finit_montByKey(mrp_arch_articoli.getCdvistfinm()));
@@ -1082,5 +1081,5 @@ public class SchedaArticoloController {
 
         return url;
     }
-
+    
 }

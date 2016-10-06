@@ -30,13 +30,24 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.web.util.WebUtils;
+import com.ateikon.internet.eprogen.domain.pgmr.Ep_costanti;
+import static com.ateikon.common.Atk_sql.of_trasformaURL;
+import java.io.Serializable;
+import java.net.URLEncoder;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.servlet.support.RequestContext;
 
 /**
  *
@@ -55,7 +66,6 @@ public class VistosiShopHomeController {
     }
 
     private void getMenu(Model model, HttpServletRequest request) {
-
 
         model.addAttribute("collezioni", vistosiShopManager.getVist_cp_collezioni());
 
@@ -77,9 +87,6 @@ public class VistosiShopHomeController {
     public String getIndex(HttpServletRequest request, Model model) {
 
         //ShopUser user = (ShopUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-
-
         request.getSession().removeAttribute("collezioneFilter");
         request.getSession().removeAttribute("tipologiaFilter");
         request.getSession().removeAttribute("famigliaFilter");
@@ -117,10 +124,9 @@ public class VistosiShopHomeController {
         }
         model.addAttribute("tipologieThumb", vistosiShopManager.findVist_tipi(pars));
         Map fpars = new HashMap();
-        vistosiShopManager.addCdclasFilter(fpars, request); 
+        vistosiShopManager.addCdclasFilter(fpars, request);
         model.addAttribute("famiglie", vistosiShopManager.getVist_famiglia(fpars));
         model.addAttribute("collezioni", vistosiShopManager.getVist_cp_collezioni());
-
 
         model.addAttribute("hideFilter", new Boolean(true));
 
@@ -171,7 +177,6 @@ public class VistosiShopHomeController {
 
         log.debug("call 403");
 
-
         if (AuthorityUtils.userHasAuthority("ROLE_AGEN")) {
             //retrieve i clienti dell'agente per farglielo scegliere
             ShopUser user = (ShopUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -194,7 +199,6 @@ public class VistosiShopHomeController {
 
         log.debug("call 404");
 
-
         model.addAttribute("disableMenu", true);
 
         return "404";
@@ -214,7 +218,6 @@ public class VistosiShopHomeController {
 //            ShopUser user = (ShopUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //            model.addAttribute("clienti", vistosiShopManager.getClienteByCdagen(user.getUserDB().getCdagen(), user.getUserDB().getCdazie()));
 //        }
-
         model.addAttribute("disableMenu", true);
 
         return "403";
@@ -235,7 +238,7 @@ public class VistosiShopHomeController {
 
         model.addAttribute("tipologie", vistosiShopManager.getVist_tipi());
         Map fpars = new HashMap();
-        vistosiShopManager.addCdclasFilter(fpars, request);         
+        vistosiShopManager.addCdclasFilter(fpars, request);
         model.addAttribute("famiglie", vistosiShopManager.getVist_famiglia(fpars));
 
         return "promo";
@@ -256,7 +259,6 @@ public class VistosiShopHomeController {
         if (tipo != null) {
             pars.put("cdvisttp", tipo.getCdvisttp());
         }
-
 
         Vist_famiglia fam = (Vist_famiglia) WebUtils.getSessionAttribute(request, "famigliaFilter");
 
@@ -282,9 +284,6 @@ public class VistosiShopHomeController {
         }
         model.addAttribute("condizioni", vistosiShopManager.getCondizioniVendita(user.getCliente(), tkutente));
 
-
-
-
         return "condizioni";
 
     }
@@ -306,7 +305,6 @@ public class VistosiShopHomeController {
 //        log.debug(request.getServerName());
 //        log.debug(request.getRequestURI());
 //        log.debug(request.getRequestURL());
-
         String url = request.getRequestURL().toString();
 
         //log.debug(request.getContextPath());
@@ -346,7 +344,6 @@ public class VistosiShopHomeController {
                     }
                 }
 
-
             }
         } catch (FileNotFoundException ex) {
             //log.debug("not exists");
@@ -377,7 +374,6 @@ public class VistosiShopHomeController {
 
         return new RedirectView("/static/images/articoli/thumb-nd.png", true);
 
-
     }
 
     @RequestMapping(value = "/checkCdartm.*", method = RequestMethod.GET)
@@ -396,6 +392,138 @@ public class VistosiShopHomeController {
 
         return "articolo";
     }
+
+    @RequestMapping(value = "/logdown", method = RequestMethod.GET)
+    public void logDownload(HttpServletRequest request, HttpServletResponse response,
+            Model model) {
+
+        WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(request);
+        RequestContext rcx = new RequestContext(request);
+
+        String[] file_reqs = ServletRequestUtils.getStringParameters(request, "file_req");
+        String[] dsfiles = ServletRequestUtils.getStringParameters(request, "dsfile");
+
+        String downloadUrl
+                = getEprogenUrl() + "epRichiesta_risorse_pubblica_ajax.jsp?"
+                + "origine_richiesta={origine_richiesta}"
+                + "&tipo_richiesta={tipo_richiesta}"
+                + "&fgview_imgcat={fgview_imgcat}"
+                + "&fg_zip={fg_zip}"
+                + "&email={email}"
+                + "&lang={lang}"
+                + "&dscontatto={dscontatto}"
+                + "&ragsoc={ragsoc}"
+                + "&citta={citta}"
+                + "&cdnazi={cdnazi}"
+                + "&fg_rivend_o_prof={fg_rivend_o_prof}"
+                + "&fg_no_notif={fg_no_notif}";
+
+//        for (String f : file_req) {
+//            downloadUrl += "&file_req=" + f;
+//        }
+        for (int i = 0; i < file_reqs.length; i++) {
+            downloadUrl += "&file_req=" + file_reqs[i] + "&dsfile=" + dsfiles[i];
+        }
+
+        Map<String, String> variables = new HashMap<String, String>();
+        variables.put("origine_richiesta", "PUBBLICA");
+        variables.put("tipo_richiesta", "si_res");
+        variables.put("fgview_imgcat", "false");
+        variables.put("fg_zip", (file_reqs.length > 1 ? "S" : "N"));
+        variables.put("email", "generico@vistosi.it");
+        variables.put("lang", rcx.getLocale().getLanguage());
+        variables.put("dscontatto", "Generico");
+        variables.put("ragsoc", "Generico");
+        variables.put("citta", "Mogliano Veneto");
+        variables.put("cdnazi", "IT");
+        variables.put("fg_rivend_o_prof", "S");
+        variables.put("fg_no_notif", "S");
+
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            ResponseEntity<String> responseEntity = restTemplate.getForEntity(downloadUrl, String.class, variables);
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode root = mapper.readTree(responseEntity.getBody());
+            JsonNode rc = root.path("rc");
+            JsonNode message = root.path("message");
+            JsonNode il_token = root.path("il_token");
+
+            if (StringUtils.equals(rc.getTextValue(), "1") && il_token.getLongValue() > 0) {
+
+                if (StringUtils.equals(variables.get("fg_zip"), "S")) {
+
+                    //zip --> eprogen_test/zip/download.zip
+                    String dURL = getEprogenUrl()+ "zip/download.zip?";
+                    String fURL = getPortalUrl() + "download/";
+                    
+                    for (String f : file_reqs) {
+                        dURL += "&file_req=" + fURL + URLEncoder.encode(f, "UTF-8") 
+                                + "&tkc=" + il_token
+                                + "&lang=" + rcx.getLocale().getLanguage();
+                    }  
+                    
+                    response.sendRedirect(dURL);                    
+                    
+                } else {
+                    String dURL = getPortalUrl() + "download?";
+
+                    for (String f : file_reqs) {
+                        dURL += "&f=" + URLEncoder.encode(f, "UTF-8");
+                    }
+
+                    dURL += "&fg_zip=" + variables.get("fg_zip");
+                    response.sendRedirect(dURL);
+                }
+            }
+
+        } catch (HttpStatusCodeException hex) {
+            log.error(hex.getResponseBodyAsString());
+        } catch (RestClientException rex) {
+            log.error(rex.getMostSpecificCause());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+    }
+
+    private String getPortalUrl() {
+
+        String url = "/";
+
+        Ep_costanti cost = vistosiShopManager.getEpCostanti("ep.portal_url");
+
+        if (cost != null && StringUtils.isNotBlank(cost.getCostvalue())) {
+            url = cost.getCostvalue();
+        }
+
+        return url;
+    }
+
+    private String getEprogenUrl() {
+
+        String url = "/";
+
+        Ep_costanti cost = vistosiShopManager.getEpCostanti("ep.eprogen_url");
+
+        if (cost != null && StringUtils.isNotBlank(cost.getCostvalue())) {
+            url = cost.getCostvalue();
+        } else {
+            String portalUrl = getPortalUrl();
+
+            if (portalUrl != null) {
+                try {
+                    //url = StringUtils.replace(portalUrl, "portal", "eprogen");
+                    url = of_trasformaURL(portalUrl, "portal", "eprogen");
+                } catch (Exception ex) {
+                    log.error(ex.getMessage());
+                }
+            }
+
+        }
+
+        return url;
+    }
+
 //    @RequestMapping("/setclie")
 //    public String setClie(HttpServletRequest request, Model model,
 //                          @RequestParam(value="tkclie",required=true) String tkclie){

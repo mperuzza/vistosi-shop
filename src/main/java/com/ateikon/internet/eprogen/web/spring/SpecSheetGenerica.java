@@ -60,6 +60,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -87,7 +89,7 @@ import org.springframework.web.util.WebUtils;
  */
 @Controller
 public class SpecSheetGenerica {
-    
+
     @Autowired
     //private JdbcTemplate jdbcTemplate;
     private VistosiShopManager vistosiShopManager;
@@ -425,7 +427,7 @@ public class SpecSheetGenerica {
             cell = new PdfPCell();
             cell.setBorder(PdfPCell.NO_BORDER);
             cell.setPadding(0f);
-            cell.addElement(getQR(art, datiExtra, request, document, writer));
+            cell.addElement(getQR(art, datiExtra, famiglia, request, document, writer));
             tableRightBottom.addCell(cell);
             tableRight.getDefaultCell().setPaddingLeft(0);
             tableRight.getDefaultCell().setPaddingBottom(0);
@@ -523,7 +525,7 @@ public class SpecSheetGenerica {
 
         //tipologia
         String version = "CE";
-        if(vistosiShopManager.DEFAULT_CDCLAS_A_US.contains(cdclas_a)){
+        if (vistosiShopManager.DEFAULT_CDCLAS_A_US.contains(cdclas_a)) {
             version = "UL";
         }
         paragraph = new Paragraph(cdvisttp + (cdvistv1 != null ? " " + cdvistv1 : "") + (cdvistv2 != null ? " " + cdvistv2 : "") + (cdvistv3 != null ? " " + cdvistv3 : ""), fontCategoria);
@@ -533,7 +535,7 @@ public class SpecSheetGenerica {
         defaultCell.setPaddingRight(5);
         tableDati.addCell(paragraph);
 
-        paragraph = new Paragraph( vist_famiglia.getCdvistfam_m() + cdvisttp + (cdvistv1 != null ? cdvistv1 : "") + (cdvistv2 != null ? cdvistv2 : "") + (cdvistv3 != null ? cdvistv3 : "") + version, new Font(baseFont, 9));
+        paragraph = new Paragraph(vist_famiglia.getCdvistfam_m() + cdvisttp + (cdvistv1 != null ? cdvistv1 : "") + (cdvistv2 != null ? cdvistv2 : "") + (cdvistv3 != null ? cdvistv3 : "") + version, new Font(baseFont, 9));
         defaultCell.setBorderWidthRight(0);
         defaultCell.setPaddingRight(5);
         tableDati.addCell(paragraph);
@@ -595,7 +597,7 @@ public class SpecSheetGenerica {
 
     }
 
-    public PdfPTable getQR(Mrp_arch_articoli art, Vist_articoli_datiextra datiExtra, HttpServletRequest request, Document document, PdfWriter writer) throws DocumentException, IOException {
+    public PdfPTable getQR(Mrp_arch_articoli art, Vist_articoli_datiextra datiExtra, Vist_famiglia vist_famiglia, HttpServletRequest request, Document document, PdfWriter writer) throws DocumentException, IOException {
 
         WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(request);
         RequestContext rc = new RequestContext(request);
@@ -618,16 +620,16 @@ public class SpecSheetGenerica {
         }
         String qrCodeLink = "http://www.vistosi.it/download-area/download-2d-3d.html?cdvistfam=" + art.getCdvistfam() + "&cdvisttp=" + art.getCdvisttp() + "&fg_eur_usa=" + fg_eurusa;
 
-        if(art.getCdvistv1() != null){
+        if (art.getCdvistv1() != null) {
             qrCodeLink += "&cdvistv1=" + art.getCdvistv1();
-        } 
-        if(art.getCdvistv2() != null){
+        }
+        if (art.getCdvistv2() != null) {
             qrCodeLink += "&cdvistv2=" + art.getCdvistv2();
-        } 
-        if(art.getCdvistv3() != null){
+        }
+        if (art.getCdvistv3() != null) {
             qrCodeLink += "&cdvistv3=" + art.getCdvistv3();
-        } 
-        
+        }
+
         BarcodeQRCode qrcode = new BarcodeQRCode(qrCodeLink, 1, 1, null);
         Image qr_image = qrcode.getImage();
         qr_image.setAnnotation(new Annotation(0, 0, 0, 0, qrCodeLink));
@@ -655,6 +657,52 @@ public class SpecSheetGenerica {
         String path_modello = "fileresources/models";
         String nome_modello = art.getVist_filedis();
         String portalURL = getPortalUrl();
+        String www = "http://www.vistosi";
+        if (rc.getLocale().getLanguage().equals("it")) {
+            www += ".it";
+        } else if (rc.getLocale().getLanguage().equals("ru")) {
+            www += ".ru";
+        } else {
+            www += ".com";
+        }
+        String shopURL = www + "/" + (getPortalUrl().contains("test") ? "shop_test" : "shop");
+
+        art.setVist_var1(vistosiShopManager.getVist_var1ByKey(art.getCdvistv1()));
+        art.setVist_var2(vistosiShopManager.getVist_var2ByKey(art.getCdvistv2()));
+        art.setVist_var3(vistosiShopManager.getVist_var3ByKey(art.getCdvistv3()));
+
+        ShopUser user = null;
+        if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
+            user = (ShopUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        }
+
+        if ((!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS") && user != null && user.getIsSpecList())
+                || (AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS") && GeoIPInterceptor.getCountry(request).equals("US"))) {
+
+            Vist_elettrificazioni elet = vistosiShopManager.getVist_elettrificazioniByKey(art.getCdvistelet());
+            if (elet != null && elet.getCdul() != null) {
+                Vist_elettrificazioni altElet = vistosiShopManager.getVist_elettrificazioniByKey(elet.getCdul());
+                art.setVist_elettrificazioni(altElet);
+            }
+        } else {
+            art.setVist_elettrificazioni(vistosiShopManager.getVist_elettrificazioniByKey(art.getCdvistelet()));
+        }
+
+        String descrFile = "";
+
+        try {
+            descrFile = BeanUtils.getSimpleProperty(vist_famiglia, "dsvistfam" + getAtkLangsfx(rc.getLocale().getLanguage())) + " " + art.getCdvisttp()
+                    + " " + (art.getCdvistv1() != null && art.getVist_var1() != null ? (BeanUtils.getSimpleProperty(art.getVist_var1(), "dsextvistv1" + getAtkLangsfx(rc.getLocale().getLanguage()))).toUpperCase() : "")
+                    + " " + (art.getCdvistv2() != null && art.getVist_var2() != null ? (BeanUtils.getSimpleProperty(art.getVist_var2(), "dsextvistv2" + getAtkLangsfx(rc.getLocale().getLanguage()))).toUpperCase() : "")
+                    + " " + (art.getCdvistv3() != null && art.getVist_var3() != null ? (BeanUtils.getSimpleProperty(art.getVist_var3(), "dsextvistv3" + getAtkLangsfx(rc.getLocale().getLanguage()))).toUpperCase() : "")
+                    + " " + (art.getCdvistelet() != null && art.getVist_elettrificazioni() != null ? (BeanUtils.getSimpleProperty(art.getVist_elettrificazioni(), "dsextvistelet" + getAtkLangsfx(rc.getLocale().getLanguage()))).toUpperCase() : "");
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(SpecSheetGenerica.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvocationTargetException ex) {
+            Logger.getLogger(SpecSheetGenerica.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchMethodException ex) {
+            Logger.getLogger(SpecSheetGenerica.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         String path_2D = path_modello + "/2D/";
         //dwg cm
@@ -663,13 +711,18 @@ public class SpecSheetGenerica {
 //                || (AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS") && GeoIPInterceptor.getCountry(request).equals("US"))) {
 //            dwg_vers = "po/";
 //        }
+
         String dwg = path_2D + dwg_vers + nome_modello + ".dwg";
+        String m2DLabel = messageSource.getMessage("modelli_2D", null, "Modelli 2D", rc.getLocale());
         Chunk ck = new Chunk(messageSource.getMessage("specsheetgen.text.download2D", null, "disegno 2D (file DWG)", rc.getLocale()));
         try {
             String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), dwg);
             File f = new File(path_to_filemodel);
             if (f.exists()) {
-                ck.setAction(new PdfAction(new URL(portalURL + "download/" + dwg + "?f=" + dwg)));
+
+                String dURL = shopURL + "/logdown";
+
+                ck.setAction(new PdfAction(new URL(dURL + "?file_req=" + dwg + "&dsfile=" + m2DLabel + " " + descrFile)));
             }
         } catch (FileNotFoundException ex) {
         }
@@ -679,24 +732,40 @@ public class SpecSheetGenerica {
 
         //verifica esistenza 3D
         String path_3D = path_modello + "/3D/";
+        String m3DLabel = messageSource.getMessage("modelli_3D", null, "Modelli 3D", rc.getLocale());
         //igs
         String igs = path_3D + nome_modello + ".zip";
         ck = new Chunk(messageSource.getMessage("specsheetgen.text.download3D", null, "disegno 3D (file EASM_IGES)", rc.getLocale()));
         try {
             String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), igs);
             File f = new File(path_to_filemodel);
+
+            String dURL = shopURL + "/logdown?";
+
             if (f.exists()) {
-                ck.setAction(new PdfAction(new URL(portalURL + "download/" + igs + "?f=" + igs)));
-            } else {
-                String easm = path_3D + nome_modello + ".EASM";
-                try {
-                    path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), easm);
-                    f = new File(path_to_filemodel);
-                    if (f.exists()) {
-                        ck.setAction(new PdfAction(new URL(portalURL + "download/" + easm + "?f=" + easm)));
-                    }
-                } catch (FileNotFoundException ex) {
+                //ck.setAction(new PdfAction(new URL(portalURL + "download/" + igs + "?f=" + igs)));
+
+                dURL += "file_req=" + igs + "&dsfile=" + m3DLabel + " " + descrFile;
+
+            }
+
+            if (dURL.contains("file_req")) {
+                dURL += "&";
+            }
+
+            String easm = path_3D + nome_modello + ".EASM";
+            try {
+                path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), easm);
+                f = new File(path_to_filemodel);
+                if (f.exists()) {
+                    dURL += "file_req=" + easm + "&dsfile=" + m3DLabel + " " + descrFile;
+                    //ck.setAction(new PdfAction(new URL(portalURL + "download/" + easm + "?f=" + easm)));
                 }
+            } catch (FileNotFoundException ex) {
+            }
+
+            if (dURL.contains("file_req")) {
+                ck.setAction(new PdfAction(new URL(dURL)));
             }
         } catch (FileNotFoundException ex) {
         }
@@ -707,6 +776,7 @@ public class SpecSheetGenerica {
 
         //verifica esistenza file istruzioni di montaggio
         ck = new Chunk(messageSource.getMessage("specsheetgen.text.istrmont", null, "istruzioni montaggio (file PDF)", rc.getLocale()));
+        String istrLabel = messageSource.getMessage("istruzioni_montaggio", null, "Istruzioni di montaggio", rc.getLocale());
         String path_techsheet = "fileresources/assembling_instructions/";
         String techsheet = datiExtra.getArwFileSchedaTec();
         if (StringUtils.isNotEmpty(techsheet)) {
@@ -719,7 +789,11 @@ public class SpecSheetGenerica {
                 Vist_articoli_img vist_articoli_img = new Vist_articoli_img();
                 vist_articoli_img.setPathschtec(techsheet);
                 if (f.exists()) {
-                    ck.setAction(new PdfAction(new URL(portalURL + "download/" + techsheet + "?f=" + path_techsheet + techsheet)));
+
+                    String dURL = shopURL + "/logdown";
+
+                    ck.setAction(new PdfAction(new URL(dURL + "?file_req=" + path_techsheet + techsheet + "&dsfile=" + istrLabel + " " + descrFile)));
+                    //ck.setAction(new PdfAction(new URL(portalURL + "download/" + techsheet + "?f=" + path_techsheet + techsheet)));
                 }
             } catch (Exception ex) {
             }
@@ -1086,7 +1160,13 @@ public class SpecSheetGenerica {
             table.addCell(new Paragraph(messageSource.getMessage("versioni.alt.linkalert", null, rc.getLocale()), new Font(baseFont, 6)));
 
             String vers = "";
-
+            
+            String fg_eurusa = "";
+            if (vistosiShopManager.DEFAULT_CDCLAS_A_US.contains(art.getCdclas_a())) {
+                fg_eurusa = "U";
+            } else if (vistosiShopManager.DEFAULT_CDCLAS_A.contains(art.getCdclas_a())) {
+                fg_eurusa = "E";
+            }
             String www = "http://www.vistosi";
             if (rc.getLocale().getLanguage().equals("it")) {
                 www += ".it";
@@ -1096,9 +1176,10 @@ public class SpecSheetGenerica {
                 www += ".com";
             }
 
-            Vist_famiglia vist_famiglia = vistosiShopManager.getVist_famigliaByKey(art.getCdvistfam());
-            www += "/shop/scheda-" + vist_famiglia.getDsvistfam() + "-" + art.getCdvisttp() + "/" + art.getCdvistfam() + "?";
+            String versAltLink = www + "/download-area/download-2d-3d.html?cdvistfam=" + art.getCdvistfam() + "&cdvisttp=" + art.getCdvisttp() + "&fg_eur_usa=" + fg_eurusa;
 
+            //Vist_famiglia vist_famiglia = vistosiShopManager.getVist_famigliaByKey(art.getCdvistfam());
+            //www += "/shop/scheda-" + vist_famiglia.getDsvistfam() + "-" + art.getCdvisttp() + "/" + art.getCdvistfam() + "?";
             List<Chunk> versList = new ArrayList<>();
             for (Mrp_arch_articoli mrp_arch_articoli : modellidis) {
                 if (!StringUtils.equals(art.getCdvistv1(), mrp_arch_articoli.getCdvistv1())
@@ -1106,7 +1187,17 @@ public class SpecSheetGenerica {
                         || !StringUtils.equals(art.getCdvistv3(), mrp_arch_articoli.getCdvistv3())) {
                     String filedis = mrp_arch_articoli.getVist_filedis();
 
-                    String artLink = www + "model=" + filedis.replaceAll(" ", "");
+                    String artLink = versAltLink;
+
+                    if (mrp_arch_articoli.getCdvistv1() != null) {
+                        artLink += "&cdvistv1=" + mrp_arch_articoli.getCdvistv1();
+                    }
+                    if (mrp_arch_articoli.getCdvistv2() != null) {
+                        artLink += "&cdvistv2=" + mrp_arch_articoli.getCdvistv2();
+                    }
+                    if (mrp_arch_articoli.getCdvistv3() != null) {
+                        artLink += "&cdvistv3=" + mrp_arch_articoli.getCdvistv3();
+                    }
 
                     filedis = StringUtils.remove(filedis, StringUtils.rightPad(art.getCdvistfam(), 5) + art.getCdvisttp());
                     filedis = StringUtils.substringBefore(filedis, "-");
@@ -1114,7 +1205,7 @@ public class SpecSheetGenerica {
                     if (StringUtils.isNotBlank(filedis)) {
                         vers += filedis + ", ";
                         Chunk ck = new Chunk(filedis);
-                        //ck.setAction(new PdfAction(new URL(artLink)));
+                        ck.setAction(new PdfAction(new URL(artLink)));
                         versList.add(ck);
                         versList.add(new Chunk(", "));
                     }
@@ -1497,9 +1588,9 @@ public class SpecSheetGenerica {
                         if (StringUtils.isNotBlank(dsextvistelet)) {
                             pdfPCell = new PdfPCell(new Paragraph(dsextvistelet, new Font(baseFont, 7)));
                             pdfPCell.setBorderWidth(0f);
-                            if(dsextvistelet.length()> 10){
+                            if (dsextvistelet.length() > 10) {
                                 pdfPCell.setPaddingTop(0f);
-                            }else{
+                            } else {
                                 pdfPCell.setPaddingTop(4f);
                             }
                             pdfPCell.setNoWrap(false);
