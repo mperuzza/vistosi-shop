@@ -803,18 +803,21 @@ public class SchedaArticoloController {
                             if (StringUtils.contains(nomefile, "\\")) {
                                 nomefile = StringUtils.substringAfterLast(nomefile, "\\");
                             }
+                            try {
+                                String realPath = WebUtils.getRealPath(ctx.getServletContext(), path_cert + nomefile);
 
-                            String realPath = WebUtils.getRealPath(ctx.getServletContext(), path_cert + nomefile);
+                                File f = new File(realPath);
+                                if (f.exists()) {
+                                    Map<String, String> certMap = new HashMap<String, String>();
+                                    certMap.put("img", nomeimg);
+                                    certMap.put("file", path_cert + nomefile);
 
-                            File f = new File(realPath);
-                            if (f.exists()) {
-                                Map<String, String> certMap = new HashMap<String, String>();
-                                certMap.put("img", nomeimg);
-                                certMap.put("file", path_cert + nomefile);
-
-                                scheda.getArticolo().getCertList().addLast(certMap);
-                            } else {
-                                //TODO???
+                                    scheda.getArticolo().getCertList().addLast(certMap);
+                                } else {
+                                    //TODO???
+                                }
+                            } catch (FileNotFoundException ex) {
+                                //log.debug("not exists");
                             }
                         }
                     }
@@ -1010,13 +1013,13 @@ public class SchedaArticoloController {
 //                        }
 //
 //                    }
-                } catch (FileNotFoundException ex) {
-
                 } catch (IllegalAccessException ex) {
                     Logger.getLogger(SchedaArticoloController.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (InvocationTargetException ex) {
                     Logger.getLogger(SchedaArticoloController.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (NoSuchMethodException ex) {
+                    Logger.getLogger(SchedaArticoloController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception ex){
                     Logger.getLogger(SchedaArticoloController.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
