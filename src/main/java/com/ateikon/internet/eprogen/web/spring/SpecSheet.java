@@ -1229,6 +1229,7 @@ public class SpecSheet {
                 cell = new PdfPCell();
                 cell.setPadding(0);
                 cell.setColspan(2);
+                cell.setBorderWidth(0f);
                 if (empty) {
                     cell.setBorderWidth(0f);
                     cell.addElement(new Phrase(""));
