@@ -1,2 +1,4 @@
 /build/
 /appunti/
+*.bak
+Thumbs*
