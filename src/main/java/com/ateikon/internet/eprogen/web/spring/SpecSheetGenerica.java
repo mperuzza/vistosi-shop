@@ -337,7 +337,7 @@ public class SpecSheetGenerica {
                 elettrificazioni.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
                 elettrificazioni.getDefaultCell().setPadding(0f);
                 elettrificazioni.setExtendLastRow(true);
-                cell = new PdfPCell(new Paragraph(messageSource.getMessage("specsheetgen.title.elet", null, "ELETTRIFICAZIONI", locale), new Font(baseFontBold, 8)));
+                cell = new PdfPCell(new Paragraph(messageSource.getMessage("specsheetgen.title.elet", null, "ELETTRIFICAZIONI", locale).toUpperCase(), new Font(baseFontBold, 8)));
                 cell.setBorder(PdfPCell.NO_BORDER);
                 elettrificazioni.addCell(cell);
 
@@ -356,7 +356,7 @@ public class SpecSheetGenerica {
 
                 int notLedRows = elettrificazioni.size();
 
-                cell = new PdfPCell(new Paragraph(messageSource.getMessage("specsheetgen.title.eletled", null, "ELETTRIFICAZIONI LED", locale), new Font(baseFontBold, 8)));
+                cell = new PdfPCell(new Paragraph(messageSource.getMessage("specsheetgen.title.eletled", null, "ELETTRIFICAZIONI LED", locale).toUpperCase(), new Font(baseFontBold, 8)));
                 cell.setBorder(PdfPCell.NO_BORDER);
                 elettrificazioni.addCell(cell);
 
@@ -868,7 +868,7 @@ public class SpecSheetGenerica {
         float leftSpacing = 5f;
         float iconWidth = 15f;
         PdfPTable disegnoDescrInner = new PdfPTable(2);
-        Chunk chunk = new Chunk(messageSource.getMessage("specsheetgen.text.disegnodida", null, "QUESTA IMMAGINE SI RIFERISCE ALLA VERSIONE ", rc.getLocale()), new Font(baseFont, 7));
+        Chunk chunk = new Chunk(messageSource.getMessage("specsheetgen.text.disegnodida", null, "QUESTA IMMAGINE SI RIFERISCE ALLA VERSIONE ", rc.getLocale()).toUpperCase(), new Font(baseFont, 7));
         float widthPoint = chunk.getWidthPoint();
         disegnoDescrInner.setTotalWidth(new float[]{widthPoint + leftSpacing, iconWidth});
         disegnoDescrInner.getDefaultCell().setHorizontalAlignment(Element.ALIGN_RIGHT);

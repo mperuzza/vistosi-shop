@@ -29,12 +29,14 @@ import com.itextpdf.text.pdf.PdfAction;
 import com.itextpdf.text.pdf.PdfAnnotation;
 import com.itextpdf.text.pdf.PdfAppearance;
 import com.itextpdf.text.pdf.PdfArray;
+import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfDictionary;
 import com.itextpdf.text.pdf.PdfImportedPage;
 import com.itextpdf.text.pdf.PdfIndirectObject;
 import com.itextpdf.text.pdf.PdfName;
 import com.itextpdf.text.pdf.PdfNumber;
 import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPCellEvent;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStream;
@@ -52,6 +54,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -194,6 +198,7 @@ public class SpecSheet {
             PdfPTable tableDisegno = getDisegno(art, request, document, writer);
             PdfPTable tableNote = getNote(art, request, document, writer);
             PdfPTable table3D = get3D(art, request, document, writer);
+            PdfPTable tableDisDim = getDisegnoDim(art, request, document, writer);
 
             tableBody.getDefaultCell().setPaddingBottom(3);
             tableBody.addCell(tableHeader);
@@ -204,7 +209,10 @@ public class SpecSheet {
             tableBody.addCell(tableNote);
             tableBody.getDefaultCell().setPaddingBottom(3);
             tableRight.addCell(tableCertificazioni);
-            tableRight.addCell(getDisegnoDim(art, request, document, writer));
+            tableRight.addCell(tableDisDim);
+            tableDisDim.getRow(0);
+            tableDisDim.getRowHeight(0);
+            tableRight.calculateHeights();
             tableRight.addCell(table3D);
             //tableRight.getDefaultCell().setPaddingTop(3);
             tableRight.addCell(getDimensioni(art, request, document, writer));
@@ -226,6 +234,10 @@ public class SpecSheet {
             tableContainer.setHorizontalAlignment(Element.ALIGN_LEFT);
 
             document.add(tableContainer);
+            
+            tableDisDim.getRow(0);
+            tableDisDim.getRowHeight(0);
+            tableRight.calculateHeights();
 
             //  PdfAction action = PdfAction.javaScript(Utilities.readFileToString(rootImg + "js\\eprogen3d.js"), writer);
             // writer.setOpenAction(action);
@@ -1217,6 +1229,7 @@ public class SpecSheet {
                 cell = new PdfPCell();
                 cell.setPadding(0);
                 cell.setColspan(2);
+                cell.setBorderWidth(0f);
                 if (empty) {
                     cell.setBorderWidth(0f);
                     cell.addElement(new Phrase(""));
@@ -1399,23 +1412,30 @@ public class SpecSheet {
         defaultCell.setUseDescender(false);
         defaultCell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-        Paragraph paragraph1 = new Paragraph(messageSource.getMessage("volume", null, rc.getLocale()).toUpperCase(), new Font(baseFontBold, 9));
+        Paragraph paragraph1 = new Paragraph(messageSource.getMessage("volume", null, rc.getLocale()).toUpperCase()+ ": ", new Font(baseFontBold, 8));
+        Chunk c1 = new Chunk("Mc " + numFormat.format(art.getVlunlt()), new Font(baseFont, 8));
+        paragraph1.add(c1);
         table.addCell(paragraph1);
 
-        Paragraph paragraph2 = new Paragraph("Mc " + numFormat.format(art.getVlunlt()), new Font(baseFont, 9));
-        table.addCell(paragraph2);
+//        Paragraph paragraph2 = new Paragraph("Mc " + numFormat.format(art.getVlunlt()), new Font(baseFont, 8));
+//        table.addCell(paragraph2);
 
-        Paragraph paragraph3 = new Paragraph(messageSource.getMessage("peso.lordo", null, rc.getLocale()).toUpperCase(), new Font(baseFontBold, 9));
+        Paragraph paragraph3 = new Paragraph(messageSource.getMessage("peso.lordo", null, rc.getLocale()).toUpperCase()+ ": ", new Font(baseFontBold, 8));
+        Chunk c3 = new Chunk("Kg " + numFormat.format(art.getNrpeso_l()), new Font(baseFont, 8));
+        paragraph3.add(c3);       
         table.addCell(paragraph3);
 
-        Paragraph paragraph4 = new Paragraph("Kg " + numFormat.format(art.getNrpeso_l()), new Font(baseFont, 9));
-        table.addCell(paragraph4);
+//        Paragraph paragraph4 = new Paragraph("Kg " + numFormat.format(art.getNrpeso_l()), new Font(baseFont, 8));
+//        table.addCell(paragraph4);
 
-        Paragraph paragraph5 = new Paragraph(messageSource.getMessage("peso.netto", null, rc.getLocale()).toUpperCase(), new Font(baseFontBold, 9));
+        Paragraph paragraph5 = new Paragraph(messageSource.getMessage("peso.netto", null, rc.getLocale()).toUpperCase()+ ": ", new Font(baseFontBold, 8));
+        Chunk c5 = new Chunk("Kg " + numFormat.format(art.getNrpeso_n()), new Font(baseFont, 8));
+        paragraph5.add(c5); 
         table.addCell(paragraph5);
 
-        Paragraph paragraph6 = new Paragraph("Kg " + numFormat.format(art.getNrpeso_n()), new Font(baseFont, 9));
-        table.addCell(paragraph6);
+        
+//        Paragraph paragraph6 = new Paragraph("Kg " + numFormat.format(art.getNrpeso_n()), new Font(baseFont, 8));
+//        table.addCell(paragraph6);
         table.completeRow();
 
         cellCnt.addElement(table);
@@ -1545,11 +1565,11 @@ public class SpecSheet {
         int lx = 459;
         int lY = 436;
 
-        Rectangle rect = new Rectangle(lx, lY, lx + 115, lY + 150);
-        rect.setBorder(Rectangle.BOX);
-        rect.setBorderWidth(0.2f);
-        rect.setBorderColor(new BaseColor(0x33, 0x33, 0x33));
-        document.add(rect);
+//        Rectangle rect = new Rectangle(lx, lY, lx + 115, lY + 150);
+//        rect.setBorder(Rectangle.BOX);
+//        rect.setBorderWidth(0.2f);
+//        rect.setBorderColor(new BaseColor(0x33, 0x33, 0x33));
+//        document.add(rect);
 
         String realPath = getResourcesPath(art, request, false, "U3D");
 
@@ -1569,48 +1589,58 @@ public class SpecSheet {
 
             cell = new PdfPCell();
             cell.setFixedHeight(150);
-            cell.setBorderWidth(.0f);
+            //cell.setBorderWidth(.0f);
 //        cell.addElement(img);
             cell.setHorizontalAlignment(Element.ALIGN_LEFT);
             cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
-            cell.setPaddingLeft(6);
+            //cell.setPaddingLeft(6);
+            cell.setBorder(Rectangle.BOX);
+            cell.setBorderWidth(0.2f);
+            cell.setBorderColor(new BaseColor(0x33, 0x33, 0x33));            
+            
             cell.addElement(new Paragraph("Click to activate (only in Acrobat Reader)", new Font(baseFont, 6)));
+            cell.setCellEvent(new Insert3d(realPath));
             table3D.addCell(cell);
 
 //        String realPath = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + art.getVist_filedis() + ".U3D");
-            PdfStream stream3D = new PdfStream(new FileInputStream(realPath), writer);
-            stream3D.put(PdfName.TYPE, new PdfName("3D"));
-            stream3D.put(PdfName.SUBTYPE, new PdfName("U3D"));
-            stream3D.flateCompress();
-            PdfIndirectObject streamObject = writer.addToBody(stream3D);
-            stream3D.writeLength();
+//            PdfStream stream3D = new PdfStream(new FileInputStream(realPath), writer);
+//            stream3D.put(PdfName.TYPE, new PdfName("3D"));
+//            stream3D.put(PdfName.SUBTYPE, new PdfName("U3D"));
+//            stream3D.flateCompress();
+//            PdfIndirectObject streamObject = writer.addToBody(stream3D);
+//            stream3D.writeLength();
+//
+//            PdfDictionary dict3D = new PdfDictionary();
+//            dict3D.put(PdfName.TYPE, new PdfName("3DView"));
+//            dict3D.put(new PdfName("XN"), new PdfString("Default"));
+//            dict3D.put(new PdfName("IN"), new PdfString("Unnamed"));
+//            dict3D.put(new PdfName("MS"), PdfName.M);
+//            dict3D.put(new PdfName("C2W"), new PdfArray(new float[]{-1, 0, 0, 0, 0, 1, 0, 1, 0, 0, -1, 0}));
+//            dict3D.put(PdfName.CO, new PdfNumber(1));
+//
+//            PdfIndirectObject dictObject = writer.addToBody(dict3D);
 
-            PdfDictionary dict3D = new PdfDictionary();
-            dict3D.put(PdfName.TYPE, new PdfName("3DView"));
-            dict3D.put(new PdfName("XN"), new PdfString("Default"));
-            dict3D.put(new PdfName("IN"), new PdfString("Unnamed"));
-            dict3D.put(new PdfName("MS"), PdfName.M);
-            dict3D.put(new PdfName("C2W"), new PdfArray(new float[]{-1, 0, 0, 0, 0, 1, 0, 1, 0, 0, -1, 0}));
-            dict3D.put(PdfName.CO, new PdfNumber(1));
-
-            PdfIndirectObject dictObject = writer.addToBody(dict3D);
-
-            PdfAnnotation annot = new PdfAnnotation(writer, rect);
-            annot.put(PdfName.CONTENTS, new PdfString("3D Model"));
-            annot.put(PdfName.SUBTYPE, new PdfName("3D"));
-            annot.put(PdfName.TYPE, PdfName.ANNOT);
-            annot.put(new PdfName("3DD"), streamObject.getIndirectReference());
-            annot.put(new PdfName("3DV"), dictObject.getIndirectReference());
-            PdfAppearance ap = writer.getDirectContent().createAppearance(rect.getWidth(), rect.getHeight());
-            annot.setAppearance(PdfAnnotation.APPEARANCE_NORMAL, ap);
-            annot.setPage();
-
-            writer.addAnnotation(annot);
+//            PdfAnnotation annot = new PdfAnnotation(writer, rect);
+//            annot.put(PdfName.CONTENTS, new PdfString("3D Model"));
+//            annot.put(PdfName.SUBTYPE, new PdfName("3D"));
+//            annot.put(PdfName.TYPE, PdfName.ANNOT);
+//            annot.put(new PdfName("3DD"), streamObject.getIndirectReference());
+//            annot.put(new PdfName("3DV"), dictObject.getIndirectReference());
+//            PdfAppearance ap = writer.getDirectContent().createAppearance(rect.getWidth(), rect.getHeight());
+//            annot.setAppearance(PdfAnnotation.APPEARANCE_NORMAL, ap);
+//            annot.setPage();
+//
+//            writer.addAnnotation(annot);
         }
 
         cell = new PdfPCell();
         cell.setFixedHeight(150);
         cell.setBorderWidth(0f);
+        cell.setPaddingLeft(5);
+        cell.setPaddingRight(5);
+        cell.setPaddingTop(0);
+        cell.setPaddingBottom(0);
+//        cell.setCellEvent(new Insert3d());
         cell.addElement(table3D);
         cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
@@ -1636,4 +1666,70 @@ public class SpecSheet {
             return "";
         }
     }
+    
+    
+    private class Insert3d implements PdfPCellEvent {
+
+        protected String realPath;
+        
+        public Insert3d(String realPath) {
+            
+            this.realPath = realPath;
+        }
+        
+
+        @Override
+        public void cellLayout(PdfPCell cell, Rectangle rect, PdfContentByte[] canvases) {
+            
+            try {
+//                position.getLeft();
+//                
+//                position.getTop();
+//                
+//                position.getBottom();
+                
+                final PdfWriter writer = canvases[0].getPdfWriter();
+                
+                PdfStream stream3D = new PdfStream(new FileInputStream(realPath), writer);
+                stream3D.put(PdfName.TYPE, new PdfName("3D"));
+                stream3D.put(PdfName.SUBTYPE, new PdfName("U3D"));
+                stream3D.flateCompress();
+                PdfIndirectObject streamObject = writer.addToBody(stream3D);
+                stream3D.writeLength();
+                
+                PdfDictionary dict3D = new PdfDictionary();
+                dict3D.put(PdfName.TYPE, new PdfName("3DView"));
+                dict3D.put(new PdfName("XN"), new PdfString("Default"));
+                dict3D.put(new PdfName("IN"), new PdfString("Unnamed"));
+                dict3D.put(new PdfName("MS"), PdfName.M);
+                dict3D.put(new PdfName("C2W"), new PdfArray(new float[]{-1, 0, 0, 0, 0, 1, 0, 1, 0, 0, -1, 0}));
+                dict3D.put(PdfName.CO, new PdfNumber(1));
+                
+                PdfIndirectObject dictObject = writer.addToBody(dict3D);
+                
+                
+                PdfAnnotation annot = new PdfAnnotation(writer, rect);
+                annot.put(PdfName.CONTENTS, new PdfString("3D Model"));
+                annot.put(PdfName.SUBTYPE, new PdfName("3D"));
+                annot.put(PdfName.TYPE, PdfName.ANNOT);
+                annot.put(new PdfName("3DD"), streamObject.getIndirectReference());
+                annot.put(new PdfName("3DV"), dictObject.getIndirectReference());
+                PdfAppearance ap = writer.getDirectContent().createAppearance(rect.getWidth(), rect.getHeight());
+                annot.setAppearance(PdfAnnotation.APPEARANCE_NORMAL, ap);
+                annot.setPage();
+                         
+                writer.addAnnotation(annot);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(SpecSheet.class.getName()).log(Level.SEVERE, null, ex);
+            }   catch (IOException ex) {
+                    Logger.getLogger(SpecSheet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
+        }
+        
+        
+        
+    }
+    
 }
