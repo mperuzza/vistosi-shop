@@ -202,7 +202,8 @@ public class VistosiShopAdvancedSearch {
                     //String nome_modello = vist_fam.getCdvistfam_mPad() + artL.getCdvisttp() + artL.getCdvistv1Pad() + artL.getCdvistv2Pad() + artL.getCdvistv3Pad() +"-";
                     String nome_modello = artL.getVist_filedis();
                     //igs
-                    String igs = path_3D + nome_modello + ".zip";
+                    //String igs = path_3D + nome_modello + ".zip";
+                    String igs = path_3D + nome_modello + (artL.isLed()?art.getCdvistelet():"") + ".zip";
                     try {
                         String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), igs);
                         File f = new File(path_to_filemodel);
@@ -228,7 +229,8 @@ public class VistosiShopAdvancedSearch {
 //                        log.error("file " + eprt + " non trovato");
 //                    }
                     //easm
-                    String easm = path_3D + nome_modello + ".EASM";
+                    //String easm = path_3D + nome_modello + ".EASM";
+                    String easm = path_3D + nome_modello + (artL.isLed()?art.getCdvistelet():"") +".EASM";
                     try {
                         String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), easm);
                         File f = new File(path_to_filemodel);
@@ -246,6 +248,7 @@ public class VistosiShopAdvancedSearch {
                     String dwg_vers = "cm/";
                     if ("en".equals(rc.getLocale().getLanguage())) {
                         dwg_vers = "po/";
+                        artL.setTiporisorsa2D_dwg(com.ateikon.common.Mrp_arch_articoli.MOD2D_DWG_PO);
                     }
                     String dwg = path_2D + dwg_vers + nome_modello + ".dwg";
                     try {
@@ -322,7 +325,8 @@ public class VistosiShopAdvancedSearch {
                     //String nome_modello = vist_fam.getCdvistfam_mPad() + art.getCdvisttp() + art.getCdvistv1Pad() + art.getCdvistv2Pad() + art.getCdvistv3Pad() +"-";
                     String nome_modello = art.getVist_filedis();
                     //igs
-                    String igs = path_3D + nome_modello + ".zip";
+                    //String igs = path_3D + nome_modello + ".zip";
+                    String igs = path_3D + nome_modello + (art.isLed()?art.getCdvistelet():"") + ".zip";
                     try {
                         String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), igs);
                         File f = new File(path_to_filemodel);
@@ -348,7 +352,8 @@ public class VistosiShopAdvancedSearch {
 //                        log.error("file " + eprt + " non trovato");
 //                    }
                     //easm
-                    String easm = path_3D + nome_modello + ".EASM";
+                    //String easm = path_3D + nome_modello + ".EASM";
+                    String easm = path_3D + nome_modello + (art.isLed()?art.getCdvistelet():"") +".EASM";
                     try {
                         String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), easm);
                         File f = new File(path_to_filemodel);
@@ -366,6 +371,7 @@ public class VistosiShopAdvancedSearch {
                     String dwg_vers = "cm/";
                     if ("en".equals(rc.getLocale().getLanguage())) {
                         dwg_vers = "po/";
+                        artL.setTiporisorsa2D_dwg(com.ateikon.common.Mrp_arch_articoli.MOD2D_DWG_PO);
                     }
                     String dwg = path_2D + dwg_vers + nome_modello + ".dwg";
                     try {

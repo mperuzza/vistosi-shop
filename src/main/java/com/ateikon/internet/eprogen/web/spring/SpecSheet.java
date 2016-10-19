@@ -1338,7 +1338,7 @@ public class SpecSheet {
                     String nomefile = BeanUtils.getSimpleProperty(datiExtra, fieldName);
 
                     if (StringUtils.isNotBlank(nomefile)) {
-                        String nomeimg = vistosiShopManager.getCertImageName(fieldName);
+                        String nomeimg = StringUtils.containsIgnoreCase(nomefile, "PENDING") ? StringUtils.substringBeforeLast(nomefile, ".") : vistosiShopManager.getCertImageName(fieldName);
                         nomeimg = nomeimg + ".jpg";
                         String realPath = WebUtils.getRealPath(ctx.getServletContext(), pathimg + nomeimg);
 

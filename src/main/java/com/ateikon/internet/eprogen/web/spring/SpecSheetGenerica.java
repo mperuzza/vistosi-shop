@@ -734,7 +734,8 @@ public class SpecSheetGenerica {
         String path_3D = path_modello + "/3D/";
         String m3DLabel = messageSource.getMessage("modelli_3D", null, "Modelli 3D", rc.getLocale());
         //igs
-        String igs = path_3D + nome_modello + ".zip";
+        //String igs = path_3D + nome_modello + ".zip";
+        String igs = path_3D + nome_modello + (art.isLed()?art.getCdvistelet():"") + ".zip";
         ck = new Chunk(messageSource.getMessage("specsheetgen.text.download3D", null, "disegno 3D (file EASM_IGES)", rc.getLocale()));
         try {
             String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), igs);
@@ -753,7 +754,8 @@ public class SpecSheetGenerica {
                 dURL += "&";
             }
 
-            String easm = path_3D + nome_modello + ".EASM";
+            //String easm = path_3D + nome_modello + ".EASM";
+            String easm = path_3D + nome_modello + (art.isLed()?art.getCdvistelet():"") +".EASM";
             try {
                 path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), easm);
                 f = new File(path_to_filemodel);
@@ -1160,7 +1162,7 @@ public class SpecSheetGenerica {
             table.addCell(new Paragraph(messageSource.getMessage("versioni.alt.linkalert", null, rc.getLocale()), new Font(baseFont, 6)));
 
             String vers = "";
-            
+
             String fg_eurusa = "";
             if (vistosiShopManager.DEFAULT_CDCLAS_A_US.contains(art.getCdclas_a())) {
                 fg_eurusa = "U";
@@ -1900,7 +1902,9 @@ public class SpecSheetGenerica {
                     String nomefile = BeanUtils.getSimpleProperty(datiExtra, fieldName);
 
                     if (StringUtils.isNotBlank(nomefile)) {
-                        String nomeimg = vistosiShopManager.getCertImageName(fieldName);
+                        //String nomeimg = vistosiShopManager.getCertImageName(fieldName);
+                        String nomeimg = StringUtils.containsIgnoreCase(nomefile, "PENDING") ? StringUtils.substringBeforeLast(nomefile, ".") : vistosiShopManager.getCertImageName(fieldName);
+
                         nomeimg = nomeimg + ".jpg";
                         String realPath = WebUtils.getRealPath(ctx.getServletContext(), pathimg + nomeimg);
 

@@ -692,4 +692,287 @@ public class Mrp_arch_articoli extends Atk_sql {
         return "";
     }
 
+    public String of_relpath_resource(String cdclas_a,
+             String tiporisorsa,
+             String cdvistfam,
+             String cdvisttp,
+             String cdvistv1,
+             String cdvistv2,
+             String cdvistv3,
+             String cdvistelet,
+             String vist_filedis,
+             String vist_scheda_pdf
+    ) throws Exception {
+
+        String slash = System.getProperty("file.separator");
+
+        String path_techsheet = "fileresources" + slash + DIR_TECHSHEET + slash;
+        String path_modello = of_get_path_modello(slash);
+        String nome_modello_3D = vist_filedis;
+        String path_2D = path_modello + "2D" + slash;
+        String nome_modello_2D = vist_filedis;
+        String path_imgcat = "fileresources" + slash + "catimages" + slash;
+        String path_imgcat_hi = path_imgcat + "hi" + slash;
+        String nome_imgcat_hi = vist_filedis;
+        String path_imgcat_lo = path_imgcat + "lo" + slash;
+        String nome_imgcat_lo = vist_filedis;
+        String path_cert = "fileresources" + slash + "cert" + slash;
+        String nome_cert = vist_filedis;
+        String path_specsheet = "fileresources" + slash + "specsheet" + slash;
+
+        if (tiporisorsa.equals(TECHSHEET)) {
+
+            if (!cdvistfam.equals("") && !cdvisttp.equals("")) {
+
+                l_query = "";
+                l_query = "      select distinct vdex.arw_file_scheda_tec       \n";
+                l_query += "        from pgmr.vist_articoli_datiextra  vdex      \n";
+                l_query += "           , pgmr.vist_articoli      varti           \n";
+                l_query += "           , pgmr.mis_reparto        repa            \n";
+                l_query += "       where vdex.cdarti = varti.cdarti              \n";
+                l_query += "         and varti.cdrepa = repa.cdrepa              \n";
+                l_query += "         and vdex.arw_file_scheda_tec is not null    \n";
+                l_query += "         and varti.cdvistfam is not null             \n";
+                l_query += "         and varti.cdvisttp is not null              \n";
+                l_query += "         and repa.cdrepa not in ('010', '018')       \n"; //CABLATO
+                l_query += "         and varti.fgweb  = 'S'                      \n";
+                l_query += "         and repa.fgweb  = 'S'                       \n";
+
+                l_query += "         and varti.cdvistfam = '" + cdvistfam + "'     \n";
+                l_query += "         and varti.cdvisttp  = '" + cdvisttp + "'      \n";
+
+                if (!cdvistv1.equals("")) {
+                    l_query += "         and varti.cdvistv1  = '" + cdvistv1 + "'      \n";
+                } else {
+                    l_query += "         and varti.cdvistv1 is null    \n";
+                }
+                if (!cdvistv2.equals("")) {
+                    l_query += "         and varti.cdvistv2  = '" + cdvistv2 + "'      \n";
+                } else {
+                    l_query += "         and varti.cdvistv2 is null    \n";
+                }
+                if (!cdvistv3.equals("")) {
+                    l_query += "         and varti.cdvistv3  = '" + cdvistv3 + "'      \n";
+                } else {
+                    l_query += "         and varti.cdvistv3 is null    \n";
+                }
+                if (!cdvistelet.equals("")) {
+                    l_query += "         and varti.cdvistelet  = '" + cdvistelet + "'  \n";
+                } else {
+                    l_query += "         and varti.cdvistelet is null    \n";
+                }
+
+                l_query += " order by vdex.arw_file_scheda_tec           \n";
+
+                String techsheet = sql_String(l_query);
+
+                int idx_slash = techsheet.indexOf("\\");
+
+                if (idx_slash >= 0) {
+                    techsheet = techsheet.substring(idx_slash + 1);
+                }
+
+                if (techsheet.equals("")) {
+                    return "";
+                }
+
+                return path_techsheet + techsheet;
+            } else {
+                return "";
+            }
+
+        } else if (tiporisorsa.equals(MOD3D_IGS)) {
+
+            return of_relpath_resource_MOD3D_IGS(nome_modello_3D, cdclas_a, cdvistelet);
+
+//      } else if (tiporisorsa.equals(MOD3D_EPRT)){
+//        
+//        String eprt = path_3D + nome_modello_3D + ".EPRT";
+//        
+//        if (nome_modello_3D.equals("")) return "";
+//        
+//        return eprt;
+        } else if (tiporisorsa.equals(MOD3D_EASM)) {
+
+            return of_relpath_resource_MOD3D_EASM(nome_modello_3D, cdclas_a, cdvistelet);
+
+        } else if (tiporisorsa.equals(MOD2D_DWG_PO)) {
+
+            String dwg_vers = "po" + slash;     //POLLICI                
+
+            String dwg = path_2D + dwg_vers + nome_modello_2D + ".dwg";
+
+            if (nome_modello_2D.equals("")) {
+                return "";
+            }
+
+            return dwg;
+
+        } else if (tiporisorsa.equals(MOD2D_DWG_CM)) {
+
+            String dwg_vers = "cm" + slash;     //CENTIMETRI                    
+
+            String dwg = path_2D + dwg_vers + nome_modello_2D + ".dwg";
+
+            if (nome_modello_2D.equals("")) {
+                return "";
+            }
+
+            return dwg;
+
+        } else if (tiporisorsa.equals(IMAGEPROD_HI_MULTIF)) {
+
+            String imgcat_hi_zip = path_imgcat_hi + nome_imgcat_hi + ".zip";
+
+            if (nome_imgcat_hi.equals("")) {
+                return "";
+            }
+
+            return imgcat_hi_zip;
+
+        } else if (tiporisorsa.equals(IMAGEPROD_HI_SINGF)) {
+
+            String imgcat_hi_jpg = path_imgcat_hi + nome_imgcat_hi + ".jpg";
+
+            if (nome_imgcat_hi.equals("")) {
+                return "";
+            }
+
+            return imgcat_hi_jpg;
+
+        } else if (tiporisorsa.equals(IMAGEPROD_LO_MULTIF)) {
+
+            String imgcat_lo_zip = path_imgcat_lo + nome_imgcat_lo + ".zip";
+
+            if (nome_imgcat_lo.equals("")) {
+                return "";
+            }
+
+            return imgcat_lo_zip;
+
+        } else if (tiporisorsa.equals(IMAGEPROD_LO_SINGF)) {
+
+            String imgcat_lo_jpg = path_imgcat_lo + nome_imgcat_lo + ".jpg";
+
+            if (nome_imgcat_lo.equals("")) {
+                return "";
+            }
+
+            return imgcat_lo_jpg;
+
+        } else if (tiporisorsa.equals(CERT)) {
+
+            String cert = path_cert + nome_cert + ".pdf";
+
+            if (nome_cert.equals("")) {
+                return "";
+            }
+
+            return cert;
+
+        } else if (tiporisorsa.equals(SPECSHEET_IT)) {
+
+            String path_specsheet_it = path_specsheet + "it" + slash;
+            String nome_specsheet_it = vist_scheda_pdf;
+
+            String specsheet_it = path_specsheet_it + nome_specsheet_it;
+
+            if (nome_specsheet_it.equals("")) {
+                return "";
+            }
+
+            return specsheet_it;
+
+        } else if (tiporisorsa.equals(SPECSHEET_US)) {
+
+            String path_specsheet_us = path_specsheet + "us" + slash;
+            String nome_specsheet_us = vist_scheda_pdf;
+
+            String specsheet_us = path_specsheet_us + nome_specsheet_us;
+
+            if (nome_specsheet_us.equals("")) {
+                return "";
+            }
+
+            return specsheet_us;
+
+        } else {
+            throw new Exception("Tipo risorsa NON gestito");
+        }
+
+    }
+
+    private String of_get_path_modello(String slash) {
+        return "fileresources" + slash + "models" + slash;
+    }
+
+    public String of_relpath_resource_MOD3D_EASM(String nome_modello_3D, String cdclas_a, String cdvistelet) {
+        String path_3D = of_get_path_3D();
+        String easm = path_3D + nome_modello_3D + ".EASM";
+        if (nome_modello_3D.equals("")) {
+            return "";
+        }
+        if (isListinoLed(cdclas_a)) {
+            easm = path_3D + nome_modello_3D + cdvistelet + ".EASM";
+        }
+        return easm;
+    }
+
+    private String of_get_path_3D() {
+        String slash = System.getProperty("file.separator");
+        return of_get_path_modello(slash) + "3D" + slash;
+    }
+
+    private String of_get_path_3DBLOCCHI_LED() {
+        String slash = System.getProperty("file.separator");
+        return of_get_path_modello(slash) + "3D" + slash + "blocchi_LED" + slash;
+    }
+
+    public String of_relpath_resource_MOD3D_IGS(String nome_modello_3D, String cdclas_a, String cdvistelet) {
+        String path_3D = of_get_path_3D();
+        String igs = path_3D + nome_modello_3D + ".zip";
+        if (nome_modello_3D.equals("")) {
+            return "";
+        }
+        if (isListinoLed(cdclas_a)) {
+            igs = path_3D + nome_modello_3D + cdvistelet + ".zip";
+        }
+        return igs;
+    }
+
+    private static boolean isListinoLed(String cdclas_a) {
+        return cdclas_a.equals(CDCLAS_A_LL)
+                || cdclas_a.equals(CDCLAS_A_ULL);
+    }
+    
+    public String of_getUrl_risorsa_esistente(String url_risorsa, String lang) throws Exception {
+
+      if (1 == 1) throw new Exception("ATTENZIONE!!! questo metodo può essere richiamato solo in E-progen");
+      
+      return "";
+
+    }
+
+    
+    
+    public static String TECHSHEET = "TECHSHEET";
+    public static String MOD3D_IGS = "MOD3D_IGS";
+//    public static String MOD3D_EPRT = "MOD3D_EPRT";
+    public static String MOD3D_EASM = "MOD3D_EASM";
+    public static String MOD2D_DWG_PO = "MOD2D_DWG_PO";
+    public static String MOD2D_DWG_CM = "MOD2D_DWG_CM";
+    public static String IMAGEPROD_HI_MULTIF = "IMAGEPROD_HI_MULTIF";
+    public static String IMAGEPROD_HI_SINGF = "IMAGEPROD_HI_SINGF";
+    public static String IMAGEPROD_LO_MULTIF = "IMAGEPROD_LO_MULTIF";
+    public static String IMAGEPROD_LO_SINGF = "IMAGEPROD_LO_SINGF";
+    public static String CERT = "CERT";
+    public static String SPECSHEET_IT = "SPECSHEET_IT";
+    public static String SPECSHEET_US = "SPECSHEET_US";
+    public static String SPECSHEET_SPEC = "SPECSHEET_SPEC";
+
+    private static final String CDCLAS_A_LL = "LL";
+    private static final String CDCLAS_A_ULL = "ULL";
+    private static final String CDCLAS_A_UL = "UL";
+    private static final String CDCLAS_A_LOU = "LOU";
+
 }

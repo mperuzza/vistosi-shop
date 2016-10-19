@@ -107,7 +107,7 @@ public class SchedaArticoloController {
          * if(f_tipologia!=null){ pars.put("cdvisttp",
          * f_tipologia.getCdvisttp()); }
          */
-        /*
+ /*
          * Vist_famiglia f_famiglia =
          * (Vist_famiglia)WebUtils.getSessionAttribute(request,
          * "famigliaFilter"); if(f_famiglia!=null){ pars.put("cdvistfam",
@@ -400,18 +400,17 @@ public class SchedaArticoloController {
         pars.put("cdvistcolv", cdvistcolv);
 
         pars.put("cdvistelet", cdvistelet);
-        
+
         if (((!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS") && user != null && user.getIsSpecList())
                 || (AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS") && GeoIPInterceptor.getCountry(request).equals("US")))
                 && StringUtils.isNotBlank(cdvistelet)) {
 
-                Vist_elettrificazioni vist_elettrificazioniAlternative = vistosiShopManager.getVist_elettrificazioniAlternative(cdvistelet);
-                if(vist_elettrificazioniAlternative!=null){
-                    pars.put("cdvistelet", vist_elettrificazioniAlternative.getCdvistelet());
-                }            
+            Vist_elettrificazioni vist_elettrificazioniAlternative = vistosiShopManager.getVist_elettrificazioniAlternative(cdvistelet);
+            if (vist_elettrificazioniAlternative != null) {
+                pars.put("cdvistelet", vist_elettrificazioniAlternative.getCdvistelet());
+            }
         }
-        
-        
+
 //        if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS") && user != null && StringUtils.isNotEmpty(cdvistelet)) {
 //            if(user.getIsSpecList()){
 //                Vist_elettrificazioni vist_elettrificazioniAlternative = vistosiShopManager.getVist_elettrificazioniAlternative(cdvistelet);
@@ -425,8 +424,6 @@ public class SchedaArticoloController {
 //                } */               
 //            }
 //        }
-
-        
         pars.put("vist_filedis", vist_filedis);
         pars.put("fgweb", "S");
 
@@ -648,7 +645,7 @@ public class SchedaArticoloController {
                 }
 
             } else {
-                if(scheda.getElettrificazioni().size()==1) {
+                if (scheda.getElettrificazioni().size() == 1) {
                     pars.put("cdvistelet", scheda.getElettrificazioni().get(0).getCdvistelet());
                 }
                 List<Mrp_arch_articoli> arts = vistosiShopManager.selectMrp_arch_articoliByPars(pars);
@@ -667,7 +664,7 @@ public class SchedaArticoloController {
 
             }
 
-        }        
+        }
 
         if (scheda.getArticolo() != null) {
 
@@ -685,7 +682,7 @@ public class SchedaArticoloController {
             if (scheda.getArticolo().getCdvistelet() != null) {
                 scheda.getArticolo().setVist_elettrificazioni(vistosiShopManager.getVist_elettrificazioniByKey(scheda.getArticolo().getCdvistelet()));
             }
-            
+
             //collezione
             Vist_cp_collezioni vist_cp_collezioniByKey = vistosiShopManager.getVist_cp_collezioniByKey(scheda.getArticolo().getCdvistccol());
             scheda.setVist_cp_collezioni(vist_cp_collezioniByKey);
@@ -700,7 +697,8 @@ public class SchedaArticoloController {
             //String nome_modello = vist_fam.getCdvistfam_mPad() + scheda.getArticolo().getCdvisttp() + scheda.getArticolo().getCdvistv1Pad() + scheda.getArticolo().getCdvistv2Pad() + scheda.getArticolo().getCdvistv3Pad() +"-";
             String nome_modello = scheda.getArticolo().getVist_filedis();
             //igs
-            String igs = path_3D + nome_modello + ".zip";
+            //String igs = path_3D + nome_modello + ".zip";
+            String igs = path_3D + nome_modello + (scheda.getArticolo().isLed()?scheda.getArticolo().getCdvistelet():"") + ".zip";
             try {
                 String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), igs);
                 File f = new File(path_to_filemodel);
@@ -726,7 +724,7 @@ public class SchedaArticoloController {
 //                log.error("file " + eprt + " non trovato");
 //            }
             //easm
-            String easm = path_3D + nome_modello + ".EASM";
+            String easm = path_3D + nome_modello + (scheda.getArticolo().isLed()?scheda.getArticolo().getCdvistelet():"") +".EASM";
             try {
                 String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), easm);
                 File f = new File(path_to_filemodel);
@@ -747,6 +745,7 @@ public class SchedaArticoloController {
             if ((!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS") && user != null && user.getIsSpecList())
                     || (AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS") && GeoIPInterceptor.getCountry(request).equals("US"))) {
                 dwg_vers = "po/";
+                scheda.getArticolo().setTiporisorsa2D_dwg(com.ateikon.common.Mrp_arch_articoli.MOD2D_DWG_PO);
             }
             String dwg = path_2D + dwg_vers + nome_modello + ".dwg";
             try {
@@ -795,7 +794,8 @@ public class SchedaArticoloController {
                         String nomefile = BeanUtils.getSimpleProperty(datiExtra, fieldName);
 
                         if (StringUtils.isNotBlank(nomefile)) {
-                            String nomeimg = vistosiShopManager.getCertImageName(fieldName);
+                            //String nomeimg = vistosiShopManager.getCertImageName(fieldName);
+                            String nomeimg = StringUtils.containsIgnoreCase(nomefile, "PENDING") ? StringUtils.substringBeforeLast(nomefile, ".") : vistosiShopManager.getCertImageName(fieldName);
 
                             if (StringUtils.contains(nomefile, "/")) {
                                 nomefile = StringUtils.substringAfterLast(nomefile, "/");
@@ -1019,7 +1019,7 @@ public class SchedaArticoloController {
                     Logger.getLogger(SchedaArticoloController.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (NoSuchMethodException ex) {
                     Logger.getLogger(SchedaArticoloController.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (Exception ex){
+                } catch (Exception ex) {
                     Logger.getLogger(SchedaArticoloController.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
@@ -1084,5 +1084,5 @@ public class SchedaArticoloController {
 
         return url;
     }
-    
+
 }

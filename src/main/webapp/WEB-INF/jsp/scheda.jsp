@@ -337,7 +337,8 @@
             }          
             contList.adopt(itemList);
 
-        }        
+        }    
+       
         
         function updateScheda(scheda){
             
@@ -493,6 +494,9 @@
                                             var lang = '&lang=${rc.locale}';
                                             var cdling = '&cdling=${cdling}';
                                             var origine_richiesta = 'origine_richiesta=';
+                                            var nome_modello = '&nome_modello=' + scheda.articolo.vist_filedis;
+                                            var cdvistelet = '&cdvistelet='+ scheda.articolo.cdvistelet;
+                                            var tiporisorsa = '&tiporisorsa=';
                                             var tkutente_rif = '';
                                             var direct = false;
                                             
@@ -527,7 +531,7 @@
                                                 tkutente_rif = '&tkutente_rif=<security:authentication property="principal.userDB.tkutente"/>';
                                             </security:authorize>
                                               
-                                            var pars = '&' + origine_richiesta + lang + cdling + tkutente_rif;
+                                            var pars = '&' + origine_richiesta + lang + cdling + tkutente_rif + nome_modello + cdvistelet;
                                             
                                             var descrFile = "${famiglia[dsfam]} "+ scheda.articolo.cdvisttp +
                                                     ' ' + (scheda.articolo.cdvistv1 && scheda.articolo.vist_var1?scheda.articolo.vist_var1['${dsv1}'].toUpperCase():'') + 
@@ -549,10 +553,10 @@
                                             <security:authorize ifAllGranted="ROLE_ANONYMOUS">
                                                 if(scheda.articolo.vist_articoli_img && scheda.articolo.vist_articoli_img.pathschtecExists){
                                                     url = downloadUrl+ scheda.articolo.vist_articoli_img.pathschtec + '?f=fileresources/assembling_instructions/' + scheda.articolo.vist_articoli_img.pathschtec;
-                                                    proxyurl = downloadRequestUrl+ pars + form_req_pars + tipo_richiesta + file + '&dsfile=' + '${istrLabel}' + ' ' + descrFile;
+                                                    proxyurl = downloadRequestUrl+ pars + form_req_pars + tipo_richiesta + file + '&dsfile=' + '${istrLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsaIstruzioni;
                                                     dlink_class = 'downloadproxylink';
                                                 }else{
-                                                    url = downloadUrlForm + pars +tipo_richiesta + file + '&dsfile=' + '${istrLabel}' + ' ' + descrFile;
+                                                    url = downloadUrlForm + pars +tipo_richiesta + file + '&dsfile=' + '${istrLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsaIstruzioni;
                                                     //if(!scheda.articolo.vist_articoli_img || !scheda.articolo.vist_articoli_img.pathschtecExists){
                                                     titletipz = "<spring:message code="msg_file_no_exist" arguments="${istrLabel}" text="Non disponibile. Clicca qui per richiederlo."/>"; 
                                                     //}
@@ -561,10 +565,10 @@
                                             <security:authorize ifNotGranted="ROLE_ANONYMOUS">
                                             if(scheda.articolo.vist_articoli_img && scheda.articolo.vist_articoli_img.pathschtecExists){
                                                 url = downloadUrl+ scheda.articolo.vist_articoli_img.pathschtec + '?f=fileresources/assembling_instructions/' + scheda.articolo.vist_articoli_img.pathschtec;
-                                                proxyurl = downloadRequestUrl+ pars +tipo_richiesta + file + '&dsfile=' + '${istrLabel}' + ' ' + descrFile;
+                                                proxyurl = downloadRequestUrl+ pars +tipo_richiesta + file + '&dsfile=' + '${istrLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsaIstruzioni;
                                                 dlink_class = 'downloadproxylink';
                                             }else{
-                                                url = downloadRequestUrl+ pars +tipo_richiesta + file + '&dsfile=' + '${istrLabel}' + ' ' + descrFile;
+                                                url = downloadRequestUrl+ pars +tipo_richiesta + file + '&dsfile=' + '${istrLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsaIstruzioni;
                                                 dlink_class = 'downloadreqlink';
                                                 proxyurl = '';
                                                 titletipz ="<spring:message code="msg_file_no_exist" arguments="${istrLabel}" text="Non disponibile. Clicca qui per richiederlo."/>"; 
@@ -588,20 +592,20 @@
                                             <security:authorize ifAllGranted="ROLE_ANONYMOUS">
                                                 if(scheda.articolo.model2D_dwgExists){
                                                     url = downloadUrl+ scheda.articolo.model2D_dwg + '?f=' + scheda.articolo.model2D_dwg;
-                                                    proxyurl = downloadRequestUrl+ pars + form_req_pars + tipo_richiesta + file + '&dsfile=' + '${m2DLabel}' + ' ' + descrFile;
+                                                    proxyurl = downloadRequestUrl+ pars + form_req_pars + tipo_richiesta + file + '&dsfile=' + '${m2DLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsa2D_dwg;
                                                     dlink_class = 'downloadproxylink';
                                                 }else{
-                                                    url = downloadUrlForm+ pars +tipo_richiesta + file + '&dsfile=' + '${m2DLabel}' + ' ' + descrFile;
+                                                    url = downloadUrlForm+ pars +tipo_richiesta + file + '&dsfile=' + '${m2DLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsa2D_dwg;
                                                     titletipz = "<spring:message code="msg_file_no_exist" arguments="${m2DLabel}" text="Non disponibile. Clicca qui per richiederlo."/>";                                                    
                                                 }                                            
                                             </security:authorize>
                                             <security:authorize ifNotGranted="ROLE_ANONYMOUS">
                                             if(scheda.articolo.model2D_dwgExists){
                                                 url = downloadUrl+ scheda.articolo.model2D_dwg + '?f=' + scheda.articolo.model2D_dwg;
-                                                proxyurl = downloadRequestUrl+ pars +tipo_richiesta + file + '&dsfile=' + '${m2DLabel}' + ' ' + descrFile;
+                                                proxyurl = downloadRequestUrl+ pars +tipo_richiesta + file + '&dsfile=' + '${m2DLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsa2D_dwg;
                                                 dlink_class = 'downloadproxylink';
                                             }else{
-                                                url = downloadRequestUrl+ pars +tipo_richiesta + file + '&dsfile=' + '${m2DLabel}' + ' ' + descrFile;
+                                                url = downloadRequestUrl+ pars +tipo_richiesta + file + '&dsfile=' + '${m2DLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsa2D_dwg;
                                                 dlink_class = 'downloadreqlink';
                                                 titletipz = "<spring:message code="msg_file_no_exist" arguments="${m2DLabel}" text="Non disponibile. Clicca qui per richiederlo."/>";
                                             }
@@ -625,20 +629,20 @@
                                             <security:authorize ifAllGranted="ROLE_ANONYMOUS">
                                                 if(scheda.articolo.model3D_easmExists){
                                                     url = downloadUrl+ scheda.articolo.model3D_easm + '?f=' + scheda.articolo.model3D_easm;
-                                                    proxyurl = downloadRequestUrl+ pars + form_req_pars + tipo_richiesta + file + '&dsfile=' + '${m3DLabel}' + ' ' + descrFile;
+                                                    proxyurl = downloadRequestUrl+ pars + form_req_pars + tipo_richiesta + file + '&dsfile=' + '${m3DLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsa3D_easm;
                                                     dlink_class = 'downloadproxylink';
                                                 }else{
-                                                    url = downloadUrlForm+ pars +tipo_richiesta + file + '&dsfile=' + '${m3DLabel}' + ' ' + descrFile;
+                                                    url = downloadUrlForm+ pars +tipo_richiesta + file + '&dsfile=' + '${m3DLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsa3D_easm;
                                                     titletipz = "<spring:message code="msg_file_no_exist" arguments="${m3DLabel}" text="Non disponibile. Clicca qui per richiederlo."/>";
                                                 } 
                                             </security:authorize>
                                             <security:authorize ifNotGranted="ROLE_ANONYMOUS">
                                             if(scheda.articolo.model3D_easmExists){
                                                 url = downloadUrl+ scheda.articolo.model3D_easm + '?f=' + scheda.articolo.model3D_easm;
-                                                proxyurl = downloadRequestUrl+ pars +tipo_richiesta + file + '&dsfile=' + '${m3DLabel}' + ' ' + descrFile;
+                                                proxyurl = downloadRequestUrl+ pars +tipo_richiesta + file + '&dsfile=' + '${m3DLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsa3D_easm;
                                                 dlink_class = 'downloadproxylink';
                                             }else{
-                                                url = downloadRequestUrl+ pars +tipo_richiesta + file + '&dsfile=' + '${m3DLabel}' + ' ' + descrFile;
+                                                url = downloadRequestUrl+ pars +tipo_richiesta + file + '&dsfile=' + '${m3DLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsa3D_easm;
                                                 dlink_class = 'downloadreqlink';
                                                 titletipz = "<spring:message code="msg_file_no_exist" arguments="${m3DLabel}" text="Non disponibile. Clicca qui per richiederlo."/>";
                                             }
@@ -691,20 +695,20 @@
                                             <security:authorize ifAllGranted="ROLE_ANONYMOUS">
                                                 if(scheda.articolo.model3D_igsExists){
                                                     url = downloadUrl+ scheda.articolo.model3D_igs + '?f=' + scheda.articolo.model3D_igs;
-                                                    proxyurl = downloadRequestUrl+ pars + form_req_pars + tipo_richiesta + file + '&dsfile=' + '${m3DLabel}' + ' ' + descrFile;
+                                                    proxyurl = downloadRequestUrl+ pars + form_req_pars + tipo_richiesta + file + '&dsfile=' + '${m3DLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsa3D_igs;
                                                     dlink_class = 'downloadproxylink';
                                                 }else{
-                                                    url = downloadUrlForm + pars +tipo_richiesta + file + '&dsfile=' + '${m3DLabel}' + ' ' + descrFile;
+                                                    url = downloadUrlForm + pars +tipo_richiesta + file + '&dsfile=' + '${m3DLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsa3D_igs;
                                                     titletipz = "<spring:message code="msg_file_no_exist" arguments="${m3DLabel}" text="Non disponibile. Clicca qui per richiederlo."/>";
                                                 } 
                                             </security:authorize>
                                             <security:authorize ifNotGranted="ROLE_ANONYMOUS">
                                             if(scheda.articolo.model3D_igsExists){
                                                 url = downloadUrl+ scheda.articolo.model3D_igs + '?f=' + scheda.articolo.model3D_igs;
-                                                proxyurl = downloadRequestUrl+ pars +tipo_richiesta + file + '&dsfile=' + '${m3DLabel}' + ' ' + descrFile;
+                                                proxyurl = downloadRequestUrl+ pars +tipo_richiesta + file + '&dsfile=' + '${m3DLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsa3D_igs;
                                                 dlink_class = 'downloadproxylink';
                                             }else{
-                                                url = downloadRequestUrl+ pars +tipo_richiesta + file + '&dsfile=' + '${m3DLabel}' + ' ' + descrFile;
+                                                url = downloadRequestUrl+ pars +tipo_richiesta + file + '&dsfile=' + '${m3DLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsa3D_igs;
                                                 dlink_class = 'downloadreqlink';
                                                 titletipz = "<spring:message code="msg_file_no_exist" arguments="${m3DLabel}" text="Non disponibile. Clicca qui per richiederlo."/>";
                                             }
@@ -729,7 +733,7 @@
                                                     url = '<c:url value="/specsheet/"/>'+scheda.articolo.cdartm;
                                                     dlink_class = '';
                                                 }else{
-                                                    url = downloadUrlForm + pars +tipo_richiesta + file + '&dsfile=' + '${specSheetLabel}' + ' ' + descrFile;
+                                                    url = downloadUrlForm + pars +tipo_richiesta + file + '&dsfile=' + '${specSheetLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsaSpecsheet;
                                                     dlink_class = 'downloadlink';
                                                     titletipz = "<spring:message code="msg_file_no_exist" arguments="${specSheetLabel}" text="Non disponibile. Clicca qui per richiederlo."/>";
                                                 }
@@ -739,7 +743,7 @@
                                                 url = '<c:url value="/specsheet/"/>'+scheda.articolo.cdartm;
                                                 dlink_class = '';
                                             }else{
-                                                url = downloadRequestUrl+ pars +tipo_richiesta + file + '&dsfile=' + '${specSheetLabel}' + ' ' + descrFile;
+                                                url = downloadRequestUrl+ pars +tipo_richiesta + file + '&dsfile=' + '${specSheetLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsaSpecsheet;
                                                 dlink_class = 'downloadreqlink';
                                                 titletipz = "<spring:message code="msg_file_no_exist" arguments="${specSheetLabel}" text="Non disponibile. Clicca qui per richiederlo."/>";
                                             }

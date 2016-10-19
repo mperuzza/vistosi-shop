@@ -2834,10 +2834,12 @@ public class F_eprogen_replace extends Atk_sql {
 
     
 
+    String idTracking = f_bolla_test.getIDTracking(ao_token);
     
     ao_map.put("${bolla_test.dtboll}"                        , atk_ctrl.getDate(dtboll)                              );
     ao_map.put("${bolla_test.url_spedizione}"                , url_spedizione                                        );
     ao_map.put("${bolla_test.url_spedizione_DROPSHIP}"       , url_spedizione_DROPSHIP                               );
+    ao_map.put("${bolla_test.id_tracking}"                   , idTracking                                            );
 
     String ls_text_link3          = atk_dwlingua.getLabel ("srv_vendita", cdling, "text_link3"       , "", null);
       
@@ -2849,6 +2851,14 @@ public class F_eprogen_replace extends Atk_sql {
     if (!url_spedizione_DROPSHIP.equals("")) text_link_spedizione  += atk_dwlingua.getLabel ("srv_vendita", cdling, "sped_boll_text_2_2" , "", new String[] {"<a href=\""+ url_spedizione_DROPSHIP +"\">"+ ls_text_link3 +"</a>"});
 
     ao_map.put("${ov_avvsped.text_link_spedizione}"          , text_link_spedizione                                 );
+
+    String text_id_tracking  = "";
+    
+    if (!idTracking.isEmpty()){
+        text_id_tracking  = atk_dwlingua.getLabel ("srv_vendita", cdling, "text_id_tracking"       , "", new String[] {"<b>"+ idTracking +"</b>"});
+    }
+
+    ao_map.put("${ov_avvsped.text_id_tracking}"              , text_id_tracking                                 );
 
     ao_map = of_setPar_Archclie(ao_map, tkclie, cdling);
 
@@ -5430,22 +5440,30 @@ public class F_eprogen_replace extends Atk_sql {
             String annotazione_posi_cli = getAnnotazione_posi(tkposi, TIPONOTA_CLIENTE);
             
 
-            String path_modello = "fileresources/models";
-            String path_3D = path_modello + "/3D/";
+//            String path_modello = "fileresources/models";
+//            String path_3D = path_modello + "/3D/";
             String nome_modello = vist_filedis;
             //igs
-            String igs = (!nome_modello.equals("") ? path_3D + nome_modello + ".zip" : "");
+//            String igs = (!nome_modello.equals("") ? path_3D + nome_modello + ".zip" : "");
+            String igs = mrp_arch_articoli.of_relpath_resource(cdclas_a, mrp_arch_articoli.MOD3D_IGS, cdvistfam, cdvisttp, cdvistv1, cdvistv2, cdvistv3, cdvistelet, vist_filedis, "");
 
 //            //eprt
 //            String eprt = (!nome_modello.equals("") ? path_3D + nome_modello + ".EPRT" : "");
 
             //easm
-            String easm = (!nome_modello.equals("") ? path_3D + nome_modello + ".EASM" : "");
+//            String easm = (!nome_modello.equals("") ? path_3D + nome_modello + ".EASM" : "");
+            String easm = mrp_arch_articoli.of_relpath_resource(cdclas_a, mrp_arch_articoli.MOD3D_EASM, cdvistfam, cdvisttp, cdvistv1, cdvistv2, cdvistv3, cdvistelet, vist_filedis, "");
 
-            String path_2D = path_modello + "/2D/";
-            //dwg cm
-            String dwg_vers = "cm/";
-            String dwg = (!nome_modello.equals("") ? path_2D + dwg_vers + nome_modello + ".dwg" : "");
+//            String path_2D = path_modello + "/2D/";
+//            //dwg cm
+//            String dwg_vers = "cm/";
+//            String dwg = (!nome_modello.equals("") ? path_2D + dwg_vers + nome_modello + ".dwg" : "");
+            String dwg = "";
+            if (cdling.equals("E")){ //CABLATO -- se inglese
+                dwg = mrp_arch_articoli.of_relpath_resource(cdclas_a, mrp_arch_articoli.MOD2D_DWG_PO, cdvistfam, cdvisttp, cdvistv1, cdvistv2, cdvistv3, cdvistelet, vist_filedis, "");
+            } else {
+                dwg = mrp_arch_articoli.of_relpath_resource(cdclas_a, mrp_arch_articoli.MOD2D_DWG_CM, cdvistfam, cdvisttp, cdvistv1, cdvistv2, cdvistv3, cdvistelet, vist_filedis, "");
+            }
             
             //path certificati
             String path_cert = "fileresources/cert/";
@@ -7147,9 +7165,11 @@ public class F_eprogen_replace extends Atk_sql {
     
     Ep_costanti ep_costanti = new Ep_costanti();
     Costanti_comm costanti_comm = new Costanti_comm();
+    Mrp_arch_articoli mrp_arch_articoli = new Mrp_arch_articoli();
     
     setProfilo((Atk_sql) ep_costanti);
     setProfilo((Atk_sql) costanti_comm);
+    setProfilo((Atk_sql) mrp_arch_articoli);
 
     String ep_portal_url    = ep_costanti.getCostvalue("ep.portal_url");
     ep_portal_url = of_cambiaURLLingua(ep_portal_url, cdling);
@@ -7164,7 +7184,7 @@ public class F_eprogen_replace extends Atk_sql {
         ls_lang = sql_String("select cdiso639 from pgmr.ep_lingua where cdling = '"+ cdling + "' ");
     }
     
-    String ls_site_downr_url_risorsa = of_setPar_SITE_DOWNR_getUrl_risorsa_esistente(ls_url_risorse, ls_lang);
+    String ls_site_downr_url_risorsa = mrp_arch_articoli.of_getUrl_risorsa_esistente(ls_url_risorse, ls_lang);
     
     if (!ls_site_downr_url_risorsa.equals("")){
         ls_site_downr_url_risorsa = ep_portal_url + "download/?f="+ ls_site_downr_url_risorsa +"&tkc="+ tkcontatto +"&lang="+ ls_lang;
@@ -7202,248 +7222,13 @@ public class F_eprogen_replace extends Atk_sql {
     
     ep_costanti.close();
     costanti_comm.close();
+    mrp_arch_articoli.close();
 
     return ao_map;
 
   }
   
   
-
-  public String of_setPar_SITE_DOWNR_getUrl_risorsa_esistente(String url_risorsa, String lang) throws Exception{
-
-    if (url_risorsa.equals("")) return ""; 
-    
-    Costanti_comm costanti_comm = new Costanti_comm();
-    Ep_costanti ep_costanti = new Ep_costanti();
-    Mrp_arch_articoli mrp_arch_articoli = new Mrp_arch_articoli();
-    
-    setProfilo((Atk_sql) costanti_comm);
-    setProfilo((Atk_sql) ep_costanti);
-    setProfilo((Atk_sql) mrp_arch_articoli);
-    
-    String siteroot = costanti_comm.getCostvalue("site.siteroot");
-    String shopSiteroot = ep_costanti.getCostvalue("ep.shop_root");
-    String slash = System.getProperty("file.separator");
-      
-    String ls_url_risorsa_esistente = "";
-    
-    String relpathfile = url_risorsa;
-    
-    //System.out.println(" relpathfile "+ relpathfile);
-    
-    relpathfile = relpathfile.replace("/", slash);
-    relpathfile = relpathfile.replace("\\", slash);
-    
-    if (relpathfile.indexOf(slash) == 0) relpathfile = relpathfile.substring(1, relpathfile.length());
-    
-    int idx_ext = relpathfile.lastIndexOf(".");
-    int idx_last_slash = relpathfile.lastIndexOf(slash);
-    
-    if (idx_ext < 0){
-      
-        String cartella = "";
-
-        if (idx_last_slash >= 0) cartella = relpathfile.substring(0, idx_last_slash + 1);
-        String ls_filename_ipotetico = relpathfile.substring(idx_last_slash + 1, relpathfile.length());
-
-        //System.out.println(" cartella "+ cartella);
-        //System.out.println(" ls_filename_ipotetico "+ ls_filename_ipotetico);
-
-        if (cartella.indexOf("specsheet"+ slash) == 0){
-            
-            relpathfile = url_risorsa;
-            ls_filename_ipotetico = relpathfile.replace("/specsheet/", "");
-            ls_filename_ipotetico = ls_filename_ipotetico.replace("specsheet/", "");
-
-            String  l_query = "";
-
-            l_query  = "";
-            l_query  = "    select arti.vist_filedis                                 \n";
-            l_query += "         , arti.cdclas_a                                     \n";
-            l_query += "         , arti.cdvistelet                                   \n";
-            l_query += "      from pgmr.mrp_arch_articoli   arti                     \n";
-            l_query += "     where arti.cdartm  = '"+ ls_filename_ipotetico +"'      \n";
-
-            //String nome_modello = sql_String(l_query);
-            ResultSet rs = sql_query(l_query);
-            
-            String nome_modello = "";
-            String cdclas_a = "";
-            String cdvistelet = "";
-            
-            if (rs != null && rs.next()){
-
-              if (rs.getObject("vist_filedis"   )!= null) nome_modello   = rs.getString("vist_filedis"   );
-              if (rs.getObject("cdclas_a"       )!= null) cdclas_a       = rs.getString("cdclas_a"    );
-              if (rs.getObject("cdvistelet"     )!= null) cdvistelet     = rs.getString("cdvistelet"   );
-            }
-            
-            return mrp_arch_articoli.of_relpath_resource_specsheet(cdclas_a, shopSiteroot, nome_modello, lang, ls_filename_ipotetico, cdvistelet);
-
-        } else {
-            
-            String[] arr_codici = ls_filename_ipotetico.split("\\|");
-
-            if (arr_codici != null && arr_codici.length == 7){
-                String cdfile     = arr_codici[0];
-                String cdvisttp   = arr_codici[1];
-                String cdvistfam  = arr_codici[2];
-                String cdvistv1   = arr_codici[3];
-                String cdvistv2   = arr_codici[4];
-                String cdvistv3   = arr_codici[5];
-                String cdvistelet = arr_codici[6];
-
-        //        System.out.println(" cdfile "+ cdfile);
-        //        System.out.println(" cdvisttp "+ cdvisttp);
-        //        System.out.println(" cdvistfam "+ cdvistfam);
-        //        System.out.println(" cdvistv1 "+ cdvistv1);
-        //        System.out.println(" cdvistv2 "+ cdvistv2);
-        //        System.out.println(" cdvistv3 "+ cdvistv3);
-        //        System.out.println(" cdvistelet "+ cdvistelet);
-
-                if (cdfile.equals("IM")){  // ISTR. MONTAGGIO
-
-        //          System.out.println("ISTR. MONTAGGIO");
-
-                  if (   !cdvisttp.equals("")
-                      || !cdvistfam.equals("") 
-                      || !cdvistv1.equals("") 
-                      || !cdvistv2.equals("") 
-                      || !cdvistv3.equals("") 
-                      || !cdvistelet.equals("")
-                     ){
-
-                      String  l_query = "";
-
-
-                      l_query  = "";
-                      l_query  = "    select distinct pathschtec            \n";
-                      l_query += "      from pgmr.vist_articoli_img   aimg  \n";
-                      l_query += "         , pgmr.mrp_arch_articoli   arti  \n";
-                      l_query += "     where aimg.cdarti = arti.cdarti      \n";
-
-                        l_query += "       and arti.cdvisttp  = '"+ cdvisttp +"'      \n";
-                        l_query += "       and arti.cdvistfam  = '"+ cdvistfam +"'      \n";
-
-                        if (!cdvistv1.equals("")){
-                          l_query += "       and arti.cdvistv1  = '"+ cdvistv1 +"'      \n";
-                        } else {  
-                          l_query += "       and arti.cdvistv1 is null    \n";
-                        }
-                        if (!cdvistv2.equals("")){
-                          l_query += "       and arti.cdvistv2  = '"+ cdvistv2 +"'      \n";
-                        } else {  
-                          l_query += "       and arti.cdvistv2 is null    \n";
-                        }
-                        if (!cdvistv3.equals("")){
-                          l_query += "       and arti.cdvistv3  = '"+ cdvistv3 +"'      \n";
-                        } else {  
-                          l_query += "       and arti.cdvistv3 is null    \n";
-                        }
-                        if (!cdvistelet.equals("")){
-                          l_query += "       and arti.cdvistelet  = '"+ cdvistelet +"'      \n";
-                        } else {  
-                          l_query += "       and arti.cdvistelet is null    \n";
-                        }
-
-                      String filename = sql_String(l_query);
-
-                      if (!filename.equals("")) relpathfile = cartella + filename;
-
-                  }
-
-    //          } else if (cdfile.equals("SS")){  // SPECSHEET
-    //
-    //    //          System.out.println("SPECSHEET");
-    //
-    //              if (   !cdvisttp.equals("")
-    //                  || !cdvistfam.equals("") 
-    //                  || !cdvistv1.equals("") 
-    //                  || !cdvistv2.equals("") 
-    //                  || !cdvistv3.equals("") 
-    //                  || !cdvistelet.equals("")
-    //                 ){
-    //
-    //                  String  l_query = "";
-    //
-    //
-    //                  l_query  = "";
-    //                  l_query  = "      select distinct (arti.vist_scheda_pdf)              \n";
-    //                  l_query += "        from pgmr.mrp_arch_articoli   arti                \n";
-    //                  l_query += "       where 1 = 1                                        \n";
-    //
-    //                  if (!cdvisttp.equals("")){
-    //                    l_query += "       and arti.cdvisttp  = '"+ cdvisttp +"'      \n";
-    //                  } else {
-    //                    l_query += "       and arti.cdvisttp  is null      \n";
-    //                  }
-    //                  if (!cdvistfam.equals("")){
-    //                    l_query += "       and arti.cdvistfam  = '"+ cdvistfam +"'      \n";
-    //                  } else {
-    //                    l_query += "       and arti.cdvistfam  is null      \n";
-    //                  }
-    //                  if (!cdvistv1.equals("")){
-    //                    l_query += "       and arti.cdvistv1  = '"+ cdvistv1 +"'      \n";
-    //                  } else {
-    //                    l_query += "       and arti.cdvistv1  is null      \n";
-    //                  }
-    //                  if (!cdvistv2.equals("")){
-    //                    l_query += "       and arti.cdvistv2  = '"+ cdvistv2 +"'      \n";
-    //                  } else {
-    //                    l_query += "       and arti.cdvistv2  is null      \n";
-    //                  }
-    //                  if (!cdvistv3.equals("")){
-    //                    l_query += "       and arti.cdvistv3  = '"+ cdvistv3 +"'      \n";
-    //                  } else {
-    //                    l_query += "       and arti.cdvistv3  is null      \n";
-    //                  }
-    //                  if (!cdvistelet.equals("")){
-    //                    l_query += "       and arti.cdvistelet  = '"+ cdvistelet +"'      \n";
-    //                  } else {
-    //                    l_query += "       and arti.cdvistelet  is null      \n";
-    //                  }
-    //
-    //                  String filename = sql_String(l_query);
-    //
-    //                  if (!filename.equals("")) relpathfile = cartella + filename;
-    //
-    //              }
-    //
-    //
-                } else {
-                  System.out.println("File richiesto non identificabile: "+ url_risorsa);
-                }
-
-            } 
-            
-        }
-      
-    } // FINE . if (idx_ext
-    
-//    System.out.println(" relpathfile "+ relpathfile);
-    
-    
-    
-    File lobj_file = new File(siteroot + relpathfile);
-      
-//    System.out.println(siteroot + relpathfile);
-    
-    if (lobj_file.exists()){
-//      System.out.println("File trovato");
-      ls_url_risorsa_esistente = relpathfile.replace("\\", "/");
-    } else {  
-//      System.out.println("File NON trovato");
-      ls_url_risorsa_esistente = "";
-    }
-    
-    
-    costanti_comm.close();
-    ep_costanti.close();
-    mrp_arch_articoli.close();
-    
-    return ls_url_risorsa_esistente;
-
-  }
 
   public HashMap of_setPar_Vist_oridati (HashMap ao_map, String oridati, String cdling) throws Exception {
     int ind = 0;

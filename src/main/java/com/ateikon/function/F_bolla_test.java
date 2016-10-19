@@ -46,6 +46,11 @@ public class F_bolla_test extends Atk_sql {
 
     }
 
+    public String getIDTracking   (long tkboll) throws Exception{
+      if (1 == 1) throw new Exception("ATTENZIONE!!! questo metodo può essere richiamato solo in E-progen");
+      
+      return "";
+    }    
 
     public String message = "";
     public String rc = "0";
