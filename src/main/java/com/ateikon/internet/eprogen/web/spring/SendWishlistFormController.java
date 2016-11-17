@@ -57,7 +57,7 @@ public class SendWishlistFormController extends BaseFormController {
     @Autowired
     private VelocityEngine velocityEngine;
     @Autowired
-    private VistosiShopManager vistosiShopManager;    
+    private VistosiShopManager vistosiShopManager;
     @Autowired
     private MailEngine mailEngine = null;
 
@@ -67,8 +67,7 @@ public class SendWishlistFormController extends BaseFormController {
 
     public void setMailEngine(MailEngine mailEngine) {
         this.mailEngine = mailEngine;
-    }    
-    
+    }
 
     public void setMessageSource(MessageSource messageSource) {
         this.messageSource = messageSource;
@@ -77,11 +76,11 @@ public class SendWishlistFormController extends BaseFormController {
     public void setVelocityEngine(VelocityEngine velocityEngine) {
         this.velocityEngine = velocityEngine;
     }
-    
+
     public void setVistosiShopManager(VistosiShopManager vistosiShopManager) {
         this.vistosiShopManager = vistosiShopManager;
     }
-    
+
 //    @RequestMapping(value = {"/temp"}, method = RequestMethod.GET)
 //    public String getTemp(HttpServletRequest request, Model model) {
 //            
@@ -148,12 +147,10 @@ public class SendWishlistFormController extends BaseFormController {
 //    
 //        return "send_wishlist";
 //    }
-    
-
     @RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
-    public String getForm(@RequestParam(value = "storelocator", required = false, defaultValue="false") Boolean storeLocator, 
-                            HttpServletRequest request, Model model) throws Exception {
-        
+    public String getForm(@RequestParam(value = "storelocator", required = false, defaultValue = "false") Boolean storeLocator,
+            HttpServletRequest request, Model model) throws Exception {
+
         long tkordi = 0;
         CarrelloItemForm cart = null;
         Object s_tkordi = WebUtils.getSessionAttribute(request, "tkordi");
@@ -163,15 +160,14 @@ public class SendWishlistFormController extends BaseFormController {
         }
 
         model.addAttribute("cart", cart);
-        
+
         FormSendWishlist form = new FormSendWishlist();
 
         form.setWishlistId(tkordi);
-        
+
         model.addAttribute("formSendWishlist", form);
-        
+
         model.addAttribute("storeLocator", storeLocator);
-        
 
         return "send_wishlist";
     }
@@ -180,7 +176,7 @@ public class SendWishlistFormController extends BaseFormController {
 
         if (StringUtils.isBlank(form.getSender())) {
             result.rejectValue("sender", "errors.required", new Object[]{"Email"}, "Mittente richiesto");
-        }else{
+        } else {
             if (!ValidationUtils.validateEmail(form.getSender())) {
                 result.rejectValue("sender", "errors.invalid", new Object[]{"Email"}, "Indirizzo mail non valido");
             }
@@ -215,7 +211,6 @@ public class SendWishlistFormController extends BaseFormController {
 //            for (String string : a_email) {
 //                log.debug(string);
 //            }
-
         }
 
     }
@@ -224,7 +219,7 @@ public class SendWishlistFormController extends BaseFormController {
     public String sendWishlist(@ModelAttribute("formSendWishlist") FormSendWishlist form, BindingResult result, HttpServletRequest request) throws Exception {
 
         RequestContext rc = new RequestContext(request);
-        
+
         validate(form, result, request);
         if (result.hasErrors()) {
             return "send_wishlist";
@@ -255,14 +250,15 @@ public class SendWishlistFormController extends BaseFormController {
                 }
                 art.setMrp_file_giacenza(vistosiShopManager.getMrp_file_giacenzaByKey(art.getCdarti(), "STD", tkmaga));
 
-                if("S".equals(art.getFgpromo())){
+                if ("S".equals(art.getFgpromo())) {
                     Vist_offerte vist_offerte = vistosiShopManager.getVist_offerteByCdarti(art.getCdarti());
-                    if(vist_offerte!=null) art.setVist_offerte(vist_offerte);        
-                }         
-                
+                    if (vist_offerte != null) {
+                        art.setVist_offerte(vist_offerte);
+                    }
+                }
+
                 //ricerca file download
                 if (art != null) {
-
 
                     WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(request);
 
@@ -271,14 +267,13 @@ public class SendWishlistFormController extends BaseFormController {
 
                     log.debug("filedis >>>" + art.getVist_filedis());
 
-
                     String path_modello = "fileresources/models";
                     String path_3D = path_modello + "/3D/";
                     //String nome_modello = vist_fam.getCdvistfam_mPad() + art.getCdvisttp() + art.getCdvistv1Pad() + art.getCdvistv2Pad() + art.getCdvistv3Pad() +"-";
                     String nome_modello = art.getVist_filedis();
                     //igs
                     //String igs = path_3D + nome_modello + ".zip";
-                    String igs = path_3D + nome_modello + (art.isLed()?art.getCdvistelet():"") + ".zip";
+                    String igs = path_3D + nome_modello + (art.isLed() ? art.getCdvistelet() : "") + ".zip";
                     try {
                         String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), igs);
                         File f = new File(path_to_filemodel);
@@ -305,7 +300,7 @@ public class SendWishlistFormController extends BaseFormController {
 //                    }
                     //easm
                     //String easm = path_3D + nome_modello + ".EASM";
-                    String easm = path_3D + nome_modello + (art.isLed()?art.getCdvistelet():"") +".EASM";
+                    String easm = path_3D + nome_modello + (art.isLed() ? art.getCdvistelet() : "") + ".EASM";
                     try {
                         String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), easm);
                         File f = new File(path_to_filemodel);
@@ -337,15 +332,15 @@ public class SendWishlistFormController extends BaseFormController {
                     } catch (FileNotFoundException ex) {
                         log.error("file " + dwg + " non trovato");
                     }
-                    
+
                     //file certificati
                     Vist_articoli_datiextra datiExtra = vistosiShopManager.getDatiExtraByCdartm(art.getCdartm());
                     String path_cert = "fileresources/cert/";
 
                     if (datiExtra != null) {
-                                              
+
                         try {
-                            
+
                             String path_techsheet = "fileresources/assembling_instructions/";
                             String techsheet = datiExtra.getArwFileSchedaTec();
                             if (StringUtils.isNotEmpty(techsheet)) {
@@ -364,8 +359,8 @@ public class SendWishlistFormController extends BaseFormController {
                                 } catch (Exception ex) {
                                     log.error("file techsheet non trovato");
                                 }
-                            }                              
-                            
+                            }
+
                             for (int i = 1; i < 5; i++) {
 
                                 String fieldName = "arwCertificazione" + i;
@@ -381,17 +376,21 @@ public class SendWishlistFormController extends BaseFormController {
                                         nomefile = StringUtils.substringAfterLast(nomefile, "\\");
                                     }
 
-                                    String realPath = WebUtils.getRealPath(ctx.getServletContext(), path_cert + nomefile);
+                                    try {
+                                        String realPath = WebUtils.getRealPath(ctx.getServletContext(), path_cert + nomefile);
 
-                                    File f = new File(realPath);
-                                    if (f.exists()) {
-                                        Map<String, String> certMap = new HashMap<String, String>();
-                                        certMap.put("img", nomeimg);
-                                        certMap.put("file", path_cert + nomefile);
+                                        File f = new File(realPath);
+                                        if (f.exists()) {
+                                            Map<String, String> certMap = new HashMap<String, String>();
+                                            certMap.put("img", nomeimg);
+                                            certMap.put("file", path_cert + nomefile);
 
-                                        art.getCertList().addLast(certMap);
-                                    } else {
-                                        //TODO???
+                                            art.getCertList().addLast(certMap);
+                                        } else {
+                                            //TODO???
+                                        }
+                                    } catch (FileNotFoundException ex) {
+                                        //log.debug("not exists");
                                     }
                                 }
                             }
@@ -406,7 +405,6 @@ public class SendWishlistFormController extends BaseFormController {
 
                             art.setEletDatiExtraMap(vistosiShopManager.getDatiExtraLampMap(datiExtra, ctx));
 
-
                             //check esistenza specsheet
 //                            String realPathPdf = WebUtils.getRealPath(ctx.getServletContext(), SpecSheet.ROOT_RES + "/risorse/" + nome_modello + ".pdf");
 //                            String realPathU3D = WebUtils.getRealPath(ctx.getServletContext(), SpecSheet.ROOT_RES + "/risorse/" + nome_modello + ".U3D");
@@ -417,14 +415,13 @@ public class SendWishlistFormController extends BaseFormController {
 //                            File fXlsx = new File(realPathXlsx);
 //
 //                            if(fPdf.exists() && fU3D.exists() && fXlsx.exists()){                                
-                            if(vistosiShopManager.checkSpecsheetExists(art, ctx, rc)){
-                                
+                            if (vistosiShopManager.checkSpecsheetExists(art, ctx, rc)) {
+
                                 art.setSpecsheetExists(true);
 
                             }
 
-
-                        } catch (FileNotFoundException ex) {
+                        //} catch (FileNotFoundException ex) {
 
                         } catch (IllegalAccessException ex) {
                             Logger.getLogger(SchedaArticoloController.class.getName()).log(Level.SEVERE, null, ex);
@@ -434,18 +431,17 @@ public class SendWishlistFormController extends BaseFormController {
                             Logger.getLogger(SchedaArticoloController.class.getName()).log(Level.SEVERE, null, ex);
                         }
 
-                    }                    
+                    }
 
-                }                                
-                
-                
+                }
+
                 Map stpars = new HashMap();
                 stpars.put("cdarti", art.getCdarti());
 
                 stpars.put("fgpromo", "S");
                 int countOff = vistosiShopManager.countOfferta(stpars);
                 if (countOff > 0) {
-                    if(!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")){
+                    if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
                         Mrp_arch_stato statoOff = new Mrp_arch_stato(51, 153, 51);
                         art.setStato(statoOff);
                     }
@@ -464,7 +460,6 @@ public class SendWishlistFormController extends BaseFormController {
 
                     art.setDatiRicambio(vistosiShopManager.getDatiRicambio(ord_positito.getCdartirif(), ord_positito.getCdarti()));
 
-
                     Mrp_arch_articoli artrif = vistosiShopManager.getMrp_arch_articoliByKey(ord_positito.getCdartirif());
 
                     artrif.setVist_famiglia(vistosiShopManager.getVist_famigliaByKey(artrif.getCdvistfam()));
@@ -477,7 +472,7 @@ public class SendWishlistFormController extends BaseFormController {
                 }
             }
         }
-        
+
 
         /*
          * String cdlingua = "0"; RequestContext rc = new
@@ -488,7 +483,6 @@ public class SendWishlistFormController extends BaseFormController {
          * if(!Utils.isEmpty(tabLingues)){ cdlingua =
          * tabLingues.get(0).getCodicelingua(); }
          */
-
 //        String cdlingua = GeoIPInterceptor.getCountry(request).getCodicelingua();
 //        List<TabLingue> tabLingues = jpqlJpaController.findEntities(TabLingue.class, Filter.equal("codicelingua", cdlingua));
 //        Integer languageId = 0;
@@ -497,13 +491,11 @@ public class SendWishlistFormController extends BaseFormController {
 //        }
 //
 //        model.put("languageId", languageId);
-
         Map mailModel = new HashMap();
         mailModel.put("cart", cart);
-        
+
         List<Mrp_arch_stato> availableStates = vistosiShopManager.getAvailableStates();
         mailModel.put("legenda", availableStates);
-        
 
         List<String> dest = form.getToList();
 
@@ -514,7 +506,6 @@ public class SendWishlistFormController extends BaseFormController {
 //                form.getToList().add(epUtente.getEmail());
 //            }
 //        }
-
         String templateName = "share_wishlist.vm";
 
         ShopUser user = null;
@@ -526,38 +517,34 @@ public class SendWishlistFormController extends BaseFormController {
         mailModel.put("locale", locale);
         String s_locale = locale.getLanguage();
         mailModel.put("s_locale", s_locale);
-        
-        if("it".equals(s_locale)){
-            mailModel.put("atkLangSfx", "");
-        }else
-        if("en".equals(s_locale)){
-            mailModel.put("atkLangSfx", "_eng");
-        }else
-        if("de".equals(s_locale)){
-            mailModel.put("atkLangSfx", "_ted");
-        }else
-        if("es".equals(s_locale)){
-            mailModel.put("atkLangSfx", "_spa");
-        }else
-        if("fr".equals(s_locale)){
-            mailModel.put("atkLangSfx", "_fra");
-        }else mailModel.put("atkLangSfx", "");
 
+        if ("it".equals(s_locale)) {
+            mailModel.put("atkLangSfx", "");
+        } else if ("en".equals(s_locale)) {
+            mailModel.put("atkLangSfx", "_eng");
+        } else if ("de".equals(s_locale)) {
+            mailModel.put("atkLangSfx", "_ted");
+        } else if ("es".equals(s_locale)) {
+            mailModel.put("atkLangSfx", "_spa");
+        } else if ("fr".equals(s_locale)) {
+            mailModel.put("atkLangSfx", "_fra");
+        } else {
+            mailModel.put("atkLangSfx", "");
+        }
 
         mailModel.put("resources", messageSource);
         mailModel.put("noArgs", new Object[]{});
         //${eprogenUrl}epRichiesta_risorse_pubblica_form.jsp?origine_richiesta=PUBBLICA&lang=${rc.locale}&cdling=${cdling}
-        String cdling = (String)WebUtils.getSessionAttribute(request, "cdling");
+        String cdling = (String) WebUtils.getSessionAttribute(request, "cdling");
         mailModel.put("cdling", cdling);
         mailModel.put("eprogenUrl", getEprogenUrl());
         mailModel.put("portalUrl", getPortalUrl());
-        mailModel.put("downloadUrl", getEprogenUrl()+"epRichiesta_risorse_pubblica_form.jsp?origine_richiesta=PUBBLICA&lang="+s_locale+"&cdling="+cdling);
+        mailModel.put("downloadUrl", getEprogenUrl() + "epRichiesta_risorse_pubblica_form.jsp?origine_richiesta=PUBBLICA&lang=" + s_locale + "&cdling=" + cdling);
 //        mailModel.put("number", new NumberTool());
 //        mailModel.put("date", new DateTool());
 //        mailModel.put("render", new RenderTool());
         mailModel.put("applicationURL", RequestUtil.getAppURL(request));
-        
-        
+
         Atk_sql atk_sql = new Atk_sql();
 
         try {
@@ -570,13 +557,12 @@ public class SendWishlistFormController extends BaseFormController {
 
             F_eprogen_replace f_eprogen_replace = new F_eprogen_replace();
             atk_sql.setProfilo((Atk_sql) f_eprogen_replace);
-            
-            HashMap of_setPar_BANNER = f_eprogen_replace.of_setPar_BANNER(null, cdling);
-                    //tkordi = f_ordven.getCarrello(user.getUserDB().getTkutente(), user.getUserDB().getTkclie(), cdstato);        
 
-            mailModel.put("banner",  of_setPar_BANNER.get("${banner}"));
-            
-            
+            HashMap of_setPar_BANNER = f_eprogen_replace.of_setPar_BANNER(null, cdling);
+            //tkordi = f_ordven.getCarrello(user.getUserDB().getTkutente(), user.getUserDB().getTkclie(), cdstato);        
+
+            mailModel.put("banner", of_setPar_BANNER.get("${banner}"));
+
         } catch (Exception ex_page) {
             //log.error(ex_page);
             try {
@@ -594,9 +580,9 @@ public class SendWishlistFormController extends BaseFormController {
                 log.error(_e.getMessage());
             }
 
-        }        
+        }
 
-        mailModel.put("sender",  form.getSender());
+        mailModel.put("sender", form.getSender());
 
         if (form.getNote() != null && StringUtils.isNotBlank(form.getNote().trim())) {
             mailModel.put("note", form.getNote().trim());
@@ -605,12 +591,10 @@ public class SendWishlistFormController extends BaseFormController {
         String object = "Vistosi wishlist";
 
         try {
-            getMailEngine().sendHtmlMessage((String[])form.getToList().toArray(new String[form.getToList().size()]), null, (form.getSender() != null) ? form.getSender() : "info@vistosi.it", object, templateName, mailModel, "atkim@ateikon.com");
+            getMailEngine().sendHtmlMessage((String[]) form.getToList().toArray(new String[form.getToList().size()]), null, (form.getSender() != null) ? form.getSender() : "info@vistosi.it", object, templateName, mailModel, "atkim@ateikon.com");
 
             //String body = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, templateName, mailModel);
             //log.debug(body); 
-
-       
             //messaggioFacade.store(sender, object, form.getToList(), body, attachments);
             saveMessage(request, getText("wishlist.sent", RequestContextUtils.getLocale(request)));
             model.put("status", "sent");
@@ -628,33 +612,32 @@ public class SendWishlistFormController extends BaseFormController {
         //FlashMap.setSuccessMessage("Your invitations have been sent");
         return "redirect:/wishlist";
     }
-    
-    
+
     private String getPortalUrl() {
-        
+
         String url = "/";
-        
+
         Ep_costanti cost = vistosiShopManager.getEpCostanti("ep.portal_url");
-        
-        if(cost!=null && StringUtils.isNotBlank(cost.getCostvalue())){
+
+        if (cost != null && StringUtils.isNotBlank(cost.getCostvalue())) {
             url = cost.getCostvalue();
         }
-        
+
         return url;
-    }    
-    
+    }
+
     private String getEprogenUrl() {
-        
+
         String url = "/";
-        
+
         Ep_costanti cost = vistosiShopManager.getEpCostanti("ep.eprogen_url");
-        
-        if(cost!=null && StringUtils.isNotBlank(cost.getCostvalue())){
+
+        if (cost != null && StringUtils.isNotBlank(cost.getCostvalue())) {
             url = cost.getCostvalue();
-        }else{
+        } else {
             String portalUrl = getPortalUrl();
-            
-            if(portalUrl!=null) {
+
+            if (portalUrl != null) {
                 try {
                     //url = StringUtils.replace(portalUrl, "portal", "eprogen");
                     url = of_trasformaURL(portalUrl, "portal", "eprogen");
@@ -663,7 +646,7 @@ public class SendWishlistFormController extends BaseFormController {
                 }
             }
         }
-        
+
         return url;
-    }    
+    }
 }

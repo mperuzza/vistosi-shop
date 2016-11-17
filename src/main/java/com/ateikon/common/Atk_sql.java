@@ -64,6 +64,8 @@ public class Atk_sql extends Object implements java.io.Serializable {
 
         this.is_sybase = false;
         this.is_oracle = false;
+        this.is_sqlserver = false;
+        this.is_postgresql = false;
 
 
         // imposto il Driver
@@ -76,10 +78,21 @@ public class Atk_sql extends Object implements java.io.Serializable {
 
         } else if (this.url.indexOf("sybase") >= 0) {
 
-
             this.driverName = "com.sybase.jdbc3.jdbc.SybDriver";
 
             this.is_sybase = true;
+            
+        }else if (this.url.indexOf("sqlserver")>=0){
+            
+            this.driverName = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+
+            this.is_sqlserver = true;
+
+        }else if (this.url.indexOf("postgresql")>=0){
+
+            this.driverName = "org.postgresql.Driver";
+
+            this.is_postgresql = true;    
 
         } else {
 
@@ -128,6 +141,16 @@ public class Atk_sql extends Object implements java.io.Serializable {
 
             this.sysdate = "sysdate";
             this.dummy_table = "dual";
+
+        }else if ( this.is_sqlserver ){
+
+            this.sysdate = "current_timestamp";
+            this.dummy_table = ""; //NON ha la possibilitï¿½ di gestire una dummy_table, eventualmente bisogna creare una tabella di appoggio
+
+        }else if ( this.is_postgresql ){
+
+            this.sysdate = "current_timestamp";
+            this.dummy_table = "";//Nota per gestire questo PostgreSQL non usa la keyword FROM (ES. select '1')
         }
 
 
@@ -262,6 +285,8 @@ public class Atk_sql extends Object implements java.io.Serializable {
 
             atk_sql.is_sybase = this.is_sybase;
             atk_sql.is_oracle = this.is_oracle;
+            atk_sql.is_sqlserver  = this.is_sqlserver   ;        
+            atk_sql.is_postgresql     = this.is_postgresql   ;
         }
 
 
@@ -1020,6 +1045,8 @@ public class Atk_sql extends Object implements java.io.Serializable {
     public String dummy_table = "";
     public boolean is_sybase = false;
     public boolean is_oracle = false;
+    public boolean is_sqlserver  = false;
+    public boolean is_postgresql = false;
     public static String ATEIKON = "ATEIKON";
     public static String JMEL = "JMEL";
     public String s_cdente = "";

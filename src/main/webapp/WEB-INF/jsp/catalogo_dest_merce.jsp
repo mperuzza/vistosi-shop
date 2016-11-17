@@ -442,7 +442,7 @@ window.addEvent('load', function() {
                     %><table width="100%">
   <%
                         %><tr><%
-                            %><th colspan="2" class="tit-scheda-cart"><spring:message code="cart.dm.dati.fatt" text="Dati fatturazione"/></th>
+                            %><th colspan="2" class="tit-scheda-cart"><spring:message code="cart.dati.fatt" text="Dati fatturazione"/></th>
   <%
                         %></tr><%
 

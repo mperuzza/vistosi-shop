@@ -13,7 +13,7 @@ License:
 */
 var Clientcide = {
 	version: '%build%',
-	assetLocation: "http://github.com/anutron/clientcide/raw/master/Assets",
+	assetLocation: "http://portal.vistosi.it/shop/static/js/Assets",
 	setAssetLocation: function(baseHref) {
 		Clientcide.assetLocation = baseHref;
 		if (Clientcide.preloaded) Clientcide.preLoadCss();

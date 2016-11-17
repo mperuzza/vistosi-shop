@@ -228,7 +228,7 @@ public class CartController extends BaseAnnotationController {
                     String nome_modello = art.getVist_filedis();
                     //igs
                     //String igs = path_3D + nome_modello + ".zip";
-                    String igs = path_3D + nome_modello + (art.isLed()?art.getCdvistelet():"") + ".zip";
+                    String igs = path_3D + nome_modello + (art.isLed() ? art.getCdvistelet() : "") + ".zip";
                     try {
                         String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), igs);
                         File f = new File(path_to_filemodel);
@@ -255,7 +255,7 @@ public class CartController extends BaseAnnotationController {
 //                    }
                     //easm
                     //String easm = path_3D + nome_modello + ".EASM";
-                    String easm = path_3D + nome_modello + (art.isLed()?art.getCdvistelet():"") +".EASM";
+                    String easm = path_3D + nome_modello + (art.isLed() ? art.getCdvistelet() : "") + ".EASM";
                     try {
                         String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), easm);
                         File f = new File(path_to_filemodel);
@@ -292,9 +292,10 @@ public class CartController extends BaseAnnotationController {
                     Map techPars = new HashMap();
                     techPars.put("cdvistfam", art.getCdvistfam());
                     techPars.put("cdvisttp", art.getCdvisttp());
-                    if(StringUtils.isNotEmpty(art.getCdvistelet())) techPars.put("cdvistelet", art.getCdvistelet());
+                    if (StringUtils.isNotEmpty(art.getCdvistelet())) {
+                        techPars.put("cdvistelet", art.getCdvistelet());
+                    }
                     techPars.put("postDate", new Date());
-                    
 
                     art.setTechNewsList(vistosiShopManager.getTechNews(techPars));
 
@@ -303,9 +304,9 @@ public class CartController extends BaseAnnotationController {
                     String path_cert = "fileresources/cert/";
 
                     if (datiExtra != null) {
-                        
+
                         try {
-                            
+
                             String path_techsheet = "fileresources/assembling_instructions/";
                             String techsheet = datiExtra.getArwFileSchedaTec();
                             if (StringUtils.isNotEmpty(techsheet)) {
@@ -325,8 +326,8 @@ public class CartController extends BaseAnnotationController {
                                 } catch (Exception ex) {
                                     log.error("file techsheet non trovato");
                                 }
-                            }                               
-                            
+                            }
+
                             for (int i = 1; i < 5; i++) {
 
                                 String fieldName = "arwCertificazione" + i;
@@ -343,17 +344,21 @@ public class CartController extends BaseAnnotationController {
                                         nomefile = StringUtils.substringAfterLast(nomefile, "\\");
                                     }
 
-                                    String realPath = WebUtils.getRealPath(ctx.getServletContext(), path_cert + nomefile);
+                                    try {
+                                        String realPath = WebUtils.getRealPath(ctx.getServletContext(), path_cert + nomefile);
 
-                                    File f = new File(realPath);
-                                    if (f.exists()) {
-                                        Map<String, String> certMap = new HashMap<String, String>();
-                                        certMap.put("img", nomeimg);
-                                        certMap.put("file", path_cert + nomefile);
+                                        File f = new File(realPath);
+                                        if (f.exists()) {
+                                            Map<String, String> certMap = new HashMap<String, String>();
+                                            certMap.put("img", nomeimg);
+                                            certMap.put("file", path_cert + nomefile);
 
-                                        art.getCertList().addLast(certMap);
-                                    } else {
-                                        //TODO???
+                                            art.getCertList().addLast(certMap);
+                                        } else {
+                                            //TODO???
+                                        }
+                                    } catch (FileNotFoundException ex) {
+                                        //log.debug("not exists");
                                     }
                                 }
                             }
@@ -365,9 +370,9 @@ public class CartController extends BaseAnnotationController {
                             if (StringUtils.isNotBlank(nomefile)) {
                                 art.setEnergyClass(nomefile);
                             }
-                            
+
                             art.setEletDatiExtraMap(vistosiShopManager.getDatiExtraLampMap(datiExtra, ctx));
-                            
+
                             //check esistenza specsheet
 //                            String realPathPdf = WebUtils.getRealPath(ctx.getServletContext(), SpecSheet.ROOT_RES + "/risorse/" + nome_modello + ".pdf");
 //                            String realPathU3D = WebUtils.getRealPath(ctx.getServletContext(), SpecSheet.ROOT_RES + "/risorse/" + nome_modello + ".U3D");
@@ -378,11 +383,11 @@ public class CartController extends BaseAnnotationController {
 //                            File fXlsx = new File(realPathXlsx);
 //
 //                            if(fPdf.exists() && fU3D.exists() && fXlsx.exists()){
-                            if(vistosiShopManager.checkSpecsheetExists(art, ctx, rc)){
+                            if (vistosiShopManager.checkSpecsheetExists(art, ctx, rc)) {
                                 art.setSpecsheetExists(true);
-                            }                            
-                            
-                        } catch (FileNotFoundException ex) {
+                            }
+
+                        //} catch (FileNotFoundException ex) {
                             //log.debug("not exists");
                         } catch (IllegalAccessException ex) {
                             Logger.getLogger(SchedaArticoloController.class.getName()).log(Level.SEVERE, null, ex);

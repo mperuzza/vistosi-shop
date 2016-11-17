@@ -346,6 +346,7 @@ public class SpecSheetGenerica {
                     cell = new PdfPCell();
                     PdfPTable lampadine = getLampadine((Mrp_arch_articoli) mapItem.get("art"), (Vist_articoli_datiextra) mapItem.get("ext"), request, document, writer);
                     cell.setBorderWidth(0f);
+                    //cell.setPadding(0f);
                     cell.addElement(lampadine);
                     elettrificazioni.addCell(cell);
 
@@ -576,7 +577,7 @@ public class SpecSheetGenerica {
         tableRight.setWidthPercentage(100);
         tableRight.getDefaultCell().setBorder(PdfPCell.RECTANGLE);
         tableRight.getDefaultCell().setBorderWidth(1f);
-        tableRight.getDefaultCell().setBackgroundColor(BaseColor.YELLOW);
+//        tableRight.getDefaultCell().setBackgroundColor(BaseColor.YELLOW);
 
         Image img = null;
 
@@ -707,6 +708,10 @@ public class SpecSheetGenerica {
         String path_2D = path_modello + "/2D/";
         //dwg cm
         String dwg_vers = "cm/";
+        if ("en".equals(rc.getLocale().getLanguage())) {
+            dwg_vers = "po/";
+            art.setTiporisorsa2D_dwg(com.ateikon.common.Mrp_arch_articoli.MOD2D_DWG_PO);
+        }
 //        if ((!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS") && user != null && user.getIsSpecList())
 //                || (AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS") && GeoIPInterceptor.getCountry(request).equals("US"))) {
 //            dwg_vers = "po/";
@@ -722,7 +727,7 @@ public class SpecSheetGenerica {
 
                 String dURL = shopURL + "/logdown";
 
-                ck.setAction(new PdfAction(new URL(dURL + "?file_req=" + dwg + "&dsfile=" + m2DLabel + " " + descrFile)));
+                ck.setAction(new PdfAction(new URL(dURL + "?file_req=" + dwg + "&nome_modello=" + nome_modello + "&cdvistelet="+ art.getCdvistelet() + "&tiporisorsa=" + art.getTiporisorsa2D_dwg() + "&dsfile=" + m2DLabel + " " + descrFile)));
             }
         } catch (FileNotFoundException ex) {
         }
@@ -735,32 +740,32 @@ public class SpecSheetGenerica {
         String m3DLabel = messageSource.getMessage("modelli_3D", null, "Modelli 3D", rc.getLocale());
         //igs
         //String igs = path_3D + nome_modello + ".zip";
-        String igs = path_3D + nome_modello + (art.isLed()?art.getCdvistelet():"") + ".zip";
+        String igs = path_3D + nome_modello + (art.isLed() ? art.getCdvistelet() : "") + ".zip";
         ck = new Chunk(messageSource.getMessage("specsheetgen.text.download3D", null, "disegno 3D (file EASM_IGES)", rc.getLocale()));
         try {
             String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), igs);
             File f = new File(path_to_filemodel);
 
-            String dURL = shopURL + "/logdown?";
+            String dURL = shopURL + "/logdown?&nome_modello=" + nome_modello + "&cdvistelet="+ art.getCdvistelet() + "&tiporisorsa=" + art.getTiporisorsa3D_easm();
 
             if (f.exists()) {
                 //ck.setAction(new PdfAction(new URL(portalURL + "download/" + igs + "?f=" + igs)));
 
-                dURL += "file_req=" + igs + "&dsfile=" + m3DLabel + " " + descrFile;
+                dURL += "&file_req=" + igs + "&dsfile=" + m3DLabel + " " + descrFile;
 
             }
 
-            if (dURL.contains("file_req")) {
-                dURL += "&";
-            }
+//            if (dURL.contains("file_req")) {
+//                dURL += "&";
+//            }
 
             //String easm = path_3D + nome_modello + ".EASM";
-            String easm = path_3D + nome_modello + (art.isLed()?art.getCdvistelet():"") +".EASM";
+            String easm = path_3D + nome_modello + (art.isLed() ? art.getCdvistelet() : "") + ".EASM";
             try {
                 path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), easm);
                 f = new File(path_to_filemodel);
                 if (f.exists()) {
-                    dURL += "file_req=" + easm + "&dsfile=" + m3DLabel + " " + descrFile;
+                    dURL += "&file_req=" + easm + "&dsfile=" + m3DLabel + " " + descrFile;
                     //ck.setAction(new PdfAction(new URL(portalURL + "download/" + easm + "?f=" + easm)));
                 }
             } catch (FileNotFoundException ex) {
@@ -794,7 +799,7 @@ public class SpecSheetGenerica {
 
                     String dURL = shopURL + "/logdown";
 
-                    ck.setAction(new PdfAction(new URL(dURL + "?file_req=" + path_techsheet + techsheet + "&dsfile=" + istrLabel + " " + descrFile)));
+                    ck.setAction(new PdfAction(new URL(dURL + "?file_req=" + path_techsheet + techsheet + "&dsfile=" + istrLabel + " " + descrFile + "&nome_modello=" + nome_modello + "&cdvistelet="+ art.getCdvistelet() + "&tiporisorsa=" + art.getTiporisorsaIstruzioni())));
                     //ck.setAction(new PdfAction(new URL(portalURL + "download/" + techsheet + "?f=" + path_techsheet + techsheet)));
                 }
             } catch (Exception ex) {
@@ -1452,7 +1457,9 @@ public class SpecSheetGenerica {
         Paragraph paragraph = null;
 
         float[] columnWidth = {190, 190};
-
+        float defaultImageCellHeight = 16f;
+        float defaultImageLampadinaCellPadding = 1f;
+        
         table = new PdfPTable(5);
         table.setWidthPercentage(100);
         //table.setWidths(new float[]{.1f, .1f, .1f, .5f});
@@ -1461,10 +1468,11 @@ public class SpecSheetGenerica {
         table.getDefaultCell().setBorderWidth(0f);
         table.getDefaultCell().setPadding(0f);
         table.getDefaultCell().setPaddingRight(1f);
-        table.getDefaultCell().setFixedHeight(11);
+        table.getDefaultCell().setPaddingLeft(4f);
+        //table.getDefaultCell().setFixedHeight(11);
 
         cell = new PdfPCell();
-        cell.setFixedHeight(15);
+        cell.setFixedHeight(14f);
         cell.setBorderWidth(.0f);
         cell.setColspan(5);
         cell.setPadding(0f);
@@ -1490,7 +1498,7 @@ public class SpecSheetGenerica {
                     if (StringUtils.equals(flag, "S")) {
 
                         PdfPCell pdfPCell = new PdfPCell();
-                        pdfPCell.setFixedHeight(13);
+                        //pdfPCell.setFixedHeight(13);
                         pdfPCell.setBorderWidth(0f);
                         String nomeimg = BeanUtils.getSimpleProperty(datiExtra, "arwSimbAttacco" + pos);
                         String[] split = nomeimg.split("\\\\");
@@ -1504,8 +1512,9 @@ public class SpecSheetGenerica {
                         File f = new File(realPath);
 
                         if (pos > 1) {
-                            pdfPCell = new PdfPCell(new Paragraph("+", new Font(baseFont, 7)));
+                            pdfPCell = new PdfPCell(new Paragraph("+", new Font(baseFont, 6)));
                             pdfPCell.setBorderWidth(0f);
+                            pdfPCell.setPadding(0);
                             pdfPCell.setPaddingTop(0f);
                             pdfPCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
                             table.addCell(pdfPCell);
@@ -1514,9 +1523,10 @@ public class SpecSheetGenerica {
                             if (img != null) {
                                 pdfPCell = new PdfPCell();
                                 pdfPCell.setHorizontalAlignment(Element.ALIGN_LEFT);
-                                pdfPCell.setFixedHeight(17f);
-                                pdfPCell.setPadding(2);
+                                pdfPCell.setFixedHeight(defaultImageCellHeight);
+                                pdfPCell.setPadding(defaultImageLampadinaCellPadding);
                                 pdfPCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+//                                pdfPCell.setBackgroundColor(BaseColor.CYAN);
                                 pdfPCell.addElement(img);
                                 pdfPCell.setBorderWidth(0f);
                                 table.addCell(pdfPCell);
@@ -1531,9 +1541,10 @@ public class SpecSheetGenerica {
                             if (img != null) {
                                 pdfPCell = new PdfPCell();
                                 pdfPCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-                                pdfPCell.setFixedHeight(17f);
-                                pdfPCell.setPadding(0f);
-                                pdfPCell.setPaddingLeft(5f);
+                                pdfPCell.setFixedHeight(defaultImageCellHeight);
+                                pdfPCell.setPadding(defaultImageLampadinaCellPadding);
+                                //pdfPCell.setPaddingLeft(5f);
+//                                pdfPCell.setBackgroundColor(BaseColor.YELLOW);
                                 pdfPCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
                                 pdfPCell.addElement(img);
                                 pdfPCell.setBorderWidth(0f);
@@ -1543,9 +1554,10 @@ public class SpecSheetGenerica {
                         } else {
                             pdfPCell = new PdfPCell(new Phrase(""));
                             pdfPCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-                            pdfPCell.setFixedHeight(17f);
-                            pdfPCell.setPadding(0f);
+                            pdfPCell.setFixedHeight(defaultImageCellHeight);
+                            pdfPCell.setPadding(defaultImageLampadinaCellPadding);
                             pdfPCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+//                            pdfPCell.setBackgroundColor(BaseColor.GREEN);
                             pdfPCell.setBorderWidth(0f);
                             table.addCell(pdfPCell);
                         }
@@ -1563,8 +1575,9 @@ public class SpecSheetGenerica {
                         descrizione = StringUtils.trim(descrizione);
 
                         if (StringUtils.isNotBlank(descrizione)) {
-                            pdfPCell = new PdfPCell(new Paragraph(descrizione, new Font(baseFont, 7)));
+                            pdfPCell = new PdfPCell(new Paragraph(descrizione, new Font(baseFont, 6)));
                             pdfPCell.setBorderWidth(0f);
+                            pdfPCell.setPadding(0);
                             pdfPCell.setPaddingTop(4f);
                             pdfPCell.setPaddingRight(2f);
                             pdfPCell.setNoWrap(true);
@@ -1574,8 +1587,9 @@ public class SpecSheetGenerica {
                         }
 
                         if (StringUtils.isNotBlank(voltaggio)) {
-                            pdfPCell = new PdfPCell(new Paragraph(voltaggio, new Font(baseFont, 7)));
+                            pdfPCell = new PdfPCell(new Paragraph(voltaggio, new Font(baseFont, 6)));
                             pdfPCell.setBorderWidth(0f);
+                            pdfPCell.setPadding(0);
                             pdfPCell.setPaddingTop(4f);
                             pdfPCell.setPaddingRight(2f);
                             pdfPCell.setNoWrap(true);
@@ -1588,13 +1602,15 @@ public class SpecSheetGenerica {
                         String dsextvistelet = StringUtils.trimToEmpty(BeanUtils.getSimpleProperty(elettrificazione, "dsextvistelet" + getAtkLangsfx(rc.getLocale().getLanguage())));
 
                         if (StringUtils.isNotBlank(dsextvistelet)) {
-                            pdfPCell = new PdfPCell(new Paragraph(dsextvistelet, new Font(baseFont, 7)));
+                            pdfPCell = new PdfPCell(new Paragraph(dsextvistelet, new Font(baseFont, 6)));
                             pdfPCell.setBorderWidth(0f);
+                            pdfPCell.setPadding(0);
                             if (dsextvistelet.length() > 10) {
                                 pdfPCell.setPaddingTop(0f);
                             } else {
                                 pdfPCell.setPaddingTop(4f);
                             }
+//                            pdfPCell.setBackgroundColor(BaseColor.CYAN);
                             pdfPCell.setNoWrap(false);
                             table.addCell(pdfPCell);
                         } else {
@@ -1608,12 +1624,14 @@ public class SpecSheetGenerica {
             }
 
             //separo le due tabelle
-            Paragraph space = new Paragraph("");
-            PdfPCell spaceCell = new PdfPCell(space);
-            spaceCell.setColspan(5);
-            spaceCell.setFixedHeight(2f);
-            spaceCell.setBorderWidth(0f);
-            table.addCell(spaceCell);
+//            Paragraph space = new Paragraph("");
+//            PdfPCell spaceCell = new PdfPCell(space);
+//            spaceCell.setColspan(5);
+//            spaceCell.setFixedHeight(1f);
+//            spaceCell.setBorderWidth(0f);
+//            spaceCell.setPadding(0);
+//            spaceCell.setBackgroundColor(BaseColor.CYAN);
+//            table.addCell(spaceCell);
 
             //alternative
             boolean empty = true;
@@ -1624,7 +1642,7 @@ public class SpecSheetGenerica {
             innerTable.getDefaultCell().setBorderWidth(0f);
             innerTable.getDefaultCell().setPaddingTop(0);
             innerTable.getDefaultCell().setPaddingRight(0);
-            innerTable.getDefaultCell().setPaddingBottom(2);
+            innerTable.getDefaultCell().setPaddingBottom(0);
             innerTable.getDefaultCell().setPaddingLeft(4);
             innerTable.getDefaultCell().setUseAscender(true);
             innerTable.getDefaultCell().setUseDescender(false);
@@ -1673,7 +1691,7 @@ public class SpecSheetGenerica {
 
                         if (3 != bidx) {
                             if (5 != bidx) {
-                                pdfPCell = new PdfPCell(new Paragraph("+", new Font(baseFont, 7)));
+                                pdfPCell = new PdfPCell(new Paragraph("+", new Font(baseFont, 6)));
                                 pdfPCell.setBorderWidth(0f);
                                 pdfPCell.setPaddingTop(3f);
                                 pdfPCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
@@ -1683,9 +1701,9 @@ public class SpecSheetGenerica {
                                 if (img != null) {
                                     pdfPCell = new PdfPCell();
                                     pdfPCell.setHorizontalAlignment(Element.ALIGN_LEFT);
-                                    pdfPCell.setFixedHeight(17f);
-                                    pdfPCell.setPadding(3f);
-
+                                    pdfPCell.setFixedHeight(defaultImageCellHeight);
+                                    pdfPCell.setPadding(defaultImageLampadinaCellPadding);
+//                                    pdfPCell.setBackgroundColor(BaseColor.CYAN);
                                     pdfPCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
                                     pdfPCell.setImage(img);
                                     pdfPCell.setBorderWidth(0f);
@@ -1699,9 +1717,9 @@ public class SpecSheetGenerica {
                             if (img != null) {
                                 pdfPCell = new PdfPCell();
                                 pdfPCell.setHorizontalAlignment(Element.ALIGN_LEFT);
-                                pdfPCell.setFixedHeight(17f);
-                                pdfPCell.setPadding(3f);
-
+                                pdfPCell.setFixedHeight(defaultImageCellHeight);
+                                pdfPCell.setPadding(defaultImageLampadinaCellPadding);
+//                                pdfPCell.setBackgroundColor(BaseColor.CYAN);
                                 pdfPCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
                                 pdfPCell.setImage(img);
                                 pdfPCell.setBorderWidth(0f);
@@ -1717,8 +1735,8 @@ public class SpecSheetGenerica {
                             if (img != null) {
                                 pdfPCell = new PdfPCell();
                                 pdfPCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-                                pdfPCell.setFixedHeight(17f);
-                                pdfPCell.setPadding(3f);
+                                pdfPCell.setFixedHeight(defaultImageCellHeight);
+                                pdfPCell.setPadding(defaultImageLampadinaCellPadding);
 
                                 pdfPCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
                                 pdfPCell.addElement(img);
@@ -1729,8 +1747,8 @@ public class SpecSheetGenerica {
                         } else {
                             pdfPCell = new PdfPCell(new Phrase(""));
                             pdfPCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-                            pdfPCell.setFixedHeight(17f);
-                            pdfPCell.setPadding(3f);
+                            pdfPCell.setFixedHeight(defaultImageCellHeight);
+                            pdfPCell.setPadding(defaultImageLampadinaCellPadding);
                             pdfPCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
                             pdfPCell.setBorderWidth(0f);
                             innerTable.addCell(pdfPCell);
@@ -1743,7 +1761,7 @@ public class SpecSheetGenerica {
                         descrizione = StringUtils.trim(descrizione);
 
                         if (StringUtils.isNotBlank(descrizione)) {
-                            pdfPCell = new PdfPCell(new Paragraph(descrizione, new Font(baseFont, 7)));
+                            pdfPCell = new PdfPCell(new Paragraph(descrizione, new Font(baseFont, 6)));
                             pdfPCell.setBorderWidth(0f);
                             pdfPCell.setPaddingTop(4f);
                             pdfPCell.setNoWrap(true);
@@ -1752,7 +1770,7 @@ public class SpecSheetGenerica {
                         }
 
                         if (StringUtils.isNotBlank(voltaggio)) {
-                            pdfPCell = new PdfPCell(new Paragraph(voltaggio, new Font(baseFont, 7)));
+                            pdfPCell = new PdfPCell(new Paragraph(voltaggio, new Font(baseFont, 6)));
                             pdfPCell.setBorderWidth(0f);
                             pdfPCell.setPaddingTop(4f);
                             pdfPCell.setNoWrap(true);
@@ -1772,6 +1790,7 @@ public class SpecSheetGenerica {
                     PdfPCell spaceCell1 = new PdfPCell(space1);
                     spaceCell1.setColspan(4);
                     spaceCell1.setFixedHeight(2f);
+//                    spaceCell1.setBackgroundColor(BaseColor.RED);
                     spaceCell1.setBorderWidth(0f);
                     innerTable.addCell(spaceCell1);
                 }
@@ -1781,7 +1800,7 @@ public class SpecSheetGenerica {
             }
 
             if (alt) {
-                cell = new PdfPCell(new Paragraph("", new Font(baseFont, 7)));
+                cell = new PdfPCell(new Paragraph("", new Font(baseFont, 6)));
                 cell.setPadding(0f);
                 cell.setBorderWidth(0f);
                 table.addCell(cell);
@@ -1826,7 +1845,7 @@ public class SpecSheetGenerica {
         tableCnt.getDefaultCell().setPaddingRight(.0f);
         tableCnt.getDefaultCell().setPaddingBottom(5);
         tableCnt.getDefaultCell().setPaddingLeft(.0f);
-        tableCnt.getDefaultCell().setBackgroundColor(BaseColor.MAGENTA);
+//        tableCnt.getDefaultCell().setBackgroundColor(BaseColor.MAGENTA);
         tableCnt.getDefaultCell().setColspan(2);
 
         cell = new PdfPCell();

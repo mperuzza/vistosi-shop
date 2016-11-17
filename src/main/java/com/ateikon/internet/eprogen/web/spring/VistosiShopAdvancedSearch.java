@@ -371,7 +371,7 @@ public class VistosiShopAdvancedSearch {
                     String dwg_vers = "cm/";
                     if ("en".equals(rc.getLocale().getLanguage())) {
                         dwg_vers = "po/";
-                        artL.setTiporisorsa2D_dwg(com.ateikon.common.Mrp_arch_articoli.MOD2D_DWG_PO);
+                        art.setTiporisorsa2D_dwg(com.ateikon.common.Mrp_arch_articoli.MOD2D_DWG_PO);
                     }
                     String dwg = path_2D + dwg_vers + nome_modello + ".dwg";
                     try {

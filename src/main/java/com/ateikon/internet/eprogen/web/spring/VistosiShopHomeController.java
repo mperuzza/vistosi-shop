@@ -402,6 +402,9 @@ public class VistosiShopHomeController {
 
         String[] file_reqs = ServletRequestUtils.getStringParameters(request, "file_req");
         String[] dsfiles = ServletRequestUtils.getStringParameters(request, "dsfile");
+        String nome_modello = ServletRequestUtils.getStringParameter(request, "nome_modello", "");
+        String cdvistelet = ServletRequestUtils.getStringParameter(request, "cdvistelet", "");
+        String tiporisorsa = ServletRequestUtils.getStringParameter(request, "tiporisorsa", "");
 
         String downloadUrl
                 = getEprogenUrl() + "epRichiesta_risorse_pubblica_ajax.jsp?"
@@ -416,7 +419,10 @@ public class VistosiShopHomeController {
                 + "&citta={citta}"
                 + "&cdnazi={cdnazi}"
                 + "&fg_rivend_o_prof={fg_rivend_o_prof}"
-                + "&fg_no_notif={fg_no_notif}";
+                + "&fg_no_notif={fg_no_notif}"
+                + "&nome_modello={nome_modello}"
+                + "&cdvistelet={cdvistelet}"
+                + "&tiporisorsa={tiporisorsa}";
 
 //        for (String f : file_req) {
 //            downloadUrl += "&file_req=" + f;
@@ -438,6 +444,9 @@ public class VistosiShopHomeController {
         variables.put("cdnazi", "IT");
         variables.put("fg_rivend_o_prof", "S");
         variables.put("fg_no_notif", "S");
+        variables.put("nome_modello", nome_modello);
+        variables.put("cdvistelet", cdvistelet);
+        variables.put("tiporisorsa", tiporisorsa);
 
         RestTemplate restTemplate = new RestTemplate();
         try {

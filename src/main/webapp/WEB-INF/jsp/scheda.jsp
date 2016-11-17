@@ -557,6 +557,7 @@
                                                     dlink_class = 'downloadproxylink';
                                                 }else{
                                                     url = downloadUrlForm + pars +tipo_richiesta + file + '&dsfile=' + '${istrLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsaIstruzioni;
+                                                    dlink_class = 'downloadlink';
                                                     //if(!scheda.articolo.vist_articoli_img || !scheda.articolo.vist_articoli_img.pathschtecExists){
                                                     titletipz = "<spring:message code="msg_file_no_exist" arguments="${istrLabel}" text="Non disponibile. Clicca qui per richiederlo."/>"; 
                                                     //}
@@ -596,6 +597,7 @@
                                                     dlink_class = 'downloadproxylink';
                                                 }else{
                                                     url = downloadUrlForm+ pars +tipo_richiesta + file + '&dsfile=' + '${m2DLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsa2D_dwg;
+                                                    dlink_class = 'downloadlink';
                                                     titletipz = "<spring:message code="msg_file_no_exist" arguments="${m2DLabel}" text="Non disponibile. Clicca qui per richiederlo."/>";                                                    
                                                 }                                            
                                             </security:authorize>
@@ -633,6 +635,7 @@
                                                     dlink_class = 'downloadproxylink';
                                                 }else{
                                                     url = downloadUrlForm+ pars +tipo_richiesta + file + '&dsfile=' + '${m3DLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsa3D_easm;
+                                                    dlink_class = 'downloadlink';
                                                     titletipz = "<spring:message code="msg_file_no_exist" arguments="${m3DLabel}" text="Non disponibile. Clicca qui per richiederlo."/>";
                                                 } 
                                             </security:authorize>
@@ -699,6 +702,7 @@
                                                     dlink_class = 'downloadproxylink';
                                                 }else{
                                                     url = downloadUrlForm + pars +tipo_richiesta + file + '&dsfile=' + '${m3DLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsa3D_igs;
+                                                    dlink_class = 'downloadlink';
                                                     titletipz = "<spring:message code="msg_file_no_exist" arguments="${m3DLabel}" text="Non disponibile. Clicca qui per richiederlo."/>";
                                                 } 
                                             </security:authorize>
@@ -789,7 +793,7 @@
                                                     var jsonData = _q.cleanQueryString().parseQueryString();
                                                     
                                                     var jsonRequest = new Request.JSON({url: _u, onSuccess: function(data){
-                                                        if(data.rc=='1') alert('<spring:message code="doc.js.msg_nores" text="Mail inviata"/>');
+                                                        if(data.rc=='1') alert(data.message);
                                                     }}).post(jsonData);
                                                 });
                                             });

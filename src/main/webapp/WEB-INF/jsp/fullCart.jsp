@@ -583,7 +583,7 @@
                                                     var jsonData = _q.cleanQueryString().parseQueryString();
                                                     
                                                     var jsonRequest = new Request.JSON({url: _u, onSuccess: function(data){
-                                                        if(data.rc=='1') alert('<spring:message code="mail.sent" text="Mail inviata"/>');
+                                                        if(data.rc=='1') alert(data.message);
                                                     }}).post(jsonData);
                                                 });
                                             });     

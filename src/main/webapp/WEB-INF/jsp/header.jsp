@@ -60,7 +60,7 @@
   <%--script type="text/javascript" src="<c:url value='/static/js/mootools-1.2.3-core-yc.js' />"> </script>
   <script type="text/javascript" src="<c:url value='/static/js/mootools-1.2.3.1-more.js' />"> </script--%>
   <%--script type="text/javascript" src="<c:url value='/static/js/clientcide-trunk-2.1.0.compressed.js' />"> </script--%>
-  <script type="text/javascript" src="<c:url value='/static/js/clientcide.2.2.0-nocompat.js' />"> </script>
+  <script type="text/javascript" src="<c:url value='/static/js/clientcide.2.2.0-nocompat.js?v=casset' />"> </script>
   <script type="text/javascript" src="<c:url value='/static/js/array-sortby.js' />"> </script>
   <script type="text/javascript" src="<c:url value='/static/js/fixBrokenImages.js' />"> </script>
   <script type="text/javascript" src="<c:url value='/static/js/message.js' />"></script>
