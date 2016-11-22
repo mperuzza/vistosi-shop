@@ -1,5 +1,6 @@
 package com.ateikon.common;
 
+import com.ateikon.structure.Str_risorsa_anticipo;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import com.ateikon.structure.Str_search_articoli;
@@ -952,6 +953,15 @@ public class Mrp_arch_articoli extends Atk_sql {
       return "";
 
     }
+    
+    
+    public Str_risorsa_anticipo of_getRisorsa_anticipo(String url_risorse, String tiporisorsa, String nome_modello, String cdvistelet, long tkc, String lang, String cdling_ep_lingua) throws Exception {
+
+      if (1 == 1) throw new Exception("ATTENZIONE!!! questo metodo può essere richiamato solo in E-progen");
+      
+      return null;        
+        
+    }    
 
     
     
@@ -968,7 +978,16 @@ public class Mrp_arch_articoli extends Atk_sql {
     public static String CERT = "CERT";
     public static String SPECSHEET_IT = "SPECSHEET_IT";
     public static String SPECSHEET_US = "SPECSHEET_US";
+    public static String MOD3DBLOCCHI_LED_IGS = "MOD3DBLOCCHI_LED_IGS";
+    public static String MOD3DBLOCCHI_LED_EASM = "MOD3DBLOCCHI_LED_EASM";
+    public static String SPECSHEET_GEN = "SPECSHEET_GEN";
     public static String SPECSHEET_SPEC = "SPECSHEET_SPEC";
+
+    public static String TPRESANTICIPO_3DBLOCLED = "3DBLOCLED";
+    public static String TPRESANTICIPO_SSENEXIST = "SSENEXIST";
+    public static String TPRESANTICIPO_SGENEXIST = "SGENEXIST";
+    public static String TPRESANTICIPO_SSSGEXIST = "SSSGEXIST";
+    public static String TPRESANTICIPO_SSSGENEXIST = "SSSGENEXIST";    
 
     private static final String CDCLAS_A_LL = "LL";
     private static final String CDCLAS_A_ULL = "ULL";
