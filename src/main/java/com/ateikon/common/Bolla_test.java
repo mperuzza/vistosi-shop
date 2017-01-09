@@ -82,7 +82,7 @@ public class Bolla_test extends Atk_sql {
         l_query += "       , bolt.tkfatt                       \n";
         l_query += "       , bolt.conpro                       \n";
         l_query += "       , bolt.dtprot                       \n";
-        l_query += "   FROM {oj pgmr.bolla_test         bolt                                                   \n";
+        l_query += "   FROM pgmr.bolla_test         bolt                                                   \n";
         l_query += "        left outer join pgmr.tipo_documento   tdoc     on bolt.cdtdoc   = tdoc.cdtdoc      \n";
         l_query += "        left outer join pgmr.archclie         clie     on bolt.tkclie    = clie.tkclie     \n";
         l_query += "                                                      and bolt.cdazie    = clie.cdazie     \n";
@@ -99,7 +99,6 @@ public class Bolla_test extends Atk_sql {
         l_query += "        left outer join  pgmr.formpaga        forp     on bolt.pgcodi    =  forp.pgcodi    \n";
         l_query += "        left outer join  pgmr.dilapaga        dilp     on bolt.dpcodi    =  dilp.dpcodi    \n";
         l_query += "        left outer join  pgmr.decorpag        decp     on bolt.cddpag    =  decp.cddpag    \n";
-        l_query += "          }                                                                                \n";
         l_query += "   WHERE bolt.tkboll = ? \n";
         if (!s_cdcapoarea.equals("")) {
             l_query += " and clie.cdagen in (" + par_ca_agenti(s_cdcapoarea) + ") \n";
@@ -237,9 +236,8 @@ public class Bolla_test extends Atk_sql {
         l_query += "    FROM pgmr.bolla_test         bolt  \n";
         l_query += "       , pgmr.tipo_documento     tdoc  \n";
         l_query += "       , pgmr.archenti           ente  \n";
-        l_query += "       , {oj pgmr.archclie       clie  \n";
+        l_query += "       , pgmr.archclie       clie  \n";
         l_query += "         left outer join pgmr.archagen agen on clie.cdagen = agen.cdagen \n";
-        l_query += "           }                                   \n";
         if (astr.tipodoc.equals(astr.TIPODOC_BOLL)) {
             l_query += "   WHERE (bolt.tkfatt is null or bolt.tkfatt <> bolt.tkboll) \n";
         } else {
@@ -405,17 +403,15 @@ public class Bolla_test extends Atk_sql {
         l_query += "        , pgmr.bolla_posi        bolp          \n";
         l_query += "        , pgmr.tipo_documento    tdoc          \n";
         l_query += "        , pgmr.archenti          ente          \n";
-        l_query += "        , {oj pgmr.archclie      clie            \n";
+        l_query += "        , pgmr.archclie      clie            \n";
         l_query += "          left outer join pgmr.archagen agen on clie.cdagen = agen.cdagen \n";
         l_query += "          left outer join pgmr.zonacomm zcom on clie.cdzcom = zcom.cdzcom \n";
         l_query += "                                            and clie.cdazie = zcom.cdazie \n";
-        l_query += "           }                                   \n";
-        l_query += "        , {oj pgmr.mrp_arch_articoli arti      \n";
+        l_query += "        , pgmr.mrp_arch_articoli arti      \n";
         l_query += "          left outer join pgmr.unimisura         unim  on arti.cdunim_1 = unim.cdunim    \n";
         l_query += "          left outer join pgmr.tipomapr          tipm  on arti.cdtipa   = tipm.cdtipm    \n";
         l_query += "          left outer join pgmr.mrp_arch_artipo   artip on arti.cdartipo = artip.cdartipo \n";
         l_query += "          left outer join pgmr.mrp_arch_clasarti arcla on arti.cdclas_a = arcla.cdclas_a \n";
-        l_query += "           }                                   \n";
         if (astr.tipodoc.equals(astr.TIPODOC_BOLL)) {
             l_query += "   WHERE (bolt.tkfatt is null or bolt.tkfatt <> bolt.tkboll) \n";
         } else {
@@ -578,17 +574,15 @@ public class Bolla_test extends Atk_sql {
         l_query += "        , pgmr.bolla_posi        bolp          \n";
         l_query += "        , pgmr.tipo_documento    tdoc          \n";
         l_query += "        , pgmr.archenti          ente          \n";
-        l_query += "        , {oj pgmr.archclie      clie            \n";
+        l_query += "        , pgmr.archclie      clie            \n";
         l_query += "          left outer join pgmr.archagen agen on clie.cdagen = agen.cdagen \n";
         l_query += "          left outer join pgmr.zonacomm zcom on clie.cdzcom = zcom.cdzcom \n";
         l_query += "                                            and clie.cdazie = zcom.cdazie \n";
-        l_query += "           }                                   \n";
-        l_query += "        , {oj pgmr.mrp_arch_articoli arti      \n";
+        l_query += "        , pgmr.mrp_arch_articoli arti      \n";
         l_query += "          left outer join pgmr.unimisura         unim  on arti.cdunim_1 = unim.cdunim    \n";
         l_query += "          left outer join pgmr.tipomapr          tipm  on arti.cdtipa   = tipm.cdtipm    \n";
         l_query += "          left outer join pgmr.mrp_arch_artipo   artip on arti.cdartipo = artip.cdartipo \n";
         l_query += "          left outer join pgmr.mrp_arch_clasarti arcla on arti.cdclas_a = arcla.cdclas_a \n";
-        l_query += "           }                                   \n";
         if (astr.tipodoc.equals(astr.TIPODOC_BOLL)) {
             l_query += "   WHERE (bolt.tkfatt is null or bolt.tkfatt <> bolt.tkboll) \n";
         } else {
@@ -816,12 +810,10 @@ public class Bolla_test extends Atk_sql {
         l_query += "     FROM pgmr.bolla_test  t                                                                                       \n";
         l_query += "        , pgmr.mrp_arch_articoli  a                                                                                \n";
         l_query += "        , pgmr.tipo_documento      tipodocumento                                                                   \n";
-        l_query += "        , {oj               pgmr.archclie clie                                                                     \n";
+        l_query += "        , pgmr.archclie clie                                                                     \n";
         l_query += "                            LEFT OUTER JOIN  pgmr.archagen           agen ON  clie.cdagen = agen.cdagen            \n";
-        l_query += "          }                                                                                                        \n";
-        l_query += "        , {oj               pgmr.bolla_posi p                                                                    \n";
+        l_query += "        , pgmr.bolla_posi p                                                                    \n";
         l_query += "                            LEFT OUTER JOIN  pgmr.ut_art_catramer    catramer ON  p.cdcatm = catramer.cdcatm       \n";
-        l_query += "          }                                                                                                        \n";
         l_query += "    WHERE t.cdazie = '" + this.cdazie + "'                                                                             \n";
         l_query += ls_where;
         if (fgtipodoc.equals("B")) {

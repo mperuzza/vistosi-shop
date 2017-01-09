@@ -2999,8 +2999,12 @@
        </isNotEmpty>
     ORDER BY dsarti
   </select>
+  
+  <cacheModel id="countOff" type="LRU">
+    <flushInterval hours="8"/>
+  </cacheModel>  
 
-  <select id="countArticoliOff" parameterClass="map" resultClass="java.lang.Integer">
+  <select id="countArticoliOff" parameterClass="map" resultClass="java.lang.Integer" cacheModel="countOff">
     SELECT count(1) 
     FROM    pgmr.mrp_arch_articoli,
            pgmr.mis_reparto

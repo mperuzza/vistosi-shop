@@ -1688,7 +1688,7 @@ public class Atk_messaggio extends com.ateikon.standard.Atk_messaggio {
         tot_rec = 0;
 
         l_query  = "";
-        l_query += " delete pgmr.atk_msgcont where tkmsg = "+tkmsg+" \n";
+        l_query += " delete from pgmr.atk_msgcont where tkmsg = "+tkmsg+" \n";
 
         pstm = m_connection.prepareStatement(l_query);
 

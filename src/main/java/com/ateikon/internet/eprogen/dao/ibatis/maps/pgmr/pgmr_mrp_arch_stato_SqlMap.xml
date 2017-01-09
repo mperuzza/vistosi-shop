@@ -479,6 +479,10 @@
   </update>
   
   
+  <cacheModel id="cacheStatiArtGroup" type="LRU">
+    <flushInterval hours="8"/>
+  </cacheModel>   
+  
   <resultMap class="com.ateikon.internet.eprogen.domain.pgmr.Mrp_arch_stato" id="ckstato_ResultMap">
     <result column="cdstato" jdbcType="VARCHAR" property="cdstato" />
     <result column="vist_fgrgb" jdbcType="VARCHAR" property="vist_fgrgb" />
@@ -486,12 +490,13 @@
     <result column="vist_rgb_g" jdbcType="NUMERIC" property="vist_rgb_g" />
     <result column="vist_rgb_b" jdbcType="NUMERIC" property="vist_rgb_b" />
   </resultMap>  
-  <select id="getStatiArtGroup" parameterClass="map" resultMap="ckstato_ResultMap">  
+  <select id="getStatiArtGroup" parameterClass="map" resultMap="ckstato_ResultMap" cacheModel="cacheStatiArtGroup">  
     SELECT distinct(mrp_arch_stato.cdstato), 
             mrp_arch_stato.vist_fgrgb, 
             mrp_arch_stato.vist_rgb_r,
             mrp_arch_stato.vist_rgb_g,
-            mrp_arch_stato.vist_rgb_b
+            mrp_arch_stato.vist_rgb_b,
+            mrp_arch_stato.dtinse
        FROM pgmr.vist_articoli,
             pgmr.mis_reparto, 
             pgmr.mrp_arch_stato
@@ -577,8 +582,8 @@
        <isNotEmpty prepend="AND" property="dsvistccol">
            vist_articoli.cdvistccol = vist_cp_collezioni.cdvistccol
            AND  vist_cp_collezioni.dsvistccol = #dsvistccol:VARCHAR#
-       </isNotEmpty>       
-    ORDER BY mrp_arch_stato.vist_fgrgb desc  
+       </isNotEmpty>   
+       order by  mrp_arch_stato.dtinse desc   
   </select>
   
 </sqlMap>

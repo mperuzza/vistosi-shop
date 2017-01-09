@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.Cookie;
@@ -541,7 +542,11 @@ public class SchedaArticoloController {
 
         scheda.setElettrificazioni(elettrificazioni);
 
-        List<Vist_finit_mont> vist_finit_mont = vistosiShopManager.findVist_finit_mont(pars);
+        Map copyPars = new HashMap();
+        copyPars.putAll(pars);
+        copyPars.put("cdvistfinv", "ign");
+        copyPars.put("cdvistcolv", "ign");
+        List<Vist_finit_mont> vist_finit_mont = vistosiShopManager.findVist_finit_mont(copyPars);
 
         for (Vist_finit_mont vist_finit_mont_item : vist_finit_mont) {
             Map stpars = new HashMap(pars);

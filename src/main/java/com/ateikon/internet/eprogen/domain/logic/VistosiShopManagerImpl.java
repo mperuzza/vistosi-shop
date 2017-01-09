@@ -457,22 +457,25 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
         pars.put("fgweb", "S");
 
         List<Vist_famiglia> list = findVist_famiglia(pars);
+        pars.put("fgpromo", "S");
+        
+        boolean userHasAuthority = AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS");
+        
+        Mrp_arch_stato statoOff = new Mrp_arch_stato(51, 153, 51);
 
         for (Vist_famiglia vist_famiglia : list) {
 
             pars.put("cdvistfam", vist_famiglia.getCdvistfam());
 
-            pars.put("fgpromo", "S");
             int countOff = mrp_arch_articoliDAO.countOfferta(pars);
-            if (countOff > 0 && !AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
+            if (countOff > 0 && !userHasAuthority) {
                 //if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
-                Mrp_arch_stato statoOff = new Mrp_arch_stato(51, 153, 51);
                 vist_famiglia.setStato(statoOff);
                 //}
             } else {
                 List<Mrp_arch_stato> stlist = selectDistinctByPars(pars);
 
-                if (!stlist.isEmpty() && stlist.size() == 1 && "S".equals(stlist.get(0).getVist_fgrgb())) {
+                if (!stlist.isEmpty()){ // && stlist.size() == 1) {  //&& "S".equals(stlist.get(0).getVist_fgrgb())) {
                     vist_famiglia.setStato(stlist.get(0));
                 }
             }

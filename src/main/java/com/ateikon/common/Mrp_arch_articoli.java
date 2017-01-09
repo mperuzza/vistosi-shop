@@ -3,6 +3,7 @@ package com.ateikon.common;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import com.ateikon.structure.Str_search_articoli;
+import com.ateikon.structure.Str_risorsa_anticipo;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -952,7 +953,15 @@ public class Mrp_arch_articoli extends Atk_sql {
       return "";
 
     }
+    
+    
+    public Str_risorsa_anticipo of_getRisorsa_anticipo(String url_risorse, String tiporisorsa, String nome_modello, String cdvistelet, long tkc, String lang, String cdling_ep_lingua) throws Exception {
+    
+      if (1 == 1) throw new Exception("ATTENZIONE!!! questo metodo può essere richiamato solo in E-progen");
+      
+      return null;
 
+    }
     
     
     public static String TECHSHEET = "TECHSHEET";

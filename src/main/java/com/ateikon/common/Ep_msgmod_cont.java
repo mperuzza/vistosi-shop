@@ -84,7 +84,7 @@ public class Ep_msgmod_cont extends com.ateikon.standard.Ep_msgmod_cont {
         tot_rec = 0;
 
         l_query  = "";
-        l_query += " delete pgmr.ep_msgmod_cont where tkmsgmod = "+tkmsgmod+" and cdling = '"+cdling+"' \n";
+        l_query += " delete from pgmr.ep_msgmod_cont where tkmsgmod = "+tkmsgmod+" and cdling = '"+cdling+"' \n";
 
         pstm = m_connection.prepareStatement(l_query);
 

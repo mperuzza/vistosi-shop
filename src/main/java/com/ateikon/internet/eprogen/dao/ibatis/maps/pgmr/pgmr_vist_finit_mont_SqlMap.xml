@@ -475,9 +475,11 @@
        <isNotEmpty prepend="AND" property="cdvistfam">
             vist_articoli.cdvistfam = #cdvistfam:VARCHAR#
        </isNotEmpty>
-       <isNotEmpty prepend="AND" property="cdvistcolv">
-            vist_articoli.cdvistcolv = #cdvistcolv:VARCHAR#
-       </isNotEmpty>
+       <isNotEqual compareValue="ign" property="cdvistcolv">
+            <isNotEmpty prepend="AND" property="cdvistcolv">
+                 vist_articoli.cdvistcolv = #cdvistcolv:VARCHAR#
+            </isNotEmpty>
+       </isNotEqual>
        <isNotEmpty prepend="AND" property="cdvistccol">
             vist_articoli.cdvistccol = #cdvistccol:VARCHAR#
        </isNotEmpty>

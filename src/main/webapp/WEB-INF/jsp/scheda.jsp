@@ -133,7 +133,7 @@
                 dataArray.each(function(item, index){
                     
                     var underbg = '#fff';
-                    
+
                     if(item[cd]!=null){
                     
                         var opt = new Element('option', {
@@ -220,7 +220,6 @@
                                 'class': 'tipz',
                                 'title': '::'+item[ds]
                             });
-
                             a.adopt(img);
                             var li = new Element('li', {
                                 'class': cdsel.replace('|',''),
@@ -232,7 +231,12 @@
                                 }
                             }); 
                             li.adopt(a);
-
+                            
+                            
+                            if(scheda.articolo!=null && scheda.articolo[cd]==item[cd]){
+                                li.addClass('active');
+                                a.addClass('active');
+                            }
                             var under = new Element('div', {
                                 'class': 'under',
                                 'styles': {

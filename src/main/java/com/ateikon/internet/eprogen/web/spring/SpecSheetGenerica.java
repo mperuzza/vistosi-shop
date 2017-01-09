@@ -998,13 +998,13 @@ public class SpecSheetGenerica {
 
         List<String> possibleFilenameList = new ArrayList<String>();
         String filename = art.getVist_filedis();
-        possibleFilenameList.add(filename);
 
         if (vistosiShopManager.DEFAULT_CDCLAS_A_US.contains(art.getCdclas_a())) {
 
             possibleFilenameList.add(0, filename + "UL");
             possibleFilenameList.add(0, filename + art.getCdvistelet() + "UL");
         } else {
+            possibleFilenameList.add(filename);
             filename += art.getCdvistelet();
             possibleFilenameList.add(0, filename);
         }

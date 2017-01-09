@@ -19,7 +19,7 @@ public class Ep_utente_recapito extends com.ateikon.standard.Ep_utente_recapito 
 
     */
 
-    public ResultSet search ( long    tkutente
+public ResultSet search ( long    tkutente
                             , long    tkutente_tpservizio
                             , long    tkutente_rec_tipo
                             , boolean is_count
@@ -51,7 +51,7 @@ public class Ep_utente_recapito extends com.ateikon.standard.Ep_utente_recapito 
 
         if (is_oracle){
           throw new Exception("DB non supportato");
-        } else if (is_sybase){
+        } else if (is_sybase || is_postgresql){
           l_query  += "   from pgmr.ep_utente_recapito      urec                                      \n";
           l_query  += "      , pgmr.ep_utente_recapito_tipo urtp                                      \n";
           l_query  += "    where urec.tkutente_rec_tipo = urtp.tkutente_rec_tipo                      \n";

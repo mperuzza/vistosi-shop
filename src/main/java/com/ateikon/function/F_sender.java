@@ -506,7 +506,7 @@ public class F_sender extends Atk_sql {
         tot_rec = 0;
 
         l_query  = "";
-        l_query += " delete pgmr.atk_msgcont where tkmsg = "+tkmsg+" \n";
+        l_query += " delete from pgmr.atk_msgcont where tkmsg = "+tkmsg+" \n";
 
         pstm = m_connection.prepareStatement(l_query);
 

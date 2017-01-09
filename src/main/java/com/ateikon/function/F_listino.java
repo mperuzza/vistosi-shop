@@ -328,9 +328,8 @@ public class F_listino extends Atk_sql {
         l_query += "       , tipm.scmax_1                                                    \n";
         l_query += "       , tipm.scmax_2                                                    \n";
         l_query += "       , tipm.cdtipm                                                     \n";
-        l_query += "    from {oj pgmr.mrp_arch_articoli arti                                 \n";
+        l_query += "    from pgmr.mrp_arch_articoli arti                                     \n";
         l_query += "         left outer join pgmr.tipomapr tipm on arti.cdtipa = tipm.cdtipm \n";
-        l_query += "             }                                                           \n";
         l_query += "   where arti.cdazie = ?                                                 \n";
         l_query += "     and arti.cdarti = ?                                                 \n";
                                                          

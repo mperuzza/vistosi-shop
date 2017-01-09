@@ -61,12 +61,12 @@ public class Archclie extends Atk_sql {
         l_query += "      , agen.dsagen          \n";
         l_query += "      , agen.cdagen_m        \n";
         l_query += "      , rmpo.dsrmpo          \n";
-        l_query += "   from { oj pgmr.archclie a \n";
+        l_query += "   from pgmr.archclie a \n";
         l_query += "             left outer join pgmr.mac_pagame mpag on  a.cdpagame = mpag.cdpagame   \n";
         l_query += "             left outer join pgmr.archagen   agen on  a.cdagen   = agen.cdagen     \n";
         l_query += "                                                  and a.cdazie   = agen.cdazie     \n";
         l_query += "             left outer join pgmr.resmport   rmpo on  a.cdrmpo   = rmpo.cdrmpo     \n";
-        l_query += "               }             \n";
+        l_query += "                             \n";
         l_query += "      , pgmr.archenti b      \n";
         l_query += "  where a.cdente = b.cdente  \n";
         if (!cdclie_m.equals("")) {

@@ -19,7 +19,7 @@ public class Ep_funz_tpservizio extends com.ateikon.standard.Ep_funz_tpservizio 
 
     */
 
-    public ResultSet search ( String  cdfunzione_m
+public ResultSet search ( String  cdfunzione_m
                             , boolean is_count
                             , String  order_by
                                                    ) throws Exception {
@@ -48,7 +48,7 @@ public class Ep_funz_tpservizio extends com.ateikon.standard.Ep_funz_tpservizio 
 
         if (is_oracle){
           throw new Exception("DB non supportato");
-        } else if (is_sybase){
+        } else if (is_sybase || is_postgresql){
           l_query  += "   from pgmr.ep_funz_tpservizio      efts                                      \n";
           l_query  += "      , pgmr.ep_funz                 efun                                      \n";
           l_query  += "      , pgmr.ep_utente_tpservizio    utps                                      \n";

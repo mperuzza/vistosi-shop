@@ -3484,6 +3484,19 @@ public class F_ordven extends Atk_sql {
             l_query += "   and ente.cdente  = enul.cdente                                                        \n";
             l_query += "   and enul.fseleg  = 'S'                                                                \n";
             l_query += "   and enul.cdunil = ulsl.cdunil                                                         \n";
+        } else if (is_postgresql) {
+
+            l_query += "  from pgmr.web_ord_test  test                                                           \n";
+            l_query += "     , pgmr.archenti      ente                                                           \n";
+            l_query += "     , pgmr.enteuniloc    enul                                                           \n";
+            l_query += "     , pgmr.unitalocali   ulsl                                                           \n";
+            l_query += "          left outer join pgmr.nazioni       nazi_sl on ulsl.cdnazi    = nazi_sl.cdnazi  \n";
+            l_query += "          left outer join pgmr.province      prov_sl on ulsl.cdprov    = prov_sl.cdprov  \n";
+            l_query += " where test.tkordi  =  " + tkordi + "                                                        \n";
+            l_query += "   and test.cdentc  = ente.cdente                                                        \n";
+            l_query += "   and ente.cdente  = enul.cdente                                                        \n";
+            l_query += "   and enul.fseleg  = 'S'                                                                \n";
+            l_query += "   and enul.cdunil = ulsl.cdunil                                                         \n";
 
         } else {
             throw new Exception("DB NON Previsto !!");
@@ -3567,6 +3580,16 @@ public class F_ordven extends Atk_sql {
             l_query += "              left outer join pgmr.nazioni       nazi_dm on uldm.cdnazi    = nazi_dm.cdnazi    \n";
             l_query += "              left outer join pgmr.province      prov_dm on uldm.cdprov    = prov_dm.cdprov    \n";
             l_query += "              }                                                                                \n";
+            l_query += "   where test.tkordi = " + tkordi + "                                                              \n";
+
+        } else if (is_postgresql) {
+
+            l_query += "    from pgmr.web_ord_test      test                                                      \n";
+            l_query += "              left outer join pgmr.nazioni       nazi_de on test.cdstat_de = nazi_de.cdnazi    \n";
+            l_query += "              left outer join pgmr.province      prov_de on test.cdprov_de = prov_de.cdprov    \n";
+            l_query += "              left outer join pgmr.unitalocali   uldm    on test.cduldm    = uldm.cdunil       \n";
+            l_query += "              left outer join pgmr.nazioni       nazi_dm on uldm.cdnazi    = nazi_dm.cdnazi    \n";
+            l_query += "              left outer join pgmr.province      prov_dm on uldm.cdprov    = prov_dm.cdprov    \n";
             l_query += "   where test.tkordi = " + tkordi + "                                                              \n";
 
         } else {
@@ -4354,7 +4377,7 @@ public class F_ordven extends Atk_sql {
         l_query += "      , giac.dtprdisp                                                               \n";
         l_query += "      , giac.qtadisp                                                                \n";
         l_query += "   from pgmr.web_ord_positito  op                                                   \n";
-        l_query += "       , {oj             pgmr.mrp_arch_articoli art                                  \n";
+        l_query += "       , pgmr.mrp_arch_articoli art                                  \n";
         l_query += "        LEFT OUTER JOIN  pgmr.unimisura         mis ON art.cdunim_1   = mis.cdunim   \n";
         //EAR - 20091015-I ---- aggiunta dati per vistosi
         l_query += "        LEFT OUTER JOIN  pgmr.vist_tipi         tip ON art.cdvisttp   = tip.cdvisttp                \n";
@@ -4368,7 +4391,6 @@ public class F_ordven extends Atk_sql {
         l_query += "        LEFT OUTER JOIN  pgmr.vist_elettrificazioni  elet ON art.cdvistelet   = elet.cdvistelet     \n";
         l_query += "        LEFT OUTER JOIN  pgmr.mrp_file_giacenza giac ON art.cdarti = giac.cdarti  AND  giac.cdvar = 'STD'  AND  giac.tkmaga =   " + tkmaga + "    \n";
         //EAR - 20091015-F
-        l_query += "        }                                                                            \n";
         l_query += "  where op.tkordi = " + tkordi + "                                                      \n";
         l_query += "    and art.cdarti = op.cdarti                                                      \n";
         //l_query  += "    and giac.tkmaga =   "+tkmaga+"                                                  \n"; EAR 20110307 - filtro spostato nella left join
@@ -5232,9 +5254,8 @@ public class F_ordven extends Atk_sql {
         l_query += "   from pgmr.web_ord_positito  op                       \n";
         l_query += "      , pgmr.web_ord_posi_matr matr                     \n";
         l_query += "      , pgmr.matr_anagrafica   anag                     \n";
-        l_query += "       , {oj             pgmr.mrp_arch_articoli art                                  \n";
+        l_query += "       , pgmr.mrp_arch_articoli art                                  \n";
         l_query += "        LEFT OUTER JOIN  pgmr.unimisura         mis ON art.cdunim_1   = mis.cdunim   \n";
-        l_query += "        }                                                                            \n";
         l_query += "  where op.tkordi  = " + tkordi + "                         \n";
         l_query += "    and art.cdarti = op.cdarti                          \n";
         l_query += "    and op.tkposi  = matr.tkposi                        \n";

@@ -5,8 +5,8 @@
     <!-- application properties -->
     <properties resource="ateikon_sql.properties"/>
     
-    <settings cacheModelsEnabled="false"
-    enhancementEnabled="false"
+    <settings cacheModelsEnabled="true"
+    enhancementEnabled="true"
     useStatementNamespaces="true"
     lazyLoadingEnabled="true"
     />

@@ -73,14 +73,15 @@
 </head>
 <c:choose>
     <c:when test="${rc.locale.language=='it'}"><c:set var="alert">Desideriamo informarLa che il catalogo on-line non sarà disponibile<br/>
-dalle ore 21:00 (GMT+1.00) del giorno 22/05/2015 alle ore 21:00 (GMT+1.00) del giorno successivo 23/05/2015 per aggiornamento dei servizi.</c:set></c:when>
+dalle ore 00:00 (GMT+1.00) del giorno 02/01/2017 alle ore 23:59 (GMT+1.00) del giorno 04/01/2017 per aggiornamento dei servizi.</c:set></c:when>
 <c:otherwise><c:set var="alert">We inform you that the on-line catalog will not be available<br/>
-from 21:00 (GMT+1.00) on the day 22/05/2015 to 21:00 (GMT+1.00) of the next day 23/05/2015 to upgrade services.</c:set></c:otherwise>
+from 00:00 (GMT+1.00) on the day 02/01/2017 to 23:59 (GMT+1.00) of the day 04/01/2017 to upgrade services.</c:set></c:otherwise>
 </c:choose>
 <body class="vistosi-shop">
     <jsp:useBean id="now" class="java.util.Date"/>
-    <fmt:parseDate var="endDate" type="date" pattern="dd/MM/yyyy HH:mm" value="23/05/2015 23:59"/>
-    <c:if test="${now < endDate}">
+    <fmt:parseDate var="startDate" type="date" pattern="dd/MM/yyyy HH:mm" value="27/12/2016 00:00"/>
+    <fmt:parseDate var="endDate" type="date" pattern="dd/MM/yyyy HH:mm" value="04/01/2017 12:00"/>
+    <c:if test="${now > startDate && now < endDate}">
     <div style="display: none;" class="alertbar position-top" id="alertbar"><span class="alertbar-cta"><p class="text">${alert}</p><p class="downarrow"><a id="alerttrigger" href="javascript:void(0)"><img alt="Arrow Up" class="alerttrigger arrow" src="<c:url value='/static/images/arrow-up.png'/>"></a></p></span></div>    
     </c:if>
   <div id="wrap">

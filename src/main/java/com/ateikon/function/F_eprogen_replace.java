@@ -41,6 +41,7 @@ import com.ateikon.structure.Str_key_vist_premi;
 import com.ateikon.structure.Str_msgmod;
 import com.ateikon.structure.Str_ordven_cond;
 import com.ateikon.structure.Str_ordven_tot;
+import com.ateikon.structure.Str_risorsa_anticipo;
 import com.ateikon.util.Atk_ctrl;
 import com.ateikon.util.HTML;
 import java.io.File;
@@ -502,12 +503,15 @@ public class F_eprogen_replace extends Atk_sql {
     l_query += "         , tikt.tkutente_inse          as tkutente                                             \n";
     l_query += "         , eute.cdutente               as cdutente                                             \n";
     l_query += "         , eute.fgadmin                as fgadmin                                              \n";
-    l_query += "      from pgmr.archrubrica     rubr                                                           \n";
-    l_query += "         , {oj  pgmr.ep_ticket  tikt                                                           \n";
-    l_query += "            left outer join  pgmr.ep_utente eute     on  tikt.tkutente_inse  = eute.tkutente   \n";
-    l_query += "           }                                                                                   \n";
-    l_query += "     where rubr.tkticket_reg   = tikt.tkticket                                                 \n";
-    l_query += "       and rubr.tkrubr         = "+ tkrubr +"                                                  \n";
+    if (is_oracle){
+        throw new Exception("DB non supportato");
+    } else if (is_sybase || is_postgresql) {
+        l_query += "      from pgmr.archrubrica     rubr                                                           \n";
+        l_query += "         , pgmr.ep_ticket  tikt                                                           \n";
+        l_query += "            left outer join  pgmr.ep_utente eute     on  tikt.tkutente_inse  = eute.tkutente   \n";
+        l_query += "     where rubr.tkticket_reg   = tikt.tkticket                                                 \n";
+        l_query += "       and rubr.tkrubr         = "+ tkrubr +"                                                  \n";
+    }
 
     rs = sql_query(l_query);
 
@@ -886,14 +890,17 @@ public class F_eprogen_replace extends Atk_sql {
         l_query += "  from pgmr.archclie      clie                                                           \n";
         l_query += "     , pgmr.archenti      ente                                                           \n";
         l_query += "     , pgmr.enteuniloc    enul                                                           \n";
-        l_query += "     , {oj pgmr.unitalocali ulsl                                                         \n";
-        l_query += "         left outer join  pgmr.nazioni  nazi on  ulsl.cdnazi = nazi.cdnazi               \n";
-        l_query += "       }                                                                                 \n";
-        l_query += " where clie.tkclie  = '" + lstr_eute.tkclie + "'                                         \n";
-        l_query += "   and clie.cdente  = ente.cdente                                                        \n";
-        l_query += "   and ente.cdente  = enul.cdente                                                        \n";
-        l_query += "   and enul.fseleg  = 'S'                                                                \n";
-        l_query += "   and enul.cdunil = ulsl.cdunil                                                         \n";
+        if (is_oracle){
+            throw new Exception("DB non supportato");
+        } else if (is_sybase || is_postgresql) {
+            l_query += "     , pgmr.unitalocali ulsl                                                         \n";
+            l_query += "         left outer join  pgmr.nazioni  nazi on  ulsl.cdnazi = nazi.cdnazi               \n";
+            l_query += " where clie.tkclie  = '" + lstr_eute.tkclie + "'                                         \n";
+            l_query += "   and clie.cdente  = ente.cdente                                                        \n";
+            l_query += "   and ente.cdente  = enul.cdente                                                        \n";
+            l_query += "   and enul.fseleg  = 'S'                                                                \n";
+            l_query += "   and enul.cdunil = ulsl.cdunil                                                         \n";
+        }
         
         pstm = m_connection.prepareStatement(l_query);
         
@@ -2184,16 +2191,19 @@ public class F_eprogen_replace extends Atk_sql {
         l_query += "            , uloc.comune                                                                                                                             \n";
         l_query += "            , prov.cdprov_m                                                                                                                           \n";
         l_query += "            , nazi.dsnazi                                                                                                                             \n";
-        l_query += "         FROM pgmr.archenti ente                                                                                                                      \n";
-        l_query += "             , pgmr.archclie    clie                                                                                                \n";
-        l_query += "             , {oj               pgmr.enteuniloc  eulo                                                                                                \n";
-        l_query += "                left outer join  pgmr.unitalocali uloc on  eulo.cdunil = uloc.cdunil                                                                  \n";
-        l_query += "                                 left outer join  pgmr.nazioni  nazi on  uloc.cdnazi = nazi.cdnazi                                                    \n";
-        l_query += "                                 left outer join  pgmr.province  prov on  uloc.cdprov = prov.cdprov_m                                                 \n";
-        l_query += "               }                                                                                                                                      \n";
-        l_query += "   	WHERE clie.cdente = ente.cdente                                                                                                                   \n";
-        l_query += "   	  and ente.cdente = eulo.cdente                                                                                                                   \n";
-        l_query += "   	  and clie.tkclie in ( "+ rubr_tkclie_rivend_concatenati +" )                                                                                       \n";
+        if (is_oracle){
+            throw new Exception("DB non supportato");
+        } else if (is_sybase || is_postgresql) {
+            l_query += "         FROM pgmr.archenti ente                                                                                                                      \n";
+            l_query += "             , pgmr.archclie    clie                                                                                                \n";
+            l_query += "             ,  pgmr.enteuniloc  eulo                                                                                                \n";
+            l_query += "                left outer join  pgmr.unitalocali uloc on  eulo.cdunil = uloc.cdunil                                                                  \n";
+            l_query += "                                 left outer join  pgmr.nazioni  nazi on  uloc.cdnazi = nazi.cdnazi                                                    \n";
+            l_query += "                                 left outer join  pgmr.province  prov on  uloc.cdprov = prov.cdprov_m                                                 \n";
+            l_query += "   	WHERE clie.cdente = ente.cdente                                                                                                                   \n";
+            l_query += "   	  and ente.cdente = eulo.cdente                                                                                                                   \n";
+            l_query += "   	  and clie.tkclie in ( "+ rubr_tkclie_rivend_concatenati +" )                                                                                       \n";
+        }
         l_query += "     order by ente.ragcog	                                                                                                                            \n";
 
         pstm = m_connection.prepareStatement(l_query);
@@ -2608,6 +2618,10 @@ public class F_eprogen_replace extends Atk_sql {
     String   lang         = "";
     String   url_risorse  = "";
     String   dscontatto   = "";
+    String   tiporisorsa  = "";
+    String   nome_modello = "";
+    String   cdvistelet   = "";
+    String   motivo       = "";
 
 
     String  l_query = "";
@@ -2633,6 +2647,11 @@ public class F_eprogen_replace extends Atk_sql {
     l_query += "       , lang                       \n";
     l_query += "       , url_risorse                \n";
     l_query += "       , dscontatto                 \n";
+    l_query += "       , tiporisorsa                \n";
+    l_query += "       , nome_modello               \n";
+    l_query += "       , nome_modello               \n";
+    l_query += "       , cdvistelet                 \n";
+    l_query += "       , motivo                     \n";
     l_query += "    from pgmr.atk_contatti          \n";
     l_query += "   where tkcontatto = ?             \n";
     l_query += "     and cdazie = '"+ cdazie +"'    \n";
@@ -2665,6 +2684,10 @@ public class F_eprogen_replace extends Atk_sql {
       lang         = "";
       url_risorse  = "";
       dscontatto   = "";
+      tiporisorsa  = "";
+      nome_modello = "";
+      cdvistelet   = "";
+      motivo       = "";
       
       if (rs.getObject("cap"         ) != null)  cap          = rs.getString("cap"         ); 
       if (rs.getObject("citta"       ) != null)  citta        = rs.getString("citta"       ); 
@@ -2685,6 +2708,10 @@ public class F_eprogen_replace extends Atk_sql {
       if (rs.getObject("lang"        ) != null)  lang         = rs.getString("lang"        ); 
       if (rs.getObject("url_risorse" ) != null)  url_risorse  = rs.getString("url_risorse" ); 
       if (rs.getObject("dscontatto"  ) != null)  dscontatto   = rs.getString("dscontatto"  ); 
+      if (rs.getObject("tiporisorsa" ) != null)  tiporisorsa  = rs.getString("tiporisorsa" ); 
+      if (rs.getObject("nome_modello") != null)  nome_modello = rs.getString("nome_modello"); 
+      if (rs.getObject("cdvistelet"  ) != null)  cdvistelet   = rs.getString("cdvistelet"  ); 
+      if (rs.getObject("motivo"      ) != null)  motivo       = rs.getString("motivo"      ); 
 
       if (tkmotcont == 1){
         dsmotcont = "assistenza";
@@ -2724,6 +2751,10 @@ public class F_eprogen_replace extends Atk_sql {
     ao_map.put("${atk_contatti.lang}"             , lang                                );
     ao_map.put("${atk_contatti.url_risorse}"      , url_risorse                         );
     ao_map.put("${atk_contatti.dscontatto}"       , dscontatto                          );
+    ao_map.put("${atk_contatti.tiporisorsa}"      , tiporisorsa                         );
+    ao_map.put("${atk_contatti.nome_modello}"     , nome_modello                        );
+    ao_map.put("${atk_contatti.cdvistelet}"       , cdvistelet                          );
+    ao_map.put("${atk_contatti.motivo}"           , motivo                              );
 
     ao_map = of_setPar_Nazioni(ao_map, cdnazi, cdling);
     ao_map = of_setPar_Province(ao_map, cdprov, cdling);
@@ -2834,10 +2865,12 @@ public class F_eprogen_replace extends Atk_sql {
 
     
 
+    String idTracking = f_bolla_test.getIDTracking(ao_token);
     
     ao_map.put("${bolla_test.dtboll}"                        , atk_ctrl.getDate(dtboll)                              );
     ao_map.put("${bolla_test.url_spedizione}"                , url_spedizione                                        );
     ao_map.put("${bolla_test.url_spedizione_DROPSHIP}"       , url_spedizione_DROPSHIP                               );
+    ao_map.put("${bolla_test.id_tracking}"                   , idTracking                                            );
 
     String ls_text_link3          = atk_dwlingua.getLabel ("srv_vendita", cdling, "text_link3"       , "", null);
       
@@ -2849,6 +2882,14 @@ public class F_eprogen_replace extends Atk_sql {
     if (!url_spedizione_DROPSHIP.equals("")) text_link_spedizione  += atk_dwlingua.getLabel ("srv_vendita", cdling, "sped_boll_text_2_2" , "", new String[] {"<a href=\""+ url_spedizione_DROPSHIP +"\">"+ ls_text_link3 +"</a>"});
 
     ao_map.put("${ov_avvsped.text_link_spedizione}"          , text_link_spedizione                                 );
+
+    String text_id_tracking  = "";
+    
+    if (!idTracking.isEmpty()){
+        text_id_tracking  = atk_dwlingua.getLabel ("srv_vendita", cdling, "text_id_tracking"       , "", new String[] {"<b>"+ idTracking +"</b>"});
+    }
+
+    ao_map.put("${ov_avvsped.text_id_tracking}"              , text_id_tracking                                 );
 
     ao_map = of_setPar_Archclie(ao_map, tkclie, cdling);
 
@@ -3640,14 +3681,17 @@ public class F_eprogen_replace extends Atk_sql {
     l_query += "            from pgmr.ep_utente in_eute                                                                                         \n";
     l_query += "           where in_eute.fgabil = 'S'                                                                                           \n";
     l_query += "             and in_eute.tkclie = clie.tkclie) as tkutente_clie                                                                 \n";
-    l_query += "    from pgmr.vist_mpron     mpron                                                                                              \n";
-    l_query += "       , { oj              pgmr.archclie       clie                                                                             \n";
-    l_query += "           left outer join pgmr.mac_pagame     mpag  on  clie.cdpagame = mpag.cdpagame                                          \n";
-    l_query += "           left outer join pgmr.archenti       ente  on  clie.cdente   = ente.cdente                                            \n";
-    l_query += "         }                                                                                                                      \n";
-    l_query += "   where mpron.tkclie = clie.tkclie                                                                                             \n";
-    l_query += "     and mpron.cdazie = '"+ cdazie +"'                                                                                          \n";
-    l_query += "     and mpron.tkmpron = ?                                                                                                      \n";
+    if (is_oracle){
+        throw new Exception("DB non supportato");
+    } else if (is_sybase || is_postgresql) {
+        l_query += "    from pgmr.vist_mpron     mpron                                                                                              \n";
+        l_query += "       ,  pgmr.archclie       clie                                                                             \n";
+        l_query += "           left outer join pgmr.mac_pagame     mpag  on  clie.cdpagame = mpag.cdpagame                                          \n";
+        l_query += "           left outer join pgmr.archenti       ente  on  clie.cdente   = ente.cdente                                            \n";
+        l_query += "   where mpron.tkclie = clie.tkclie                                                                                             \n";
+        l_query += "     and mpron.cdazie = '"+ cdazie +"'                                                                                          \n";
+        l_query += "     and mpron.tkmpron = ?                                                                                                      \n";
+    }
 
     pstm = m_connection.prepareStatement(l_query);
     
@@ -4353,15 +4397,14 @@ public class F_eprogen_replace extends Atk_sql {
     l_query += "       , nazi_sl.dsnazi      as dsnazi_sl       \n";
     l_query += "       , prov_sl.cdprov_m    as cdprov_m_sl     \n";
     l_query += "       , prov_sl.dsprov      as dsprov_sl       \n";
-    if (is_sybase) {
+    if (is_sybase || is_postgresql) {
 
         l_query += "  from pgmr.web_ord_test  test                                                           \n";
         l_query += "     , pgmr.archenti      ente                                                           \n";
         l_query += "     , pgmr.enteuniloc    enul                                                           \n";
-        l_query += "     ,  { oj              pgmr.unitalocali   ulsl                                        \n";
+        l_query += "     , pgmr.unitalocali   ulsl                                        \n";
         l_query += "          left outer join pgmr.nazioni       nazi_sl on ulsl.cdnazi    = nazi_sl.cdnazi  \n";
         l_query += "          left outer join pgmr.province      prov_sl on ulsl.cdprov    = prov_sl.cdprov  \n";
-        l_query += "          }                                                                              \n";
         l_query += " where test.tkordi  =  " + tkordi + "                                                        \n";
         l_query += "   and test.cdentc  = ente.cdente                                                        \n";
         l_query += "   and ente.cdente  = enul.cdente                                                        \n";
@@ -4464,15 +4507,14 @@ public class F_eprogen_replace extends Atk_sql {
     l_query += "       , nazi_de.dsnazi       as dsnazi_de      \n";
     l_query += "       , prov_de.cdprov_m     as cdprov_m_de    \n";
     l_query += "       , prov_de.dsprov       as dsprov_de      \n";
-    if (is_sybase) {
+    if (is_sybase || is_postgresql) {
 
-        l_query += "    from { oj pgmr.web_ord_test      test                                                      \n";
+        l_query += "    from pgmr.web_ord_test      test                                                      \n";
         l_query += "              left outer join pgmr.nazioni       nazi_de on test.cdstat_de = nazi_de.cdnazi    \n";
         l_query += "              left outer join pgmr.province      prov_de on test.cdprov_de = prov_de.cdprov    \n";
         l_query += "              left outer join pgmr.unitalocali   uldm    on test.cduldm    = uldm.cdunil       \n";
         l_query += "              left outer join pgmr.nazioni       nazi_dm on uldm.cdnazi    = nazi_dm.cdnazi    \n";
         l_query += "              left outer join pgmr.province      prov_dm on uldm.cdprov    = prov_dm.cdprov    \n";
-        l_query += "              }                                                                                \n";
         l_query += "   where test.tkordi = " + tkordi + "                                                              \n";
 
     } else {
@@ -4963,8 +5005,6 @@ public class F_eprogen_replace extends Atk_sql {
             ls_tbl_order_details += "<td  style=\"background-color: rgb(" + rs_stati.getString("vist_rgb_r") + "," + rs_stati.getString("vist_rgb_g") + "," + rs_stati.getString("vist_rgb_b") + "); margin:0 5px 0 0; padding: 0px; border:0px none; height:16px; width:16px;\" ></td><td style=\"padding:0 10px 0 5px;  font-size:12px; height:16px; margin: 0px; border:0px none;\">" + html.text(rs_stati.getString("dsstato_de")) + "</td>";
         }else if("S".equals(ls_lingua)) {
             ls_tbl_order_details += "<td  style=\"background-color: rgb(" + rs_stati.getString("vist_rgb_r") + "," + rs_stati.getString("vist_rgb_g") + "," + rs_stati.getString("vist_rgb_b") + "); margin:0 5px 0 0; padding: 0px; border:0px none; height:16px; width:16px;\" ></td><td style=\"padding:0 10px 0 5px;  font-size:12px; height:16px; margin: 0px; border:0px none;\">" + html.text(rs_stati.getString("dsstato_es")) + "</td>";
-        }else if("R".equals(ls_lingua)) {
-            ls_tbl_order_details += "<td  style=\"background-color: rgb(" + rs_stati.getString("vist_rgb_r") + "," + rs_stati.getString("vist_rgb_g") + "," + rs_stati.getString("vist_rgb_b") + "); margin:0 5px 0 0; padding: 0px; border:0px none; height:16px; width:16px;\" ></td><td style=\"padding:0 10px 0 5px;  font-size:12px; height:16px; margin: 0px; border:0px none;\">" + html.text(rs_stati.getString("dsstato_ru")) + "</td>";
         } else {
             ls_tbl_order_details += "<td  style=\"background-color: rgb(" + rs_stati.getString("vist_rgb_r") + "," + rs_stati.getString("vist_rgb_g") + "," + rs_stati.getString("vist_rgb_b") + "); margin:0 5px 0 0; padding: 0px; border:0px none; height:16px; width:16px;\" ></td><td style=\"padding:0 10px 0 5px;  font-size:12px; height:16px; margin: 0px; border:0px none;\">" + html.text(rs_stati.getString("dsstato")) + "</td>";
         }
@@ -5097,27 +5137,30 @@ public class F_eprogen_replace extends Atk_sql {
     l_query += "      , mis.cdunim_m                                                                \n";
     l_query += "      , giac.dtprdisp                                                               \n";
     l_query += "      , giac.qtadisp                                                                \n";
-    l_query += "   from pgmr.web_ord_positito  op                                                   \n";
-    l_query += "       , {oj             pgmr.mrp_arch_articoli art                                  \n";
-    l_query += "        LEFT OUTER JOIN  pgmr.unimisura         mis ON art.cdunim_1   = mis.cdunim   \n";
-    l_query += "        LEFT OUTER JOIN  pgmr.vist_tipi         tip ON art.cdvisttp   = tip.cdvisttp                \n";
-    l_query += "        LEFT OUTER JOIN  pgmr.vist_famiglia     fam ON art.cdvistfam  = fam.cdvistfam               \n";
-    l_query += "        LEFT OUTER JOIN  pgmr.vist_var1         v1  ON art.cdvistv1   = v1.cdvistv1                 \n";
-    l_query += "        LEFT OUTER JOIN  pgmr.vist_var2         v2  ON art.cdvistv2   = v2.cdvistv2                 \n";
-    l_query += "        LEFT OUTER JOIN  pgmr.vist_var3         v3  ON art.cdvistv3   = v3.cdvistv3                 \n";
-    l_query += "        LEFT OUTER JOIN  pgmr.vist_colori_vetro  colv ON art.cdvistcolv   = colv.cdvistcolv          \n";
-    l_query += "        LEFT OUTER JOIN  pgmr.vist_finit_vetro  finv ON art.cdvistfinv   = finv.cdvistfinv          \n";
-    l_query += "        LEFT OUTER JOIN  pgmr.vist_finit_mont   finm ON art.cdvistfinm   = finm.cdvistfinm          \n";
-    l_query += "        LEFT OUTER JOIN  pgmr.vist_elettrificazioni  elet ON art.cdvistelet   = elet.cdvistelet     \n";
-    l_query += "        LEFT OUTER JOIN  pgmr.mrp_file_giacenza giac ON art.cdarti = giac.cdarti  AND  giac.cdvar = 'STD'  AND  giac.tkmaga =   " + tkmaga + "    \n";
-    l_query += "        }                                                                            \n";
-    l_query += "  where op.tkordi = " + tkordi + "                                                      \n";
-    l_query += "    and art.cdarti = op.cdarti                                                      \n";
-    l_query += "    and art.cdarti = op.cdarti                                                      \n";
-    l_query += "    and op.tkposi not in( select matr.tkposi                                        \n";
-    l_query += "                            from pgmr.web_ord_posi_matr matr                        \n";
-    l_query += "                           where matr.tkordi = " + tkordi + "                           \n";
-    l_query += "                             )                                                      \n";
+    if (is_oracle){
+        throw new Exception("DB non supportato");
+    } else if (is_sybase || is_postgresql) {
+        l_query += "   from pgmr.web_ord_positito  op                                                   \n";
+        l_query += "       , pgmr.mrp_arch_articoli art                                  \n";
+        l_query += "        LEFT OUTER JOIN  pgmr.unimisura         mis ON art.cdunim_1   = mis.cdunim   \n";
+        l_query += "        LEFT OUTER JOIN  pgmr.vist_tipi         tip ON art.cdvisttp   = tip.cdvisttp                \n";
+        l_query += "        LEFT OUTER JOIN  pgmr.vist_famiglia     fam ON art.cdvistfam  = fam.cdvistfam               \n";
+        l_query += "        LEFT OUTER JOIN  pgmr.vist_var1         v1  ON art.cdvistv1   = v1.cdvistv1                 \n";
+        l_query += "        LEFT OUTER JOIN  pgmr.vist_var2         v2  ON art.cdvistv2   = v2.cdvistv2                 \n";
+        l_query += "        LEFT OUTER JOIN  pgmr.vist_var3         v3  ON art.cdvistv3   = v3.cdvistv3                 \n";
+        l_query += "        LEFT OUTER JOIN  pgmr.vist_colori_vetro  colv ON art.cdvistcolv   = colv.cdvistcolv          \n";
+        l_query += "        LEFT OUTER JOIN  pgmr.vist_finit_vetro  finv ON art.cdvistfinv   = finv.cdvistfinv          \n";
+        l_query += "        LEFT OUTER JOIN  pgmr.vist_finit_mont   finm ON art.cdvistfinm   = finm.cdvistfinm          \n";
+        l_query += "        LEFT OUTER JOIN  pgmr.vist_elettrificazioni  elet ON art.cdvistelet   = elet.cdvistelet     \n";
+        l_query += "        LEFT OUTER JOIN  pgmr.mrp_file_giacenza giac ON art.cdarti = giac.cdarti  AND  giac.cdvar = 'STD'  AND  giac.tkmaga =   " + tkmaga + "    \n";
+        l_query += "  where op.tkordi = " + tkordi + "                                                      \n";
+        l_query += "    and art.cdarti = op.cdarti                                                      \n";
+        l_query += "    and art.cdarti = op.cdarti                                                      \n";
+        l_query += "    and op.tkposi not in( select matr.tkposi                                        \n";
+        l_query += "                            from pgmr.web_ord_posi_matr matr                        \n";
+        l_query += "                           where matr.tkordi = " + tkordi + "                           \n";
+        l_query += "                             )                                                      \n";
+    }
     l_query += "  order by op.nrposi                                                                \n";
 
     pstm = m_connection.prepareStatement(l_query);
@@ -5432,22 +5475,30 @@ public class F_eprogen_replace extends Atk_sql {
             String annotazione_posi_cli = getAnnotazione_posi(tkposi, TIPONOTA_CLIENTE);
             
 
-            String path_modello = "fileresources/models";
-            String path_3D = path_modello + "/3D/";
+//            String path_modello = "fileresources/models";
+//            String path_3D = path_modello + "/3D/";
             String nome_modello = vist_filedis;
             //igs
-            String igs = (!nome_modello.equals("") ? path_3D + nome_modello + ".zip" : "");
+//            String igs = (!nome_modello.equals("") ? path_3D + nome_modello + ".zip" : "");
+            String igs = mrp_arch_articoli.of_relpath_resource(cdclas_a, mrp_arch_articoli.MOD3D_IGS, cdvistfam, cdvisttp, cdvistv1, cdvistv2, cdvistv3, cdvistelet, vist_filedis, "");
 
 //            //eprt
 //            String eprt = (!nome_modello.equals("") ? path_3D + nome_modello + ".EPRT" : "");
 
             //easm
-            String easm = (!nome_modello.equals("") ? path_3D + nome_modello + ".EASM" : "");
+//            String easm = (!nome_modello.equals("") ? path_3D + nome_modello + ".EASM" : "");
+            String easm = mrp_arch_articoli.of_relpath_resource(cdclas_a, mrp_arch_articoli.MOD3D_EASM, cdvistfam, cdvisttp, cdvistv1, cdvistv2, cdvistv3, cdvistelet, vist_filedis, "");
 
-            String path_2D = path_modello + "/2D/";
-            //dwg cm
-            String dwg_vers = "cm/";
-            String dwg = (!nome_modello.equals("") ? path_2D + dwg_vers + nome_modello + ".dwg" : "");
+//            String path_2D = path_modello + "/2D/";
+//            //dwg cm
+//            String dwg_vers = "cm/";
+//            String dwg = (!nome_modello.equals("") ? path_2D + dwg_vers + nome_modello + ".dwg" : "");
+            String dwg = "";
+            if (cdling.equals("E")){ //CABLATO -- se inglese
+                dwg = mrp_arch_articoli.of_relpath_resource(cdclas_a, mrp_arch_articoli.MOD2D_DWG_PO, cdvistfam, cdvisttp, cdvistv1, cdvistv2, cdvistv3, cdvistelet, vist_filedis, "");
+            } else {
+                dwg = mrp_arch_articoli.of_relpath_resource(cdclas_a, mrp_arch_articoli.MOD2D_DWG_CM, cdvistfam, cdvisttp, cdvistv1, cdvistv2, cdvistv3, cdvistelet, vist_filedis, "");
+            }
             
             //path certificati
             String path_cert = "fileresources/cert/";
@@ -5783,7 +5834,7 @@ public class F_eprogen_replace extends Atk_sql {
 
                         String link_cert = ep_portal_url + "download/"+ certif_img_relpath +"?f=/" + certif_img_relpath;
 
-                        ls_tbl_order_details += "<a target=\"_blank\" href=\""+ link_cert +"\" class=\"\"  border=\"0\"><img width=\"25\" src=\""+ ep_shop_url +"static/images/articoli/specsheetres/dati/"+ img_cert +"\" border=\"0\" style=\"margin-right:2px;margin-bottom:2px;\"></a>";
+                        ls_tbl_order_details += "<a target=\"_blank\" href=\""+ link_cert +"\" class=\"\"  border=\"0\"><img height=\"24\" src=\""+ ep_shop_url +"static/images/articoli/specsheetres/dati/"+ img_cert +"\" border=\"0\" style=\"margin-right:2px;margin-bottom:2px;\"></a>";
 
                     }
                 }
@@ -6046,17 +6097,20 @@ public class F_eprogen_replace extends Atk_sql {
     l_query += "      , op.nrposi                                       \n";
     l_query += "      , mis.cdunim_m                                    \n";
     l_query += "      , anag.cdmatricola_m                              \n";
-    l_query += "   from pgmr.web_ord_positito  op                       \n";
-    l_query += "      , pgmr.web_ord_posi_matr matr                     \n";
-    l_query += "      , pgmr.matr_anagrafica   anag                     \n";
-    l_query += "       , {oj             pgmr.mrp_arch_articoli art                                  \n";
-    l_query += "        LEFT OUTER JOIN  pgmr.unimisura         mis ON art.cdunim_1   = mis.cdunim   \n";
-    l_query += "        }                                                                            \n";
-    l_query += "  where op.tkordi  = " + tkordi + "                         \n";
-    l_query += "    and art.cdarti = op.cdarti                          \n";
-    l_query += "    and op.tkposi  = matr.tkposi                        \n";
-    l_query += "    and op.tkordi  = matr.tkordi                        \n";
-    l_query += "    and matr.tkmatricola = anag.tkmatricola             \n";
+    if (is_oracle){
+        throw new Exception("DB non supportato");
+    } else if (is_sybase || is_postgresql) {
+        l_query += "   from pgmr.web_ord_positito  op                       \n";
+        l_query += "      , pgmr.web_ord_posi_matr matr                     \n";
+        l_query += "      , pgmr.matr_anagrafica   anag                     \n";
+        l_query += "       , pgmr.mrp_arch_articoli art                                  \n";
+        l_query += "        LEFT OUTER JOIN  pgmr.unimisura         mis ON art.cdunim_1   = mis.cdunim   \n";
+        l_query += "  where op.tkordi  = " + tkordi + "                         \n";
+        l_query += "    and art.cdarti = op.cdarti                          \n";
+        l_query += "    and op.tkposi  = matr.tkposi                        \n";
+        l_query += "    and op.tkordi  = matr.tkordi                        \n";
+        l_query += "    and matr.tkmatricola = anag.tkmatricola             \n";
+    }
     l_query += "  order by op.nrposi                                    \n";
 
     pstm = m_connection.prepareStatement(l_query);
@@ -7149,9 +7203,13 @@ public class F_eprogen_replace extends Atk_sql {
     
     Ep_costanti ep_costanti = new Ep_costanti();
     Costanti_comm costanti_comm = new Costanti_comm();
+    Mrp_arch_articoli mrp_arch_articoli = new Mrp_arch_articoli();
+    Atk_dwlingua  atk_dwlingua = new Atk_dwlingua();
     
     setProfilo((Atk_sql) ep_costanti);
     setProfilo((Atk_sql) costanti_comm);
+    setProfilo((Atk_sql) mrp_arch_articoli);
+    setProfilo((Atk_sql) atk_dwlingua);
 
     String ep_portal_url    = ep_costanti.getCostvalue("ep.portal_url");
     ep_portal_url = of_cambiaURLLingua(ep_portal_url, cdling);
@@ -7161,12 +7219,18 @@ public class F_eprogen_replace extends Atk_sql {
     long tkutente = Long.parseLong((String) ao_map.get("${atk_contatti.tkutente_rif}"));
     String ls_url_risorse = (String) ao_map.get("${atk_contatti.url_risorse}");
     String ls_lang = (String) ao_map.get("${atk_contatti.lang}");
+    String ls_tiporisorsa  = (String) ao_map.get("${atk_contatti.tiporisorsa}");
+    String ls_nome_modello = (String) ao_map.get("${atk_contatti.nome_modello}");
+    String ls_cdvistelet   = (String) ao_map.get("${atk_contatti.cdvistelet}");
+    String ls_motivo       = (String) ao_map.get("${atk_contatti.motivo}");
     
     if (ls_lang.equals("")){
         ls_lang = sql_String("select cdiso639 from pgmr.ep_lingua where cdling = '"+ cdling + "' ");
     }
     
-    String ls_site_downr_url_risorsa = of_setPar_SITE_DOWNR_getUrl_risorsa_esistente(ls_url_risorse, ls_lang);
+    ao_map.put("${site_downr.lang}"                      , ls_lang         );
+    
+    String ls_site_downr_url_risorsa = mrp_arch_articoli.of_getUrl_risorsa_esistente(ls_url_risorse, ls_lang);
     
     if (!ls_site_downr_url_risorsa.equals("")){
         ls_site_downr_url_risorsa = ep_portal_url + "download/?f="+ ls_site_downr_url_risorsa +"&tkc="+ tkcontatto +"&lang="+ ls_lang;
@@ -7198,254 +7262,35 @@ public class F_eprogen_replace extends Atk_sql {
     
     ao_map.put("${site_downr.nomeRisorsaMancante}"                      , ls_nomeRisorsaMancante         );
     
+    
+    String ls_text_risorsa_anticipo = "";
+    String ls_site_downr_url_risorsa_anticipo = ep_portal_url; 
+    
+    if (ls_motivo.equals("Richiesta download")){
+        Str_risorsa_anticipo str_risorsa_anticipo = mrp_arch_articoli.of_getRisorsa_anticipo(ls_url_risorse, ls_tiporisorsa, ls_nome_modello, ls_cdvistelet, tkcontatto, ls_lang, cdling);
+
+        if (str_risorsa_anticipo != null){
+            ls_site_downr_url_risorsa_anticipo = str_risorsa_anticipo.url_res_anticipo;
+            ls_text_risorsa_anticipo  = atk_dwlingua.getLabel ("srv_vendita", cdling, "text_"+ str_risorsa_anticipo.tipo_res_anticipo, "", new String[]{ls_nome_modello});
+        }
+    }
+    
+    ao_map.put("${site_downr.url_risorsa_anticipo}"                      , ls_site_downr_url_risorsa_anticipo         );
+    ao_map.put("${site_downr.text_risorsa_anticipo}"                     , ls_text_risorsa_anticipo                      );
+    
 
     ao_map = of_setPar_Ep_utente(ao_map, tkutente, cdling);
     
     
     ep_costanti.close();
     costanti_comm.close();
+    mrp_arch_articoli.close();
 
     return ao_map;
 
   }
   
   
-
-  public String of_setPar_SITE_DOWNR_getUrl_risorsa_esistente(String url_risorsa, String lang) throws Exception{
-
-    if (url_risorsa.equals("")) return ""; 
-    
-    Costanti_comm costanti_comm = new Costanti_comm();
-    Ep_costanti ep_costanti = new Ep_costanti();
-    Mrp_arch_articoli mrp_arch_articoli = new Mrp_arch_articoli();
-    
-    setProfilo((Atk_sql) costanti_comm);
-    setProfilo((Atk_sql) ep_costanti);
-    setProfilo((Atk_sql) mrp_arch_articoli);
-    
-    String siteroot = costanti_comm.getCostvalue("site.siteroot");
-    String shopSiteroot = ep_costanti.getCostvalue("ep.shop_root");
-    String slash = System.getProperty("file.separator");
-      
-    String ls_url_risorsa_esistente = "";
-    
-    String relpathfile = url_risorsa;
-    
-    //System.out.println(" relpathfile "+ relpathfile);
-    
-    relpathfile = relpathfile.replace("/", slash);
-    relpathfile = relpathfile.replace("\\", slash);
-    
-    if (relpathfile.indexOf(slash) == 0) relpathfile = relpathfile.substring(1, relpathfile.length());
-    
-    int idx_ext = relpathfile.lastIndexOf(".");
-    int idx_last_slash = relpathfile.lastIndexOf(slash);
-    
-    if (idx_ext < 0){
-      
-        String cartella = "";
-
-        if (idx_last_slash >= 0) cartella = relpathfile.substring(0, idx_last_slash + 1);
-        String ls_filename_ipotetico = relpathfile.substring(idx_last_slash + 1, relpathfile.length());
-
-        //System.out.println(" cartella "+ cartella);
-        //System.out.println(" ls_filename_ipotetico "+ ls_filename_ipotetico);
-
-        if (cartella.indexOf("specsheet"+ slash) == 0){
-            
-            relpathfile = url_risorsa;
-            ls_filename_ipotetico = relpathfile.replace("/specsheet/", "");
-            ls_filename_ipotetico = ls_filename_ipotetico.replace("specsheet/", "");
-
-            String  l_query = "";
-
-            l_query  = "";
-            l_query  = "    select arti.vist_filedis                                 \n";
-            l_query += "         , arti.cdclas_a                                     \n";
-            l_query += "         , arti.cdvistelet                                   \n";
-            l_query += "      from pgmr.mrp_arch_articoli   arti                     \n";
-            l_query += "     where arti.cdartm  = '"+ ls_filename_ipotetico +"'      \n";
-
-            //String nome_modello = sql_String(l_query);
-            ResultSet rs = sql_query(l_query);
-            
-            String nome_modello = "";
-            String cdclas_a = "";
-            String cdvistelet = "";
-            
-            if (rs != null && rs.next()){
-
-              if (rs.getObject("vist_filedis"   )!= null) nome_modello   = rs.getString("vist_filedis"   );
-              if (rs.getObject("cdclas_a"       )!= null) cdclas_a       = rs.getString("cdclas_a"    );
-              if (rs.getObject("cdvistelet"     )!= null) cdvistelet     = rs.getString("cdvistelet"   );
-            }
-            
-            return mrp_arch_articoli.of_relpath_resource_specsheet(cdclas_a, shopSiteroot, nome_modello, lang, ls_filename_ipotetico, cdvistelet);
-
-        } else {
-            
-            String[] arr_codici = ls_filename_ipotetico.split("\\|");
-
-            if (arr_codici != null && arr_codici.length == 7){
-                String cdfile     = arr_codici[0];
-                String cdvisttp   = arr_codici[1];
-                String cdvistfam  = arr_codici[2];
-                String cdvistv1   = arr_codici[3];
-                String cdvistv2   = arr_codici[4];
-                String cdvistv3   = arr_codici[5];
-                String cdvistelet = arr_codici[6];
-
-        //        System.out.println(" cdfile "+ cdfile);
-        //        System.out.println(" cdvisttp "+ cdvisttp);
-        //        System.out.println(" cdvistfam "+ cdvistfam);
-        //        System.out.println(" cdvistv1 "+ cdvistv1);
-        //        System.out.println(" cdvistv2 "+ cdvistv2);
-        //        System.out.println(" cdvistv3 "+ cdvistv3);
-        //        System.out.println(" cdvistelet "+ cdvistelet);
-
-                if (cdfile.equals("IM")){  // ISTR. MONTAGGIO
-
-        //          System.out.println("ISTR. MONTAGGIO");
-
-                  if (   !cdvisttp.equals("")
-                      || !cdvistfam.equals("") 
-                      || !cdvistv1.equals("") 
-                      || !cdvistv2.equals("") 
-                      || !cdvistv3.equals("") 
-                      || !cdvistelet.equals("")
-                     ){
-
-                      String  l_query = "";
-
-
-                      l_query  = "";
-                      l_query  = "    select distinct pathschtec            \n";
-                      l_query += "      from pgmr.vist_articoli_img   aimg  \n";
-                      l_query += "         , pgmr.mrp_arch_articoli   arti  \n";
-                      l_query += "     where aimg.cdarti = arti.cdarti      \n";
-
-                        l_query += "       and arti.cdvisttp  = '"+ cdvisttp +"'      \n";
-                        l_query += "       and arti.cdvistfam  = '"+ cdvistfam +"'      \n";
-
-                        if (!cdvistv1.equals("")){
-                          l_query += "       and arti.cdvistv1  = '"+ cdvistv1 +"'      \n";
-                        } else {  
-                          l_query += "       and arti.cdvistv1 is null    \n";
-                        }
-                        if (!cdvistv2.equals("")){
-                          l_query += "       and arti.cdvistv2  = '"+ cdvistv2 +"'      \n";
-                        } else {  
-                          l_query += "       and arti.cdvistv2 is null    \n";
-                        }
-                        if (!cdvistv3.equals("")){
-                          l_query += "       and arti.cdvistv3  = '"+ cdvistv3 +"'      \n";
-                        } else {  
-                          l_query += "       and arti.cdvistv3 is null    \n";
-                        }
-                        if (!cdvistelet.equals("")){
-                          l_query += "       and arti.cdvistelet  = '"+ cdvistelet +"'      \n";
-                        } else {  
-                          l_query += "       and arti.cdvistelet is null    \n";
-                        }
-
-                      String filename = sql_String(l_query);
-
-                      if (!filename.equals("")) relpathfile = cartella + filename;
-
-                  }
-
-    //          } else if (cdfile.equals("SS")){  // SPECSHEET
-    //
-    //    //          System.out.println("SPECSHEET");
-    //
-    //              if (   !cdvisttp.equals("")
-    //                  || !cdvistfam.equals("") 
-    //                  || !cdvistv1.equals("") 
-    //                  || !cdvistv2.equals("") 
-    //                  || !cdvistv3.equals("") 
-    //                  || !cdvistelet.equals("")
-    //                 ){
-    //
-    //                  String  l_query = "";
-    //
-    //
-    //                  l_query  = "";
-    //                  l_query  = "      select distinct (arti.vist_scheda_pdf)              \n";
-    //                  l_query += "        from pgmr.mrp_arch_articoli   arti                \n";
-    //                  l_query += "       where 1 = 1                                        \n";
-    //
-    //                  if (!cdvisttp.equals("")){
-    //                    l_query += "       and arti.cdvisttp  = '"+ cdvisttp +"'      \n";
-    //                  } else {
-    //                    l_query += "       and arti.cdvisttp  is null      \n";
-    //                  }
-    //                  if (!cdvistfam.equals("")){
-    //                    l_query += "       and arti.cdvistfam  = '"+ cdvistfam +"'      \n";
-    //                  } else {
-    //                    l_query += "       and arti.cdvistfam  is null      \n";
-    //                  }
-    //                  if (!cdvistv1.equals("")){
-    //                    l_query += "       and arti.cdvistv1  = '"+ cdvistv1 +"'      \n";
-    //                  } else {
-    //                    l_query += "       and arti.cdvistv1  is null      \n";
-    //                  }
-    //                  if (!cdvistv2.equals("")){
-    //                    l_query += "       and arti.cdvistv2  = '"+ cdvistv2 +"'      \n";
-    //                  } else {
-    //                    l_query += "       and arti.cdvistv2  is null      \n";
-    //                  }
-    //                  if (!cdvistv3.equals("")){
-    //                    l_query += "       and arti.cdvistv3  = '"+ cdvistv3 +"'      \n";
-    //                  } else {
-    //                    l_query += "       and arti.cdvistv3  is null      \n";
-    //                  }
-    //                  if (!cdvistelet.equals("")){
-    //                    l_query += "       and arti.cdvistelet  = '"+ cdvistelet +"'      \n";
-    //                  } else {
-    //                    l_query += "       and arti.cdvistelet  is null      \n";
-    //                  }
-    //
-    //                  String filename = sql_String(l_query);
-    //
-    //                  if (!filename.equals("")) relpathfile = cartella + filename;
-    //
-    //              }
-    //
-    //
-                } else {
-                  System.out.println("File richiesto non identificabile: "+ url_risorsa);
-                }
-
-            } 
-            
-        }
-      
-    } // FINE . if (idx_ext
-    
-//    System.out.println(" relpathfile "+ relpathfile);
-    
-    
-    
-    File lobj_file = new File(siteroot + relpathfile);
-      
-//    System.out.println(siteroot + relpathfile);
-    
-    if (lobj_file.exists()){
-//      System.out.println("File trovato");
-      ls_url_risorsa_esistente = relpathfile.replace("\\", "/");
-    } else {  
-//      System.out.println("File NON trovato");
-      ls_url_risorsa_esistente = "";
-    }
-    
-    
-    costanti_comm.close();
-    ep_costanti.close();
-    mrp_arch_articoli.close();
-    
-    return ls_url_risorsa_esistente;
-
-  }
 
   public HashMap of_setPar_Vist_oridati (HashMap ao_map, String oridati, String cdling) throws Exception {
     int ind = 0;

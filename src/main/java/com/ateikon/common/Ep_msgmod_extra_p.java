@@ -90,7 +90,7 @@ public class Ep_msgmod_extra_p extends com.ateikon.standard.Ep_msgmod_extra_p {
         tot_rec = 0;
 
         l_query  = "";
-        l_query += " delete pgmr.ep_msgmod_extra_p where tkmsgmod_ex = "+tkmsgmod_ex+" and cdling = '"+ cdling +"' \n";
+        l_query += " delete from pgmr.ep_msgmod_extra_p where tkmsgmod_ex = "+tkmsgmod_ex+" and cdling = '"+ cdling +"' \n";
 
         pstm = m_connection.prepareStatement(l_query);
 
