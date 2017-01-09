@@ -746,12 +746,17 @@ public class SpecSheetGenerica {
             String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), igs);
             File f = new File(path_to_filemodel);
 
-            String dURL = shopURL + "/logdown?&nome_modello=" + nome_modello + "&cdvistelet="+ art.getCdvistelet() + "&tiporisorsa=" + art.getTiporisorsa3D_easm();
+            String dURL = shopURL + "/logdown?"; //&nome_modello=" + nome_modello + "&cdvistelet="+ art.getCdvistelet() + "&tiporisorsa=" + art.getTiporisorsa3D_easm();
 
             if (f.exists()) {
                 //ck.setAction(new PdfAction(new URL(portalURL + "download/" + igs + "?f=" + igs)));
 
-                dURL += "&file_req=" + igs + "&dsfile=" + m3DLabel + " " + descrFile;
+                dURL += "&file_req=" + igs 
+                        + "&dsfile=" + m3DLabel 
+                        + "&nome_modello=" + nome_modello
+                        + "&cdvistelet="+ art.getCdvistelet()
+                        + "&tiporisorsa=" + art.getTiporisorsa3D_igs()
+                        + " " + descrFile;
 
             }
 
@@ -765,7 +770,12 @@ public class SpecSheetGenerica {
                 path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), easm);
                 f = new File(path_to_filemodel);
                 if (f.exists()) {
-                    dURL += "&file_req=" + easm + "&dsfile=" + m3DLabel + " " + descrFile;
+                    dURL += "&file_req=" + easm 
+                          + "&dsfile=" + m3DLabel
+                          + "&nome_modello=" + nome_modello
+                          + "&cdvistelet="+ art.getCdvistelet()
+                          + "&tiporisorsa=" + art.getTiporisorsa3D_easm()                            
+                          + " " + descrFile;
                     //ck.setAction(new PdfAction(new URL(portalURL + "download/" + easm + "?f=" + easm)));
                 }
             } catch (FileNotFoundException ex) {
@@ -998,13 +1008,13 @@ public class SpecSheetGenerica {
 
         List<String> possibleFilenameList = new ArrayList<String>();
         String filename = art.getVist_filedis();
+        possibleFilenameList.add(filename);
 
         if (vistosiShopManager.DEFAULT_CDCLAS_A_US.contains(art.getCdclas_a())) {
 
             possibleFilenameList.add(0, filename + "UL");
             possibleFilenameList.add(0, filename + art.getCdvistelet() + "UL");
         } else {
-            possibleFilenameList.add(filename);
             filename += art.getCdvistelet();
             possibleFilenameList.add(0, filename);
         }
