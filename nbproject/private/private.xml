@@ -24,24 +24,12 @@
             <file>file:/D:/sorgenti/vistosi-shop/src/main/java/com/ateikon/internet/eprogen/domain/logic/VistosiShopManagerImpl.java</file>
         </group>
         <group name="atklab">
-            <file>file:/D:/sorgenti/vistosi-shop/src/main/java/com/ateikon/internet/eprogen/web/spring/VistosiShopHomeController.java</file>
-            <file>file:/D:/sorgenti/vistosi-shop/src/main/java/com/ateikon/common/Ep_funz_tpservizio.java</file>
-            <file>file:/D:/sorgenti/vistosi-shop/src/main/webapp/WEB-INF/jsp/send_wishlist.jsp</file>
-            <file>file:/D:/sorgenti/vistosi-shop/src/main/webapp/WEB-INF/classes/mail.properties</file>
-            <file>file:/D:/sorgenti/vistosi-shop/src/main/java/com/ateikon/common/Mrp_arch_articoli.java</file>
             <file>file:/D:/sorgenti/vistosi-shop/src/main/java/com/ateikon/function/F_eprogen_replace.java</file>
-            <file>file:/D:/sorgenti/vistosi-shop/src/main/java/com/ateikon/function/F_ordven.java</file>
-            <file>file:/D:/sorgenti/vistosi-shop/src/main/webapp/WEB-INF/classes/ateikon_sql.properties</file>
-            <file>file:/D:/sorgenti/vistosi-shop/src/main/webapp/WEB-INF/jsp/header.jsp</file>
-            <file>file:/D:/sorgenti/vistosi-shop/src/main/webapp/WEB-INF/applicationContext.xml</file>
-            <file>file:/D:/sorgenti/vistosi-shop/src/main/java/com/ateikon/internet/eprogen/web/spring/SendWishlistFormController.java</file>
-            <file>file:/D:/sorgenti/vistosi-shop/src/main/java/com/ateikon/common/Atk_messaggio.java</file>
-            <file>file:/D:/sorgenti/vistosi-shop/src/main/webapp/WEB-INF/jsp/catalogo_ordine_fine.jsp</file>
-            <file>file:/D:/sorgenti/vistosi-shop/src/main/java/com/ateikon/common/Ep_msgmod_extra_p.java</file>
-            <file>file:/D:/sorgenti/vistosi-shop/src/main/java/com/ateikon/function/F_sender.java</file>
             <file>file:/D:/sorgenti/vistosi-shop/src/main/java/com/ateikon/internet/eprogen/web/spring/SchedaArticoloController.java</file>
-            <file>file:/D:/sorgenti/vistosi-shop/src/main/java/com/ateikon/common/Ep_utente_recapito.java</file>
-            <file>file:/D:/sorgenti/vistosi-shop/src/main/java/com/ateikon/common/Ep_msgmod_cont.java</file>
+            <file>file:/D:/sorgenti/vistosi-shop/src/main/java/com/ateikon/internet/eprogen/web/spring/SetClieFormController.java</file>
+            <file>file:/D:/sorgenti/vistosi-shop/src/main/java/com/ateikon/internet/eprogen/web/security/ShopUserDetailsService.java</file>
+            <file>file:/D:/sorgenti/vistosi-shop/src/main/java/com/ateikon/internet/eprogen/web/spring/ExternalLoginController.java</file>
+            <file>file:/D:/sorgenti/vistosi-shop/src/main/java/com/ateikon/internet/eprogen/domain/pgmr/Archclie.java</file>
         </group>
     </open-files>
 </project-private>

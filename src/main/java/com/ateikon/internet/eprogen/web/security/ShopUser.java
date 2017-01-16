@@ -24,6 +24,7 @@ public class ShopUser extends User{
 
     private Log log = LogFactory.getLog(this.getClass());
 
+    private String[] americas = new String[]{"LUS", "LCA"};
 
     private Ep_utente userDB;
 

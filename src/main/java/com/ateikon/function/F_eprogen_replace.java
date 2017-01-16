@@ -46,6 +46,7 @@ import com.ateikon.util.Atk_ctrl;
 import com.ateikon.util.HTML;
 import java.io.File;
 import java.lang.String;
+import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -5648,7 +5649,7 @@ public class F_eprogen_replace extends Atk_sql {
                     l_query += " select imgv_filename                       \n";
                     l_query += "      , numv                                \n";
                     l_query += "   from pgmr.vist_articoli_ricambi          \n";
-                    l_query += "  where cdarti   = " + cdartirif + "        \n";
+                    l_query += "  where cdarti   = '" + cdartirif + "'      \n";
                     l_query += "    and cdarti_ric = '" + cdarti + "'       \n";
 
                     pstm2 = m_connection.prepareStatement(l_query);
@@ -7233,7 +7234,7 @@ public class F_eprogen_replace extends Atk_sql {
     String ls_site_downr_url_risorsa = mrp_arch_articoli.of_getUrl_risorsa_esistente(ls_url_risorse, ls_lang);
     
     if (!ls_site_downr_url_risorsa.equals("")){
-        ls_site_downr_url_risorsa = ep_portal_url + "download/?f="+ ls_site_downr_url_risorsa +"&tkc="+ tkcontatto +"&lang="+ ls_lang;
+        ls_site_downr_url_risorsa = ep_portal_url + "download/?f="+ URLEncoder.encode(ls_site_downr_url_risorsa, "UTF-8") +"&tkc="+ tkcontatto +"&lang="+ ls_lang;
     } else {
         ls_site_downr_url_risorsa = ep_portal_url; 
     }
