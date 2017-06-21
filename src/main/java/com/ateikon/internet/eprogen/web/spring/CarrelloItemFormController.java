@@ -239,7 +239,7 @@ public class CarrelloItemFormController extends BaseAnnotationController {
 
             try {
                 atk_sql.m_connection.commit();
-                atk_sql.m_connection.close();
+                atk_sql.closeConnection();
             } catch (Exception _e) {
                 log.error(_e.getMessage());
             }
@@ -424,7 +424,7 @@ public class CarrelloItemFormController extends BaseAnnotationController {
 
                     try {
                         atk_sql.m_connection.commit();
-                        atk_sql.m_connection.close();
+                        atk_sql.closeConnection();
                     } catch (Exception _e) {
                         log.error(_e.getMessage());
                     }

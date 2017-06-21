@@ -925,6 +925,27 @@ public class Atk_sql extends Object implements java.io.Serializable {
         return "epTraduzioni_edit.jsp?tklingua_lb=" + tklingua_lb;
     }
 
+
+    public String par_vist_cp_collezione ( String dsvistccol ) throws Exception {
+        
+    	int               ind = 0;
+        int               tot_rec = 0;
+        PreparedStatement pstm = null;
+        ResultSet         rs   = null;
+
+        
+        String ls_ = "";
+
+        ls_  = "";
+        ls_ += " select in_vccol.cdvistccol                         \n";
+        ls_ += "   from pgmr.vist_cp_collezioni in_vccol            \n";
+        ls_ += "  where in_vccol.dsvistccol = '"+dsvistccol+"'      \n";
+
+        return ls_;
+
+    }    
+    
+    
     public String getDescr_ov_dtcons(Timestamp adt_dtcons, String fgpron_cons, String fgnd_cons, String fgevaso, String cdling) throws Exception {
 
         int ind = 0;
@@ -1031,6 +1052,15 @@ public class Atk_sql extends Object implements java.io.Serializable {
     public Vector vec_sql = new Vector();
     // *** Variabili Profilo
     public Connection m_connection = null;
+    
+    public           Connection        conn2 = null;
+    public           PreparedStatement pstm  = null;
+    public           PreparedStatement pstm1 = null;
+    public           PreparedStatement pstm2 = null;
+    public           PreparedStatement pstm3 = null;
+    public           PreparedStatement pstm4 = null;
+    public           PreparedStatement pstm5 = null;    
+    
     public String driverName = "";
     public String url = "";
     public String cdappl = "";

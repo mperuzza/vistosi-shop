@@ -160,7 +160,7 @@ public class SetClieFormController {
 
             log.debug("listino cliente: " +cliente.getArchclie().getCdlist());
 
-            if(StringUtils.equalsIgnoreCase("LUS", cliente.getArchclie().getCdlist())){
+            if(user.AMERICA_CDLISTS.contains(cliente.getArchclie().getCdlist())){
                 // se il cliente è listino America aggiungo il filtro per listino Europa
                 //user.setCdclas_aFilterBase(user.getCdclas_aFilter()); //salvo filtro base per ricerche articoli dei clienti america
                 List<Vist_filtro_articoli> filtro_list = vistosiShopManager.getCdclas_aByCdlist("L03");

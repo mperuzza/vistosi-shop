@@ -8,6 +8,7 @@ package com.ateikon.internet.eprogen.web.security;
 import com.ateikon.internet.eprogen.domain.pgmr.Cliente;
 import com.ateikon.internet.eprogen.domain.pgmr.Ep_utente;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.apache.commons.lang.ArrayUtils;
@@ -24,7 +25,7 @@ public class ShopUser extends User{
 
     private Log log = LogFactory.getLog(this.getClass());
 
-    private String[] americas = new String[]{"LUS", "LCA"};
+    public static List<String> AMERICA_CDLISTS = Arrays.asList(new String[]{"LUS", "LCA"});
 
     private Ep_utente userDB;
 

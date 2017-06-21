@@ -16,6 +16,7 @@ import com.ateikon.internet.eprogen.domain.pgmr.Vist_famiglia;
 import com.ateikon.internet.eprogen.domain.pgmr.Vist_finit_mont;
 import com.ateikon.internet.eprogen.web.interceptor.GeoIPInterceptor;
 import com.ateikon.internet.eprogen.web.security.ShopUser;
+import static com.ateikon.internet.eprogen.web.spring.SpecSheet.ROOT_RES;
 import com.ateikon.internet.generic.domain.BaseTableBean;
 import com.itextpdf.text.Annotation;
 import com.itextpdf.text.BaseColor;
@@ -55,6 +56,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -101,6 +103,7 @@ public class SpecSheetGenerica {
     protected MessageSource messageSource;
     String siteRoot = "";
     public static final String ROOT_RES = "/images/articoli/specsheetres/";
+    private static final String ARROW_ICON = "freccia300.jpg";
     BaseFont baseFont = null;
     BaseFont baseFontBold = null;
     Font fontListino = null;
@@ -113,10 +116,13 @@ public class SpecSheetGenerica {
     java.text.NumberFormat przFormat = null;
 
     HashMap<String, String> tipoLampadine = new HashMap<String, String>();
+    String selCdvistelet = null;
 
     String pathimg = ROOT_RES + "dati/";
     //path immagini lampadine
     String pathlampimg = ROOT_RES + "lampadine/";
+    
+    Locale locale = new Locale("it");
 
 //    float widthBody = 440f;
 //    float widthRight = 120f;
@@ -126,7 +132,9 @@ public class SpecSheetGenerica {
 
         siteRoot = WebUtils.getRealPath(request.getSession().getServletContext(), "/");
         WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(request);
-        Locale locale = RequestContextUtils.getLocale(request);
+        //Locale locale = RequestContextUtils.getLocale(request);
+        
+        locale = RequestContextUtils.getLocale(request);
 
         //SG|cdclas_a|cdvisttp|cdvistfam|cdvistv1|cdvistv2|cdvistv3|cdvistelet
         String[] splittedPars = StringUtils.splitByWholeSeparatorPreserveAllTokens(qpars, "|");
@@ -138,6 +146,8 @@ public class SpecSheetGenerica {
         String cdvistv3 = splittedPars[6];
         String cdvistelet = splittedPars[7];
 
+        selCdvistelet = null;
+         
         //String cdartm = (String) request.getParameter("cdartm");
         baseFont = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.EMBEDDED);
         baseFontBold = BaseFont.createFont(BaseFont.HELVETICA_BOLD, BaseFont.WINANSI, BaseFont.EMBEDDED);
@@ -264,6 +274,12 @@ public class SpecSheetGenerica {
             tableBody.getDefaultCell().setPadding(0f);
             tableBody.getDefaultCell().setPaddingBottom(3);
 
+            
+            //la presenza delle note in lingua è determinante per la lingua di tutta la specsheet
+            //se vince il fallback forza tutto a en
+            PdfPTable tableNote = getNote(art, request, document, writer);            
+            
+            
             PdfPTable tableHeader = getHeader(famiglia, cdvisttp, cdvistv1, cdvistv2, cdvistv3, cdclas_a, request, document, writer);
             tableBody.addCell(tableHeader);
             tableBody.getDefaultCell().setBorderWidth(0.2f);
@@ -401,7 +417,7 @@ public class SpecSheetGenerica {
             tableRight.setExtendLastRow(true);
 
             PdfPTable tableCertificazioni = getCertificazioni(request, document, writer);
-            PdfPTable tableNote = getNote(art, request, document, writer);
+            //PdfPTable tableNote = getNote(art, request, document, writer);
 //            PdfPTable table3D = get3D(art, request, document, writer);
 
 //            tableBody.getDefaultCell().setPaddingBottom(3);
@@ -451,7 +467,7 @@ public class SpecSheetGenerica {
             document.close();
 
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
 
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
@@ -520,7 +536,7 @@ public class SpecSheetGenerica {
         defaultCell.setUseDescender(true);
 
         //descrizione famiglia
-        paragraph = new Paragraph(StringUtils.trimToEmpty(BeanUtils.getSimpleProperty(vist_famiglia, "dsvistfam" + getAtkLangsfx(rc.getLocale().getLanguage()))), new Font(baseFontBold, 14));
+        paragraph = new Paragraph(StringUtils.trimToEmpty(BeanUtils.getSimpleProperty(vist_famiglia, "dsvistfam" + getAtkLangsfx(locale.getLanguage()))), new Font(baseFontBold, 14));
         defaultCell.setPaddingLeft(20f);
         tableDati.addCell(paragraph);
 
@@ -554,7 +570,7 @@ public class SpecSheetGenerica {
 //                description += "Design " + designer.getDsdesigner().replaceAll("\\s+", " ") + "\n";
 //            }
 //        }
-//        description += StringUtils.trimToEmpty(BeanUtils.getSimpleProperty(vist_famiglia, "dsextvistfam" + getAtkLangsfx(rc.getLocale().getLanguage())));
+//        description += StringUtils.trimToEmpty(BeanUtils.getSimpleProperty(vist_famiglia, "dsextvistfam" + getAtkLangsfx(locale.getLanguage())));
 //        paragraph = new Paragraph(description, new Font(baseFont, 8));
 //        cell.addElement(paragraph);
 //        tableRiepilogo.addCell(cell);
@@ -653,15 +669,15 @@ public class SpecSheetGenerica {
 
         paragraph = new Paragraph("QRCODE", new Font(baseFontBold, 8));
         text.addCell(paragraph);
-        paragraph = new Paragraph(messageSource.getMessage("specsheetgen.text.download", null, "per download", rc.getLocale()), new Font(baseFontBold, 8));
+        paragraph = new Paragraph(messageSource.getMessage("specsheetgen.text.download", null, "per download", locale), new Font(baseFontBold, 8));
         text.addCell(paragraph);
         String path_modello = "fileresources/models";
         String nome_modello = art.getVist_filedis();
         String portalURL = getPortalUrl();
         String www = "http://www.vistosi";
-        if (rc.getLocale().getLanguage().equals("it")) {
+        if (locale.getLanguage().equals("it")) {
             www += ".it";
-        } else if (rc.getLocale().getLanguage().equals("ru")) {
+        } else if (locale.getLanguage().equals("ru")) {
             www += ".ru";
         } else {
             www += ".com";
@@ -692,11 +708,11 @@ public class SpecSheetGenerica {
         String descrFile = "";
 
         try {
-            descrFile = BeanUtils.getSimpleProperty(vist_famiglia, "dsvistfam" + getAtkLangsfx(rc.getLocale().getLanguage())) + " " + art.getCdvisttp()
-                    + " " + (art.getCdvistv1() != null && art.getVist_var1() != null ? (BeanUtils.getSimpleProperty(art.getVist_var1(), "dsextvistv1" + getAtkLangsfx(rc.getLocale().getLanguage()))).toUpperCase() : "")
-                    + " " + (art.getCdvistv2() != null && art.getVist_var2() != null ? (BeanUtils.getSimpleProperty(art.getVist_var2(), "dsextvistv2" + getAtkLangsfx(rc.getLocale().getLanguage()))).toUpperCase() : "")
-                    + " " + (art.getCdvistv3() != null && art.getVist_var3() != null ? (BeanUtils.getSimpleProperty(art.getVist_var3(), "dsextvistv3" + getAtkLangsfx(rc.getLocale().getLanguage()))).toUpperCase() : "")
-                    + " " + (art.getCdvistelet() != null && art.getVist_elettrificazioni() != null ? (BeanUtils.getSimpleProperty(art.getVist_elettrificazioni(), "dsextvistelet" + getAtkLangsfx(rc.getLocale().getLanguage()))).toUpperCase() : "");
+            descrFile = BeanUtils.getSimpleProperty(vist_famiglia, "dsvistfam" + getAtkLangsfx(locale.getLanguage())) + " " + art.getCdvisttp()
+                    + " " + (art.getCdvistv1() != null && art.getVist_var1() != null ? (BeanUtils.getSimpleProperty(art.getVist_var1(), "dsextvistv1" + getAtkLangsfx(locale.getLanguage()))).toUpperCase() : "")
+                    + " " + (art.getCdvistv2() != null && art.getVist_var2() != null ? (BeanUtils.getSimpleProperty(art.getVist_var2(), "dsextvistv2" + getAtkLangsfx(locale.getLanguage()))).toUpperCase() : "")
+                    + " " + (art.getCdvistv3() != null && art.getVist_var3() != null ? (BeanUtils.getSimpleProperty(art.getVist_var3(), "dsextvistv3" + getAtkLangsfx(locale.getLanguage()))).toUpperCase() : "")
+                    + " " + (art.getCdvistelet() != null && art.getVist_elettrificazioni() != null ? (BeanUtils.getSimpleProperty(art.getVist_elettrificazioni(), "dsextvistelet" + getAtkLangsfx(locale.getLanguage()))).toUpperCase() : "");
         } catch (IllegalAccessException ex) {
             Logger.getLogger(SpecSheetGenerica.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InvocationTargetException ex) {
@@ -708,7 +724,7 @@ public class SpecSheetGenerica {
         String path_2D = path_modello + "/2D/";
         //dwg cm
         String dwg_vers = "cm/";
-        if ("en".equals(rc.getLocale().getLanguage())) {
+        if ("en".equals(locale.getLanguage())) {
             dwg_vers = "po/";
             art.setTiporisorsa2D_dwg(com.ateikon.common.Mrp_arch_articoli.MOD2D_DWG_PO);
         }
@@ -718,8 +734,8 @@ public class SpecSheetGenerica {
 //        }
 
         String dwg = path_2D + dwg_vers + nome_modello + ".dwg";
-        String m2DLabel = messageSource.getMessage("modelli_2D", null, "Modelli 2D", rc.getLocale());
-        Chunk ck = new Chunk(messageSource.getMessage("specsheetgen.text.download2D", null, "disegno 2D (file DWG)", rc.getLocale()));
+        String m2DLabel = messageSource.getMessage("modelli_2D", null, "Modelli 2D", locale);
+        Chunk ck = new Chunk(messageSource.getMessage("specsheetgen.text.download2D", null, "disegno 2D (file DWG)", locale));
         try {
             String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), dwg);
             File f = new File(path_to_filemodel);
@@ -737,11 +753,11 @@ public class SpecSheetGenerica {
 
         //verifica esistenza 3D
         String path_3D = path_modello + "/3D/";
-        String m3DLabel = messageSource.getMessage("modelli_3D", null, "Modelli 3D", rc.getLocale());
+        String m3DLabel = messageSource.getMessage("modelli_3D", null, "Modelli 3D", locale);
         //igs
         //String igs = path_3D + nome_modello + ".zip";
         String igs = path_3D + nome_modello + (art.isLed() ? art.getCdvistelet() : "") + ".zip";
-        ck = new Chunk(messageSource.getMessage("specsheetgen.text.download3D", null, "disegno 3D (file EASM_IGES)", rc.getLocale()));
+        ck = new Chunk(messageSource.getMessage("specsheetgen.text.download3D", null, "disegno 3D (file EASM_IGES)", locale));
         try {
             String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), igs);
             File f = new File(path_to_filemodel);
@@ -792,8 +808,8 @@ public class SpecSheetGenerica {
         text.addCell(paragraph);
 
         //verifica esistenza file istruzioni di montaggio
-        ck = new Chunk(messageSource.getMessage("specsheetgen.text.istrmont", null, "istruzioni montaggio (file PDF)", rc.getLocale()));
-        String istrLabel = messageSource.getMessage("istruzioni_montaggio", null, "Istruzioni di montaggio", rc.getLocale());
+        ck = new Chunk(messageSource.getMessage("specsheetgen.text.istrmont", null, "istruzioni montaggio (file PDF)", locale));
+        String istrLabel = messageSource.getMessage("istruzioni_montaggio", null, "Istruzioni di montaggio", locale);
         String path_techsheet = "fileresources/assembling_instructions/";
         String techsheet = datiExtra.getArwFileSchedaTec();
         if (StringUtils.isNotEmpty(techsheet)) {
@@ -863,7 +879,9 @@ public class SpecSheetGenerica {
          }
          }*/
 //        String realPath = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + art.getVist_filedis() + ".pdf");
-        PdfReader readerDis = new PdfReader(realPath);
+        FileInputStream fis = new FileInputStream(realPath);
+
+        PdfReader readerDis = new PdfReader(fis);
         PdfImportedPage pdfDis = writer.getImportedPage(readerDis, 1);
 
         Image img = Image.getInstance(pdfDis);
@@ -879,15 +897,18 @@ public class SpecSheetGenerica {
         cell.addElement(img);
 
         tableDisegno.addCell(cell);
+        
+        fis.close();
 
 //        tableDisegno.completeRow();
         //sovrappone la descrizione della tipologia elettrificazione raffigurata nel disegno tecnico
         float leftSpacing = 5f;
-        float iconWidth = 15f;
-        PdfPTable disegnoDescrInner = new PdfPTable(2);
-        Chunk chunk = new Chunk(messageSource.getMessage("specsheetgen.text.disegnodida", null, "QUESTA IMMAGINE SI RIFERISCE ALLA VERSIONE ", rc.getLocale()).toUpperCase(), new Font(baseFont, 7));
+        float iconWidth = 7f;
+        float signWidth = 15f;
+        PdfPTable disegnoDescrInner = new PdfPTable(3);
+        Chunk chunk = new Chunk(messageSource.getMessage("specsheetgen.text.disegnodida", null, "QUESTA IMMAGINE SI RIFERISCE ALLA VERSIONE ", locale).toUpperCase(), new Font(baseFont, 7));
         float widthPoint = chunk.getWidthPoint();
-        disegnoDescrInner.setTotalWidth(new float[]{widthPoint + leftSpacing, iconWidth});
+        disegnoDescrInner.setTotalWidth(new float[]{widthPoint + leftSpacing, iconWidth, signWidth});
         disegnoDescrInner.getDefaultCell().setHorizontalAlignment(Element.ALIGN_RIGHT);
         disegnoDescrInner.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
         disegnoDescrInner.getDefaultCell().setPaddingTop(4f);
@@ -902,8 +923,10 @@ public class SpecSheetGenerica {
         Vist_articoli_datiextra datiExtra;
         if ((boolean) mapRes.get("requested")) {
             datiExtra = vistosiShopManager.getDatiExtraByCdartm(art.getCdartm());
+            selCdvistelet = art.getCdvistelet();
         } else {
             datiExtra = vistosiShopManager.getDatiExtraByCdartm(artFallback.getCdartm());
+            selCdvistelet = artFallback.getCdvistelet();
         }
 
         if (datiExtra != null) {
@@ -920,6 +943,35 @@ public class SpecSheetGenerica {
                 File fAcronimo = new File(realPathAcronimo);
 
                 if (fAcronimo.exists()) {
+                    Image arrow = Image.getInstance(WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + ARROW_ICON));
+                    //arrow.scalePercent(50f);
+                    arrow.setAlignment(Image.TEXTWRAP | Image.ALIGN_CENTER);
+                    PdfPTable imgIcon = new PdfPTable(1);
+                    cell = new PdfPCell(arrow, true);
+                    cell.setPaddingTop(4f);
+                    cell.setPaddingRight(0f);
+                    cell.setPaddingBottom(0f);
+                    cell.setPaddingLeft(2f);
+                    cell.setBorderWidth(0f);
+                    imgIcon.addCell(cell);
+                    
+                    cell = new PdfPCell(imgIcon);
+                    //cell.setFixedHeight(5);
+                    cell.setBorderWidthTop(.25f);
+                    cell.setBorderWidthRight(.0f);
+                    cell.setBorderWidthBottom(.0f);
+                    cell.setBorderWidthLeft(.0f);
+                    cell.setPaddingTop(0f);
+                    cell.setPaddingRight(0f);
+                    cell.setPaddingBottom(0f);
+                    cell.setPaddingLeft(0f);
+                    cell.setUseAscender(true);
+                    cell.setUseDescender(false);
+                    cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                    //cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                    //cell.setBackgroundColor(BaseColor.CYAN);
+                    disegnoDescrInner.addCell(cell);
+                    
                     Image image = Image.getInstance(realPathAcronimo);
                     image.setAlignment(Image.TEXTWRAP | Image.ALIGN_CENTER);
                     cell = new PdfPCell(image, true);
@@ -937,13 +989,25 @@ public class SpecSheetGenerica {
                     cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
                     cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
                     disegnoDescrInner.addCell(cell);
+                    
+//                    cell = new PdfPCell(new Phrase("*", new Font(baseFont, 8)));
+//                    cell.setPadding(0f);
+//                    cell.setPaddingRight(2f);
+//                    cell.setBorderWidthTop(.25f);
+//                    cell.setBorderWidthRight(.0f);
+//                    cell.setBorderWidthBottom(.0f);
+//                    cell.setBorderWidthLeft(.0f);
+//                    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//                    cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+//                    disegnoDescrInner.addCell(cell);                     
                 }
             }
 
         }
+               
 
-        disegnoDescrInner.setTotalWidth(widthPoint + leftSpacing + iconWidth);
-        disegnoDescrInner.writeSelectedRows(0, -1, document.leftMargin() + 420f - (widthPoint + leftSpacing + iconWidth) - 7, document.getPageSize().getHeight() - 456,
+        disegnoDescrInner.setTotalWidth(widthPoint + leftSpacing + iconWidth + signWidth);
+        disegnoDescrInner.writeSelectedRows(0, -1, document.leftMargin() + 420f - (widthPoint + leftSpacing + iconWidth + signWidth) - 7, document.getPageSize().getHeight() - 456,
                 writer.getDirectContent());
 
         return tableDisegno;
@@ -969,8 +1033,8 @@ public class SpecSheetGenerica {
         for (String file : possibleFilenameList) {
 
             //String pdf = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + file + ".pdf");
-            //String xls = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + file + (byLang ? "_" + rc.getLocale().getLanguage() : "") + ".xlsx");
-            if (checkResourcesExists(ctx.getServletContext(), file, byLang, rc.getLocale().getLanguage())) {
+            //String xls = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + file + (byLang ? "_" + locale.getLanguage() : "") + ".xlsx");
+            if (checkResourcesExists(ctx.getServletContext(), file, byLang, locale.getLanguage())) {
                 return vist_elettrificazioni.get(0).getCdvistelet();
             }
         }
@@ -979,9 +1043,9 @@ public class SpecSheetGenerica {
 
             String file = filename + elettrificazione.getCdvistelet() + suffix;
             //String pdf = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + file + ".pdf");
-            //String xls = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + file + (byLang ? "_" + rc.getLocale().getLanguage() : "") + ".xls");
+            //String xls = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + file + (byLang ? "_" + locale.getLanguage() : "") + ".xls");
 
-            if (checkResourcesExists(ctx.getServletContext(), file, byLang, rc.getLocale().getLanguage())) {
+            if (checkResourcesExists(ctx.getServletContext(), file, byLang, locale.getLanguage())) {
                 return elettrificazione.getCdvistelet();
             }
         }
@@ -1006,6 +1070,9 @@ public class SpecSheetGenerica {
         WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(request);
         RequestContext rc = new RequestContext(request);
 
+        String[] noFallback = new String[]{"it", "en"};
+        List<String> noFallbackList = Arrays.asList(noFallback);
+        
         List<String> possibleFilenameList = new ArrayList<String>();
         String filename = art.getVist_filedis();
         possibleFilenameList.add(filename);
@@ -1025,10 +1092,11 @@ public class SpecSheetGenerica {
         for (int i = 0; i < possibleFilenameList.size(); i++) {
             String file = possibleFilenameList.get(i);
 
-            realPath = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + file + (byLang ? "_" + rc.getLocale().getLanguage() : "") + "." + ext);
+            realPath = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + file + (byLang ? "_" + locale.getLanguage() : "") + "." + ext);
 
             if (new File(realPath).exists()) {
                 result.put("realPath", realPath);
+                
                 if (i == 0) {
                     result.put("requested", true);
                 } else {
@@ -1037,10 +1105,29 @@ public class SpecSheetGenerica {
                 break;
             }
 
+            //if xlsx e != en e !=it -> check en
+            if(StringUtils.equals(ext, "xlsx") && !noFallbackList.contains(locale.getLanguage())){
+                realPath = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + file + (byLang ? "_" + "en" : "") + "." + ext);
+
+                if (new File(realPath).exists()) {
+                    result.put("realPath", realPath);
+                    
+                    //override con l'inglese
+                    locale = new Locale("en");
+                    
+                    if (i == 0) {
+                        result.put("requested", true);
+                    } else {
+                        result.put("requested", false);
+                    }                    
+
+                    break;
+                }                
+            }                
         }
 //        for (String file : possibleFilenameList) {
 //
-//            realPath = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + file + (byLang ? "_" + rc.getLocale().getLanguage() : "") + "." + ext);
+//            realPath = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + file + (byLang ? "_" + locale.getLanguage() : "") + "." + ext);
 //
 //            if (new File(realPath).exists()) {
 //                break;
@@ -1080,7 +1167,7 @@ public class SpecSheetGenerica {
         defaultCell.setPaddingLeft(0);
         defaultCell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-        Paragraph paragraph1 = new Paragraph(messageSource.getMessage("dimensioni", null, rc.getLocale()).toUpperCase(), new Font(baseFontBold, 8));
+        Paragraph paragraph1 = new Paragraph(messageSource.getMessage("dimensioni", null, locale).toUpperCase(), new Font(baseFontBold, 8));
         table.addCell(paragraph1);
 
         String realPath = WebUtils.getRealPath(ctx.getServletContext(), "/images/articoli/disegnitecnici/" + art.getVist_filedis() + ".jpg");
@@ -1173,8 +1260,8 @@ public class SpecSheetGenerica {
         }
         if (!modellidis.isEmpty() && modellidis.size() > 1) {
             defaultCell.setPaddingBottom(0);
-            table.addCell(new Paragraph(messageSource.getMessage("versioni.alt", null, rc.getLocale()).toUpperCase(), new Font(baseFontBold, 8)));
-            table.addCell(new Paragraph(messageSource.getMessage("versioni.alt.linkalert", null, rc.getLocale()), new Font(baseFont, 6)));
+            table.addCell(new Paragraph(messageSource.getMessage("versioni.alt", null, locale).toUpperCase(), new Font(baseFontBold, 8)));
+            table.addCell(new Paragraph(messageSource.getMessage("versioni.alt.linkalert", null, locale), new Font(baseFont, 6)));
 
             String vers = "";
 
@@ -1185,9 +1272,9 @@ public class SpecSheetGenerica {
                 fg_eurusa = "E";
             }
             String www = "http://www.vistosi";
-            if (rc.getLocale().getLanguage().equals("it")) {
+            if (locale.getLanguage().equals("it")) {
                 www += ".it";
-            } else if (rc.getLocale().getLanguage().equals("ru")) {
+            } else if (locale.getLanguage().equals("ru")) {
                 www += ".ru";
             } else {
                 www += ".com";
@@ -1278,7 +1365,7 @@ public class SpecSheetGenerica {
         cell.setUseDescender(false);
         cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-        Paragraph paragraph1 = new Paragraph(messageSource.getMessage("col.vetro", null, rc.getLocale()).toUpperCase(), new Font(baseFontBold, 8));
+        Paragraph paragraph1 = new Paragraph(messageSource.getMessage("col.vetro", null, locale).toUpperCase(), new Font(baseFontBold, 8));
         cell.addElement(paragraph1);
         table.addCell(cell);
 
@@ -1392,7 +1479,7 @@ public class SpecSheetGenerica {
             cell.setUseDescender(false);
             cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-            Paragraph paragraph1 = new Paragraph(messageSource.getMessage("fin.mont", null, rc.getLocale()).toUpperCase(), new Font(baseFontBold, 8));
+            Paragraph paragraph1 = new Paragraph(messageSource.getMessage("fin.mont", null, locale).toUpperCase(), new Font(baseFontBold, 8));
             cell.addElement(paragraph1);
             table.addCell(cell);
 
@@ -1470,25 +1557,26 @@ public class SpecSheetGenerica {
         float defaultImageCellHeight = 16f;
         float defaultImageLampadinaCellPadding = 1f;
         
-        table = new PdfPTable(5);
+        table = new PdfPTable(6);
         table.setWidthPercentage(100);
         //table.setWidths(new float[]{.1f, .1f, .1f, .5f});
-        table.setWidths(new int[]{4, 4, 5, 8, 28});
+        table.setWidths(new int[]{1, 4, 4, 5, 8, 28});
         table.getDefaultCell().setBorder(PdfPCell.RECTANGLE);
         table.getDefaultCell().setBorderWidth(0f);
         table.getDefaultCell().setPadding(0f);
         table.getDefaultCell().setPaddingRight(1f);
         table.getDefaultCell().setPaddingLeft(4f);
+        //table.getDefaultCell().setBackgroundColor(BaseColor.DARK_GRAY);
         //table.getDefaultCell().setFixedHeight(11);
 
         cell = new PdfPCell();
         cell.setFixedHeight(14f);
         cell.setBorderWidth(.0f);
-        cell.setColspan(5);
+        cell.setColspan(6);
         cell.setPadding(0f);
         cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-//        Paragraph paragraph1 = new Paragraph(messageSource.getMessage("lampadine", null, rc.getLocale()).toUpperCase() + ":", new Font(baseFontBold, 8));
+//        Paragraph paragraph1 = new Paragraph(messageSource.getMessage("lampadine", null, locale).toUpperCase() + ":", new Font(baseFontBold, 8));
 //        cell.addElement(paragraph1);
 //        table.addCell(cell);
         //creazione mappa img iniziali
@@ -1507,7 +1595,22 @@ public class SpecSheetGenerica {
 
                     if (StringUtils.equals(flag, "S")) {
 
-                        PdfPCell pdfPCell = new PdfPCell();
+                        PdfPCell pdfPCell;
+                        
+                        Image arrow = Image.getInstance(WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + ARROW_ICON));
+                        
+                        if(StringUtils.equals(art.getCdvistelet(), selCdvistelet)){
+                            pdfPCell = new PdfPCell(arrow, true);
+                        }else{
+                            pdfPCell = new PdfPCell(new Phrase("", new Font(baseFont, 8)));
+                        }
+                        pdfPCell.setPadding(0f);
+                        pdfPCell.setBorderWidth(.0f);
+                        pdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                        pdfPCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                        table.addCell(pdfPCell);
+                        
+                        pdfPCell = new PdfPCell();
                         //pdfPCell.setFixedHeight(13);
                         pdfPCell.setBorderWidth(0f);
                         String nomeimg = BeanUtils.getSimpleProperty(datiExtra, "arwSimbAttacco" + pos);
@@ -1609,7 +1712,7 @@ public class SpecSheetGenerica {
                         }
 
                         Vist_elettrificazioni elettrificazione = vistosiShopManager.getVist_elettrificazioniByKey(art.getCdvistelet());
-                        String dsextvistelet = StringUtils.trimToEmpty(BeanUtils.getSimpleProperty(elettrificazione, "dsextvistelet" + getAtkLangsfx(rc.getLocale().getLanguage())));
+                        String dsextvistelet = StringUtils.trimToEmpty(BeanUtils.getSimpleProperty(elettrificazione, "dsextvistelet" + getAtkLangsfx(locale.getLanguage())));
 
                         if (StringUtils.isNotBlank(dsextvistelet)) {
                             pdfPCell = new PdfPCell(new Paragraph(dsextvistelet, new Font(baseFont, 6)));
@@ -1666,7 +1769,7 @@ public class SpecSheetGenerica {
             cell.setUseAscender(true);
             cell.setUseDescender(false);
             cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-            cell.addElement(new Paragraph(messageSource.getMessage("lampadine.alt", null, rc.getLocale()).toUpperCase() + ":", new Font(baseFontBold, 8)));
+            cell.addElement(new Paragraph(messageSource.getMessage("lampadine.alt", null, locale).toUpperCase() + ":", new Font(baseFontBold, 8)));
 //            innerTable.getDefaultCell().setPadding(0f); 
             innerTable.addCell(cell);
             int[] altIdxs = {3, 4, 9, 10, 5, 6, 11, 12};
@@ -1813,6 +1916,7 @@ public class SpecSheetGenerica {
                 cell = new PdfPCell(new Paragraph("", new Font(baseFont, 6)));
                 cell.setPadding(0f);
                 cell.setBorderWidth(0f);
+                cell.setColspan(2);
                 table.addCell(cell);
                 cell = new PdfPCell();
                 cell.setPadding(0);
@@ -1865,7 +1969,7 @@ public class SpecSheetGenerica {
         cell.setColspan(2);
         cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-        Paragraph paragraph1 = new Paragraph(messageSource.getMessage("marcature", null, rc.getLocale()).toUpperCase() + ":", new Font(baseFontBold, 8));
+        Paragraph paragraph1 = new Paragraph(messageSource.getMessage("marcature", null, locale).toUpperCase() + ":", new Font(baseFontBold, 8));
         cell.addElement(paragraph1);
         tableCnt.addCell(cell);
 
@@ -2020,14 +2124,14 @@ public class SpecSheetGenerica {
         defaultCell.setUseDescender(false);
         defaultCell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-        Paragraph paragraph1 = new Paragraph(messageSource.getMessage("volume", null, rc.getLocale()).toUpperCase(), new Font(baseFontBold, 7));
+        Paragraph paragraph1 = new Paragraph(messageSource.getMessage("volume", null, locale).toUpperCase(), new Font(baseFontBold, 7));
         table.addCell(paragraph1);
 
         Paragraph paragraph2 = new Paragraph("Mc " + numFormat.format(art.getVlunlt()), new Font(baseFont, 7));
         defaultCell.setPaddingRight(0);
         table.addCell(paragraph2);
 
-        Paragraph paragraph3 = new Paragraph(messageSource.getMessage("peso.lordo", null, rc.getLocale()).toUpperCase(), new Font(baseFontBold, 7));
+        Paragraph paragraph3 = new Paragraph(messageSource.getMessage("peso.lordo", null, locale).toUpperCase(), new Font(baseFontBold, 7));
         defaultCell.setPaddingRight(5);
         table.addCell(paragraph3);
 
@@ -2035,7 +2139,7 @@ public class SpecSheetGenerica {
         defaultCell.setPaddingRight(0);
         table.addCell(paragraph4);
 
-        Paragraph paragraph5 = new Paragraph(messageSource.getMessage("peso.netto", null, rc.getLocale()).toUpperCase(), new Font(baseFontBold, 7));
+        Paragraph paragraph5 = new Paragraph(messageSource.getMessage("peso.netto", null, locale).toUpperCase(), new Font(baseFontBold, 7));
         defaultCell.setPaddingRight(5);
         table.addCell(paragraph5);
 
@@ -2150,7 +2254,7 @@ public class SpecSheetGenerica {
 
         //PdfReader reader = new PdfReader(new FileInputStream(new File(rootImg + "APCLOTHP\\APCLOTHP.PDF")));
         //PdfImportedPage pdfDis = writer.getImportedPage(reader, 1);
-//        String realPath = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + art.getVist_filedis() + "/" + art.getVist_filedis() + "3D_" + rc.getLocale() + ".pdf");
+//        String realPath = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + art.getVist_filedis() + "/" + art.getVist_filedis() + "3D_" + locale + ".pdf");
 //
 //        PdfReader readerDis = new PdfReader(realPath);
 //        PdfImportedPage pdfDis = writer.getImportedPage(readerDis, 1);

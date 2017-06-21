@@ -13,7 +13,7 @@
     </c:if--%>
     <security:authorize ifNotGranted="ROLE_ANONYMOUS">
         <security:authentication property="principal.cliente.archclie.cdlist" var="cdlist"/>
-        <c:choose><c:when test="${cdlist == 'LUS'}"><c:set var="valuta" value="USD"/></c:when><c:otherwise><c:set var="valuta" value="€"/></c:otherwise></c:choose>
+        <c:choose><c:when test="${cdlist == 'LUS'}"><c:set var="valuta" value="USD"/></c:when><c:when test="${cdlist == 'LCA'}"><c:set var="valuta" value="CAD"/></c:when><c:otherwise><c:set var="valuta" value="€"/></c:otherwise></c:choose>
         <div id="prezzi" class="dd-scheda clearfix det-row">
             <div id="prz-lis" class="det-block <c:if test="${carrelloItem.articolo.fgpromo=='S'}">offerta</c:if>"><span class="det-label"><span style="text-transform:capitalize"><spring:message code="price" text="Prezzo"/></span> <spring:message code="listino" text="listino"/></span><span class="det-value"><fmt:formatNumber value="${prezzo}" pattern="#,##0.00"/> ${valuta}</span></div>
             <div id="sc-val" class="det-block"><c:if test="${cookie.view_net_price.value == 'S' && !hideCond}"><span class="det-label"><span style="text-transform:capitalize"><spring:message code="sconto" text="Sconto"/></span></span><span class="det-value"><fmt:formatNumber value="${sconto}" pattern="#,##0.00"/> ${valuta}<br/>(${ls_sconto}%)</span></c:if></div>

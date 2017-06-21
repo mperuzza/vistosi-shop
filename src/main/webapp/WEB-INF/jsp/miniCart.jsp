@@ -3,7 +3,7 @@
 <security:authentication property="principal.cliente.archclie.cdlist" var="cdlist"/>
 <c:set var="hideCond" value="false"/>
 <security:authorize ifAnyGranted="ROLE_SUBUTENTE"><c:set var="hideCond" value="true"/></security:authorize>
-<c:choose><c:when test="${cdlist == 'LUS'}"><c:set var="valuta" value="USD"/></c:when><c:otherwise><c:set var="valuta" value="€"/></c:otherwise></c:choose>
+<c:choose><c:when test="${cdlist == 'LUS'}"><c:set var="valuta" value="USD"/></c:when><c:when test="${cdlist == 'LCA'}"><c:set var="valuta" value="CAD"/></c:when><c:otherwise><c:set var="valuta" value="€"/></c:otherwise></c:choose>
 <ul>
 <li><a class="cartLink" href="<c:url value='/fullCart'/>"><fmt:message key="cart"/></a></li>
 <c:set var="nums">

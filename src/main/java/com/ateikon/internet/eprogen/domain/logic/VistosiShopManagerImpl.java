@@ -2009,6 +2009,10 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
     public boolean checkSpecsheetExists(Mrp_arch_articoli art, WebApplicationContext ctx, RequestContext rc) {
 
+         String[] noFallback = new String[]{"it", "en"};
+         List<String> noFallbackList = Arrays.asList(noFallback);
+         File fXlsxFallback = null;
+         
         try {
 
             List<String> possibleFilenameList = new ArrayList<String>();
@@ -2031,12 +2035,19 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
                 String realPathPdf = WebUtils.getRealPath(ctx.getServletContext(), SpecSheet.ROOT_RES + "/risorse/" + file + ".pdf");
                 String realPathU3D = WebUtils.getRealPath(ctx.getServletContext(), SpecSheet.ROOT_RES + "/risorse/" + file + ".U3D");
                 String realPathXlsx = WebUtils.getRealPath(ctx.getServletContext(), SpecSheet.ROOT_RES + "/risorse/" + file + "_" + rc.getLocale().getLanguage() + ".xlsx");
-
+                if(!noFallbackList.contains(rc.getLocale().getLanguage())){
+                    String realPathXlsxFallback = WebUtils.getRealPath(ctx.getServletContext(), SpecSheet.ROOT_RES + "/risorse/" + file + "_" + "en" + ".xlsx");
+                    fXlsxFallback = new File(realPathXlsxFallback);
+                }
+                
                 File fPdf = new File(realPathPdf);
                 File fU3D = new File(realPathU3D);
                 File fXlsx = new File(realPathXlsx);
+                
 
-                if (fPdf.exists() /*&& fU3D.exists()*/ && fXlsx.exists()) {
+                if (fPdf.exists() /*&& fU3D.exists()*/ && (fXlsx.exists() ||
+                                                            (fXlsxFallback != null && fXlsxFallback.exists()))
+                                                            ) {
                     return true;
                 }
 

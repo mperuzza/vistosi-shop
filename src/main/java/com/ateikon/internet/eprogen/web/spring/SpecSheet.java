@@ -50,9 +50,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -104,11 +106,18 @@ public class SpecSheet {
     java.text.NumberFormat przFormat = null;
     int widthBody = 425; //400;
     int widthRight = 125;
+    
+    Locale locale = new Locale("it");
     //int widthPage = 560;
 
     @RequestMapping(value = "/specsheet/{cdartm}")
     public void createPDF(@PathVariable("cdartm") String cdartm, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+        WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(request);
+        RequestContext rc = new RequestContext(request);
+        
+        locale = rc.getLocale();
+        
         siteRoot = WebUtils.getRealPath(request.getSession().getServletContext(), "/");
 
         //String cdartm = (String) request.getParameter("cdartm");
@@ -192,11 +201,14 @@ public class SpecSheet {
             tableRight.getDefaultCell().setPaddingRight(0);
             tableRight.getDefaultCell().setPaddingBottom(4);
             tableRight.getDefaultCell().setPaddingLeft(10);
+            
+            //la presenza delle note in lingua è determinante per la lingua di tutta la specsheet
+            //se vince il fallback forza tutto a en
+            PdfPTable tableNote = getNote(art, request, document, writer);
 
             PdfPTable tableHeader = getHeader(art, request, document, writer);
             PdfPTable tableCertificazioni = getCertificazioni(request, document, writer);
             PdfPTable tableDisegno = getDisegno(art, request, document, writer);
-            PdfPTable tableNote = getNote(art, request, document, writer);
             PdfPTable table3D = get3D(art, request, document, writer);
             PdfPTable tableDisDim = getDisegnoDim(art, request, document, writer);
 
@@ -313,9 +325,9 @@ public class SpecSheet {
         cell.addElement(paragraph);
 
         String www = "www.vistosi";
-        if (rc.getLocale().getLanguage().equals("it")) {
+        if (locale.getLanguage().equals("it")) {
             www += ".it";
-        } else if (rc.getLocale().getLanguage().equals("ru")) {
+        } else if (locale.getLanguage().equals("ru")) {
             www += ".ru";
         } else {
             www += ".com";
@@ -339,7 +351,7 @@ public class SpecSheet {
         defaultCell.setUseDescender(true);
 
         Vist_famiglia vist_famiglia = vistosiShopManager.getVist_famigliaByKey(art.getCdvistfam());
-        paragraph = new Paragraph(StringUtils.trimToEmpty(BeanUtils.getSimpleProperty(vist_famiglia, "dsvistfam" + getAtkLangsfx(rc.getLocale().getLanguage()))), new Font(baseFontBold, 14));
+        paragraph = new Paragraph(StringUtils.trimToEmpty(BeanUtils.getSimpleProperty(vist_famiglia, "dsvistfam" + getAtkLangsfx(locale.getLanguage()))), new Font(baseFontBold, 14));
         tableDati.addCell(paragraph);
 
         String nomeModello = StringUtils.replace(StringUtils.substringBefore(art.getVist_filedis().replaceAll("\\s+", " "), "-"), art.getCdvistfam(), "");
@@ -369,7 +381,7 @@ public class SpecSheet {
                 description += "Design " + designer.getDsdesigner().replaceAll("\\s+", " ") + "\n";
             }
         }
-        description += StringUtils.trimToEmpty(BeanUtils.getSimpleProperty(vist_famiglia, "dsextvistfam" + getAtkLangsfx(rc.getLocale().getLanguage())));
+        description += StringUtils.trimToEmpty(BeanUtils.getSimpleProperty(vist_famiglia, "dsextvistfam" + getAtkLangsfx(locale.getLanguage())));
         paragraph = new Paragraph(description, new Font(baseFont, 8));
         cell.addElement(paragraph);
         tableRiepilogo.addCell(cell);
@@ -448,7 +460,10 @@ public class SpecSheet {
          }
          }*/
 //        String realPath = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + art.getVist_filedis() + ".pdf");
-        PdfReader readerDis = new PdfReader(realPath);
+
+        FileInputStream fis = new FileInputStream(realPath);
+        
+        PdfReader readerDis = new PdfReader(fis);
         PdfImportedPage pdfDis = writer.getImportedPage(readerDis, 1);
 
         Image img = Image.getInstance(pdfDis);
@@ -463,6 +478,8 @@ public class SpecSheet {
         cell.addElement(img);
 
         tableDisegno.addCell(cell);
+        
+        fis.close();
 
 //        tableDisegno.completeRow();
         return tableDisegno;
@@ -473,6 +490,9 @@ public class SpecSheet {
 
         WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(request);
         RequestContext rc = new RequestContext(request);
+        
+        String[] noFallback = new String[]{"it", "en"};
+        List<String> noFallbackList = Arrays.asList(noFallback);
 
         List<String> possibleFilenameList = new ArrayList<String>();
         String filename = art.getVist_filedis();
@@ -491,11 +511,25 @@ public class SpecSheet {
         String realPath = null;
         for (String file : possibleFilenameList) {
 
-            realPath = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + file + (byLang ? "_" + rc.getLocale().getLanguage() : "") + "." + ext);
+            realPath = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + file + (byLang ? "_" + locale.getLanguage() : "") + "." + ext);
 
             if (new File(realPath).exists()) {
                 break;
             }
+            
+            //if xlsx e != en e !=it -> check en
+            if(StringUtils.equals(ext, "xlsx") && !noFallbackList.contains(locale.getLanguage())){
+                realPath = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + file + (byLang ? "_" + "en" : "") + "." + ext);
+
+                if (new File(realPath).exists()) {
+                    
+                    //override con l'inglese
+                    locale = new Locale("en");
+                    
+                    break;
+                }                
+            }
+            
 
         }
         return realPath;
@@ -531,7 +565,7 @@ public class SpecSheet {
         defaultCell.setPaddingLeft(0);
         defaultCell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-        Paragraph paragraph1 = new Paragraph(messageSource.getMessage("dimensioni", null, rc.getLocale()).toUpperCase(), new Font(baseFontBold, 8));
+        Paragraph paragraph1 = new Paragraph(messageSource.getMessage("dimensioni", null, locale).toUpperCase(), new Font(baseFontBold, 8));
         table.addCell(paragraph1);
 
         String realPath = WebUtils.getRealPath(ctx.getServletContext(), "/images/articoli/disegnitecnici/" + art.getVist_filedis() + ".jpg");
@@ -624,15 +658,15 @@ public class SpecSheet {
         }
         if (!modellidis.isEmpty() && modellidis.size() > 1) {
             defaultCell.setPaddingBottom(0);
-            table.addCell(new Paragraph(messageSource.getMessage("versioni.alt", null, rc.getLocale()).toUpperCase(), new Font(baseFontBold, 8)));
-            table.addCell(new Paragraph(messageSource.getMessage("versioni.alt.linkalert", null, rc.getLocale()), new Font(baseFont, 6)));
+            table.addCell(new Paragraph(messageSource.getMessage("versioni.alt", null, locale).toUpperCase(), new Font(baseFontBold, 8)));
+            table.addCell(new Paragraph(messageSource.getMessage("versioni.alt.linkalert", null, locale), new Font(baseFont, 6)));
 
             String vers = "";
 
             String www = "http://www.vistosi";
-            if (rc.getLocale().getLanguage().equals("it")) {
+            if (locale.getLanguage().equals("it")) {
                 www += ".it";
-            } else if (rc.getLocale().getLanguage().equals("ru")) {
+            } else if (locale.getLanguage().equals("ru")) {
                 www += ".ru";
             } else {
                 www += ".com";
@@ -710,7 +744,7 @@ public class SpecSheet {
         cell.setUseDescender(false);
         cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-        Paragraph paragraph1 = new Paragraph(messageSource.getMessage("col.vetro", null, rc.getLocale()).toUpperCase(), new Font(baseFontBold, 8));
+        Paragraph paragraph1 = new Paragraph(messageSource.getMessage("col.vetro", null, locale).toUpperCase(), new Font(baseFontBold, 8));
         cell.addElement(paragraph1);
         table.addCell(cell);
 
@@ -789,7 +823,7 @@ public class SpecSheet {
             Vist_colori_vetro vist_colori_vetro = vistosiShopManager.getVist_colori_vetroByKey(art.getCdvistcolv());
 
             if (vist_colori_vetro != null) {
-                dsfinitura = StringUtils.trimToEmpty(BeanUtils.getSimpleProperty(vist_colori_vetro, "dsextvistcolv" + getAtkLangsfx(rc.getLocale().getLanguage())));
+                dsfinitura = StringUtils.trimToEmpty(BeanUtils.getSimpleProperty(vist_colori_vetro, "dsextvistcolv" + getAtkLangsfx(locale.getLanguage())));
             }
 
         }
@@ -801,7 +835,7 @@ public class SpecSheet {
             Vist_finit_vetro vist_finit_vetro = vistosiShopManager.getVist_finit_vetroByKey(art.getCdvistfinv());
 
             if (vist_finit_vetro != null) {
-                dsfinitura += StringUtils.trimToEmpty(BeanUtils.getSimpleProperty(vist_finit_vetro, "dsextvistfinv" + getAtkLangsfx(rc.getLocale().getLanguage())));
+                dsfinitura += StringUtils.trimToEmpty(BeanUtils.getSimpleProperty(vist_finit_vetro, "dsextvistfinv" + getAtkLangsfx(locale.getLanguage())));
             }
 
         }
@@ -846,7 +880,7 @@ public class SpecSheet {
         cell.setUseDescender(false);
         cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-        Paragraph paragraph1 = new Paragraph(messageSource.getMessage("fin.mont", null, rc.getLocale()).toUpperCase(), new Font(baseFontBold, 8));
+        Paragraph paragraph1 = new Paragraph(messageSource.getMessage("fin.mont", null, locale).toUpperCase(), new Font(baseFontBold, 8));
         cell.addElement(paragraph1);
         table.addCell(cell);
 
@@ -904,7 +938,7 @@ public class SpecSheet {
             Vist_finit_mont vist_finit_mont = vistosiShopManager.getVist_finit_montByKey(art.getCdvistfinm());
 
             if (vist_finit_mont != null) {
-                dsfinitura = StringUtils.trimToEmpty(BeanUtils.getSimpleProperty(vist_finit_mont, "dsextvistfinm" + getAtkLangsfx(rc.getLocale().getLanguage())));
+                dsfinitura = StringUtils.trimToEmpty(BeanUtils.getSimpleProperty(vist_finit_mont, "dsextvistfinm" + getAtkLangsfx(locale.getLanguage())));
             }
 
         }
@@ -944,7 +978,7 @@ public class SpecSheet {
         cell.setPadding(0f);
         cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-        Paragraph paragraph1 = new Paragraph(messageSource.getMessage("lampadine", null, rc.getLocale()).toUpperCase() + ":", new Font(baseFontBold, 8));
+        Paragraph paragraph1 = new Paragraph(messageSource.getMessage("lampadine", null, locale).toUpperCase() + ":", new Font(baseFontBold, 8));
         cell.addElement(paragraph1);
         table.addCell(cell);
 
@@ -1091,7 +1125,7 @@ public class SpecSheet {
             cell.setUseAscender(true);
             cell.setUseDescender(false);
             cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-            cell.addElement(new Paragraph(messageSource.getMessage("lampadine.alt", null, rc.getLocale()).toUpperCase() + ":", new Font(baseFontBold, 8)));
+            cell.addElement(new Paragraph(messageSource.getMessage("lampadine.alt", null, locale).toUpperCase() + ":", new Font(baseFontBold, 8)));
 //            innerTable.getDefaultCell().setPadding(0f); 
             innerTable.addCell(cell);
             int[] altIdxs = {3, 4, 9, 10, 5, 6, 11, 12};
@@ -1274,7 +1308,7 @@ public class SpecSheet {
         cell.setColspan(6);
         cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-        Paragraph paragraph1 = new Paragraph(messageSource.getMessage("marcature", null, rc.getLocale()).toUpperCase() + ":", new Font(baseFontBold, 8));
+        Paragraph paragraph1 = new Paragraph(messageSource.getMessage("marcature", null, locale).toUpperCase() + ":", new Font(baseFontBold, 8));
         cell.addElement(paragraph1);
         tableCnt.addCell(cell);
 
@@ -1412,7 +1446,7 @@ public class SpecSheet {
         defaultCell.setUseDescender(false);
         defaultCell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-        Paragraph paragraph1 = new Paragraph(messageSource.getMessage("volume", null, rc.getLocale()).toUpperCase()+ ": ", new Font(baseFontBold, 8));
+        Paragraph paragraph1 = new Paragraph(messageSource.getMessage("volume", null, locale).toUpperCase()+ ": ", new Font(baseFontBold, 8));
         Chunk c1 = new Chunk("Mc " + numFormat.format(art.getVlunlt()), new Font(baseFont, 8));
         paragraph1.add(c1);
         table.addCell(paragraph1);
@@ -1420,7 +1454,7 @@ public class SpecSheet {
 //        Paragraph paragraph2 = new Paragraph("Mc " + numFormat.format(art.getVlunlt()), new Font(baseFont, 8));
 //        table.addCell(paragraph2);
 
-        Paragraph paragraph3 = new Paragraph(messageSource.getMessage("peso.lordo", null, rc.getLocale()).toUpperCase()+ ": ", new Font(baseFontBold, 8));
+        Paragraph paragraph3 = new Paragraph(messageSource.getMessage("peso.lordo", null, locale).toUpperCase()+ ": ", new Font(baseFontBold, 8));
         Chunk c3 = new Chunk("Kg " + numFormat.format(art.getNrpeso_l()), new Font(baseFont, 8));
         paragraph3.add(c3);       
         table.addCell(paragraph3);
@@ -1428,7 +1462,7 @@ public class SpecSheet {
 //        Paragraph paragraph4 = new Paragraph("Kg " + numFormat.format(art.getNrpeso_l()), new Font(baseFont, 8));
 //        table.addCell(paragraph4);
 
-        Paragraph paragraph5 = new Paragraph(messageSource.getMessage("peso.netto", null, rc.getLocale()).toUpperCase()+ ": ", new Font(baseFontBold, 8));
+        Paragraph paragraph5 = new Paragraph(messageSource.getMessage("peso.netto", null, locale).toUpperCase()+ ": ", new Font(baseFontBold, 8));
         Chunk c5 = new Chunk("Kg " + numFormat.format(art.getNrpeso_n()), new Font(baseFont, 8));
         paragraph5.add(c5); 
         table.addCell(paragraph5);
@@ -1469,10 +1503,10 @@ public class SpecSheet {
 //        if ("UL".equals(art.getCdclas_a())) {
 //            filename += "UL";
 //        }
-//        String realPath = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + filename + "_" + rc.getLocale().getLanguage() + ".xlsx");
+//        String realPath = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + filename + "_" + locale.getLanguage() + ".xlsx");
 //        File f = new File(realPath);
 //        if (!f.exists()) {
-//            realPath = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + art.getVist_filedis() + "_" + rc.getLocale().getLanguage() + ".xlsx");
+//            realPath = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + "/risorse/" + art.getVist_filedis() + "_" + locale.getLanguage() + ".xlsx");
 //        }
         FileInputStream file = new FileInputStream(new File(realPath));
 
@@ -1555,7 +1589,7 @@ public class SpecSheet {
 
         //PdfReader reader = new PdfReader(new FileInputStream(new File(rootImg + "APCLOTHP\\APCLOTHP.PDF")));
         //PdfImportedPage pdfDis = writer.getImportedPage(reader, 1);
-//        String realPath = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + art.getVist_filedis() + "/" + art.getVist_filedis() + "3D_" + rc.getLocale() + ".pdf");
+//        String realPath = WebUtils.getRealPath(ctx.getServletContext(), ROOT_RES + art.getVist_filedis() + "/" + art.getVist_filedis() + "3D_" + locale + ".pdf");
 //
 //        PdfReader readerDis = new PdfReader(realPath);
 //        PdfImportedPage pdfDis = writer.getImportedPage(readerDis, 1);

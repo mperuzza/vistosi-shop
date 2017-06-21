@@ -49,6 +49,7 @@ import java.lang.String;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -317,34 +318,34 @@ public class F_eprogen_replace extends Atk_sql {
 
     }
 
-    if (tkclie.equals("") && tksubutente <= 0){
-      //Pulisco questi valori se non e' cliente
-      ao_map.put("${archresp.email}"        , "");
-      ao_map.put("${archresp.email_amm}"        , "");
-      ao_map.put("${archresp.email_comm}"        , "");
-      ao_map.put("${archresp.email_tecn}"        , "");
-      ao_map.put("${archresp.email_no_acc}"        , "");
-      ao_map.put("${age_ispettori.email}"   , "");
-      ao_map.put("${age_ispettori.email_amm}"   , "");
-      ao_map.put("${age_ispettori.email_comm}"   , "");
-      ao_map.put("${age_ispettori.email_tecn}"   , "");
-      ao_map.put("${age_ispettori.email_no_acc}"   , "");
-      ao_map.put("${archagen.email_capo}"   , "");
-      ao_map.put("${archagen.email_capo_amm}"   , "");
-      ao_map.put("${archagen.email_capo_comm}"   , "");
-      ao_map.put("${archagen.email_capo_tecn}"   , "");
-      ao_map.put("${archagen.email_capo_no_acc}"   , "");
-      ao_map.put("${archagen.email_agenrif}", "");
-      ao_map.put("${archagen.email_agenrif_amm}", "");
-      ao_map.put("${archagen.email_agenrif_comm}", "");
-      ao_map.put("${archagen.email_agenrif_tecn}", "");
-      ao_map.put("${archagen.email_agenrif_no_acc}", "");
-      ao_map.put("${archagen.email}"        , "");
-      ao_map.put("${archagen.email_amm}"        , "");
-      ao_map.put("${archagen.email_comm}"        , "");
-      ao_map.put("${archagen.email_tecn}"        , "");
-      ao_map.put("${archagen.email_no_acc}"        , "");
-    }
+//    if (tkclie.equals("") && tksubutente <= 0){
+//      //Pulisco questi valori se non e' cliente
+//      ao_map.put("${archresp.email}"        , "");
+//      ao_map.put("${archresp.email_amm}"        , "");
+//      ao_map.put("${archresp.email_comm}"        , "");
+//      ao_map.put("${archresp.email_tecn}"        , "");
+//      ao_map.put("${archresp.email_no_acc}"        , "");
+//      ao_map.put("${age_ispettori.email}"   , "");
+//      ao_map.put("${age_ispettori.email_amm}"   , "");
+//      ao_map.put("${age_ispettori.email_comm}"   , "");
+//      ao_map.put("${age_ispettori.email_tecn}"   , "");
+//      ao_map.put("${age_ispettori.email_no_acc}"   , "");
+//      ao_map.put("${archagen.email_capo}"   , "");
+//      ao_map.put("${archagen.email_capo_amm}"   , "");
+//      ao_map.put("${archagen.email_capo_comm}"   , "");
+//      ao_map.put("${archagen.email_capo_tecn}"   , "");
+//      ao_map.put("${archagen.email_capo_no_acc}"   , "");
+//      ao_map.put("${archagen.email_agenrif}", "");
+//      ao_map.put("${archagen.email_agenrif_amm}", "");
+//      ao_map.put("${archagen.email_agenrif_comm}", "");
+//      ao_map.put("${archagen.email_agenrif_tecn}", "");
+//      ao_map.put("${archagen.email_agenrif_no_acc}", "");
+//      ao_map.put("${archagen.email}"        , "");
+//      ao_map.put("${archagen.email_amm}"        , "");
+//      ao_map.put("${archagen.email_comm}"        , "");
+//      ao_map.put("${archagen.email_tecn}"        , "");
+//      ao_map.put("${archagen.email_no_acc}"        , "");
+//    }
     if (tksubutente <= 0){
       ao_map.put("${archclie.email}"             , "");
       ao_map.put("${archclie.email_amm}"         , "");
@@ -5006,6 +5007,8 @@ public class F_eprogen_replace extends Atk_sql {
             ls_tbl_order_details += "<td  style=\"background-color: rgb(" + rs_stati.getString("vist_rgb_r") + "," + rs_stati.getString("vist_rgb_g") + "," + rs_stati.getString("vist_rgb_b") + "); margin:0 5px 0 0; padding: 0px; border:0px none; height:16px; width:16px;\" ></td><td style=\"padding:0 10px 0 5px;  font-size:12px; height:16px; margin: 0px; border:0px none;\">" + html.text(rs_stati.getString("dsstato_de")) + "</td>";
         }else if("S".equals(ls_lingua)) {
             ls_tbl_order_details += "<td  style=\"background-color: rgb(" + rs_stati.getString("vist_rgb_r") + "," + rs_stati.getString("vist_rgb_g") + "," + rs_stati.getString("vist_rgb_b") + "); margin:0 5px 0 0; padding: 0px; border:0px none; height:16px; width:16px;\" ></td><td style=\"padding:0 10px 0 5px;  font-size:12px; height:16px; margin: 0px; border:0px none;\">" + html.text(rs_stati.getString("dsstato_es")) + "</td>";
+        }else if("R".equals(ls_lingua)) {
+            ls_tbl_order_details += "<td  style=\"background-color: rgb(" + rs_stati.getString("vist_rgb_r") + "," + rs_stati.getString("vist_rgb_g") + "," + rs_stati.getString("vist_rgb_b") + "); margin:0 5px 0 0; padding: 0px; border:0px none; height:16px; width:16px;\" ></td><td style=\"padding:0 10px 0 5px;  font-size:12px; height:16px; margin: 0px; border:0px none;\">" + html.text(rs_stati.getString("dsstato_ru")) + "</td>";
         } else {
             ls_tbl_order_details += "<td  style=\"background-color: rgb(" + rs_stati.getString("vist_rgb_r") + "," + rs_stati.getString("vist_rgb_g") + "," + rs_stati.getString("vist_rgb_b") + "); margin:0 5px 0 0; padding: 0px; border:0px none; height:16px; width:16px;\" ></td><td style=\"padding:0 10px 0 5px;  font-size:12px; height:16px; margin: 0px; border:0px none;\">" + html.text(rs_stati.getString("dsstato")) + "</td>";
         }
@@ -5722,6 +5725,22 @@ public class F_eprogen_replace extends Atk_sql {
                             
                 if (!specsheet_relpath.equals("")) {
                    ls_tbl_order_details += "<a target=\"_blank\" href=\""+ ep_portal_url +"download/" + cdartm + ".pdf?f=" + specsheet_relpath + "&lang="+ lang +"\" class=\"\" border=\"0\"><img height=\"24\" src=\""+ ep_shop_url +"static/images/tech-icon.gif\" border=\"0\" style=\"margin-right:2px;margin-bottom:2px;\"></a>";
+                }else{
+                    
+                    //TODO verificare con Andrea
+                    String[] noFallback = new String[]{"it", "en"};
+                    List<String> noFallbackList = Arrays.asList(noFallback);
+                    
+                    if(!noFallbackList.contains(lang)){
+                        
+                        lang = "en";
+                        specsheet_relpath = mrp_arch_articoli.of_relpath_resource_specsheet(cdclas_a, ep_shop_root, nome_modello, lang, cdartm, cdvistelet);
+                        if (!specsheet_relpath.equals("")) {
+                           ls_tbl_order_details += "<a target=\"_blank\" href=\""+ ep_portal_url +"download/" + cdartm + ".pdf?f=" + specsheet_relpath + "&lang="+ lang +"\" class=\"\" border=\"0\"><img height=\"24\" src=\""+ ep_shop_url +"static/images/tech-icon.gif\" border=\"0\" style=\"margin-right:2px;margin-bottom:2px;\"></a>";
+                        }                        
+                        
+                    }
+                    
                 }
                 
                 // Energyclass

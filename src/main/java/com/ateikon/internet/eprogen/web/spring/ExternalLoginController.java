@@ -148,7 +148,7 @@ public class ExternalLoginController {
                 //shopUser.setCdclas_aFilter(vist_filtro_articoliDAO.getCdclas_aByTkclie(clie));
                 shopUser.setCdclas_aFilter(externalLoginManager.getCdclas_aByTkclie(clie));
 
-                if(StringUtils.equalsIgnoreCase("LUS", cliente.getArchclie().getCdlist())){
+                if(shopUser.AMERICA_CDLISTS.contains(cliente.getArchclie().getCdlist())){
                     // se il cliente è listino America aggiungo il filtro per listino Europa
                     //shopUser.setCdclas_aFilterBase(shopUser.getCdclas_aFilter()); //salvo filtro base per ricerche articoli dei clienti america
                     //List<Vist_filtro_articoli> filtro_list = vist_filtro_articoliDAO.getCdclas_aByCdlist("L03");
