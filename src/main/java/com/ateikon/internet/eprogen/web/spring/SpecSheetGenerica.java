@@ -1554,7 +1554,7 @@ public class SpecSheetGenerica {
         Paragraph paragraph = null;
 
         float[] columnWidth = {190, 190};
-        float defaultImageCellHeight = 16f;
+        float defaultImageCellHeight = 15f;
         float defaultImageLampadinaCellPadding = 1f;
         
         table = new PdfPTable(6);
@@ -1570,7 +1570,7 @@ public class SpecSheetGenerica {
         //table.getDefaultCell().setFixedHeight(11);
 
         cell = new PdfPCell();
-        cell.setFixedHeight(14f);
+        cell.setFixedHeight(13f);
         cell.setBorderWidth(.0f);
         cell.setColspan(6);
         cell.setPadding(0f);
@@ -1765,7 +1765,7 @@ public class SpecSheetGenerica {
             //cell.setFixedHeight(11);
             cell.setBorderWidth(0f);
             cell.setColspan(4);
-            cell.setPadding(4);
+            cell.setPadding(2);
             cell.setUseAscender(true);
             cell.setUseDescender(false);
             cell.setHorizontalAlignment(Element.ALIGN_LEFT);
