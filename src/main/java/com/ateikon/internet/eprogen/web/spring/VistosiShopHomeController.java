@@ -352,7 +352,7 @@ public class VistosiShopHomeController {
         return new RedirectView("/static/images/articoli/vetro/thumb-nd.png", true);
     }
 
-    @RequestMapping(value = {"/images/articoli/elettrificazioni/*", "/images/articoli/montature/*"})
+    @RequestMapping(value = {"/images/articoli/elettrificazioni/*", "/images/articoli/montature/*", "/images/articoli/disegnitecnici/thumb/*"})
     public View checkImg(HttpServletRequest request, HttpServletResponse response, Model model) {
 
         String url = request.getRequestURL().toString();
