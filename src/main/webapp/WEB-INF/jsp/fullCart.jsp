@@ -158,9 +158,9 @@
                               <th nowrap="nowrap" class="al"><spring:message code="art.cdartm" text="Cd. articolo" var="th_cdart"/>${th_cdart}</th>
                               <th nowrap="nowrap" class="ar"><spring:message code="qta" text="Quantità"/></th>
                               <security:authorize ifNotGranted="ROLE_ANONYMOUS">
-                              <th nowrap="nowrap" class="al"><spring:message code="price" text="Prezzo"/> <c:choose><c:when test="${cookie.view_net_price.value == 'S' && !hideCond}"><br/><spring:message code="unitario" text="unitario"/></c:when><c:when test="${cookie.view_net_price.value == 'N'}"><br/><spring:message code="listino" text="listino"/></c:when></c:choose></th>
-                              <th nowrap="nowrap" class="ar"><spring:message code="subtotale" text="Subtotale"/></th>
-                              <th nowrap="nowrap" class="ar"><spring:message code="dt.prox.disp" text="Data prossima disponibilità" var="th_dtprox"/>${fn:replace(th_dtprox, " ", "<br/>")}</th>
+                              <th nowrap="nowrap" class="ar"><c:choose><c:when test="${cookie.view_net_price.value == 'S' && !hideCond}"><spring:message code="unit.price.net" text="Prezzo netto"/></c:when><c:when test="${cookie.view_net_price.value == 'N'}"><spring:message code="unit.price.lis" text="Prezzo listino"/></c:when></c:choose></th>
+                              <th nowrap="nowrap" class="ar"><spring:message code="subtotale" text="Subtotale"/><br/><spring:message code="netto" text="netto"/></th>
+                              <th nowrap="nowrap" class="ar" style="text-transform: none"><spring:message code="qtdt.prox.disp" text="Q.tà / Data<br/>disponibilità"/></th>
                               </security:authorize>
                               <th>&nbsp;</th>
                               <th>&nbsp;</th>
@@ -360,8 +360,11 @@
                             <td class="ar"><c:choose><c:when test="${cookie.view_net_price.value == 'S' && !hideCond}"><fmt:formatNumber value="${t.importonettoriga}" pattern="#,##0.00"/></c:when><c:when test="${cookie.view_net_price.value == 'N'}"><fmt:formatNumber value="${t.importoriga}" pattern="#,##0.00"/></c:when></c:choose></td>
                             <td class="ar">
                                 <c:choose>
+                                    <c:when test="${t.disp > 999}">
+                                        <spring:message code="prox.disp" text="Disponibile"/> <span class="availability">999</span>
+                                    </c:when>
                                     <c:when test="${t.disp > 0}">
-                                        <spring:message code="prox.disp" text="Disponibile"/>
+                                        <spring:message code="prox.disp" text="Disponibile"/> <span class="availability"><fmt:formatNumber value="${t.disp}" pattern="0.##"/></span>
                                     </c:when>
                                     <c:otherwise>
                                         <c:if test="${!empty t.articolo && !empty t.articolo.mrp_file_giacenza && !empty t.articolo.mrp_file_giacenza.dtprdisp}">

@@ -1611,6 +1611,10 @@ div#thumb.dis-item_hover{
     padding-top: 24px;
 }
 
+#cart-cnt .availability{
+    /*color: rgb(51, 153, 51);*/
+}
+
 .riga{
     border-top:1px solid #000;
 }

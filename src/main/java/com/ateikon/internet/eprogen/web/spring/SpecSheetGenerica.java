@@ -1703,9 +1703,14 @@ public class SpecSheetGenerica {
                             pdfPCell = new PdfPCell(new Paragraph(voltaggio, new Font(baseFont, 6)));
                             pdfPCell.setBorderWidth(0f);
                             pdfPCell.setPadding(0);
-                            pdfPCell.setPaddingTop(4f);
+                            //pdfPCell.setPaddingTop(4f);
+                            if (voltaggio.length() > 10) {
+                                pdfPCell.setPaddingTop(0f);
+                            } else {
+                                pdfPCell.setPaddingTop(4f);
+                            }                            
                             pdfPCell.setPaddingRight(2f);
-                            pdfPCell.setNoWrap(true);
+                            pdfPCell.setNoWrap(false);
                             table.addCell(pdfPCell);
                         } else {
                             table.addCell("");

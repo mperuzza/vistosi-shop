@@ -2109,6 +2109,16 @@ public class F_eprogen_replace extends Atk_sql {
       if (rs.getObject("cdtpsesso")!= null) perrif_cdtpsesso = rs.getString("cdtpsesso");
     }
     
+    
+    String url_resources = ep_site_ext_url + "download-area/download-2d-3d.html";
+    String url_cataloghi = ep_site_ext_url;
+    if (cdling.equals("R")){ //CABLATO -- russo
+        url_cataloghi += "download-area/download-cataloghi/";
+    } else if (cdling.equals("I") || cdling.equals("")){ //CABLATO -- italiano
+        url_cataloghi += "download-area/download-cataloghi/";
+    } else { //CABLATO -- italiano
+        url_cataloghi += "download-area/catalog-download/";
+    }    
 
     ao_map.put("${archrubrica_recapiti.recapito_email_lav}"    , recapito_email_lav          );
     ao_map.put("${archrubrica.email_aream}"                    , email_aream                 );
@@ -2117,9 +2127,9 @@ public class F_eprogen_replace extends Atk_sql {
     ao_map.put("${archrubrica.perrif}"                         , perrif                      );
     ao_map.put("${archrubrica.tkrubr}"                         , ""+tkrubr                   );
     ao_map.put("${archrubrica.url_contator}"                   , ep_site_url + "Contator/Contator?url="+ ep_site_ext_url +"&tkmsg=@tkmsg@&tkrubr="+ tkrubr +"&email="+ recapito_email_lav  );
-    ao_map.put("${archrubrica.url_contator_cataloghi}"         , ep_site_url + "Contator/Contator?url="+ ep_site_ext_url +"?open=i&tkmsg=@tkmsg@&tkrubr="+ tkrubr +"&email="+ recapito_email_lav  );
+    ao_map.put("${archrubrica.url_contator_cataloghi}"         , ep_site_url + "Contator/Contator?url="+ url_cataloghi +"&tkmsg=@tkmsg@&tkrubr="+ tkrubr +"&email="+ recapito_email_lav  );
     ao_map.put("${archrubrica.url_contator_portal}"            , ep_site_url + "Contator/Contator?url="+ ep_portal_url +"&tkmsg=@tkmsg@&tkrubr="+ tkrubr +"&email="+ recapito_email_lav  );
-    ao_map.put("${archrubrica.url_contator_resources}"         , ep_site_url + "Contator/Contator?url="+ ep_site_url +"resources/&tkmsg=@tkmsg@&tkrubr="+ tkrubr +"&email="+ recapito_email_lav  );
+    ao_map.put("${archrubrica.url_contator_resources}"         , ep_site_url + "Contator/Contator?url="+ url_resources +"&tkmsg=@tkmsg@&tkrubr="+ tkrubr +"&email="+ recapito_email_lav  );
     ao_map.put("${archrubrica.url_contator_rivenditori}"       , ep_site_url + "Contator/Contator?url="+ ep_site_url +"store_locator&tkmsg=@tkmsg@&tkrubr="+ tkrubr +"&email="+ recapito_email_lav  );
     ao_map.put("${archrubrica.url_contator_shop}"              , ep_site_url + "Contator/Contator?url="+ ep_shop_url +"&tkmsg=@tkmsg@&tkrubr="+ tkrubr +"&email="+ recapito_email_lav  );
     ao_map.put("${archrubrica.url_contator_app_iphone}"        , ep_site_url + "Contator/Contator?url=https://itunes.apple.com/it/app/lightmeapp-iphone-edition/id632752546&tkmsg=@tkmsg@&tkrubr="+ tkrubr +"&email="+ recapito_email_lav  );
@@ -5181,12 +5191,13 @@ public class F_eprogen_replace extends Atk_sql {
     String pesonetto_mail = atk_dwlingua.getLabel ("", cdling, "peso.netto", "", null, "SHOP");
     String volume_mail = atk_dwlingua.getLabel ("", cdling, "volume", "", null, "SHOP");
     String codicearticolo_mail = atk_dwlingua.getLabel ("", cdling, "art.cdartm", "", null, "SHOP");
-    String prezzolistino_mail = atk_dwlingua.getLabel ("", cdling, "price", "", null, "SHOP");
+    String prezzolistino_mail = atk_dwlingua.getLabel ("", cdling, "unit.price.lis", "", null, "SHOP");
     String sconto_mail = atk_dwlingua.getLabel ("", cdling, "sconto", "", null, "SHOP");
-    String prezzo_mail = atk_dwlingua.getLabel ("", cdling, "price", "", null, "SHOP");
+    String prezzo_mail = atk_dwlingua.getLabel ("", cdling, "unit.price.net", "", null, "SHOP");
     String unitario_mail = atk_dwlingua.getLabel ("", cdling, "unitario", "", null, "SHOP");
+    String netto_mail = atk_dwlingua.getLabel ("", cdling, "netto", "", null, "SHOP");
     String prezzototalenetto_mail = atk_dwlingua.getLabel ("", cdling, "subtotale", "", null, "SHOP");
-    String datadisponibilita_mail = atk_dwlingua.getLabel ("", cdling, "dt.prox.disp", "", null, "SHOP");
+    String qtdatadisponibilita_mail = atk_dwlingua.getLabel ("", cdling, "qtdt.prox.disp", "", null, "SHOP");
     
     
     String totale_ordine_mail = atk_dwlingua.getLabel ("", cdling, "totale.ordine", "", null, "SHOP");
@@ -5251,11 +5262,11 @@ public class F_eprogen_replace extends Atk_sql {
            ls_tbl_order_details += "<th class=\"ar\" valign=\"top\">"+html.text(sconto_mail)+"<br/>%</th>";
             tot_cols++;
         }
-       ls_tbl_order_details += "<th class=\"ar\" valign=\"top\">"+html.text(prezzo_mail)+"<br/>"+html.text(unitario_mail)+"</th>";
+       ls_tbl_order_details += "<th class=\"ar\" valign=\"top\">"+html.text(prezzo_mail)+"</th>";
         tot_cols++;
-       ls_tbl_order_details += "<th class=\"ar\" valign=\"top\">"+html.text(prezzototalenetto_mail)+"</th>";
+       ls_tbl_order_details += "<th class=\"ar\" valign=\"top\">"+html.text(prezzototalenetto_mail)+"<br/>"+html.text(netto_mail)+"</th>";
         tot_cols++;
-       ls_tbl_order_details += "<th class=\"ar\" valign=\"top\">"+html.text(datadisponibilita_mail)+"</th>";
+       ls_tbl_order_details += "<th class=\"ar\" valign=\"top\">"+html.text(qtdatadisponibilita_mail)+"</th>";
         tot_cols++;
        ls_tbl_order_details += "</tr>";
 
@@ -6059,8 +6070,11 @@ public class F_eprogen_replace extends Atk_sql {
 
             double disp = Math.floor(qtadisp);
 
+            if (disp > 999) {
+               ls_tbl_order_details += "<td valign=\"bottom\" nowrap align=\"right\"><strong>"+html.text(prox_disp_mail)+"</strong> <span style=\"font-size:14px;\">999</span></td>";
+            } else 
             if (disp > 0) {
-               ls_tbl_order_details += "<td valign=\"bottom\" nowrap align=\"right\"><strong>"+html.text(prox_disp_mail)+"</strong></td>";
+               ls_tbl_order_details += "<td valign=\"bottom\" nowrap align=\"right\"><strong>"+html.text(prox_disp_mail)+"</strong> <span style=\"font-size:14px;\">" + qtaFormat.format(disp) + "</span></td>";
             } else {
                 if (dtprdisp != null) {
                    ls_tbl_order_details += "<td valign=\"bottom\" nowrap align=\"center\"><strong>" + atk_ctrl.getDate(dtprdisp) + "</strong></td>";
