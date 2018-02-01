@@ -703,18 +703,18 @@ public class SchedaArticoloController {
             String nome_modello = scheda.getArticolo().getVist_filedis();
             //igs
             //String igs = path_3D + nome_modello + ".zip";
-            String igs = path_3D + nome_modello + (scheda.getArticolo().isLed()?scheda.getArticolo().getCdvistelet():"") + ".zip";
-            try {
-                String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), igs);
-                File f = new File(path_to_filemodel);
-                log.debug(path_to_filemodel);
-                scheda.getArticolo().setModel3D_igs(igs);
-                if (f.exists()) {
-                    scheda.getArticolo().setModel3D_igsExists(Boolean.TRUE);
-                }
-            } catch (FileNotFoundException ex) {
-                log.error("file " + igs + " non trovato");
-            }
+//            String igs = path_3D + nome_modello + (scheda.getArticolo().isLed()?scheda.getArticolo().getCdvistelet():"") + ".zip";
+//            try {
+//                String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), igs);
+//                File f = new File(path_to_filemodel);
+//                log.debug(path_to_filemodel);
+//                scheda.getArticolo().setModel3D_igs(igs);
+//                if (f.exists()) {
+//                    scheda.getArticolo().setModel3D_igsExists(Boolean.TRUE);
+//                }
+//            } catch (FileNotFoundException ex) {
+//                log.error("file " + igs + " non trovato");
+//            }
             //eprt
 //            String eprt = path_3D + nome_modello + ".EPRT";
 //            try {

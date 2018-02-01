@@ -86,11 +86,11 @@
                                             <spring:message code="modelli_3D" text="Modelli 3D" var="m3DLabel"/>
                                             <spring:message code="modelli_2D" text="Modelli 2D" var="m2DLabel"/>
                                             <security:authorize ifAllGranted="ROLE_ANONYMOUS">
-                                                <c:set var="downloadUrl" value="http://www.vistosi.it/downloadform?file="/>
+                                                <c:set var="downloadUrl" value="https://www.vistosi.it/downloadform?file="/>
                                                 <c:set var="dlink_class" value="downloadlink"/>
                                             </security:authorize>
                                             <security:authorize ifNotGranted="ROLE_ANONYMOUS">
-                                                <c:set var="downloadUrl" value="http://www.vistosi.it/download/?f="/>
+                                                <c:set var="downloadUrl" value="https://www.vistosi.it/download/?f="/>
                                                 <c:set var="dlink_class" value=""/>
                                             </security:authorize>
                                             <c:set var="dselet">dsextvistelet${atkLangSfx}</c:set>
@@ -109,7 +109,7 @@
                                             <c:if test="${a.model2D_dwgExists}"><a class="${dlink_class}" href="${downloadUrl}${a.model2D_dwg}&dsfile=${m2DLabel} ${descrFile}" target="_blank"><img src="<c:url value="/static/images/dwg-icon.gif"/>"/></a></c:if> 
                                             <c:if test="${a.model3D_easmExists}"><a class="${dlink_class}" href="${downloadUrl}${a.model3D_easm}&dsfile=${m3DLabel} ${descrFile}" target="_blank"><img src="<c:url value="/static/images/easm-icon.gif"/>"/></a></c:if> 
                                             <%--c:if test="${a.model3D_eprtExists}"><a class="${dlink_class}" href="${downloadUrl}${a.model3D_eprt}&dsfile=${m3DLabel} ${descrFile}" target="_blank"><img src="<c:url value="/static/images/eprt-icon.gif"/>"/></a></c:if--%> 
-                                            <c:if test="${a.model3D_igsExists}"><a class="${dlink_class}" href="${downloadUrl}${a.model3D_igs}&dsfile=${m3DLabel} ${descrFile}" target="_blank"><img src="<c:url value="/static/images/iges-icon.gif"/>"/></a></c:if> 
+                                            <%--c:if test="${a.model3D_igsExists}"><a class="${dlink_class}" href="${downloadUrl}${a.model3D_igs}&dsfile=${m3DLabel} ${descrFile}" target="_blank"><img src="<c:url value="/static/images/iges-icon.gif"/>"/></a></c:if--%> 
                                         </div>
                                     </td>
                                 </tr>

@@ -203,18 +203,18 @@ public class VistosiShopAdvancedSearch {
                     String nome_modello = artL.getVist_filedis();
                     //igs
                     //String igs = path_3D + nome_modello + ".zip";
-                    String igs = path_3D + nome_modello + (artL.isLed()?art.getCdvistelet():"") + ".zip";
-                    try {
-                        String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), igs);
-                        File f = new File(path_to_filemodel);
-                        log.debug(path_to_filemodel);
-                        artL.setModel3D_igs(igs);
-                        if (f.exists()) {
-                            artL.setModel3D_igsExists(Boolean.TRUE);
-                        }
-                    } catch (FileNotFoundException ex) {
-                        log.error("file " + igs + " non trovato");
-                    }
+//                    String igs = path_3D + nome_modello + (artL.isLed()?art.getCdvistelet():"") + ".zip";
+//                    try {
+//                        String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), igs);
+//                        File f = new File(path_to_filemodel);
+//                        log.debug(path_to_filemodel);
+//                        artL.setModel3D_igs(igs);
+//                        if (f.exists()) {
+//                            artL.setModel3D_igsExists(Boolean.TRUE);
+//                        }
+//                    } catch (FileNotFoundException ex) {
+//                        log.error("file " + igs + " non trovato");
+//                    }
                     //eprt
 //                    String eprt = path_3D + nome_modello + ".EPRT";
 //                    try {
@@ -326,18 +326,18 @@ public class VistosiShopAdvancedSearch {
                     String nome_modello = art.getVist_filedis();
                     //igs
                     //String igs = path_3D + nome_modello + ".zip";
-                    String igs = path_3D + nome_modello + (art.isLed()?art.getCdvistelet():"") + ".zip";
-                    try {
-                        String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), igs);
-                        File f = new File(path_to_filemodel);
-                        log.debug(path_to_filemodel);
-                        art.setModel3D_igs(igs);
-                        if (f.exists()) {
-                            art.setModel3D_igsExists(Boolean.TRUE);
-                        }
-                    } catch (FileNotFoundException ex) {
-                        log.error("file " + igs + " non trovato");
-                    }
+//                    String igs = path_3D + nome_modello + (art.isLed()?art.getCdvistelet():"") + ".zip";
+//                    try {
+//                        String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), igs);
+//                        File f = new File(path_to_filemodel);
+//                        log.debug(path_to_filemodel);
+//                        art.setModel3D_igs(igs);
+//                        if (f.exists()) {
+//                            art.setModel3D_igsExists(Boolean.TRUE);
+//                        }
+//                    } catch (FileNotFoundException ex) {
+//                        log.error("file " + igs + " non trovato");
+//                    }
                     //eprt
 //                    String eprt = path_3D + nome_modello + ".EPRT";
 //                    try {

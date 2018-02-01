@@ -5,7 +5,7 @@
 <head>
   <jsp:directive.include file="/WEB-INF/jspf/meta.jspf"/>
 
-  <link href='http://fonts.googleapis.com/css?family=Roboto:700,900' rel='stylesheet' type='text/css'/>
+  <link href='https://fonts.googleapis.com/css?family=Roboto:700,900' rel='stylesheet' type='text/css'/>
   <style type="text/css" media="screen">   
       @import url("<c:url value='/static/styles/vistosi-shop_v14.css'/>");
     <c:if test="${rc.locale=='en'}">

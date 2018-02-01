@@ -754,27 +754,26 @@ public class SpecSheetGenerica {
         //verifica esistenza 3D
         String path_3D = path_modello + "/3D/";
         String m3DLabel = messageSource.getMessage("modelli_3D", null, "Modelli 3D", locale);
-        //igs
         //String igs = path_3D + nome_modello + ".zip";
-        String igs = path_3D + nome_modello + (art.isLed() ? art.getCdvistelet() : "") + ".zip";
-        ck = new Chunk(messageSource.getMessage("specsheetgen.text.download3D", null, "disegno 3D (file EASM_IGES)", locale));
+        ck = new Chunk(messageSource.getMessage("specsheetgen.text.download3D", null, "disegno 3D (file EASM)", locale));
         try {
-            String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), igs);
-            File f = new File(path_to_filemodel);
-
-            String dURL = shopURL + "/logdown?"; //&nome_modello=" + nome_modello + "&cdvistelet="+ art.getCdvistelet() + "&tiporisorsa=" + art.getTiporisorsa3D_easm();
-
-            if (f.exists()) {
-                //ck.setAction(new PdfAction(new URL(portalURL + "download/" + igs + "?f=" + igs)));
-
-                dURL += "&file_req=" + igs 
-                        + "&dsfile=" + m3DLabel 
-                        + "&nome_modello=" + nome_modello
-                        + "&cdvistelet="+ art.getCdvistelet()
-                        + "&tiporisorsa=" + art.getTiporisorsa3D_igs()
-                        + " " + descrFile;
-
-            }
+            //igs
+//            String igs = path_3D + nome_modello + (art.isLed() ? art.getCdvistelet() : "") + ".zip";
+//            String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), igs);
+//            File f = new File(path_to_filemodel);
+//
+//
+//            if (f.exists()) {
+//                //ck.setAction(new PdfAction(new URL(portalURL + "download/" + igs + "?f=" + igs)));
+//
+//                dURL += "&file_req=" + igs 
+//                        + "&dsfile=" + m3DLabel 
+//                        + "&nome_modello=" + nome_modello
+//                        + "&cdvistelet="+ art.getCdvistelet()
+//                        + "&tiporisorsa=" + art.getTiporisorsa3D_igs()
+//                        + " " + descrFile;
+//
+//            }
 
 //            if (dURL.contains("file_req")) {
 //                dURL += "&";
@@ -782,20 +781,21 @@ public class SpecSheetGenerica {
 
             //String easm = path_3D + nome_modello + ".EASM";
             String easm = path_3D + nome_modello + (art.isLed() ? art.getCdvistelet() : "") + ".EASM";
-            try {
-                path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), easm);
-                f = new File(path_to_filemodel);
-                if (f.exists()) {
-                    dURL += "&file_req=" + easm 
-                          + "&dsfile=" + m3DLabel
-                          + "&nome_modello=" + nome_modello
-                          + "&cdvistelet="+ art.getCdvistelet()
-                          + "&tiporisorsa=" + art.getTiporisorsa3D_easm()                            
-                          + " " + descrFile;
+//            try {
+            String dURL = shopURL + "/logdown?"; //&nome_modello=" + nome_modello + "&cdvistelet="+ art.getCdvistelet() + "&tiporisorsa=" + art.getTiporisorsa3D_easm();
+            String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), easm);
+            File f = new File(path_to_filemodel);
+            if (f.exists()) {
+                dURL += "&file_req=" + easm 
+                      + "&dsfile=" + m3DLabel
+                      + "&nome_modello=" + nome_modello
+                      + "&cdvistelet="+ art.getCdvistelet()
+                      + "&tiporisorsa=" + art.getTiporisorsa3D_easm()                            
+                      + " " + descrFile;
                     //ck.setAction(new PdfAction(new URL(portalURL + "download/" + easm + "?f=" + easm)));
                 }
-            } catch (FileNotFoundException ex) {
-            }
+//            } catch (FileNotFoundException ex) {
+//            }
 
             if (dURL.contains("file_req")) {
                 ck.setAction(new PdfAction(new URL(dURL)));
@@ -811,24 +811,26 @@ public class SpecSheetGenerica {
         ck = new Chunk(messageSource.getMessage("specsheetgen.text.istrmont", null, "istruzioni montaggio (file PDF)", locale));
         String istrLabel = messageSource.getMessage("istruzioni_montaggio", null, "Istruzioni di montaggio", locale);
         String path_techsheet = "fileresources/assembling_instructions/";
-        String techsheet = datiExtra.getArwFileSchedaTec();
-        if (StringUtils.isNotEmpty(techsheet)) {
-            try {
+        if (datiExtra != null) {
+            String techsheet = datiExtra.getArwFileSchedaTec();
+            if (StringUtils.isNotEmpty(techsheet)) {
+                try {
 
-                techsheet = StringUtils.substringAfterLast(techsheet, "\\");
+                    techsheet = StringUtils.substringAfterLast(techsheet, "\\");
 
-                String path_to_techsheet = WebUtils.getRealPath(ctx.getServletContext(), path_techsheet + techsheet);
-                File f = new File(path_to_techsheet);
-                Vist_articoli_img vist_articoli_img = new Vist_articoli_img();
-                vist_articoli_img.setPathschtec(techsheet);
-                if (f.exists()) {
+                    String path_to_techsheet = WebUtils.getRealPath(ctx.getServletContext(), path_techsheet + techsheet);
+                    File f = new File(path_to_techsheet);
+                    Vist_articoli_img vist_articoli_img = new Vist_articoli_img();
+                    vist_articoli_img.setPathschtec(techsheet);
+                    if (f.exists()) {
 
-                    String dURL = shopURL + "/logdown";
+                        String dURL = shopURL + "/logdown";
 
-                    ck.setAction(new PdfAction(new URL(dURL + "?file_req=" + path_techsheet + techsheet + "&dsfile=" + istrLabel + " " + descrFile + "&nome_modello=" + nome_modello + "&cdvistelet="+ art.getCdvistelet() + "&tiporisorsa=" + art.getTiporisorsaIstruzioni())));
-                    //ck.setAction(new PdfAction(new URL(portalURL + "download/" + techsheet + "?f=" + path_techsheet + techsheet)));
+                        ck.setAction(new PdfAction(new URL(dURL + "?file_req=" + path_techsheet + techsheet + "&dsfile=" + istrLabel + " " + descrFile + "&nome_modello=" + nome_modello + "&cdvistelet="+ art.getCdvistelet() + "&tiporisorsa=" + art.getTiporisorsaIstruzioni())));
+                        //ck.setAction(new PdfAction(new URL(portalURL + "download/" + techsheet + "?f=" + path_techsheet + techsheet)));
+                    }
+                } catch (Exception ex) {
                 }
-            } catch (Exception ex) {
             }
         }
 

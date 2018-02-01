@@ -19,7 +19,7 @@
 
 <div id="head-logo-cart" class="clearfix">
     <div id="logo">
-        <a href="http://${fn:replace(pageContext.request.serverName, 'portal', 'www')}"/>">vistosi</a>
+        <a href="https://${fn:replace(pageContext.request.serverName, 'portal', 'www')}"/>">vistosi</a>
     </div>    
     
         <div id="cart" <security:authorize ifAllGranted="ROLE_ANONYMOUS">class="wishlist"</security:authorize>>

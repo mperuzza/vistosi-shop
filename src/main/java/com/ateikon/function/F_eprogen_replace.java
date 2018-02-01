@@ -4988,6 +4988,7 @@ public class F_eprogen_replace extends Atk_sql {
     String ricezione_offerta_mail = atk_dwlingua.getLabel ("", cdling, "cart.row.offer", "", null, "SHOP");
     String offerte_ordine_mail = atk_dwlingua.getLabel ("", cdling, "offerte.ordine", "", null, "SHOP");
     String legenda_ordine_mail = atk_dwlingua.getLabel ("", cdling, "legenda.ordine", "", null, "SHOP");
+    String note_cliente = atk_dwlingua.getLabel ("", cdling, "note.clie", "", null, "SHOP");
     
     ls_tbl_order_details    += "<div id=\"stati-cnt\" class=\"clearfix\">                                         ";
     ls_tbl_order_details    += "    <div class=\"head-legenda\"  style=\"padding-bottom:15px;\">"+ legenda_ordine_mail +":</div>                              "
@@ -5495,7 +5496,7 @@ public class F_eprogen_replace extends Atk_sql {
             String nome_modello = vist_filedis;
             //igs
 //            String igs = (!nome_modello.equals("") ? path_3D + nome_modello + ".zip" : "");
-            String igs = mrp_arch_articoli.of_relpath_resource(cdclas_a, mrp_arch_articoli.MOD3D_IGS, cdvistfam, cdvisttp, cdvistv1, cdvistv2, cdvistv3, cdvistelet, vist_filedis, "");
+//            String igs = mrp_arch_articoli.of_relpath_resource(cdclas_a, mrp_arch_articoli.MOD3D_IGS, cdvistfam, cdvisttp, cdvistv1, cdvistv2, cdvistv3, cdvistelet, vist_filedis, "");
 
 //            //eprt
 //            String eprt = (!nome_modello.equals("") ? path_3D + nome_modello + ".EPRT" : "");
@@ -5721,10 +5722,10 @@ public class F_eprogen_replace extends Atk_sql {
                 if (down_1.exists() && !easm.equals("")) {
                    ls_tbl_order_details += "<a target=\"_blank\" href=\""+ ep_portal_url +"download/" + easm + "?f=" + easm + "\" class=\"\"  border=\"0\"><img height=\"24\" src=\""+ ep_shop_url +"static/images/easm-icon.gif\" border=\"0\" style=\"margin-right:2px;margin-bottom:2px;\"></a>";
                 }
-                File down_2 = new File(ep_site_siteroot + igs);
-                if (down_2.exists() && !igs.equals("")) {
-                   ls_tbl_order_details += "<a target=\"_blank\" href=\""+ ep_portal_url +"download/" + igs + "?f=" + igs + "\" class=\"\" border=\"0\"><img height=\"24\" src=\""+ ep_shop_url +"static/images/iges-icon.gif\" border=\"0\" style=\"margin-right:2px;margin-bottom:2px;\"></a>";
-                }
+//                File down_2 = new File(ep_site_siteroot + igs);
+//                if (down_2.exists() && !igs.equals("")) {
+//                   ls_tbl_order_details += "<a target=\"_blank\" href=\""+ ep_portal_url +"download/" + igs + "?f=" + igs + "\" class=\"\" border=\"0\"><img height=\"24\" src=\""+ ep_shop_url +"static/images/iges-icon.gif\" border=\"0\" style=\"margin-right:2px;margin-bottom:2px;\"></a>";
+//                }
 //                File down_3 = new File(ep_site_siteroot + eprt);
 //                if (down_3.exists() && !eprt.equals("")) {
 //                   ls_tbl_order_details += "<a target=\"_blank\" href=\""+ ep_portal_url +"download/" + eprt + "?f=" + eprt + "\" class=\"\" border=\"0\"><img height=\"24\" src=\""+ ep_shop_url +"static/images/eprt-icon.gif\" border=\"0\" style=\"margin-right:2px;margin-bottom:2px;\"></a>";
@@ -5882,7 +5883,7 @@ public class F_eprogen_replace extends Atk_sql {
                 if (!annotazione_posi_cli.equals("")) {
                    ls_tbl_order_details += "<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"nota-cli\">";
                    ls_tbl_order_details += "<tr>";
-                   ls_tbl_order_details += "<td valign=\"top\"><p>Nota per Cliente: " + html.text(annotazione_posi_cli) + "</p></td>";
+                   ls_tbl_order_details += "<td valign=\"top\"><p>"+ html.text(note_cliente) +": " + html.text(annotazione_posi_cli) + "</p></td>";
                    ls_tbl_order_details += "</tr>";
                    ls_tbl_order_details += "</table>";
                 }
@@ -6603,7 +6604,11 @@ public class F_eprogen_replace extends Atk_sql {
    if("LUS".equals(cdlist)) {
        //se il cliente � americano stampo in dollari
        ls_tbl_order_details += "<td valign=\"top\" style=\"font-size:16px;font-weight:bold;\" align=\"right\">" + przFormat.format(lstr_tot.tot_importonettoriga) + " USD</td>";
-   } else {
+   } else 
+   if("LCA".equals(cdlist)) {
+       //se il cliente è CANADESE stampo in CAD
+       ls_tbl_order_details += "<td valign=\"top\" style=\"font-size:16px;font-weight:bold;\" align=\"right\">" + przFormat.format(lstr_tot.tot_importonettoriga) + " CAD</td>";
+   } else {       
        ls_tbl_order_details += "<td valign=\"top\" style=\"font-size:16px;font-weight:bold;\" align=\"right\">" + przFormat.format(lstr_tot.tot_importonettoriga) + " &euro;</td>";
    }
    ls_tbl_order_details += "</tr>";
