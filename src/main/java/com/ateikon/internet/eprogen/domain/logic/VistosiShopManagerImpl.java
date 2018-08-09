@@ -2059,5 +2059,24 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
         return false;
     }
+    
+    public boolean checkSpecsheetModelExists(Mrp_arch_articoli art, WebApplicationContext ctx, RequestContext rc) {
+        
+        try {
+            String realPathPdf = WebUtils.getRealPath(ctx.getServletContext(), "/images/articoli/disegnitecnici/scheda_prodotto/" + art.getVist_filedis() + ".pdf");
+
+            File fPdf = new File(realPathPdf);
+
+            if (fPdf.exists()) {
+                return true;
+            }
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(VistosiShopManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return false;
+    }
+    
 
 }

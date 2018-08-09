@@ -5733,26 +5733,13 @@ public class F_eprogen_replace extends Atk_sql {
                 
                 // Specsheet
                 String lang = sql_String("select cdiso639 from pgmr.ep_lingua where cdling = '"+ cdling + "' ");
-                String specsheet_relpath = mrp_arch_articoli.of_relpath_resource_specsheet(cdclas_a, ep_shop_root, nome_modello, lang, cdartm, cdvistelet);
+                boolean of_exist_resource_specsheet_modello = mrp_arch_articoli.of_exist_resource_specsheet_modello(cdclas_a, ep_shop_root, nome_modello, lang, cdvisttp, cdvistfam, cdvistv1, cdvistv2, cdvistv3, cdvistelet);
                             
-                if (!specsheet_relpath.equals("")) {
+                if (of_exist_resource_specsheet_modello) {
+                    String specsheet_relpath = mrp_arch_articoli.of_relpath_resource(cdclas_a, Mrp_arch_articoli.SPECSHEET_MOD, cdvistfam, cdvisttp, cdvistv1, cdvistv2, cdvistv3, cdvistelet, vist_filedis, vist_filedis);
+                    specsheet_relpath = specsheet_relpath.replace(" ", "%20");
+                    specsheet_relpath = specsheet_relpath.replace("|", "%7C");
                    ls_tbl_order_details += "<a target=\"_blank\" href=\""+ ep_portal_url +"download/" + cdartm + ".pdf?f=" + specsheet_relpath + "&lang="+ lang +"\" class=\"\" border=\"0\"><img height=\"24\" src=\""+ ep_shop_url +"static/images/tech-icon.gif\" border=\"0\" style=\"margin-right:2px;margin-bottom:2px;\"></a>";
-                }else{
-                    
-                    //TODO verificare con Andrea
-                    String[] noFallback = new String[]{"it", "en"};
-                    List<String> noFallbackList = Arrays.asList(noFallback);
-                    
-                    if(!noFallbackList.contains(lang)){
-                        
-                        lang = "en";
-                        specsheet_relpath = mrp_arch_articoli.of_relpath_resource_specsheet(cdclas_a, ep_shop_root, nome_modello, lang, cdartm, cdvistelet);
-                        if (!specsheet_relpath.equals("")) {
-                           ls_tbl_order_details += "<a target=\"_blank\" href=\""+ ep_portal_url +"download/" + cdartm + ".pdf?f=" + specsheet_relpath + "&lang="+ lang +"\" class=\"\" border=\"0\"><img height=\"24\" src=\""+ ep_shop_url +"static/images/tech-icon.gif\" border=\"0\" style=\"margin-right:2px;margin-bottom:2px;\"></a>";
-                        }                        
-                        
-                    }
-                    
                 }
                 
                 // Energyclass
@@ -6604,11 +6591,7 @@ public class F_eprogen_replace extends Atk_sql {
    if("LUS".equals(cdlist)) {
        //se il cliente � americano stampo in dollari
        ls_tbl_order_details += "<td valign=\"top\" style=\"font-size:16px;font-weight:bold;\" align=\"right\">" + przFormat.format(lstr_tot.tot_importonettoriga) + " USD</td>";
-   } else 
-   if("LCA".equals(cdlist)) {
-       //se il cliente è CANADESE stampo in CAD
-       ls_tbl_order_details += "<td valign=\"top\" style=\"font-size:16px;font-weight:bold;\" align=\"right\">" + przFormat.format(lstr_tot.tot_importonettoriga) + " CAD</td>";
-   } else {       
+   } else {
        ls_tbl_order_details += "<td valign=\"top\" style=\"font-size:16px;font-weight:bold;\" align=\"right\">" + przFormat.format(lstr_tot.tot_importonettoriga) + " &euro;</td>";
    }
    ls_tbl_order_details += "</tr>";
@@ -7272,7 +7255,7 @@ public class F_eprogen_replace extends Atk_sql {
     String ls_site_downr_url_risorsa = mrp_arch_articoli.of_getUrl_risorsa_esistente(ls_url_risorse, ls_lang);
     
     if (!ls_site_downr_url_risorsa.equals("")){
-        ls_site_downr_url_risorsa = ep_portal_url + "download/?f="+ URLEncoder.encode(ls_site_downr_url_risorsa, "UTF-8") +"&tkc="+ tkcontatto +"&lang="+ ls_lang;
+        ls_site_downr_url_risorsa = ep_portal_url + "download/"+ ls_site_downr_url_risorsa.replace("|", " ") +"?f="+ URLEncoder.encode(ls_site_downr_url_risorsa, "UTF-8") +"&tkc="+ tkcontatto +"&lang="+ ls_lang;
     } else {
         ls_site_downr_url_risorsa = ep_portal_url; 
     }

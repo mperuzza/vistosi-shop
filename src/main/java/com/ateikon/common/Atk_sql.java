@@ -1011,14 +1011,14 @@ public class Atk_sql extends Object implements java.io.Serializable {
     
     public static String of_cambiaURLLingua(String ls_url, String cdling) throws Exception {
         
-        if (cdling.equals("R")){ //CABLATO -- russo
-            return of_cambiaDominoPrimoLivelloURL(ls_url, "ru");
-        } else if (cdling.equals("I") || cdling.equals("")){ //CABLATO -- italiano
-            return ls_url;
-        } else { //CABLATO -- italiano
-            return of_cambiaDominoPrimoLivelloURL(ls_url, "com");
-        }
-        
+//        if (cdling.equals("R")){ //CABLATO -- russo
+//            return of_cambiaDominoPrimoLivelloURL(ls_url, "ru");
+//        } else if (cdling.equals("I") || cdling.equals("")){ //CABLATO -- italiano
+//            return ls_url;
+//        } else { //CABLATO -- italiano
+//            return of_cambiaDominoPrimoLivelloURL(ls_url, "com");
+//        }
+        return ls_url;
         
     }
     

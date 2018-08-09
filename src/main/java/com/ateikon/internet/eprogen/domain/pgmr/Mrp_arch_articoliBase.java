@@ -57,6 +57,8 @@ public class Mrp_arch_articoliBase extends BaseTableBean {
     private String  tiporisorsa2D_dwg = com.ateikon.common.Mrp_arch_articoli.MOD2D_DWG_CM;
     private Boolean specsheetExists = Boolean.FALSE;
     private String  tiporisorsaSpecsheet = com.ateikon.common.Mrp_arch_articoli.SPECSHEET_SPEC;
+    private Boolean specsheetModelExists = Boolean.FALSE;
+    private String  tiporisorsaSpecsheetModel = com.ateikon.common.Mrp_arch_articoli.SPECSHEET_MOD;
     private boolean ricambio = Boolean.FALSE;
     private boolean led = Boolean.FALSE;
     
@@ -464,6 +466,17 @@ public class Mrp_arch_articoliBase extends BaseTableBean {
         this.specsheetExists = specsheetExists;
     }    
 
+    public Boolean getSpecsheetModelExists() {
+        return specsheetModelExists;
+    }
+
+    public void setSpecsheetModelExists(Boolean specsheetModelExists) {
+        this.specsheetModelExists = specsheetModelExists;
+    }
+    
+    
+    
+
     public boolean isLed() {
         return DEFAULT_CDCLAS_A_LED.contains(getCdclas_a());
     }
@@ -530,6 +543,14 @@ public class Mrp_arch_articoliBase extends BaseTableBean {
 
     public void setTiporisorsaSpecsheet(String tiporisorsaSpecsheet) {
         this.tiporisorsaSpecsheet = tiporisorsaSpecsheet;
+    }
+
+    public String getTiporisorsaSpecsheetModel() {
+        return tiporisorsaSpecsheetModel;
+    }
+
+    public void setTiporisorsaSpecsheetModel(String tiporisorsaSpecsheetModel) {
+        this.tiporisorsaSpecsheetModel = tiporisorsaSpecsheetModel;
     }
     
     

@@ -172,6 +172,7 @@
                     <spring:message code="modelli_3D" text="Modelli 3D" var="m3DLabel"/>
                     <spring:message code="modelli_2D" text="Modelli 2D" var="m2DLabel"/>
                     <spring:message code="specsheet" text="Specsheet" var="specSheetLabel"/>
+                    <spring:message code="specsheet.model" text="Scheda prodotto" var="specSheetModelLabel"/>;
                     <spring:message code="energy_class" text="Energy class" var="energyClassLabel"/>
                     <security:authorize ifAllGranted="ROLE_ANONYMOUS">
                         <%-- c:set var="downloadUrl" value="${eprogenUrl}epRichiesta_risorse_pubblica_form.jsp?origine_richiesta=PUBBLICA&lang=${rc.locale}&cdling=${cdling}"/>
@@ -325,9 +326,9 @@
                             <c:if test="${!empty t.articolo.energyClass}"><a class="downloadlink" href="${eprogenUrl}epRichiesta_download_energyclass.jsp?cdarti=${t.articolo.cdarti}&cdling=${cdling}" target="_blank" title="<spring:message code="msg_file_exist" arguments="${energyClassLabel}" text="Disponibile. Clicca per effettuare il download."/>"><img src="<c:url value="/static/images/ce-icon.gif"/>"/></a></c:if>
                             <security:authorize ifNotGranted="ROLE_ANONYMOUS">
                                 <c:choose>
-                                    <c:when test="${t.articolo.specsheetExists}"><a class="${dlink_class}" href="<c:url value='/specsheet/${t.articolo.cdartm}'/>" target="_blank" title="<spring:message code="msg_file_exist" arguments="${specSheetLabel}" text="Disponibile. Clicca per effettuare il download."/>"><img src="<c:url value="/static/images/tech-icon.gif"/>"/></a></c:when> 
+                                    <c:when test="${t.articolo.specsheetExists}"><a class="${dlink_class}" href="<c:url value='/specsheet/${t.articolo.cdartm}'/>" target="_blank" title="<spring:message code="msg_file_exist" arguments="${specSheetLabel}" text="Disponibile. Clicca per effettuare il download."/>"><img src="<c:url value="/static/images/spec-tech-icon.gif"/>"/></a></c:when> 
                                     <c:otherwise>
-                                    <a class="${drequestlink_class}" href="${downloadRequestUrl}&tipo_richiesta=no_res&file_req=specsheet/${t.articolo.cdartm}&dsfile=${specSheetLabel} ${descrFile}${reqDetails}&tiporisorsa=${t.articolo.tiporisorsaSpecsheet}" target="_blank" title="<spring:message code="msg_file_no_exist" arguments="${specSheetLabel}" text="Non disponibile. Clicca qui per richiederlo."/>"><img src="<c:url value="/static/images/no-tech-icon.gif"/>"/></a>
+                                    <a class="${drequestlink_class}" href="${downloadRequestUrl}&tipo_richiesta=no_res&file_req=specsheet/${t.articolo.cdartm}&dsfile=${specSheetLabel} ${descrFile}${reqDetails}&tiporisorsa=${t.articolo.tiporisorsaSpecsheet}" target="_blank" title="<spring:message code="msg_file_no_exist" arguments="${specSheetLabel}" text="Non disponibile. Clicca qui per richiederlo."/>"><img src="<c:url value="/static/images/no-spec-tech-icon.gif"/>"/></a>
                                     <%--a class="" href="javascript:void(0)" target="_blank" title="<spring:message code="msg_file_no_exist" arguments="${specSheetLabel}" text="Non disponibile. Clicca qui per richiederlo."/>"><img src="<c:url value="/static/images/no-tech-icon.gif"/>"/></a--%>
                                 </c:otherwise> 
                                 </c:choose>                              
@@ -337,10 +338,33 @@
                                 <c:choose>
                                     <%--c:when test="${t.articolo.specsheetExists}"><a class="${dlink_class}" href="<c:url value='${downloadUrlForm}&tipo_richiesta=si_res&file_req=/specsheet/${t.articolo.cdartm}'/>" target="_blank" title="<spring:message code="msg_file_exist" arguments="${specSheetLabel}" text="Disponibile. Clicca per effettuare il download."/>"><img src="<c:url value="/static/images/tech-icon.gif"/>"/></a></c:when> 
                                     <c:otherwise><a class="${dlink_class}" href="${downloadUrlForm}&tipo_richiesta=no_res&file_req=specsheet/${t.articolo.cdartm}&dsfile=${specSheetLabel} ${descrFile}" target="_blank" title="<spring:message code="msg_file_no_exist" arguments="${specSheetLabel}" text="Non disponibile. Clicca qui per richiederlo."/>"><img src="<c:url value="/static/images/no-tech-icon.gif"/>"/></a></c:otherwise--%> 
-                                    <c:when test="${t.articolo.specsheetExists}"><a class="" href="<c:url value='/specsheet/${t.articolo.cdartm}'/>" target="_blank" title="<spring:message code="msg_file_exist" arguments="${specSheetLabel}" text="Disponibile. Clicca per effettuare il download."/>"><img src="<c:url value="/static/images/tech-icon.gif"/>"/></a></c:when> 
+                                    <c:when test="${t.articolo.specsheetExists}"><a class="" href="<c:url value='/specsheet/${t.articolo.cdartm}'/>" target="_blank" title="<spring:message code="msg_file_exist" arguments="${specSheetLabel}" text="Disponibile. Clicca per effettuare il download."/>"><img src="<c:url value="/static/images/spec-tech-icon.gif"/>"/></a></c:when> 
                                     <c:otherwise>
                                     <%--a class="${dlink_class}" href="${downloadUrlForm}&tipo_richiesta=no_res&file_req=specsheet/${t.articolo.cdartm}&dsfile=${specSheetLabel} ${descrFile}${reqDetails}&tiporisorsa=${t.articolo.tiporisorsaSpecsheet}" target="_blank" title="<spring:message code="msg_file_no_exist" arguments="${specSheetLabel}" text="Non disponibile. Clicca qui per richiederlo."/>"><img src="<c:url value="/static/images/no-tech-icon.gif"/>"/></a--%>
-                                    <a class="" href="javascript:void(0)" target="" title="${fn:substringBefore(msgFileNoExist, '.')}"><img src="<c:url value="/static/images/no-tech-icon.gif"/>"/></a>
+                                    <a class="" href="javascript:void(0)" target="" title="${fn:substringBefore(msgFileNoExist, '.')}"><img src="<c:url value="/static/images/no-spec-tech-icon.gif"/>"/></a>
+                                </c:otherwise> 
+                                </c:choose> 
+                            </security:authorize>
+                            <%-- specsheet modello --%>        
+                            <c:set var="namefileReq">SM|${t.articolo.cdclas_a}|${t.articolo.cdvisttp}|${t.articolo.cdvistfam}|${t.articolo.cdvistv1}|${t.articolo.cdvistv2}|${t.articolo.cdvistv3}|</c:set>
+                            <security:authorize ifNotGranted="ROLE_ANONYMOUS">
+                                <c:choose>
+                                    <c:when test="${t.articolo.specsheetModelExists}"><a class="${dlink_class}" href="<c:url value='/fileresources/model_specsheet/${namefileReq}'/>" target="_blank" title="<spring:message code="msg_file_exist" arguments="${specSheetModelLabel}" text="Disponibile. Clicca per effettuare il download."/>"><img src="<c:url value="/static/images/mod-tech-icon.gif"/>"/></a></c:when> 
+                                    <c:otherwise>
+                                    <a class="${drequestlink_class}" href="${downloadRequestUrl}&tipo_richiesta=no_res&file_req=fileresources/model_specsheet/${namefileReq}&dsfile=${specSheetModelLabel} ${descrFile}${reqDetails}&tiporisorsa=${t.articolo.tiporisorsaSpecsheetModel}" target="_blank" title="<spring:message code="msg_file_no_exist" arguments="${specSheetModelLabel}" text="Non disponibile. Clicca qui per richiederlo."/>"><img src="<c:url value="/static/images/no-mod-tech-icon.gif"/>"/></a>
+                                    <%--a class="" href="javascript:void(0)" target="_blank" title="<spring:message code="msg_file_no_exist" arguments="${specSheetModelLabel}" text="Non disponibile. Clicca qui per richiederlo."/>"><img src="<c:url value="/static/images/no-tech-icon.gif"/>"/></a--%>
+                                </c:otherwise> 
+                                </c:choose>                              
+                            </security:authorize>
+                            <security:authorize ifAllGranted="ROLE_ANONYMOUS">
+                                <spring:message code="msg_file_no_exist" arguments="${specSheetModelLabel}" text="Non disponibile. Clicca qui per richiederlo." var="msgFileNoExist"/>
+                                <c:choose>
+                                    <%--c:when test="${t.articolo.specsheetExists}"><a class="${dlink_class}" href="<c:url value='${downloadUrlForm}&tipo_richiesta=si_res&file_req=/specsheet/${t.articolo.cdartm}'/>" target="_blank" title="<spring:message code="msg_file_exist" arguments="${specSheetModelLabel}" text="Disponibile. Clicca per effettuare il download."/>"><img src="<c:url value="/static/images/tech-icon.gif"/>"/></a></c:when> 
+                                    <c:otherwise><a class="${dlink_class}" href="${downloadUrlForm}&tipo_richiesta=no_res&file_req=specsheet/${t.articolo.cdartm}&dsfile=${specSheetModelLabel} ${descrFile}" target="_blank" title="<spring:message code="msg_file_no_exist" arguments="${specSheetModelLabel}" text="Non disponibile. Clicca qui per richiederlo."/>"><img src="<c:url value="/static/images/no-tech-icon.gif"/>"/></a></c:otherwise--%> 
+                                    <c:when test="${t.articolo.specsheetModelExists}"><a class="" href="<c:url value='/fileresources/model_specsheet/${namefileReq}'/>" target="_blank" title="<spring:message code="msg_file_exist" arguments="${specSheetModelLabel}" text="Disponibile. Clicca per effettuare il download."/>"><img src="<c:url value="/static/images/mod-tech-icon.gif"/>"/></a></c:when> 
+                                    <c:otherwise>
+                                    <%--a class="${dlink_class}" href="${downloadUrlForm}&tipo_richiesta=no_res&file_req=specsheet/${t.articolo.cdartm}&dsfile=${specSheetModelLabel} ${descrFile}${reqDetails}&tiporisorsa=${t.articolo.tiporisorsaSpecsheet}" target="_blank" title="<spring:message code="msg_file_no_exist" arguments="${specSheetModelLabel}" text="Non disponibile. Clicca qui per richiederlo."/>"><img src="<c:url value="/static/images/no-tech-icon.gif"/>"/></a--%>
+                                    <a class="" href="javascript:void(0)" target="" title="${fn:substringBefore(msgFileNoExist, '.')}"><img src="<c:url value="/static/images/no-mod-tech-icon.gif"/>"/></a>
                                 </c:otherwise> 
                                 </c:choose> 
                             </security:authorize>

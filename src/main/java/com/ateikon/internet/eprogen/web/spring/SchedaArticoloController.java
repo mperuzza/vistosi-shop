@@ -842,6 +842,11 @@ public class SchedaArticoloController {
                         scheda.getArticolo().setSpecsheetExists(true);
                     }
 
+                    //check esistenza specsheet modello                
+                    if (vistosiShopManager.checkSpecsheetModelExists(scheda.getArticolo(), ctx, rc)) {
+                        scheda.getArticolo().setSpecsheetModelExists(true);
+                    }
+
                     //etichette dalla datiextra invece della vist_etichette
                     String pathimg = "images/articoli/dati/";
                     List<String> etichetteDatiExtra = new ArrayList<String>();

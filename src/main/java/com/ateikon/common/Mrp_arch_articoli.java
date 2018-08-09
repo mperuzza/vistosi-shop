@@ -12,6 +12,7 @@ import com.ateikon.structure.Str_controllo_articolo;
 import com.ateikon.structure.Str_controllo_doc_res_arti;
 import com.ateikon.structure.Str_risorsa_anticipo;
 import java.io.File;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -430,6 +431,10 @@ public class Mrp_arch_articoli extends Atk_sql {
         l_query  += "      and varti.cdvistv3 = '"+ astr.cdvistv3 +"'                                                        \n"; 
       }
 
+      if (!astr.cdartm.equals("")){
+        l_query  += "      and varti.cdartm = '"+ astr.cdartm +"'                                                            \n"; 
+      }
+
 
 
       if (!is_count){
@@ -499,6 +504,10 @@ public class Mrp_arch_articoli extends Atk_sql {
       String path_cert = "fileresources"+ slash +"cert"+ slash;
       String nome_cert = vist_filedis;
       String path_specsheet = "fileresources"+ slash +"specsheet"+ slash;
+      String path_imgshop = "images"+ slash +"articoli"+ slash + "disegnitecnici" + slash;
+      String nome_imgshop = vist_filedis;
+      String path_imgshop_thumb = "images"+ slash +"articoli"+ slash + "disegnitecnici" + slash + "thumb" + slash;
+      String nome_imgshop_thumb = vist_filedis;
       
       
       if (tiporisorsa.equals(TECHSHEET)){
@@ -521,6 +530,7 @@ public class Mrp_arch_articoli extends Atk_sql {
                 
                 l_query += "         and varti.cdvistfam = '"+ cdvistfam +"'     \n";
                 l_query += "         and varti.cdvisttp  = '"+ cdvisttp +"'      \n";
+                l_query += "         and varti.cdclas_a  = '"+ cdclas_a +"'      \n";
                 
                 if (!cdvistv1.equals("")){                      
                   l_query += "         and varti.cdvistv1  = '"+ cdvistv1 +"'      \n";
@@ -659,6 +669,26 @@ public class Mrp_arch_articoli extends Atk_sql {
  
         return specsheet_us;               
         
+      } else if (tiporisorsa.equals(IMGSHOP)){
+
+        String imgshop_jpg = path_imgshop + nome_imgshop + ".jpg";  
+        
+        if (nome_imgshop.equals("")) return "";                         
+
+        return imgshop_jpg;     
+        
+      } else if (tiporisorsa.equals(IMGSHOP_THUMB)){
+
+        String imgshop_thumb_jpg = path_imgshop_thumb + nome_imgshop_thumb + ".jpg";  
+        
+        if (nome_imgshop_thumb.equals("")) return "";                         
+
+        return imgshop_thumb_jpg;     
+        
+      } else if (tiporisorsa.equals(SPECSHEET_MOD)){
+          return of_relpath_resource_specsheet_modello(cdclas_a, cdvisttp, cdvistfam, cdvistv1, cdvistv2, cdvistv3, cdvistelet);
+      } else if (tiporisorsa.equals(SPECSHEET_GEN)){
+          return of_relpath_resource_specsheet_generica(cdclas_a, cdvisttp, cdvistfam, cdvistv1, cdvistv2, cdvistv3, cdvistelet);
       } else {
         throw new Exception("Tipo risorsa NON gestito");
       }
@@ -739,11 +769,16 @@ public class Mrp_arch_articoli extends Atk_sql {
             String pathPdf = rootpath + relativepath + ls_prefixfilename + ".pdf";
             String pathU3D = rootpath + relativepath + ls_prefixfilename + ".U3D";
             String pathXlsx = rootpath + relativepath + ls_prefixfilename + "_" + lang + ".xlsx";
+            String pathXlsxEN = rootpath + relativepath + ls_prefixfilename + "_" + LANG_EN + ".xlsx";
 
             if (new File(pathPdf).exists()){
 //              if (new File(pathU3D).exists()){
+                // se esiste il file xlsx in lingua --> OK
+                // altrimenti se la lingua è diversa da italiano e esiste il file xlsx in lingua inglese --> OK
                 if (new File(pathXlsx).exists()){
-                    return relpathDefault;
+                    return relpathDefault + ".pdf";
+                } else if (!lang.equals(LANG_IT) && new File(pathXlsxEN).exists()){
+                    return relpathDefault + ".pdf";
                 }
 //              }
             }                              
@@ -781,6 +816,15 @@ public class Mrp_arch_articoli extends Atk_sql {
         return possibleFilenameList;
     }
     
+    private List<String> of_specsheet_modello_possibleFilenameList(String prefixfilename, String cdclas_a, String cdvistelet) {
+        List<String> possibleFilenameList = new ArrayList<String>();
+        if (prefixfilename.length() >= 13) {
+        String ls_ = prefixfilename.substring(0, 13);
+        ls_ = ls_ + "  -";
+        possibleFilenameList.add(0, ls_);
+        }
+        return possibleFilenameList;
+    }    
     
     public boolean of_exist_resource_specsheet_generica(String cdclas_a, String rootpath, String prefixfilename, String lang, String cdvisttp, String cdvistfam, String cdvistv1, String cdvistv2, String cdvistv3, String cdvistelet) {
         String slash = System.getProperty("file.separator");
@@ -798,12 +842,17 @@ public class Mrp_arch_articoli extends Atk_sql {
 
             String pathPdf = rootpath + relativepath + ls_prefixfilename + ".pdf";
             String pathXlsx = rootpath + relativepath + ls_prefixfilename + "_" + lang + ".xlsx";
+            String pathXlsxEN = rootpath + relativepath + ls_prefixfilename + "_" + LANG_EN + ".xlsx";
 
 //            System.out.println(""+ new File(pathPdf).exists());
 //            System.out.println(""+ new File(pathXlsx).exists());
             
             if (new File(pathPdf).exists()){
+                // se esiste il file xlsx in lingua --> OK
+                // altrimenti se la lingua è diversa da italiano e esiste il file xlsx in lingua inglese --> OK
                 if (new File(pathXlsx).exists()){
+                    return true;
+                } else if (!lang.equals(LANG_IT) && new File(pathXlsxEN).exists()){
                     return true;
                 }
             }                              
@@ -812,10 +861,35 @@ public class Mrp_arch_articoli extends Atk_sql {
    
         return false;
     }
+    
+    
+    public boolean of_exist_resource_specsheet_modello(String cdclas_a, String rootpath, String prefixfilename, String lang, String cdvisttp, String cdvistfam, String cdvistv1, String cdvistv2, String cdvistv3, String cdvistelet) {
+        String slash = System.getProperty("file.separator");
+        
+        String relativepath = "images"+ slash +"articoli"+ slash +"disegnitecnici"+ slash +"scheda_prodotto"+ slash;
+        
+        List<String> possibleFilenameList = of_specsheet_modello_possibleFilenameList(prefixfilename, cdclas_a, cdvistelet);
+        
+        for (String ls_prefixfilename : possibleFilenameList) {
+            
+            String pathPdf = rootpath + relativepath + ls_prefixfilename + ".pdf";
+
+            if (new File(pathPdf).exists()){
+                return true;
+            }                              
+
+        }
+   
+        return false;
+    }    
 
     public String of_relpath_resource_specsheet_generica(String cdclas_a, String cdvisttp, String cdvistfam, String cdvistv1, String cdvistv2, String cdvistv3, String cdvistelet) {
-        return "fileresources/generic_specsheet/SG|"+ cdclas_a +"|"+ cdvisttp +"|"+ cdvistfam +"|"+ cdvistv1 +"|"+ cdvistv2 +"|"+ cdvistv3 +"|"+ cdvistelet;
+        return "fileresources/generic_specsheet/SG|"+ cdclas_a +"|"+ cdvisttp +"|"+ cdvistfam +"|"+ cdvistv1 +"|"+ cdvistv2 +"|"+ cdvistv3 +"|"+ cdvistelet + ".pdf";
     }
+    
+    private String of_relpath_resource_specsheet_modello(String cdclas_a, String cdvisttp, String cdvistfam, String cdvistv1, String cdvistv2, String cdvistv3, String cdvistelet) {
+        return "fileresources/model_specsheet/SM|"+ cdclas_a +"|"+ cdvisttp +"|"+ cdvistfam +"|"+ cdvistv1 +"|"+ cdvistv2 +"|"+ cdvistv3 +"|"+ cdvistelet + ".pdf";
+    }    
 
     public String of_getCdclas_a_from_relpath_resource_specsheet_generica(String url_risorse) {
         String ls_ = of_getResource_from_relpath_resource_specsheet_generica(url_risorse);
@@ -904,6 +978,12 @@ public class Mrp_arch_articoli extends Atk_sql {
         } else if (tiporisorsa.equals(MOD3DBLOCCHI_LED_EASM)) {
             File f_3DBlocchi_LED_easm = new File ( ep_site_siteroot + relpath_resource);
             return f_3DBlocchi_LED_easm.exists();
+        } else if (tiporisorsa.equals(IMGSHOP)){
+            File f_imgshop_jpg = new File ( ep_site_siteroot + relpath_resource);
+            return f_imgshop_jpg.exists();          
+        } else if (tiporisorsa.equals(IMGSHOP_THUMB)){
+            File f_imgshop_thumb_jpg = new File ( ep_site_siteroot + relpath_resource);
+            return f_imgshop_thumb_jpg.exists();          
         } else {
             throw new Exception("Tipo risorsa NON gestito");
         }
@@ -1125,10 +1205,13 @@ public class Mrp_arch_articoli extends Atk_sql {
             relpathfile = relpathfile.substring(1, relpathfile.length());
         }
 
-        int idx_ext = relpathfile.lastIndexOf(".");
+//        int idx_ext = relpathfile.lastIndexOf(".");
+        int idx_pipe = relpathfile.indexOf("|");
+        int idx_specsheet= relpathfile.indexOf("specsheet");
         int idx_last_slash = relpathfile.lastIndexOf(slash);
 
-        if (idx_ext < 0) {
+//        if (idx_ext < 0) {
+        if (idx_pipe >= 0 || idx_specsheet >= 0) {
 
             String cartella = "";
 
@@ -1136,6 +1219,8 @@ public class Mrp_arch_articoli extends Atk_sql {
                 cartella = relpathfile.substring(0, idx_last_slash + 1);
             }
             String ls_filename_ipotetico = relpathfile.substring(idx_last_slash + 1, relpathfile.length());
+            ls_filename_ipotetico = ls_filename_ipotetico.replace(".pdf", "");
+            ls_filename_ipotetico = ls_filename_ipotetico.replace(".PDF", "");
 
             //System.out.println(" cartella "+ cartella);
             //System.out.println(" ls_filename_ipotetico "+ ls_filename_ipotetico);
@@ -1180,94 +1265,95 @@ public class Mrp_arch_articoli extends Atk_sql {
 
                 String[] arr_codici = ls_filename_ipotetico.split("\\|");
 
-                if (arr_codici != null && arr_codici.length == 7) {
-                    String cdfile = arr_codici[0];
-                    String cdvisttp = arr_codici[1];
-                    String cdvistfam = arr_codici[2];
-                    String cdvistv1 = arr_codici[3];
-                    String cdvistv2 = arr_codici[4];
-                    String cdvistv3 = arr_codici[5];
-                    String cdvistelet = arr_codici[6];
-
-                    //        System.out.println(" cdfile "+ cdfile);
-                    //        System.out.println(" cdvisttp "+ cdvisttp);
-                    //        System.out.println(" cdvistfam "+ cdvistfam);
-                    //        System.out.println(" cdvistv1 "+ cdvistv1);
-                    //        System.out.println(" cdvistv2 "+ cdvistv2);
-                    //        System.out.println(" cdvistv3 "+ cdvistv3);
-                    //        System.out.println(" cdvistelet "+ cdvistelet);
-                    if (cdfile.equals("IM")) {  // ISTR. MONTAGGIO
-
-                        //          System.out.println("ISTR. MONTAGGIO");
-                        if (!cdvisttp.equals("")
-                                || !cdvistfam.equals("")
-                                || !cdvistv1.equals("")
-                                || !cdvistv2.equals("")
-                                || !cdvistv3.equals("")
-                                || !cdvistelet.equals("")) {
-
-                            String l_query = "";
-                            
-                            l_query  = "";
-                            l_query  = "      select distinct vdex.arw_file_scheda_tec       \n";
-                            l_query += "        from pgmr.vist_articoli_datiextra  vdex      \n";
-                            l_query += "           , pgmr.vist_articoli      varti           \n";
-                            l_query += "           , pgmr.mis_reparto        repa            \n";
-                            l_query += "       where vdex.cdarti = varti.cdarti              \n";
-                            l_query += "         and varti.cdrepa = repa.cdrepa              \n";
-                            l_query += "         and vdex.arw_file_scheda_tec is not null    \n";
-                            l_query += "         and varti.cdvistfam is not null             \n";
-                            l_query += "         and varti.cdvisttp is not null              \n";
-                            l_query += "         and repa.cdrepa not in ('010', '018')       \n"; //CABLATO
-                            l_query += "         and varti.fgweb  = 'S'                      \n"; 
-                            l_query += "         and repa.fgweb  = 'S'                       \n"; 
-
-                            l_query += "         and varti.cdvistfam = '"+ cdvistfam +"'     \n";
-                            l_query += "         and varti.cdvisttp  = '"+ cdvisttp +"'      \n";
-
-                            if (!cdvistv1.equals("")){                      
-                              l_query += "         and varti.cdvistv1  = '"+ cdvistv1 +"'      \n";
-                            } else {  
-                              l_query += "         and varti.cdvistv1 is null    \n";
-                            }
-                            if (!cdvistv2.equals("")){                      
-                              l_query += "         and varti.cdvistv2  = '"+ cdvistv2 +"'      \n";
-                            } else {  
-                              l_query += "         and varti.cdvistv2 is null    \n";
-                            }
-                            if (!cdvistv3.equals("")){                      
-                              l_query += "         and varti.cdvistv3  = '"+ cdvistv3 +"'      \n";
-                            } else {  
-                              l_query += "         and varti.cdvistv3 is null    \n";
-                            }
-                            if (!cdvistelet.equals("")){                      
-                              l_query += "         and varti.cdvistelet  = '"+ cdvistelet +"'  \n";
-                            } else {  
-                              l_query += "         and varti.cdvistelet is null    \n";
-                            }
-
-                            l_query += " order by vdex.arw_file_scheda_tec           \n";
-                            
-//                            System.out.println("l_query "+ l_query);
-
-                            String filename = sql_String(l_query);
-
-                            int idx_slash = filename.indexOf("\\");
-
-                            if (idx_slash >= 0){
-                                filename = filename.substring(idx_slash + 1);
-                            }
-
-                            if (!filename.equals("")) {
-                                relpathfile = cartella + filename;
-                            }
-
-                        }
-                    } else {
-                        System.out.println("File richiesto non identificabile: " + url_risorsa);
-                    }
-
-                } else if (arr_codici != null && arr_codici.length == 8) {
+//                if (arr_codici != null && arr_codici.length == 7) {
+//                    String cdfile = arr_codici[0];
+//                    String cdvisttp = arr_codici[1];
+//                    String cdvistfam = arr_codici[2];
+//                    String cdvistv1 = arr_codici[3];
+//                    String cdvistv2 = arr_codici[4];
+//                    String cdvistv3 = arr_codici[5];
+//                    String cdvistelet = arr_codici[6];
+//
+//                    //        System.out.println(" cdfile "+ cdfile);
+//                    //        System.out.println(" cdvisttp "+ cdvisttp);
+//                    //        System.out.println(" cdvistfam "+ cdvistfam);
+//                    //        System.out.println(" cdvistv1 "+ cdvistv1);
+//                    //        System.out.println(" cdvistv2 "+ cdvistv2);
+//                    //        System.out.println(" cdvistv3 "+ cdvistv3);
+//                    //        System.out.println(" cdvistelet "+ cdvistelet);
+//                    if (cdfile.equals("IM")) {  // ISTR. MONTAGGIO
+//
+//                        //          System.out.println("ISTR. MONTAGGIO");
+//                        if (!cdvisttp.equals("")
+//                                || !cdvistfam.equals("")
+//                                || !cdvistv1.equals("")
+//                                || !cdvistv2.equals("")
+//                                || !cdvistv3.equals("")
+//                                || !cdvistelet.equals("")) {
+//
+//                            String l_query = "";
+//                            
+//                            l_query  = "";
+//                            l_query  = "      select distinct vdex.arw_file_scheda_tec       \n";
+//                            l_query += "        from pgmr.vist_articoli_datiextra  vdex      \n";
+//                            l_query += "           , pgmr.vist_articoli      varti           \n";
+//                            l_query += "           , pgmr.mis_reparto        repa            \n";
+//                            l_query += "       where vdex.cdarti = varti.cdarti              \n";
+//                            l_query += "         and varti.cdrepa = repa.cdrepa              \n";
+//                            l_query += "         and vdex.arw_file_scheda_tec is not null    \n";
+//                            l_query += "         and varti.cdvistfam is not null             \n";
+//                            l_query += "         and varti.cdvisttp is not null              \n";
+//                            l_query += "         and repa.cdrepa not in ('010', '018')       \n"; //CABLATO
+//                            l_query += "         and varti.fgweb  = 'S'                      \n"; 
+//                            l_query += "         and repa.fgweb  = 'S'                       \n"; 
+//
+//                            l_query += "         and varti.cdvistfam = '"+ cdvistfam +"'     \n";
+//                            l_query += "         and varti.cdvisttp  = '"+ cdvisttp +"'      \n";
+//
+//                            if (!cdvistv1.equals("")){                      
+//                              l_query += "         and varti.cdvistv1  = '"+ cdvistv1 +"'      \n";
+//                            } else {  
+//                              l_query += "         and varti.cdvistv1 is null    \n";
+//                            }
+//                            if (!cdvistv2.equals("")){                      
+//                              l_query += "         and varti.cdvistv2  = '"+ cdvistv2 +"'      \n";
+//                            } else {  
+//                              l_query += "         and varti.cdvistv2 is null    \n";
+//                            }
+//                            if (!cdvistv3.equals("")){                      
+//                              l_query += "         and varti.cdvistv3  = '"+ cdvistv3 +"'      \n";
+//                            } else {  
+//                              l_query += "         and varti.cdvistv3 is null    \n";
+//                            }
+//                            if (!cdvistelet.equals("")){                      
+//                              l_query += "         and varti.cdvistelet  = '"+ cdvistelet +"'  \n";
+//                            } else {  
+//                              l_query += "         and varti.cdvistelet is null    \n";
+//                            }
+//
+//                            l_query += " order by vdex.arw_file_scheda_tec           \n";
+//                            
+////                            System.out.println("l_query "+ l_query);
+//
+//                            String filename = sql_String(l_query);
+//
+//                            int idx_slash = filename.indexOf("\\");
+//
+//                            if (idx_slash >= 0){
+//                                filename = filename.substring(idx_slash + 1);
+//                            }
+//
+//                            if (!filename.equals("")) {
+//                                relpathfile = cartella + filename;
+//                            }
+//
+//                        }
+//                    } else {
+//                        System.out.println("File richiesto non identificabile: " + url_risorsa);
+//                    }
+//
+//                } else if (arr_codici != null && arr_codici.length == 8) {
+                if (arr_codici != null && arr_codici.length == 8) {
                     String cdfile = arr_codici[0];
                     String cdclas_a = arr_codici[1];
                     String cdvisttp = arr_codici[2];
@@ -1341,11 +1427,142 @@ public class Mrp_arch_articoli extends Atk_sql {
                             return of_relpath_resource_specsheet_generica(cdclas_a, cdvisttp, cdvistfam, cdvistv1, cdvistv2, cdvistv3, cdvistelet);
                         }
                     }
+                    
+                    if (cdfile.equals("SM")) {  // SPECSHEET MODELLO
+//                    System.out.println("SPECSHEET MODELLO");
+
+                        String l_query = "";
+
+                        l_query = "";
+                        l_query = "    select arti.vist_filedis                                 \n";
+                        l_query += "      from pgmr.vist_articoli   arti                         \n";
+
+                        l_query += "     where arti.cdvisttp  = '" + cdvisttp + "'        \n";
+                        l_query += "       and arti.cdvistfam  = '" + cdvistfam + "'      \n";
+
+                        if (!cdvistv1.equals("")) {
+                            l_query += "       and arti.cdvistv1  = '" + cdvistv1 + "'      \n";
+                        } else {
+                            l_query += "       and arti.cdvistv1 is null    \n";
+                        }
+                        if (!cdvistv2.equals("")) {
+                            l_query += "       and arti.cdvistv2  = '" + cdvistv2 + "'      \n";
+                        } else {
+                            l_query += "       and arti.cdvistv2 is null    \n";
+                        }
+                        if (!cdvistv3.equals("")) {
+                            l_query += "       and arti.cdvistv3  = '" + cdvistv3 + "'      \n";
+                        } else {
+                            l_query += "       and arti.cdvistv3 is null    \n";
+                        }
+                        if (!cdvistelet.equals("")) {
+                            l_query += "       and arti.cdvistelet  = '" + cdvistelet + "'  \n";
+                        } else {
+                            l_query += "       and arti.cdvistelet is null    \n";
+                        }
+                        
+//                        System.out.println("l_query \n"+ l_query);
+
+                        PreparedStatement pstm = setQuery(l_query);
+
+                        ResultSet rs = pstm.executeQuery();
+
+                        String nome_modello = "";
+
+                        if (rs != null && rs.next()) {
+                            nome_modello = "";
+
+                            if (rs.getObject("vist_filedis") != null) {
+                                nome_modello = rs.getString("vist_filedis");
+                            }
+                        }
+                        
+//                        System.out.println("nome_modello "+ nome_modello);
+//                        System.out.println("lang "+ lang);
+
+                        if (of_exist_resource_specsheet_modello(cdclas_a, shopSiteroot, nome_modello, lang, cdvisttp, cdvistfam, cdvistv1, cdvistv2, cdvistv3, cdvistelet)) {
+                            return of_relpath_resource_specsheet_modello(cdclas_a, cdvisttp, cdvistfam, cdvistv1, cdvistv2, cdvistv3, cdvistelet);
+                        }
+                    }
+                    
+                    if (cdfile.equals("IM")) {  // ISTR. MONTAGGIO
+
+                        //          System.out.println("ISTR. MONTAGGIO");
+                        if (!cdvisttp.equals("")
+                                || !cdvistfam.equals("")
+                                || !cdclas_a.equals("")
+                                || !cdvistv1.equals("")
+                                || !cdvistv2.equals("")
+                                || !cdvistv3.equals("")
+                                || !cdvistelet.equals("")) {
+
+                            String l_query = "";
+                            
+                            l_query  = "";
+                            l_query  = "      select distinct vdex.arw_file_scheda_tec       \n";
+                            l_query += "        from pgmr.vist_articoli_datiextra  vdex      \n";
+                            l_query += "           , pgmr.vist_articoli      varti           \n";
+                            l_query += "           , pgmr.mis_reparto        repa            \n";
+                            l_query += "       where vdex.cdarti = varti.cdarti              \n";
+                            l_query += "         and varti.cdrepa = repa.cdrepa              \n";
+                            l_query += "         and vdex.arw_file_scheda_tec is not null    \n";
+                            l_query += "         and varti.cdvistfam is not null             \n";
+                            l_query += "         and varti.cdvisttp is not null              \n";
+                            l_query += "         and repa.cdrepa not in ('010', '018')       \n"; //CABLATO
+                            l_query += "         and varti.fgweb  = 'S'                      \n"; 
+                            l_query += "         and repa.fgweb  = 'S'                       \n"; 
+
+                            l_query += "         and varti.cdvistfam = '"+ cdvistfam +"'     \n";
+                            l_query += "         and varti.cdvisttp  = '"+ cdvisttp +"'      \n";
+                            l_query += "         and varti.cdclas_a  = '"+ cdclas_a +"'      \n";
+
+                            if (!cdvistv1.equals("")){                      
+                              l_query += "         and varti.cdvistv1  = '"+ cdvistv1 +"'      \n";
+                            } else {  
+                              l_query += "         and varti.cdvistv1 is null    \n";
+                            }
+                            if (!cdvistv2.equals("")){                      
+                              l_query += "         and varti.cdvistv2  = '"+ cdvistv2 +"'      \n";
+                            } else {  
+                              l_query += "         and varti.cdvistv2 is null    \n";
+                            }
+                            if (!cdvistv3.equals("")){                      
+                              l_query += "         and varti.cdvistv3  = '"+ cdvistv3 +"'      \n";
+                            } else {  
+                              l_query += "         and varti.cdvistv3 is null    \n";
+                            }
+                            if (!cdvistelet.equals("")){                      
+                              l_query += "         and varti.cdvistelet  = '"+ cdvistelet +"'  \n";
+                            } else {  
+                              l_query += "         and varti.cdvistelet is null    \n";
+                            }
+
+                            l_query += " order by vdex.arw_file_scheda_tec           \n";
+                            
+//                            System.out.println("l_query "+ l_query);
+
+                            String filename = sql_String(l_query);
+
+                            int idx_slash = filename.indexOf("\\");
+
+                            if (idx_slash >= 0){
+                                filename = filename.substring(idx_slash + 1);
+                            }
+
+                            if (!filename.equals("")) {
+                                relpathfile = cartella + filename;
+                            }
+
+                        }
+                    } else {
+                        System.out.println("File richiesto non identificabile: " + url_risorsa);
+                    }
                 }
 
             }
 
-        } // FINE . if (idx_ext
+//        } // FINE . if (idx_ext
+        } // FINE . if (idx_pipe
 
 //    System.out.println(" relpathfile "+ relpathfile);
         File lobj_file = new File(siteroot + relpathfile);
@@ -1471,15 +1688,15 @@ public class Mrp_arch_articoli extends Atk_sql {
                     return new Str_risorsa_anticipo(TPRESANTICIPO_SSENEXIST, ep_portal_url +"download/" + cdartm + ".pdf?f=" + specsheet_relpath +"&tkc="+tkc +"&lang="+ LANG_EN);
                 } else if (of_exist_resource_specsheet_generica(ls_cdclas_a, ep_shop_root, nome_modello, lang, ls_cdvisttp, ls_cdvistfam, ls_cdvistv1, ls_cdvistv2, ls_cdvistv3, ls_cdvistelet)){
                     specsheet_relpath = of_relpath_resource_specsheet_generica(ls_cdclas_a, ls_cdvisttp, ls_cdvistfam, ls_cdvistv1, ls_cdvistv2, ls_cdvistv3, ls_cdvistelet);
-                    return new Str_risorsa_anticipo(TPRESANTICIPO_SSSGEXIST, ep_portal_url +"download/" + specsheet_relpath + ".pdf?f=" + specsheet_relpath +"&tkc="+tkc +"&lang="+ lang);
+                    return new Str_risorsa_anticipo(TPRESANTICIPO_SSSGEXIST, ep_portal_url +"download/" + specsheet_relpath.replace("|", " ") + "?f=" + URLEncoder.encode(specsheet_relpath, "UTF-8") +"&tkc="+tkc +"&lang="+ lang);
                 } else if (of_exist_resource_specsheet_generica(ls_cdclas_a, ep_shop_root, nome_modello, LANG_EN, ls_cdvisttp, ls_cdvistfam, ls_cdvistv1, ls_cdvistv2, ls_cdvistv3, ls_cdvistelet)){
                     specsheet_relpath = of_relpath_resource_specsheet_generica(ls_cdclas_a, ls_cdvisttp, ls_cdvistfam, ls_cdvistv1, ls_cdvistv2, ls_cdvistv3, ls_cdvistelet);
-                    return new Str_risorsa_anticipo(TPRESANTICIPO_SSSGENEXIST, ep_portal_url +"download/" + specsheet_relpath + ".pdf?f=" + specsheet_relpath +"&tkc="+tkc +"&lang="+ LANG_EN);
+                    return new Str_risorsa_anticipo(TPRESANTICIPO_SSSGENEXIST, ep_portal_url +"download/" + specsheet_relpath.replace("|", " ") + "?f=" + URLEncoder.encode(specsheet_relpath, "UTF-8") +"&tkc="+tkc +"&lang="+ LANG_EN);
                 }
             } else {
                 if (of_exist_resource_specsheet_generica(ls_cdclas_a, ep_shop_root, nome_modello, LANG_EN, ls_cdvisttp, ls_cdvistfam, ls_cdvistv1, ls_cdvistv2, ls_cdvistv3, ls_cdvistelet)){
                     String specsheet_relpath = of_relpath_resource_specsheet_generica(ls_cdclas_a, ls_cdvisttp, ls_cdvistfam, ls_cdvistv1, ls_cdvistv2, ls_cdvistv3, cdvistelet);
-                    return new Str_risorsa_anticipo(TPRESANTICIPO_SSSGEXIST, ep_portal_url +"download/" + specsheet_relpath + ".pdf?f=" + specsheet_relpath +"&tkc="+tkc +"&lang="+ LANG_EN);
+                    return new Str_risorsa_anticipo(TPRESANTICIPO_SSSGEXIST, ep_portal_url +"download/" + specsheet_relpath.replace("|", " ") + "?f=" + URLEncoder.encode(specsheet_relpath, "UTF-8") +"&tkc="+tkc +"&lang="+ LANG_EN);
                 }
             }
         } else if (tiporisorsa.equals(Mrp_arch_articoli.SPECSHEET_GEN)){
@@ -1494,7 +1711,7 @@ public class Mrp_arch_articoli extends Atk_sql {
                 
                 if (of_exist_resource_specsheet_generica(ls_cdclas_a, ep_shop_root, nome_modello, LANG_EN, ls_cdvisttp, ls_cdvistfam, ls_cdvistv1, ls_cdvistv2, ls_cdvistv3, ls_cdvistelet)){
                     String specsheet_relpath = of_relpath_resource_specsheet_generica(ls_cdclas_a, ls_cdvisttp, ls_cdvistfam, ls_cdvistv1, ls_cdvistv2, ls_cdvistv3, cdvistelet);
-                    return new Str_risorsa_anticipo(TPRESANTICIPO_SGENEXIST, ep_portal_url +"download/" + specsheet_relpath + ".pdf?f=" + specsheet_relpath +"&tkc="+tkc +"&lang="+ LANG_EN);
+                    return new Str_risorsa_anticipo(TPRESANTICIPO_SGENEXIST, ep_portal_url +"download/" + specsheet_relpath.replace("|", " ") + "?f=" + URLEncoder.encode(specsheet_relpath, "UTF-8") +"&tkc="+tkc +"&lang="+ LANG_EN);
                 }
             }
         }
@@ -1503,6 +1720,52 @@ public class Mrp_arch_articoli extends Atk_sql {
         
     }
     
+
+    public String of_getUrlRisorsaEsistente(String tiporisorsa, String f, String cdling) throws Exception {
+        double nr_random = (java.lang.Math.random() * 100000000);
+        
+        Ep_costanti ep_costanti = new Ep_costanti();
+        setProfilo((Atk_sql) ep_costanti);
+    
+        String ep_portal_url    = ep_costanti.getCostvalue("ep.portal_url");
+        ep_portal_url = of_cambiaURLLingua(ep_portal_url, cdling);
+        String ep_shop_url    = ep_costanti.getCostvalue("ep.shop_url");
+        ep_shop_url = of_cambiaURLLingua(ep_shop_url, cdling);
+        if (ep_shop_url.equals("")) ep_shop_url = of_trasformaURL(ep_portal_url, "portal", "shop");
+        
+        String lang = of_lingua("", cdling);
+        
+        
+        if (tiporisorsa.equals(Mrp_arch_articoli.IMGSHOP) || tiporisorsa.equals(Mrp_arch_articoli.IMGSHOP_THUMB)){
+           return ep_shop_url + "static/"+ f;
+        }
+        
+        return ep_portal_url + "download/"+ f + "?" + "f="+ URLEncoder.encode(f, "UTF-8") + "&" + "lang=" + lang + "&" + "_=" + nr_random;
+    }
+    
+    
+    public String of_getUrlRichiestaRisorsa(String tiporisorsa, String file_req, String dsfile, String cdling, boolean res_exist) throws Exception {
+        if (tiporisorsa.equals(Mrp_arch_articoli.IMGSHOP)){
+           return "";
+        } else if (tiporisorsa.equals(Mrp_arch_articoli.IMGSHOP_THUMB)){
+           return "";
+        }
+        
+        double nr_random = (java.lang.Math.random() * 100000000);
+        
+        Ep_costanti ep_costanti = new Ep_costanti();
+        setProfilo((Atk_sql) ep_costanti);
+    
+        String ep_portal_url    = ep_costanti.getCostvalue("ep.portal_url");
+        ep_portal_url = of_cambiaURLLingua(ep_portal_url, cdling);
+        String ep_eprogen_url    = ep_costanti.getCostvalue("ep.eprogen_url");
+        ep_eprogen_url = of_cambiaURLLingua(ep_eprogen_url, cdling);
+        if (ep_eprogen_url.equals("")) ep_eprogen_url = of_trasformaURL(ep_portal_url, "portal", "eprogen");
+        
+        String lang = of_lingua("", cdling);
+        
+        return ep_eprogen_url + "epRichiesta_risorse_pubblica_form.jsp" + "?" + "tipo_richiesta="+ (res_exist ? "si_res" : "no_res") + "&" + "file_req=" + URLEncoder.encode(file_req, "UTF-8") + "&" + "dsfile=" + dsfile + "&" + "lang=" + lang + "&" + "_=" + nr_random;
+    }
 
     public String cdarti       = "";
     public String tbl_primaria = "MRP_ARCH_ARTICOLI";
@@ -1523,8 +1786,11 @@ public class Mrp_arch_articoli extends Atk_sql {
     public static String SPECSHEET_US = "SPECSHEET_US";
     public static String MOD3DBLOCCHI_LED_IGS = "MOD3DBLOCCHI_LED_IGS";
     public static String MOD3DBLOCCHI_LED_EASM = "MOD3DBLOCCHI_LED_EASM";
+    public static String SPECSHEET_MOD = "SPECSHEET_MOD";
     public static String SPECSHEET_GEN = "SPECSHEET_GEN";
     public static String SPECSHEET_SPEC = "SPECSHEET_SPEC";
+    public static String IMGSHOP = "IMGSHOP";
+    public static String IMGSHOP_THUMB = "IMGSHOP_THUMB";    
     
     public static String TPRESANTICIPO_3DBLOCLED = "3DBLOCLED";
     public static String TPRESANTICIPO_SSENEXIST = "SSENEXIST";
@@ -1539,6 +1805,7 @@ public class Mrp_arch_articoli extends Atk_sql {
     private static final String CDCLAS_A_UL = "UL";
     private static final String CDCLAS_A_LOU = "LOU";
     
+    private static final String LANG_IT = "it";
     private static final String LANG_EN = "en";
 
 }

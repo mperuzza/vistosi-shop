@@ -5,6 +5,7 @@
 package com.ateikon.internet.eprogen.web.spring;
 
 import com.ateikon.internet.eprogen.domain.logic.VistosiShopManager;
+import com.ateikon.internet.eprogen.domain.pgmr.Ep_costanti;
 import com.ateikon.internet.eprogen.domain.pgmr.Mrp_arch_articoli;
 import com.ateikon.internet.eprogen.domain.pgmr.Mrp_arch_articoli_ul;
 import com.ateikon.internet.eprogen.domain.pgmr.Vist_articoli_img;
@@ -31,6 +32,7 @@ import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.WebApplicationContext;
@@ -52,6 +54,20 @@ public class VistosiShopAdvancedSearch {
     public void setVistosiShopManager(VistosiShopManager vistosiShopManager) {
         this.vistosiShopManager = vistosiShopManager;
     }
+    
+    @ModelAttribute(value = "portalUrl")
+    private String getPortalUrl() {
+
+        String url = "/";
+
+        Ep_costanti cost = vistosiShopManager.getEpCostanti("ep.portal_url");
+
+        if (cost != null && StringUtils.isNotBlank(cost.getCostvalue())) {
+            url = cost.getCostvalue();
+        }
+
+        return url;
+    }    
 
     private void referenceData(Model model, HttpServletRequest request) {
 

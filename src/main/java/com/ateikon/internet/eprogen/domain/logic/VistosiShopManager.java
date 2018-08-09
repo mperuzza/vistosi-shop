@@ -163,4 +163,6 @@ public interface VistosiShopManager extends BaseManager{
 
     boolean checkSpecsheetExists(Mrp_arch_articoli art, WebApplicationContext ctx, RequestContext rc);
 
+    boolean checkSpecsheetModelExists(Mrp_arch_articoli art, WebApplicationContext ctx, RequestContext rc);
+
 }

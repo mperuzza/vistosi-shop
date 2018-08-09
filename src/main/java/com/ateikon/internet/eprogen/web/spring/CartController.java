@@ -386,6 +386,10 @@ public class CartController extends BaseAnnotationController {
                             if (vistosiShopManager.checkSpecsheetExists(art, ctx, rc)) {
                                 art.setSpecsheetExists(true);
                             }
+                            //check esistenza specsheet modello                
+                            if (vistosiShopManager.checkSpecsheetModelExists(art, ctx, rc)) {
+                                art.setSpecsheetModelExists(true);
+                            }                            
 
                         //} catch (FileNotFoundException ex) {
                             //log.debug("not exists");
