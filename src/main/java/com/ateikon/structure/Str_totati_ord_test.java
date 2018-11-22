@@ -20,11 +20,15 @@ public class Str_totati_ord_test extends Object {
     public    double		totale_merce_non_fisc            = 0;
     public    double		totale_merce_spese               = 0;
     public    double		totale_scocas                    = 0;
+    public    double		imponibile_no_scocas             = 0;
     public    double		imponibile                       = 0;
     public    double		imposta                          = 0;
     public    double		totale_documento                 = 0;
 
 
+    public    double		totale_merce_normale_netta       = 0;
+    public    double		totale_merce_non_fisc_netto      = 0;
+    public    double		totale_merce_spese_netto         = 0;
 
 
 

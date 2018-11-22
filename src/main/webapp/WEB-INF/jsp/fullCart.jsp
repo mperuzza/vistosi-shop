@@ -172,7 +172,7 @@
                     <spring:message code="modelli_3D" text="Modelli 3D" var="m3DLabel"/>
                     <spring:message code="modelli_2D" text="Modelli 2D" var="m2DLabel"/>
                     <spring:message code="specsheet" text="Specsheet" var="specSheetLabel"/>
-                    <spring:message code="specsheet.model" text="Scheda prodotto" var="specSheetModelLabel"/>;
+                    <spring:message code="specsheet.model" text="Scheda prodotto" var="specSheetModelLabel"/>
                     <spring:message code="energy_class" text="Energy class" var="energyClassLabel"/>
                     <security:authorize ifAllGranted="ROLE_ANONYMOUS">
                         <%-- c:set var="downloadUrl" value="${eprogenUrl}epRichiesta_risorse_pubblica_form.jsp?origine_richiesta=PUBBLICA&lang=${rc.locale}&cdling=${cdling}"/>

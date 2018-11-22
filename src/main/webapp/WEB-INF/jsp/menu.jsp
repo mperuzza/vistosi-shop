@@ -94,7 +94,7 @@
                 </a>
             </li>
         </c:forEach> 
-        <security:authorize ifAllGranted="ROLE_CLIE">
+        <%--security:authorize ifAllGranted="ROLE_CLIE">
         <li onmouseover="showX('offerte')" onmouseout="hideX('offerte')" style="text-transform: uppercase" title="<spring:message code="menu.clicca" text="Clicca per selezionare"/>">
             <a href="javascript:void(0)" id="offFilterBtn">
                 <div class="legenda-marker" id="legenda-on-offerte" style="background-color: rgb(51,153,51);display: none;">X</div>
@@ -102,7 +102,7 @@
                 <spring:message code="menu.offerte" text="Offerte"/>
             </a>
         </li>
-        </security:authorize>
+        </security:authorize--%>
     </ul>
     <div class="clear logout" id="reset_filtri" style="float: right;"><span><a href="<c:url value="/index"/>"><spring:message code="filter.reset" text="Azzera tutti i filtri"/></a></span></div>
             <%--div class="offFilter ${(cookie.filter_off.value == 'S')?"on": "off"}"><a href="javascript:void(0)" id="offFilterBtn"><c:choose><c:when test="${cookie.filter_off.value == 'S'}"><spring:message code="view.allarts" text="tutti gli articoli"/></c:when><c:otherwise><spring:message code="view.onlyoff" text="solo offerte"/></c:otherwise></c:choose></a></div--%>

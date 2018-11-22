@@ -171,7 +171,7 @@ try {
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
   <style type="text/css" media="screen">
-    @import url("<c:url value='/static/styles/vistosi-shop_v14.css'/>");
+    @import url("<c:url value='/static/styles/vistosi-shop_v16.css'/>");
   </style>
 
   <%--script type="text/javascript" src="<c:url value='/static/js/mootools-1.2.3-core-yc.js' />"> </script>

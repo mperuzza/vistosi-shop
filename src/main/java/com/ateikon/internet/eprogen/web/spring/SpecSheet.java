@@ -1323,7 +1323,7 @@ public class SpecSheet {
 
             String pathimg = ROOT_RES + "dati/";
 
-            for (int i = 1; i < 7; i++) {
+            for (int i = 1; i < 10; i++) {
 
                 try {
                     String nomeimg = BeanUtils.getSimpleProperty(datiExtra, "arwSimbolo" + i);

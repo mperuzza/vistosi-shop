@@ -7,7 +7,7 @@
 
   <link href='https://fonts.googleapis.com/css?family=Roboto:700,900' rel='stylesheet' type='text/css'/>
   <style type="text/css" media="screen">   
-      @import url("<c:url value='/static/styles/vistosi-shop_v15.css'/>");
+      @import url("<c:url value='/static/styles/vistosi-shop_v16.css'/>");
     <c:if test="${rc.locale=='en'}">
         @import url("<c:url value='/static/styles/vistosi-shop_en.css'/>");
     </c:if>
