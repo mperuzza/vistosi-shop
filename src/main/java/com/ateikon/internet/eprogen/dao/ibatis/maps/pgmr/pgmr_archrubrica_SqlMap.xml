@@ -27,6 +27,9 @@
     <result column="iban2" property="iban2" jdbcType="VARCHAR" />
     <result column="scrap1" property="scrap1" jdbcType="NUMERIC" />
     <result column="scrap2" property="scrap2" jdbcType="NUMERIC" />
+    <result column="scrap3" property="scrap3" jdbcType="NUMERIC" />
+    <result column="scrap4" property="scrap4" jdbcType="NUMERIC" />
+    <result column="scrap5" property="scrap5" jdbcType="NUMERIC" />
     <result column="scocas" property="scocas" jdbcType="NUMERIC" />
     <result column="fidorich" property="fidorich" jdbcType="NUMERIC" />
     <result column="sitoweb" property="sitoweb" jdbcType="VARCHAR" />
@@ -149,7 +152,7 @@
     -->
     tkrubr, tkrubr_tipo, dsrubr, ragcog, cognom, ragnom, pariva, cfisc, cdazie, cddipa, 
     profil, dtinse, dtulag, tkutente, flgpfigi, dsbanc1, dsbanc2, iban1, iban2, scrap1, 
-    scrap2, scocas, fidorich, sitoweb, nota, fgiso, fgclie, fgclieconc, fgforn, tkclie, 
+    scrap2, scrap3, scrap4, scrap5, scocas, fidorich, sitoweb, nota, fgiso, fgclie, fgclieconc, fgforn, tkclie, 
     tkforn, fgconsulenza, fgen385, fglavmuranese, fgvisita, periodovisita, fgpresentazioni, 
     fgelencoriv, tipoloc, dimloc, marchi, fgabbriv, riviste, cdunil, cdente, dtsync, 
     dtannullato, tkrcpian, tkrubr_sost, tkutente_ulag, tkticket_reg, dspagame, fginfocomm, 
@@ -212,7 +215,7 @@
       cognom, ragnom, pariva, cfisc, cdazie, 
       cddipa, profil, dtinse, dtulag, tkutente, 
       flgpfigi, dsbanc1, dsbanc2, iban1, iban2, 
-      scrap1, scrap2, scocas, fidorich, sitoweb, 
+      scrap1, scrap2, scrap3, scrap4, scrap5, scocas, fidorich, sitoweb, 
       nota, fgiso, fgclie, fgclieconc, fgforn, 
       tkclie, tkforn, fgconsulenza, fgen385, 
       fglavmuranese, fgvisita, periodovisita, fgpresentazioni, 
@@ -237,7 +240,7 @@
       #cognom:VARCHAR#, #ragnom:VARCHAR#, #pariva:VARCHAR#, #cfisc:VARCHAR#, #cdazie:VARCHAR#, 
       #cddipa:VARCHAR#, #profil:VARCHAR#, #dtinse:TIMESTAMP#, #dtulag:TIMESTAMP#, #tkutente:NUMERIC#, 
       #flgpfigi:VARCHAR#, #dsbanc1:VARCHAR#, #dsbanc2:VARCHAR#, #iban1:VARCHAR#, #iban2:VARCHAR#, 
-      #scrap1:NUMERIC#, #scrap2:NUMERIC#, #scocas:NUMERIC#, #fidorich:NUMERIC#, #sitoweb:VARCHAR#, 
+      #scrap1:NUMERIC#, #scrap2:NUMERIC#, #scrap3:NUMERIC#, #scrap4:NUMERIC#, #scrap5:NUMERIC#, #scocas:NUMERIC#, #fidorich:NUMERIC#, #sitoweb:VARCHAR#, 
       #nota:VARCHAR#, #fgiso:VARCHAR#, #fgclie:VARCHAR#, #fgclieconc:VARCHAR#, #fgforn:VARCHAR#, 
       #tkclie:VARCHAR#, #tkforn:VARCHAR#, #fgconsulenza:VARCHAR#, #fgen385:VARCHAR#, 
       #fglavmuranese:VARCHAR#, #fgvisita:VARCHAR#, #periodovisita:VARCHAR#, #fgpresentazioni:VARCHAR#, 
@@ -328,6 +331,15 @@
       </isNotNull>
       <isNotNull prepend="," property="scrap2" >
         scrap2
+      </isNotNull>
+      <isNotNull prepend="," property="scrap3" >
+        scrap3
+      </isNotNull>
+      <isNotNull prepend="," property="scrap4" >
+        scrap4
+      </isNotNull>
+      <isNotNull prepend="," property="scrap5" >
+        scrap5
       </isNotNull>
       <isNotNull prepend="," property="scocas" >
         scocas
@@ -650,6 +662,15 @@
       </isNotNull>
       <isNotNull prepend="," property="scrap2" >
         #scrap2:NUMERIC#
+      </isNotNull>
+      <isNotNull prepend="," property="scrap3" >
+        #scrap3:NUMERIC#
+      </isNotNull>
+      <isNotNull prepend="," property="scrap4" >
+        #scrap4:NUMERIC#
+      </isNotNull>
+      <isNotNull prepend="," property="scrap5" >
+        #scrap5:NUMERIC#
       </isNotNull>
       <isNotNull prepend="," property="scocas" >
         #scocas:NUMERIC#
@@ -987,6 +1008,15 @@
       <isNotNull prepend="," property="record.scrap2" >
         scrap2 = #record.scrap2:NUMERIC#
       </isNotNull>
+      <isNotNull prepend="," property="record.scrap3" >
+        scrap3 = #record.scrap3:NUMERIC#
+      </isNotNull>
+      <isNotNull prepend="," property="record.scrap4" >
+        scrap4 = #record.scrap4:NUMERIC#
+      </isNotNull>
+      <isNotNull prepend="," property="record.scrap5" >
+        scrap5 = #record.scrap5:NUMERIC#
+      </isNotNull>
       <isNotNull prepend="," property="record.scocas" >
         scocas = #record.scocas:NUMERIC#
       </isNotNull>
@@ -1274,6 +1304,9 @@
       iban2 = #record.iban2:VARCHAR#,
       scrap1 = #record.scrap1:NUMERIC#,
       scrap2 = #record.scrap2:NUMERIC#,
+      scrap3 = #record.scrap3:NUMERIC#,
+      scrap4 = #record.scrap4:NUMERIC#,
+      scrap5 = #record.scrap5:NUMERIC#,
       scocas = #record.scocas:NUMERIC#,
       fidorich = #record.fidorich:NUMERIC#,
       sitoweb = #record.sitoweb:VARCHAR#,
@@ -1429,6 +1462,15 @@
       </isNotNull>
       <isNotNull prepend="," property="scrap2" >
         scrap2 = #scrap2:NUMERIC#
+      </isNotNull>
+      <isNotNull prepend="," property="scrap3" >
+        scrap3 = #scrap3:NUMERIC#
+      </isNotNull>
+      <isNotNull prepend="," property="scrap4" >
+        scrap4 = #scrap4:NUMERIC#
+      </isNotNull>
+      <isNotNull prepend="," property="scrap5" >
+        scrap5 = #scrap5:NUMERIC#
       </isNotNull>
       <isNotNull prepend="," property="scocas" >
         scocas = #scocas:NUMERIC#
@@ -1714,6 +1756,9 @@
       iban2 = #iban2:VARCHAR#,
       scrap1 = #scrap1:NUMERIC#,
       scrap2 = #scrap2:NUMERIC#,
+      scrap3 = #scrap3:NUMERIC#,
+      scrap4 = #scrap4:NUMERIC#,
+      scrap5 = #scrap5:NUMERIC#,
       scocas = #scocas:NUMERIC#,
       fidorich = #fidorich:NUMERIC#,
       sitoweb = #sitoweb:VARCHAR#,

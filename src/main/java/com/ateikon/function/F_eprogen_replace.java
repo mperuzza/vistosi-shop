@@ -5932,7 +5932,7 @@ public class F_eprogen_replace extends Atk_sql {
                ls_tbl_order_details += "<td valign=\"bottom\" class=\"al\" nowrap>" + (org.apache.commons.lang.StringUtils.isNotBlank(dsextvistv1) ? html.text(dsextvistv1) : cdvistv1) + " " + (org.apache.commons.lang.StringUtils.isNotBlank(dsextvistv2) ? html.text(dsextvistv2) : cdvistv2) + " " + (org.apache.commons.lang.StringUtils.isNotBlank(dsextvistv3) ? html.text(dsextvistv3) : cdvistv3) + "</td>";
                ls_tbl_order_details += "<td valign=\"bottom\" class=\"al\" nowrap>" + html.text(dsextvistcolv) + " " + html.text(dsextvistfinv) + "</td>";
                ls_tbl_order_details += "<td valign=\"bottom\" class=\"al\" nowrap>" + html.text(dsextvistfinm) + "</td>";
-               ls_tbl_order_details += "<td valign=\"bottom\" class=\"al\" nowrap>" + html.text(dsextvistelet) + "</td>";
+               ls_tbl_order_details += "<td valign=\"bottom\" class=\"al\" style=\"padding-right:4px;padding-left:4px\">" + html.text(dsextvistelet) + "</td>";
                ls_tbl_order_details += "<td align=\"right\" style=\"padding-right:4px;padding-left:4px\">" + przFormat.format(nrpeso_l) + "</td>";      //peso lordo
                ls_tbl_order_details += "<td align=\"right\" style=\"padding-right:4px;padding-left:4px\">" + przFormat.format(nrpeso_n) + "</td>";      //peso netto
                ls_tbl_order_details += "<td align=\"right\" style=\"padding-right:4px;padding-left:4px\">" + przFormat.format(vlunlt) + "</td>";     //volume  

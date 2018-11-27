@@ -1580,7 +1580,9 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
                 Archrubrica archrubrica = archrubricas.get(0);
 
-                tipoNota = new String[]{"CONDF", "ACCF", "SERV", "CONDL"};
+                condcMap.put("condcTableValue", archrubrica);
+                
+                tipoNota = new String[]{"GENERALI"};
 
                 for (String tipo : tipoNota) {
 
@@ -1593,7 +1595,10 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
                     }
 
                 }
-
+                
+                
+                
+                /*
                 if (!condcMap.isEmpty()) {
                     condcMap.put("type", "assigned");
 
@@ -1626,6 +1631,7 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
                 }
 
+                
                 if (condcMap.isEmpty()) {
 
                     //condizioni di default
@@ -1762,7 +1768,7 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
                     }
 
-                }
+                }*/
             }
         }
 

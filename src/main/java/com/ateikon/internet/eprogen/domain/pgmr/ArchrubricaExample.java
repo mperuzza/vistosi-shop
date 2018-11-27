@@ -1605,6 +1605,188 @@ public class ArchrubricaExample {
             addCriterion("scrap2 not between", value1, value2, "scrap2");
             return this;
         }
+        
+        public Criteria andScrap3IsNull() {
+            addCriterion("scrap3 is null");
+            return this;
+        }
+
+        public Criteria andScrap3IsNotNull() {
+            addCriterion("scrap3 is not null");
+            return this;
+        }
+
+        public Criteria andScrap3EqualTo(BigDecimal value) {
+            addCriterion("scrap3 =", value, "scrap3");
+            return this;
+        }
+
+        public Criteria andScrap3NotEqualTo(BigDecimal value) {
+            addCriterion("scrap3 <>", value, "scrap3");
+            return this;
+        }
+
+        public Criteria andScrap3GreaterThan(BigDecimal value) {
+            addCriterion("scrap3 >", value, "scrap3");
+            return this;
+        }
+
+        public Criteria andScrap3GreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("scrap3 >=", value, "scrap3");
+            return this;
+        }
+
+        public Criteria andScrap3LessThan(BigDecimal value) {
+            addCriterion("scrap3 <", value, "scrap3");
+            return this;
+        }
+
+        public Criteria andScrap3LessThanOrEqualTo(BigDecimal value) {
+            addCriterion("scrap3 <=", value, "scrap3");
+            return this;
+        }
+
+        public Criteria andScrap3In(List<BigDecimal> values) {
+            addCriterion("scrap3 in", values, "scrap3");
+            return this;
+        }
+
+        public Criteria andScrap3NotIn(List<BigDecimal> values) {
+            addCriterion("scrap3 not in", values, "scrap3");
+            return this;
+        }
+
+        public Criteria andScrap3Between(BigDecimal value1, BigDecimal value2) {
+            addCriterion("scrap3 between", value1, value2, "scrap3");
+            return this;
+        }
+
+        public Criteria andScrap3NotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("scrap3 not between", value1, value2, "scrap3");
+            return this;
+        }
+        
+        public Criteria andScrap4IsNull() {
+            addCriterion("scrap4 is null");
+            return this;
+        }
+
+        public Criteria andScrap4IsNotNull() {
+            addCriterion("scrap4 is not null");
+            return this;
+        }
+
+        public Criteria andScrap4EqualTo(BigDecimal value) {
+            addCriterion("scrap4 =", value, "scrap4");
+            return this;
+        }
+
+        public Criteria andScrap4NotEqualTo(BigDecimal value) {
+            addCriterion("scrap4 <>", value, "scrap4");
+            return this;
+        }
+
+        public Criteria andScrap4GreaterThan(BigDecimal value) {
+            addCriterion("scrap4 >", value, "scrap4");
+            return this;
+        }
+
+        public Criteria andScrap4GreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("scrap4 >=", value, "scrap4");
+            return this;
+        }
+
+        public Criteria andScrap4LessThan(BigDecimal value) {
+            addCriterion("scrap4 <", value, "scrap4");
+            return this;
+        }
+
+        public Criteria andScrap4LessThanOrEqualTo(BigDecimal value) {
+            addCriterion("scrap4 <=", value, "scrap4");
+            return this;
+        }
+
+        public Criteria andScrap4In(List<BigDecimal> values) {
+            addCriterion("scrap4 in", values, "scrap4");
+            return this;
+        }
+
+        public Criteria andScrap4NotIn(List<BigDecimal> values) {
+            addCriterion("scrap4 not in", values, "scrap4");
+            return this;
+        }
+
+        public Criteria andScrap4Between(BigDecimal value1, BigDecimal value2) {
+            addCriterion("scrap4 between", value1, value2, "scrap4");
+            return this;
+        }
+
+        public Criteria andScrap4NotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("scrap4 not between", value1, value2, "scrap4");
+            return this;
+        }        
+        
+        public Criteria andScrap5IsNull() {
+            addCriterion("scrap5 is null");
+            return this;
+        }
+
+        public Criteria andScrap5IsNotNull() {
+            addCriterion("scrap5 is not null");
+            return this;
+        }
+
+        public Criteria andScrap5EqualTo(BigDecimal value) {
+            addCriterion("scrap5 =", value, "scrap5");
+            return this;
+        }
+
+        public Criteria andScrap5NotEqualTo(BigDecimal value) {
+            addCriterion("scrap5 <>", value, "scrap5");
+            return this;
+        }
+
+        public Criteria andScrap5GreaterThan(BigDecimal value) {
+            addCriterion("scrap5 >", value, "scrap5");
+            return this;
+        }
+
+        public Criteria andScrap5GreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("scrap5 >=", value, "scrap5");
+            return this;
+        }
+
+        public Criteria andScrap5LessThan(BigDecimal value) {
+            addCriterion("scrap5 <", value, "scrap5");
+            return this;
+        }
+
+        public Criteria andScrap5LessThanOrEqualTo(BigDecimal value) {
+            addCriterion("scrap5 <=", value, "scrap5");
+            return this;
+        }
+
+        public Criteria andScrap5In(List<BigDecimal> values) {
+            addCriterion("scrap5 in", values, "scrap5");
+            return this;
+        }
+
+        public Criteria andScrap5NotIn(List<BigDecimal> values) {
+            addCriterion("scrap5 not in", values, "scrap5");
+            return this;
+        }
+
+        public Criteria andScrap5Between(BigDecimal value1, BigDecimal value2) {
+            addCriterion("scrap5 between", value1, value2, "scrap5");
+            return this;
+        }
+
+        public Criteria andScrap5NotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("scrap5 not between", value1, value2, "scrap5");
+            return this;
+        }        
+        
+        
 
         public Criteria andScocasIsNull() {
             addCriterion("scocas is null");

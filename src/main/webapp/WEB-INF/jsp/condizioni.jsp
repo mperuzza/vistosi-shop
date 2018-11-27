@@ -8,10 +8,22 @@
 <% pageContext.setAttribute("newLineChar", "\n"); %>
 <div id="promo-cnt" class="condc">
 
+    <jsp:directive.include file="/WEB-INF/jsp/condizioni_static.jsp"/>    
+    
+    
 <c:set var="condDescr"><c:choose><c:when test="${rc.locale.language!='it'}">descr_${rc.locale.language}</c:when><c:otherwise>descr</c:otherwise></c:choose></c:set>
 <c:set var="condNota"><c:choose><c:when test="${rc.locale.language!='it'}">nota_${rc.locale.language}</c:when><c:otherwise>nota</c:otherwise></c:choose></c:set>
     <c:choose>
         <c:when test="${!empty condizioni}">
+            <c:if test="${!empty condizioni['GENERALI']}">
+                <p><spring:message code="condc.label.generali" text="Ti ricordiamo che in deroga alle condizioni generali ci sono i seguenti accordi:"/><br/><br/></p>
+                <dl>
+                <c:forEach items="${condizioni['GENERALI']}" var="cond">
+                    <dt>${cond[condDescr]}</dt>
+                    <dd>${fn:replace(cond[condNota], newLineChar, "<br/>")}</dd>
+                </c:forEach>
+                </dl>
+            </c:if>
             <c:if test="${!empty condizioni['CONDF']}">
                 <h2><spring:message code="condc.label.condf" text="Condizioni fornitura"/></h2>
                 <dl>
@@ -48,7 +60,7 @@
                 </c:forEach>
                 </dl>
             </c:if>
-            <c:if test="${!empty condizioni.condcTable}">
+            <c:if test="${!empty condizioni.condcTableValue}">
                 <div id="condctable-cnt">
                 <h2><spring:message code="condc.tabriep" text="Tabella riepilogativa condizioni di vendita"/></h2>
                 <c:set var="dsc"><c:choose><c:when test="${rc.locale.language!='it'}">dscampo_${rc.locale.language}</c:when><c:otherwise>dscampo</c:otherwise></c:choose></c:set>
@@ -56,9 +68,8 @@
                     <thead><!-- label sconti -->
                         <tr>
                             <th><spring:message code="condc.sconti" text="Sconti"/></th>
-                            <c:forEach var="col" items="${condizioni.condcTable}">
-                                <th>${!empty col.value[dsc]? col.value[dsc]: col.value.dscampo}</th>
-                            </c:forEach>
+                            <th><spring:message code="condc.dspagame" text="Condizioni di pagamento"/></th>
+                            <th><spring:message code="condc.fidorich" text="Fido"/></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -70,19 +81,24 @@
                             <c:if test="${!empty condizioni.condcTableValue.scrap2}">
                                  + <fmt:formatNumber value="${condizioni.condcTableValue.scrap2}" pattern="#,##0.00"/>%
                             </c:if>
+                            <c:if test="${!empty condizioni.condcTableValue.scrap3}">
+                                 + <fmt:formatNumber value="${condizioni.condcTableValue.scrap3}" pattern="#,##0.00"/>%
+                            </c:if>
+                            <c:if test="${!empty condizioni.condcTableValue.scrap4}">
+                                 + <fmt:formatNumber value="${condizioni.condcTableValue.scrap4}" pattern="#,##0.00"/>%
+                            </c:if>
+                            <c:if test="${!empty condizioni.condcTableValue.scrap5}">
+                                 + <fmt:formatNumber value="${condizioni.condcTableValue.scrap5}" pattern="#,##0.00"/>%
+                            </c:if>
                             </td>
-                            <c:forEach var="col" items="${condizioni.condcTable}">
-                                <td><c:if test="${!empty condizioni.condcTableValue[col.key]}">
-                                        <c:choose>
-                                            <c:when test="${col.key=='fidorich'}">
-                                                Euro <fmt:formatNumber value="${condizioni.condcTableValue[col.key]}" pattern="#,##0.00"/>
-                                            </c:when>
-                                            <c:otherwise>
-                                                ${condizioni.condcTableValue[col.key]}
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </c:if></td>
-                            </c:forEach>
+                            <td>
+                                ${condizioni.condcTableValue['dspagame']}
+                            </td>
+                            <td>
+                                <c:if test="${!empty condizioni.condcTableValue['fidorich']}">
+                                Euro <fmt:formatNumber value="${condizioni.condcTableValue['fidorich']}" pattern="#,##0.00"/>
+                                </c:if>
+                            </td>                           
                         </tr>
                     </tbody>
                 </table>
