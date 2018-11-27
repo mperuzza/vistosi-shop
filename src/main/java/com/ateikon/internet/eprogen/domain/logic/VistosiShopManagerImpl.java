@@ -1033,7 +1033,7 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
             Map condc = cart.getCondc();
 
-            String[] tipoNota = new String[]{"CONDF", "ACCF", "SERV", "CONDL"};
+            String[] tipoNota = new String[]{"GENERALI"}; //new String[]{"CONDF", "ACCF", "SERV", "CONDL"};
 
             for (String tipo : tipoNota) {
 
@@ -1560,6 +1560,15 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
         Map condcMap = new HashMap();
         String[] tipoNota;
+        
+        Calendar dtulag_condc_default = Calendar.getInstance();
+        dtulag_condc_default.set(Calendar.YEAR, 2018);
+        dtulag_condc_default.set(Calendar.MONTH, Calendar.NOVEMBER);
+        dtulag_condc_default.set(Calendar.DAY_OF_MONTH, 26);
+        dtulag_condc_default.set(Calendar.HOUR_OF_DAY, 0);
+        dtulag_condc_default.set(Calendar.MINUTE, 0);
+        dtulag_condc_default.set(Calendar.SECOND, 0);
+        dtulag_condc_default.set(Calendar.MILLISECOND, 0);
 
         Archrubrica_tipoExample archrubrica_tipoExample = new Archrubrica_tipoExample();
 
@@ -1597,12 +1606,14 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
                 }
                 
                 
-                
-                /*
+              
                 if (!condcMap.isEmpty()) {
                     condcMap.put("type", "assigned");
 
                     Date dtulagCondc = archrubrica.getDtulag_condc();
+                    if(dtulagCondc == null) {
+                        dtulagCondc = dtulag_condc_default.getTime();                        
+                    }
                     condcMap.put("dtulag_condc", dtulagCondc);
                     Vist_condc_acc lastCondcAcc = vist_condc_accDAO.getLastCondcAcc(tkutente);
 
@@ -1613,6 +1624,7 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
                         condcMap.put("accepted", false);
                     }
 
+                    /*
                     //condizioni commerciali
                     ClieattiKey clieattiKey = new ClieattiKey();
                     clieattiKey.setCdatti(archrubrica.getCdatti());
@@ -1628,9 +1640,10 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
                         condcMap.put("condcTable", condcTable);
                         condcMap.put("condcTableValue", archrubrica);
                     }
+                    */
 
                 }
-
+                /*
                 
                 if (condcMap.isEmpty()) {
 
