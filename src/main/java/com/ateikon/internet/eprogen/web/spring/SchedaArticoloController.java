@@ -578,9 +578,15 @@ public class SchedaArticoloController {
 
         if (!firstReq) {
 
+            
+            
             if (((!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS") && user != null && user.getIsSpecList())
                     || (AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS") && GeoIPInterceptor.getCountry(request).equals("US")))
-                    && StringUtils.isNotBlank(cdvistelet)) {
+                    && (StringUtils.isNotBlank(cdvistelet) || scheda.getElettrificazioni().size() == 1)) {
+                
+                if (scheda.getElettrificazioni().size() == 1) {
+                    cdvistelet = scheda.getElettrificazioni().get(0).getCdvistelet();
+                }            
                 Vist_elettrificazioni eletSpec = vistosiShopManager.getVist_elettrificazioniByKey(cdvistelet);
 
                 log.debug("eletSpec: " + eletSpec);
