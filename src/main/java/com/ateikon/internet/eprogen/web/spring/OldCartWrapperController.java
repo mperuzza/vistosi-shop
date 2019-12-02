@@ -6,20 +6,25 @@
 package com.ateikon.internet.eprogen.web.spring;
 
 import com.ateikon.internet.eprogen.domain.logic.VistosiShopManager;
+import com.ateikon.internet.eprogen.domain.pgmr.Mrp_arch_stato;
 import com.ateikon.internet.eprogen.domain.pgmr.Unitalocale;
 import com.ateikon.internet.eprogen.web.security.ShopUser;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.context.SecurityContextHolder;
+import org.springframework.security.util.AuthorityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.util.WebUtils;
 
 /**
  *
@@ -47,8 +52,11 @@ public class OldCartWrapperController {
         //model.addAttribute("cart", getBaseCart());
 
         model.addAttribute("tipologie", vistosiShopManager.getVist_tipi());
+        
+        
         Map fpars = new HashMap();
         vistosiShopManager.addCdclasFilter(fpars, request);
+        vistosiShopManager.addToggleStateZEEFilter(fpars, request);     
         model.addAttribute("famiglie", vistosiShopManager.getVist_famiglia(fpars));
 
 
@@ -77,6 +85,7 @@ public class OldCartWrapperController {
         
         Map fpars = new HashMap();
         vistosiShopManager.addCdclasFilter(fpars, request);
+        vistosiShopManager.addToggleStateZEEFilter(fpars, request);
         model.addAttribute("famiglie", vistosiShopManager.getVist_famiglia(fpars));
 
         return "catalogo_ordine_fine";

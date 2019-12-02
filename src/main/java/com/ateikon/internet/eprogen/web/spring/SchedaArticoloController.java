@@ -88,6 +88,7 @@ public class SchedaArticoloController {
         }
 
         vistosiShopManager.addCdclasFilter(pars, request);
+        vistosiShopManager.addToggleStateZEEFilter(pars, request);
 //        if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
 //            user = (ShopUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //            pars.put("cdclas_aList", user.getCdclas_aFilter()); //filtro solo articoli listino
@@ -131,6 +132,7 @@ public class SchedaArticoloController {
         //model.addAttribute("famiglie", vistosiShopManager.findVist_famiglia(pars));
         Map fpars = new HashMap();
         vistosiShopManager.addCdclasFilter(fpars, request);
+        vistosiShopManager.addToggleStateZEEFilter(fpars, request);
         model.addAttribute("famiglie", vistosiShopManager.getVist_famiglia(fpars));
 
         model.addAttribute("collezioni", vistosiShopManager.getVist_cp_collezioni());
@@ -259,13 +261,14 @@ public class SchedaArticoloController {
         if (!statiFilter.isEmpty()) {
             pars.put("statiFilterList", statiFilter);
         }
-        if (AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
-            pars.put("statiEscludedList", Collections.singletonList("ZEE"));
-        }
+        //if (AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
+//        pars.put("statiEscludedList", Collections.singletonList("ZEE"));
+        //}
 
         log.debug("cdalias: " + cdalias);
         log.debug("pars: " + pars);
         vistosiShopManager.addCdclasFilter(pars, request);
+        vistosiShopManager.addToggleStateZEEFilter(pars, request);
 
         List<Mrp_arch_articoli> modelli = vistosiShopManager.getModelliDis(pars);
         //shrink models list
@@ -431,6 +434,8 @@ public class SchedaArticoloController {
         Cookie ckViewOff = WebUtils.getCookie(request, "filter_off");
         pars.put("fgpromo", ((ckViewOff != null && "S".equals(ckViewOff.getValue())) ? "S" : null));
 
+        vistosiShopManager.addToggleStateZEEFilter(pars, request);
+
         List<Mrp_arch_stato> availableStates = vistosiShopManager.getAvailableStates();
         List<String> statiFilter = new ArrayList<String>();
         for (Mrp_arch_stato mrp_arch_stato : availableStates) {
@@ -444,9 +449,9 @@ public class SchedaArticoloController {
         if (!statiFilter.isEmpty()) {
             pars.put("statiFilterList", statiFilter);
         }
-        if (AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
-            pars.put("statiEscludedList", Collections.singletonList("ZEE"));
-        }
+//        //if (AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
+//            pars.put("statiEscludedList", Collections.singletonList("ZEE"));
+//        //}
 
         List<Vist_vetro> vist_vetro = vistosiShopManager.findVist_vetro(pars);
 
@@ -578,15 +583,13 @@ public class SchedaArticoloController {
 
         if (!firstReq) {
 
-            
-            
             if (((!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS") && user != null && user.getIsSpecList())
                     || (AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS") && GeoIPInterceptor.getCountry(request).equals("US")))
                     && (StringUtils.isNotBlank(cdvistelet) || scheda.getElettrificazioni().size() == 1)) {
-                
+
                 if (scheda.getElettrificazioni().size() == 1) {
                     cdvistelet = scheda.getElettrificazioni().get(0).getCdvistelet();
-                }            
+                }
                 Vist_elettrificazioni eletSpec = vistosiShopManager.getVist_elettrificazioniByKey(cdvistelet);
 
                 log.debug("eletSpec: " + eletSpec);
@@ -735,7 +738,7 @@ public class SchedaArticoloController {
 //                log.error("file " + eprt + " non trovato");
 //            }
             //easm
-            String easm = path_3D + nome_modello + (scheda.getArticolo().isLed()?scheda.getArticolo().getCdvistelet():"") +".EASM";
+            String easm = path_3D + nome_modello + (scheda.getArticolo().isLed() ? scheda.getArticolo().getCdvistelet() : "") + ".EASM";
             try {
                 String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), easm);
                 File f = new File(path_to_filemodel);

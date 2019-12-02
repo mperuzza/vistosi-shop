@@ -72,6 +72,8 @@ public class VistosiShopSearchController {
         String sort = ServletRequestUtils.getStringParameter(request, "sort", "dsarti");
         String dir = ServletRequestUtils.getStringParameter(request, "dir", "desc");
         vistosiShopManager.addCdclasFilter(pars, request);
+        vistosiShopManager.addToggleStateZEEFilter(pars, request);        
+          
         model.addAttribute("theList", vistosiShopManager.selectFamiglieByExamplePag(pars, sort, dir, page, pageSize));
         model.addAttribute("famView", true);
     }
@@ -84,6 +86,7 @@ public class VistosiShopSearchController {
         String sort = ServletRequestUtils.getStringParameter(request, "sort", "dsarti");
         String dir = ServletRequestUtils.getStringParameter(request, "dir", "desc");
         vistosiShopManager.addCdclasFilter(pars, request);
+        vistosiShopManager.addToggleStateZEEFilter(pars, request);
         model.addAttribute("theList", vistosiShopManager.selectCollezioniByExamplePag(pars, sort, dir, page, pageSize));
         model.addAttribute("colView", true);
     }
@@ -96,6 +99,7 @@ public class VistosiShopSearchController {
         String sort = ServletRequestUtils.getStringParameter(request, "sort", "dsarti");
         String dir = ServletRequestUtils.getStringParameter(request, "dir", "desc");
         vistosiShopManager.addCdclasFilter(pars, request);
+        vistosiShopManager.addToggleStateZEEFilter(pars, request);
         model.addAttribute("theList", vistosiShopManager.selectTipiByExamplePag(pars, sort, dir, page, pageSize));
         model.addAttribute("tipiView", true);
     }
@@ -387,6 +391,7 @@ public class VistosiShopSearchController {
         pars.put("fgweb", "S");
         //ShopUser user = (ShopUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         vistosiShopManager.addCdclasFilter(pars, request);
+        vistosiShopManager.addToggleStateZEEFilter(pars, request);
 //        if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
 //            ShopUser user = (ShopUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //            pars.put("cdclas_aList", user.getCdclas_aFilter()); //filtro solo articoli listino
@@ -422,7 +427,8 @@ public class VistosiShopSearchController {
         model.addAttribute("tipologie", vistosiShopManager.getVist_tipi());
         //model.addAttribute("famiglie", vistosiShopManager.findVist_famiglia(pars));
         Map fpars = new HashMap();
-        vistosiShopManager.addCdclasFilter(fpars, request);         
+        vistosiShopManager.addCdclasFilter(fpars, request);   
+        vistosiShopManager.addToggleStateZEEFilter(fpars, request);
         model.addAttribute("famiglie", vistosiShopManager.getVist_famiglia(fpars));
         model.addAttribute("collezioni", vistosiShopManager.getVist_cp_collezioni());
         //model.addAttribute("collezioni", vistosiShopManager.findVist_cp_collezioni(pars));
@@ -451,10 +457,9 @@ public class VistosiShopSearchController {
             pars.put("statiFilterList", statiFilter);
         }
 
-        if (AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
-            pars.put("statiEscludedList", Collections.singletonList("ZEE"));
-        }
-
+        //if (AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
+//            pars.put("statiEscludedList", Collections.singletonList("ZEE"));
+        //}
 
 
         if (StringUtils.isNotBlank(cdvisttp)) {

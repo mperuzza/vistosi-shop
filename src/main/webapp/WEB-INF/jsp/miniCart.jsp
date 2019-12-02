@@ -41,7 +41,7 @@
         <c:otherwise><fmt:message key="plural"/></c:otherwise>
     </c:choose>
 </c:set>    
-    <li class="second_cart"><table class="miniCart">
+    <%--li class="second_cart"><table class="miniCart">
     <tbody>
         <tr>
             <td colspan="2" style="padding: 1px 0"><span class="thead"><spring:message code="cart.row.offer" text="offerta"/></span></td>
@@ -63,7 +63,7 @@
             <td class="thbold"><fmt:formatNumber value="${minicart.numArtOff}" pattern="#,##0.##"/></td>
         </tr>
     </tbody>
-</table></li>
+</table></li--%>
 </ul>
 <div class="viewcond al"><a id="chg_view_cond" href="javascript:void(0)" <c:if test="${cookie.view_net_price.value == 'S' && !hideCond}">class="hide-cond"</c:if>><c:choose><c:when test="${cookie.view_net_price.value == 'S' && !hideCond}"><spring:message code="hide.conditions" text="nascondi condizioni"/></c:when><c:when test="${(empty cookie.view_net_price || cookie.view_net_price.value == 'N') && !hideCond}"><spring:message code="view.conditions" text="visualizza condizioni"/></c:when></c:choose></a></div>
 <c:if test="${!hideCond}">

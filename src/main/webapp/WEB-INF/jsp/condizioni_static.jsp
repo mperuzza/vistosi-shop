@@ -10,51 +10,26 @@
                         <dt>Portale per i servizi alla clientela: MyVistosi - www.vistosi.it/portal</dt>
                         <dd>Validit&agrave; del presente listino: fino al 31/12/2019
                             <br><br>
-                            1) La merce &egrave; attentamente selezionata e accuratamente imballata prima della spedizione e gli imballi sono severamente testati. Si declina ogni responsabilit&agrave; per danni causati durante il trasporto o presso
-                            il magazzino del cliente.
+                            1) Le seguenti condizioni di vendita sono generali. Le condizioni di vendita dettagliate e personalizzate sono pubblicate nel portale MyVistosi - www.vistosi.it/portal. Il Cliente potr&agrave; avervi accesso diretto anche dalle conferme d’ordine. Le condizioni personalizzate di base sono: sconto, modalit&agrave; di pagamento, modalit&agrave; di trasporto, fido e minimi d’ordine. Le condizioni di vendita saranno rinnovate ogni inizio d’anno. I Clienti che non acquisteranno alcun prodotto per un periodo superiore a 12 mesi saranno considerati inattivi e tutte le condizioni di vendita personalizzate non saranno più in vigore.   
                             <br>
-                            2) Difformit&agrave; rispetto ai dati contenuti nei documenti di trasporto o danni evidenti devono essere immediatamente segnalati allo spedizioniere, oppure al responsabile di magazzino nel caso di spedizioni
-                            franco fabbrica. Nel momento in cui la persona addetta al ritiro della merce firma dei documenti di trasporto ne accetta le condizioni e le quantit&agrave; indicate, salvo riserva specifica scritta nella lettera di
-                            vettura del trasportatore o nel documento di trasporto di Vetreria Vistosi Srl. Una copia di tale riserva va immediatamente inviata anche a Vetreria Vistosi, tramite fax o email.
+                            2) In caso di ordini di prodotti fuori listino, di prodotti a disegno o di prodotti con modifiche allo standard, Vetreria Vistosi Srl si riserva il diritto di formulare delle offerte con condizioni di vendita diverse da quelle accordate.  
                             <br>
-                            3) I danni e le avarie da trasporto evidenti, come colli danneggiati o che producono rumori sospetti, devono essere segnalati in forma scritta nella lettera di vettura al trasportatore.
+                            3) Per la merce non a magazzino, i tempi di consegna medi sono di 3-4 settimane. Le giacenze sono aggiornate quotidianamente nel portale MyVistosi.
                             <br>
-                            4) I danni e le avarie da trasporto occulti (non visibili al momento della ricezione della merce) devono essere segnalati nel portale MyVistosi nella sezione reclami entro 8 giorni dal ricevimento, allegando
-                            le foto di tutti i lati delle scatole e del danno, possibilmente all'interno della scatola o appena il prodotto viene estratto. Non a prodotto installato. In modo da dimostrare che il danno non era visibile al
-                            momento del ritiro.
-                            <br>
-                            5) Il cliente &egrave; tenuto a controllare minuziosamente la merce prima di consegnarla al cliente finale o spedirla dai propri magazzini. Non saranno accettati reclami per merce non presente nel luogo di destinazione
-                            indicato nei documenti di Vistosi o precedentemente trasportato e poi riportato nel medesimo.
-                            <br>
-                            6) Tutte le spedizioni con resa 'franco fabbrica' devono essere assicurate durante il trasporto a cura ed onere del cliente.
-                            <br>
-                            7) Le lavorazioni completamente manuali, i complessi processi di fusione, la raffinatezza delle miscele chimiche dei vetri di Vistosi e tipiche delle antiche tecniche di lavorazione di Murano, possono dar luogo
-                            a leggere imprecisioni dei colori, nelle forme e nelle dimensioni, negli spessori e nei decori; pi&ugrave; che imperfezioni sono da considerarsi espressione del vetro lavorato a mano e soffiato a bocca. Nel sito
-                            www.vistosi.it molte di queste lavorazioni si possono apprezzare. Piccole bolle irregolari, venature, piccoli puntini di materiale denso ed altre imperfezioni devono essere tollerate in particolar modo nelle
-                            forme e nelle lavorazioni pi&ugrave; complesse o di pi&ugrave; grandi dimensioni. Nella consapevolezza che il vetro artigianale perfetto fortunatamente non esiste, rendendo ogni pezzo unico ed irripetibile.
-                            <br>
-                            8) Per tutte le condizioni di vendita specifiche come resa, modalit&agrave; di pagamento, etc. far&agrave; fede la conferma d'ordine e le condizioni pubblicate al momento dell'ordine nell'area riservata del cliente all'interno
-                            del portale MyVistosi.
-                            <br>
-                            9) L'azienda si riserva di modificare in qualsiasi momento e senza preavviso qualsiasi modello. Il cliente che dovesse avere necessit&agrave; specifiche, o dovesse abbinare i modelli ordinati ad altri gi&agrave; in suo
-                            possesso deve specificarlo nell'ordine.
-                            <br>
-                            10) Tempi di produzione indicativi: circa 3-4 settimane, se non a magazzino. Le giacenze sono aggiornate quotidianamente nel portale MyVistosi al quale tutti i clienti Vistosi hanno accesso riservato e personalizzato
-                            24 ore su 24. Per prodotti fatti su misura i tempi di consegna vanno stimati.
-                            <br>
-                            11) Le aggiunte d'ordine che, per mancanza di disponibilit&agrave; di magazzino, restassero inevase, verranno considerate come ordine a s&eacute; stante.
-                            <br>
-                            12) Spedizioni parziali di ordini su sollecito del cliente, salvo ritardi di spedizione rispetto alla conferma d'ordine, verranno considerate come ordine a s&eacute; stante.
-                            <br>
-                            13) I prodotti di Vistosi hanno un imballo particolare ed una marcatura sia dei vetri che delle strutture, meglio descritte nel sito www.vistosi.it, al fine di prevenire contraffazioni.
-                            <br>
-                            14) Imballo standard compreso nel prezzo.
-                            <br>
-                            15) Le lampadine non sono incluse nel prezzo.
-                            <br>
-                            16) Per ogni eventuale contestazione &egrave; competente il foro di Venezia e la legge applicabile &egrave; quella italiana.
-                            <br>
-                            17) Vetreria Vistosi si riserva il diritto di togliere dalla produzione uno o pi&ugrave; modelli senza preavviso.
+                            4) Gli imballi sono severamente testati. Il Cliente è tenuto a controllare accuratamente la merce prima di consegnarla o di spedirla al Cliente finale. Non saranno accettati reclami per merce non presente nel luogo di destinazione indicato nei documenti di trasporto. 
+                            <br>5) Eventuali danni da trasporto alla merce o all’imballo della merce, evidenti al momento della consegna, come pure differenze di quantit&agrave; e/o di modello rispetto a quanto indicato nel documento di trasporto, devono essere segnalate con riserva specifica e dettagliata nella lettera di vettura del corriere.
+                            <br>6) Eventuali danni da trasporto alla merce, non evidenti al momento della consegna o non ragionevolmente presumibili al momento della consegna, devono essere segnalati entro 8 gg dalla consegna nella sezione reclami del portale MyVistosi. 
+                            <br>7) Le lavorazioni completamente manuali, i complessi processi di fusione, la raffinatezza delle miscele chimiche dei vetri di Vistosi e tipiche delle antiche tecniche di lavorazione di Murano, possono dar luogo a leggere imprecisioni dei colori, nelle forme e nelle dimensioni, negli spessori e nei decori. Più che imperfezioni o difformit&agrave; di qualit&agrave; sono da considerarsi espressione del vetro lavorato a mano e soffiato a bocca. Piccole bolle irregolari, venature, piccoli puntini di materiale denso e altre imperfezioni devono quindi essere tollerate, in particolar modo nelle forme e nelle lavorazioni più complesse o nei modelli di medio-grandi dimensioni. 
+                            <br>8) Vetreria Vistosi Srl si riserva di modificare in qualsiasi momento e senza preavviso qualsiasi modello. Il cliente che dovesse avere necessit&agrave; specifiche o che dovesse abbinare i modelli ordinati ad altri gi&agrave; in suo possesso deve specificarlo nell'ordine. 
+                            <br>9) Vetreria Vistosi Srl si riserva il diritto di togliere dalla produzione uno o più modelli senza darne preavviso. Il Cliente si impegna a segnalare tempestivamente qualsiasi progetto o quotazione da evadere per dare modo a Vistosi di tenerne conto nella scelta dei modelli da togliere dalla produzione. 
+                            <br>10) Le disponibilit&agrave; di magazzino e i tempi di consegna di ogni modello sono indicate e aggiornate quotidianamente nel portale MyVistosi. 
+                            <br>11) Le aggiunte d'ordine che, per mancanza di disponibilit&agrave; di magazzino, restassero inevase, verranno considerate come ordini a sé stanti. 
+                            <br>12) Spedizioni parziali di ordini su sollecito del cliente, salvo ritardi di spedizione rispetto alla conferma d'ordine, verranno considerate come ordini a sé stanti. 
+                            <br>13) Gli ordini saranno considerati accettati solo al momento dell’invio della conferma d’ordine via email all’indirizzo indicato dal Cliente e riportato nell5) Eventuali danni da trasporto alla merce o all’imballo della merce, evidenti al momento della consegna, come pure differenze di quantit&agrave; e/o di modello rispetto a quanto indicato nel documento di trasporto, devono essere segnalate con riserva specifica e dettagliata nella lettera di vettura del corriere.a scheda Cliente nel portale MyVistosi. Il Cliente si impegna a richiedere modifiche alle conferme d’ordine per qualsiasi ragione entro e non oltre 2 gg lavorativi dal ricevimento della conferma d’ordine. Trascorso questo termine gli ordini non saranno cancellabili o modificabili.
+                            <br>14) Tutti i modelli sono garantiti per un periodo di 2 anni dalla data del documento di vendita di Vetreria Vistosi Srl. La garanzia non copre errori di installazione, errori di uso e manutenzione del prodotto, rimozione della componentistica. Le istruzioni di montaggio sono parte integrante del prodotto. 
+                            <br>15) L’imballo standard &egrave; compreso nel prezzo, i bancali non sono compresi nel prezzo.
+                            <br>16) Le lampadine non sono incluse nel prezzo. 
+                            <br>17) Per ogni eventuale controversia di qualsiasi genere e sorta in qualsiasi luogo sar&agrave; competente il foro di Venezia e la legge applicabile sar&agrave; quella italiana.
                         </dd>
                     </dl>
                 </c:when>
@@ -188,51 +163,23 @@
                         <dt>Customer service web site: MyVistosi - www.vistosi.it/portal</dt>
                         <dd>Validity of the current price list: until 31/12/2019
                             <br><br>
-                            1) The goods are carefully selected and packaged before being sent, and the packaging is strictly tested. The Company declines all responsibility for any damage occurred during transportation or storage
-                            in the client's warehouse. <br>
-                            2) Any discrepancy between the delivered items and the information included in the transport documents, or any clear damage must be immediately reported to the forwarder or, in case of an ex-factory
-                            delivery, to the warehouse supervisor. The signature of the transport documents by the person in charge of receiving the goods implies the acceptance of the conditions and quantities indicated, unless
-                            otherwise reported on the forwarder's bill of loading or in the transport documents issued by Vetreria Vistosi Srl.
-                            <br>
-                            3) Any clear damage caused by transportation, such as damaged packages or packages which, from the way they sound, seem to contain something broken, must be reported on the forwarder's transport
-                            documents.
-                            <br>
-                            4) Any unseen damage (not visible when picking up the goods) must be reported within 8 days in the complaint section of the MyVistosi portal, attaching the photpgraphs of all the sides of the package and
-                            of the damage, possibly when the product is still in the package or immediately after the unwrapping, not when the product is installed, in order to demonstrate that the damage was not visible at the time
-                            of delivery. A copy of the claim must be immediately sent to Vistosi via fax or email.
-                            <br>
-                            5) The client is bound to carefully check the goods before delivering them to the final client or to ship them from his warehouses. Vistosi Srl will not accept complaints regarding goods which are not present
-                            in the destination indicated on the documents issued by Vistosi or regarding goods which have been moved and then transported back to the same place.
-                            <br>
-                            6) The client must provide transport insurance for all ex-factory deliveries.
-                            <br>
-                            7) The completely manual work, the fusion processes, the subtlety of the Vistosi glass' chemical blends, which are characteristic of the Murano glass manufacturing, are often complex and can cause slight
-                            imperfections in the products' colour, shape and dimensions, or in their thickness and decoration; more than imperfections they ought to be considered as peculiarities of the handmade blown glass. Many
-                            of these processes can be observed on the website www.vistosi.it. Some small irregular bubbles in the glass, grains, spots of denser material and other imperfections should be tolerated, especially when
-                            they affect the bigger or more complex shapes and processing. A handcrafted perfect glass, unfortunately, does not exist, but precisely for this reason each piece is unique and impossible to replicate.
-                            <br>
-                            8) For all specific terms of sale such as refunds, terms of payment, etc., the reference documents will be the order confirmation and the conditions that will appear in the client area of the MyVistosi portal
-                            when the order is placed.
-                            <br>
-                            9) Vetreria Vistosi S.r.l. reserves the rights, without any notice, to modify any of its models. Whenever a client has a special request or needs to match the ordered items with other items he already purchased,
-                            he will have to specify it in the order.
-                            <br>
-                            10) Estimate production time: approximately 3-4 weeks, if not to warehouse. The stock is updated daily on the MyVistosi portal, which can be visited in a customized and personal way by any Vistosi client
-                            24/7. Delivery time for bespoke versions: to be estimated.
-                            <br>
-                            11) Any additional order which, due to unavailable stock, should not be satisfied, will be considered as a separate order.
-                            <br>
-                            12) Partial deliveries requested by the client, unless they are due to a delayed delivery with respect to the order confirmation, will be considered as a separate order.
-                            <br>
-                            13) The Vistosi products have a special packaging and, in order to avoid counterfeiting, both their glasses and structures have a marking that is described on the website www.vistosi.it.
-                            <br>
-                            14) Standard packaging is included in the price.
-                            <br>
-                            15) Light bulbs are not included in the price.
-                            <br>
-                            16) Any dispute will be settled by the Venice jurisdiction according to the Italian laws.
-                            <br>
-                            17) Vetreria Vistosi reserves the right to discontinue one or more products without notice.            
+                            1) The following are General Conditions of Sale. The detailed and personalized conditions of sale are published in the MyVistosi portal - www.vistosi.it/portal. The Customer may have direct access to them from the order confirmations, too. The basic customized conditions are: discount, payment methods, mode of transport, credit and minimum order. The conditions of sale will be renewed at the beginning of each year. The Customers that do not buy any product for a period longer than 12 months will be considered inactive and all conditions of sale will no longer be in force.   
+                            <br>2) In the case of orders for products that are not listed in the price list, products that are based on drawings or products with modifications to the standard, Vetreria Vistosi Srl may reserve the right to make offers with different conditions of sale from those agreed.  
+                            <br>3) For goods not in stock, the average delivery time is 3-4 weeks. Stocks are updated daily in the MyVistosi portal.
+                            <br>4) Packaging is severely tested. The Customer is required to check carefully the goods before delivering or shipping them to the final Customer. No claims will be accepted for goods not available at the place of destination that was indicated in the transport documents. 
+                            <br>5) Any damage to goods in transit or to the packaging of goods, evident at the time of delivery, as well as differences in quantity and / or model compared to what is indicated in the transport document, must be reported as “goods unchecked” and that must be detailed in the waybill of the courier.
+                            <br>6) Any damage to goods in transit, not evident at the time of delivery or not reasonably foreseeable at the time of delivery, must be reported within 8 days from the delivery in the complaints section of the portal MyVistosi. 
+                            <br>7) Manual processing, elaborate melting processes, the refinement of chemical mixtures of Vistosi glass, which are typical of the ancient processing techniques of Murano, may give rise to slight inaccuracies in colour, shape and size, thickness and decoration. They must be considered as the result of handmade and mouth-blown glass procession, rather than imperfections or differences in quality. Small irregular bubbles, veins, small dots of dense material and other imperfections must therefore be tolerated, especially in the most intricate shapes and processes or in medium-large models. 
+                            <br>8) Vetreria Vistosi Srl may reserve the right to modify any model at any time and without notice. Should Customers have specific needs or combine the models ordered with others already in their possession, they must specify that in the order. 
+                            <br>9) Vetreria Vistosi Srl may reserve the right to discontinue one or more models without notice. Customers agree to promptly report any project or quotation to be processed in order to allow Vistosi to take that into account at the time of choosing the models to be discontinued. 
+                            <br>10) Stock availability and delivery times of each model are indicated and updated daily in the MyVistosi portal. 
+                            <br>11) Additions to orders that, due to lack of stock availability, remain unfulfilled, will be considered as separate orders. 
+                            <br>12) Partial shipments of orders on request of the Customer, except for delays in shipment with respect to the order confirmation, will be considered as separate orders. 
+                            <br>13) Orders will be considered accepted only only when the order confirmation is sent by email to the address indicated by the Customer and reported in the Customer data sheet in the MyVistosi portal. The Customer agrees to request changes to the order confirmations for any reason within and no later than 2 working days from receipt of the order confirmation. After this period, orders cannot be cancelled or modified.
+                            <br>14) All models are warranted for a period of 2 years from the date of the sales document of Vetreria Vistosi Srl. The warranty does not cover installation errors, errors in use and maintenance of the product, removal of components. The assembly instructions are an integral part of the product. 
+                            <br>15) Standard packaging is included in the price, pallets are not included in the price.
+                            <br>16) Bulbs are not included in the price. 
+                            <br>17) For any dispute of any kind and arising in any place, the Court of Venice will be competent and the Italian law shall be the only one applicable.   
                         </dd>
                     </dl>
                 </c:otherwise>

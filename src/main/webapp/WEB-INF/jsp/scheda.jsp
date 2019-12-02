@@ -387,7 +387,7 @@
                     //console.log('elettrificazioni');
                 
                     <c:set var="cdvistelet" value="${(useSpeclist)?'cdul':'cdvistelet'}"/>
-                    <c:set var="dselet" value="${(useSpeclist)?'cdul':dselet}"/>
+                    <%--c:set var="dselet" value="${(useSpeclist)?dselet:dselet}"/--%>
                     updateDD(scheda, 'elettrificazioni', 'sel_elettrificazioni', '${cdvistelet}', 'cdvistelet', '${dselet}', false);
                 }
                 if(scheda.finit_mont && !(scheda.finit_mont.length==1 && scheda.finit_mont[0].cdvistfinm==null)){
@@ -1140,7 +1140,6 @@
             </div>
         </c:set>
         ${pagination}
-        
         <div class="clearfix articoli-list-cnt" style="clear: both">
             <h2><spring:message code="choose.model" text="Scegli modello"/></h2>
 

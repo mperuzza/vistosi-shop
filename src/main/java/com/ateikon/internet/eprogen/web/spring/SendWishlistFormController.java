@@ -34,6 +34,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.mail.MessagingException;
+import javax.servlet.http.Cookie;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.mail.MailException;
 import org.springframework.security.context.SecurityContextHolder;
@@ -439,6 +440,10 @@ public class SendWishlistFormController extends BaseFormController {
                 stpars.put("cdarti", art.getCdarti());
 
                 stpars.put("fgpromo", "S");
+                
+                vistosiShopManager.addToggleStateZEEFilter(stpars, request);
+                
+                
                 int countOff = vistosiShopManager.countOfferta(stpars);
                 if (countOff > 0) {
                     if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {

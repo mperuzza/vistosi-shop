@@ -8,6 +8,7 @@ import com.ateikon.internet.eprogen.domain.logic.VistosiShopManager;
 import com.ateikon.internet.eprogen.domain.pgmr.Ep_costanti;
 import com.ateikon.internet.eprogen.domain.pgmr.Mrp_arch_articoli;
 import com.ateikon.internet.eprogen.domain.pgmr.Mrp_arch_articoli_ul;
+import com.ateikon.internet.eprogen.domain.pgmr.Mrp_arch_stato;
 import com.ateikon.internet.eprogen.domain.pgmr.Vist_articoli_img;
 import com.ateikon.internet.eprogen.domain.pgmr.Vist_famiglia;
 import com.ateikon.internet.eprogen.web.security.ShopUser;
@@ -17,10 +18,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
@@ -29,6 +32,7 @@ import org.apache.commons.logging.LogFactory;
 import org.displaytag.properties.SortOrderEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.context.SecurityContextHolder;
+import org.springframework.security.util.AuthorityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.ServletRequestUtils;
@@ -74,6 +78,8 @@ public class VistosiShopAdvancedSearch {
         model.addAttribute("tipologie", vistosiShopManager.getVist_tipi());
         Map fpars = new HashMap();
         vistosiShopManager.addCdclasFilter(fpars, request);
+        vistosiShopManager.addToggleStateZEEFilter(fpars, request);    
+        
         model.addAttribute("famiglie", vistosiShopManager.getVist_famiglia(fpars));
 
     }

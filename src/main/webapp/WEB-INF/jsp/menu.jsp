@@ -82,18 +82,27 @@
     <div style="float: left; margin-top:2px;"><spring:message code="filter.by" text="Filtra per"/>:</div>
     <ul><c:set var="dsstato">dsstato</c:set>
         <c:if test="${rc.locale.language!='it'}"><c:set var="dsstato">dsstato_${rc.locale.language}</c:set></c:if>
-        <c:forEach items="${stati}" var="item">  
-            <c:set var="cookieName">view-stato_${item.cdstato}</c:set>
-            <li onmouseover="showX('${item.cdstato}')" onmouseout="hideX('${item.cdstato}')" title="<spring:message code="menu.clicca" text="Clicca per selezionare"/>">
-                <a href="javascript:void(0)" id="stato_${item.cdstato}" class="chgstato">
-                    <div class="legenda-marker" id="legenda-on-${item.cdstato}" style="background-color: rgb(${item.vist_rgb_r},${item.vist_rgb_g},${item.vist_rgb_b}); display: none;">X</div>
-                    <div class="legenda-marker" id="legenda-off-${item.cdstato}" style="background-color: rgb(${item.vist_rgb_r},${item.vist_rgb_g},${item.vist_rgb_b})">
-                        ${(cookie[cookieName].value == 'S')?"X": ""}
-                    </div>
-                        ${(!empty item[dsstato])?item[dsstato]:item.dsstato}
-                </a>
-            </li>
+        <c:set var="zeeAvailable" value="false"/>
+        <c:forEach items="${stati}" var="item"> 
+            <c:choose>
+                <c:when test="${item.cdstato=='ZEE'}">
+                    <c:set var="zeeAvailable" value="true"/>
+                </c:when>
+                <c:otherwise>
+                    <c:set var="cookieName">view-stato_${item.cdstato}</c:set>
+                    <li onmouseover="showX('${item.cdstato}')" onmouseout="hideX('${item.cdstato}')" title="<spring:message code="menu.clicca" text="Clicca per selezionare"/>">
+                        <a href="javascript:void(0)" id="${cookieName}" class="chgstato">
+                            <div class="legenda-marker" id="legenda-on-${item.cdstato}" style="background-color: rgb(${item.vist_rgb_r},${item.vist_rgb_g},${item.vist_rgb_b}); display: none;">X</div>
+                            <div class="legenda-marker" id="legenda-off-${item.cdstato}" style="background-color: rgb(${item.vist_rgb_r},${item.vist_rgb_g},${item.vist_rgb_b})">
+                                ${(cookie[cookieName].value == 'S')?"X": ""}
+                            </div>
+                                ${(!empty item[dsstato])?item[dsstato]:item.dsstato}
+                        </a>
+                    </li>
+                </c:otherwise>
+            </c:choose>
         </c:forEach> 
+    </ul>
         <%--security:authorize ifAllGranted="ROLE_CLIE">
         <li onmouseover="showX('offerte')" onmouseout="hideX('offerte')" style="text-transform: uppercase" title="<spring:message code="menu.clicca" text="Clicca per selezionare"/>">
             <a href="javascript:void(0)" id="offFilterBtn">
@@ -103,7 +112,26 @@
             </a>
         </li>
         </security:authorize--%>
-    </ul>
+        <c:if test="${zeeAvailable}">
+            <div style="float: left; margin-top:2px; margin-left: 20px"><spring:message code="view.also" text="Vedi anche"/>:</div>
+            <ul>
+            <c:forEach items="${stati}" var="item"> 
+                <c:if test="${item.cdstato=='ZEE'}">
+                    <c:set var="zeeAvailable" value="true"/>
+                    <c:set var="cookieName">toggle-stato_${item.cdstato}</c:set>
+                    <li onmouseover="showX('${item.cdstato}')" onmouseout="hideX('${item.cdstato}')" title="<spring:message code="menu.clicca" text="Clicca per selezionare"/>">
+                        <a href="javascript:void(0)" id="${cookieName}" class="chgstato">
+                            <div class="legenda-marker" id="legenda-on-${item.cdstato}" style="background-color: rgb(${item.vist_rgb_r},${item.vist_rgb_g},${item.vist_rgb_b}); display: none;">X</div>
+                            <div class="legenda-marker" id="legenda-off-${item.cdstato}" style="background-color: rgb(${item.vist_rgb_r},${item.vist_rgb_g},${item.vist_rgb_b})">
+                                ${(cookie[cookieName].value == 'S')?"X": ""}
+                            </div>
+                                ${(!empty item[dsstato])?item[dsstato]:item.dsstato}
+                        </a>
+                    </li>
+                </c:if>
+            </c:forEach> 
+            </ul>
+        </c:if>
     <div class="clear logout" id="reset_filtri" style="float: right;"><span><a href="<c:url value="/index"/>"><spring:message code="filter.reset" text="Azzera tutti i filtri"/></a></span></div>
             <%--div class="offFilter ${(cookie.filter_off.value == 'S')?"on": "off"}"><a href="javascript:void(0)" id="offFilterBtn"><c:choose><c:when test="${cookie.filter_off.value == 'S'}"><spring:message code="view.allarts" text="tutti gli articoli"/></c:when><c:otherwise><spring:message code="view.onlyoff" text="solo offerte"/></c:otherwise></c:choose></a></div--%>
 </div>
@@ -473,7 +501,7 @@
 
                 e.stop();
 
-                var cookieName = 'view-'+item.get('id');
+                var cookieName = item.get('id');
                 var statoCookie = Cookie.read(cookieName);
                 if(statoCookie=='S'){
 
@@ -487,7 +515,7 @@
                     $$('.chgstato').each(function(check, i){
                         
                        if(check != item){
-                            Cookie.write('view-'+check.get('id'), 'N', {duration: 14, path: '/'});
+                            Cookie.write(check.get('id'), 'N', {duration: 14, path: '/'});
                        }
 
                     });

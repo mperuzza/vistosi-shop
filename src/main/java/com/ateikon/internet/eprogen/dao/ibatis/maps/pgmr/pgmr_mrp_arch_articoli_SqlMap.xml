@@ -2997,6 +2997,12 @@
                 #cdrepa_escl_List[]#
             </iterate>
        </isNotEmpty>
+       <isNotEmpty prepend="AND" property="statiEscludedList">
+            mrp_arch_articoli.cdstato NOT IN
+            <iterate close=")" conjunction="," open="(" property="statiEscludedList">
+                #statiEscludedList[]#
+            </iterate>
+       </isNotEmpty>        
     ORDER BY dsarti
   </select>
   

@@ -71,6 +71,7 @@ public class VistosiShopHomeController {
 
         Map fpars = new HashMap();
         vistosiShopManager.addCdclasFilter(fpars, request);
+        vistosiShopManager.addToggleStateZEEFilter(fpars, request);
         model.addAttribute("famiglie", vistosiShopManager.getVist_famiglia(fpars));
 
         model.addAttribute("tipologie", vistosiShopManager.getVist_tipi());
@@ -122,9 +123,13 @@ public class VistosiShopHomeController {
             tipoList.add("PB");
             pars.put("tipoFilterList", tipoList);
         }
+        vistosiShopManager.addToggleStateZEEFilter(pars, request);
+        
+        
         model.addAttribute("tipologieThumb", vistosiShopManager.findVist_tipi(pars));
         Map fpars = new HashMap();
         vistosiShopManager.addCdclasFilter(fpars, request);
+        vistosiShopManager.addToggleStateZEEFilter(fpars, request);
         model.addAttribute("famiglie", vistosiShopManager.getVist_famiglia(fpars));
         model.addAttribute("collezioni", vistosiShopManager.getVist_cp_collezioni());
 
@@ -239,6 +244,7 @@ public class VistosiShopHomeController {
         model.addAttribute("tipologie", vistosiShopManager.getVist_tipi());
         Map fpars = new HashMap();
         vistosiShopManager.addCdclasFilter(fpars, request);
+        vistosiShopManager.addToggleStateZEEFilter(fpars, request);
         model.addAttribute("famiglie", vistosiShopManager.getVist_famiglia(fpars));
 
         return "promo";
@@ -431,11 +437,11 @@ public class VistosiShopHomeController {
 //            downloadUrl += "&file_req=" + f;
 //        }
         for (int i = 0; i < file_reqs.length; i++) {
-            downloadUrl += "&file_req=" + file_reqs[i] 
-                         + "&dsfile=" + dsfiles[i]
-                         + "&nome_modello=" + nome_modello[i]
-                         + "&cdvistelet=" + cdvistelet[i]
-                         + "&tiporisorsa=" + tiporisorsa[i];
+            downloadUrl += "&file_req=" + file_reqs[i]
+                    + "&dsfile=" + dsfiles[i]
+                    + "&nome_modello=" + nome_modello[i]
+                    + "&cdvistelet=" + cdvistelet[i]
+                    + "&tiporisorsa=" + tiporisorsa[i];
         }
 
         Map<String, String> variables = new HashMap<String, String>();
@@ -469,17 +475,17 @@ public class VistosiShopHomeController {
                 if (StringUtils.equals(variables.get("fg_zip"), "S")) {
 
                     //zip --> eprogen_test/zip/download.zip
-                    String dURL = getEprogenUrl()+ "zip/download.zip?";
+                    String dURL = getEprogenUrl() + "zip/download.zip?";
                     String fURL = getPortalUrl() + "download/";
-                    
+
                     for (String f : file_reqs) {
-                        dURL += "&file_req=" + fURL + URLEncoder.encode(f, "UTF-8") 
+                        dURL += "&file_req=" + fURL + URLEncoder.encode(f, "UTF-8")
                                 + "&tkc=" + il_token
                                 + "&lang=" + rcx.getLocale().getLanguage();
-                    }  
-                    
-                    response.sendRedirect(dURL);                    
-                    
+                    }
+
+                    response.sendRedirect(dURL);
+
                 } else {
                     String dURL = getPortalUrl() + "download?";
 

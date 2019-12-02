@@ -2594,6 +2594,8 @@ public class SpecSheetModello {
                     }
                 } catch (FileNotFoundException ex) {
                     //log.debug("not exists");
+                } catch (NullPointerException ex) {
+                    //log.debug("errore nella procedura");
                 }
             }
 

@@ -165,4 +165,8 @@ public interface VistosiShopManager extends BaseManager{
 
     boolean checkSpecsheetModelExists(Mrp_arch_articoli art, WebApplicationContext ctx, RequestContext rc);
 
+    Mrp_arch_stato getMrp_arch_statoByKey(String cd);
+
+    void addToggleStateZEEFilter(Map pars, HttpServletRequest request);
+
 }

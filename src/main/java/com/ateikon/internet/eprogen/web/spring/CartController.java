@@ -13,12 +13,14 @@ import com.ateikon.internet.eprogen.web.security.ShopUser;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.beanutils.BeanUtils;
@@ -389,9 +391,9 @@ public class CartController extends BaseAnnotationController {
                             //check esistenza specsheet modello                
                             if (vistosiShopManager.checkSpecsheetModelExists(art, ctx, rc)) {
                                 art.setSpecsheetModelExists(true);
-                            }                            
+                            }
 
-                        //} catch (FileNotFoundException ex) {
+                            //} catch (FileNotFoundException ex) {
                             //log.debug("not exists");
                         } catch (IllegalAccessException ex) {
                             Logger.getLogger(SchedaArticoloController.class.getName()).log(Level.SEVERE, null, ex);
@@ -444,6 +446,7 @@ public class CartController extends BaseAnnotationController {
 
         Map fpars = new HashMap();
         vistosiShopManager.addCdclasFilter(fpars, request);
+        vistosiShopManager.addToggleStateZEEFilter(fpars, request);
         model.addAttribute("tipologie", vistosiShopManager.getVist_tipi());
         model.addAttribute("famiglie", vistosiShopManager.getVist_famiglia(fpars));
         model.addAttribute("collezioni", vistosiShopManager.getVist_cp_collezioni());

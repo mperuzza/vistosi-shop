@@ -63,6 +63,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.beanutils.BeanComparator;
 import org.apache.commons.beanutils.BeanUtils;
@@ -632,6 +633,10 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
             stpars.put("fgpromo", "S");
             stpars.put("fgweb", "S");
+            if(pars.containsKey("statiEscludedList")){
+                stpars.put("cdstato_escl_List", pars.get("statiEscludedList"));
+            }
+            
             int countOff = mrp_arch_articoliDAO.countOfferta(stpars);
             if (countOff > 0 && !AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
                 //if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
@@ -671,6 +676,9 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
             stpars.put("fgpromo", "S");
             stpars.put("fgweb", "S");
+            if(pars.containsKey("statiEscludedList")){
+                stpars.put("cdstato_escl_List", pars.get("statiEscludedList"));
+            }            
             int countOff = mrp_arch_articoliDAO.countOfferta(stpars);
             if (countOff > 0 && !AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
                 //if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
@@ -710,6 +718,9 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
             stpars.put("fgpromo", "S");
             stpars.put("fgweb", "S");
+            if(pars.containsKey("statiEscludedList")){
+                stpars.put("cdstato_escl_List", pars.get("statiEscludedList"));
+            }            
             int countOff = mrp_arch_articoliDAO.countOfferta(stpars);
             if (countOff > 0 && !AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
                 //if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
@@ -781,6 +792,16 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
                 List<String> cdrepa_escl_List = (List<String>) pars.get("cdrepa_escl_List");
                 if (cdrepa_escl_List.size() > 0) {
                     crit.andCdrepaNotIn(cdrepa_escl_List);
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        if (pars.get("statiEscludedList") != null) {
+            try {
+                List<String> statiEscludedList = (List<String>) pars.get("statiEscludedList");
+                if (statiEscludedList.size() > 0) {
+                    crit.andCdstatoNotIn(statiEscludedList);
                 }
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -1462,6 +1483,11 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
         }
 
     }
+    
+    public Mrp_arch_stato getMrp_arch_statoByKey(String cd) {
+        return mrp_arch_statoDAO.selectByPrimaryKey(cd);
+    }
+    
 
     public List<Mrp_arch_stato> getAvailableStates() {
 
@@ -2019,6 +2045,23 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
         } else {
             pars.put("cdclas_aList", VistosiShopManager.DEFAULT_CDCLAS_A); //filtro solo articoli eu
         }
+    }
+    
+    public void addToggleStateZEEFilter(Map pars, HttpServletRequest request) {
+
+        Mrp_arch_stato statoZEE = getMrp_arch_statoByKey("ZEE");
+        String cookieNameZEE = "toggle-stato_" + statoZEE.getCdstato();
+
+        Cookie ckViewZEE = WebUtils.getCookie(request, cookieNameZEE);
+        if (ckViewZEE != null && "S".equals(ckViewZEE.getValue())) {
+            if (AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
+                pars.put("statiEscludedList", Collections.singletonList(statoZEE.getCdstato()));
+                pars.put("cdstato_escl_List", Collections.singletonList(statoZEE.getCdstato()));
+            }
+        }else{
+            pars.put("statiEscludedList", Collections.singletonList(statoZEE.getCdstato()));
+            pars.put("cdstato_escl_List", Collections.singletonList(statoZEE.getCdstato()));
+        } 
     }
 
     public void addCdrepaFilter(Map pars, HttpServletRequest request) {
