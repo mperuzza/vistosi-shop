@@ -70,7 +70,8 @@ public class CartController extends BaseAnnotationController {
             user = (ShopUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         }
 
-        //Cliente cliente = vistosiShopManager.getCliente(user.getUserDB().getTkclie(), user.getUserDB().getCdazie());
+        // Cliente cliente = vistosiShopManager.getCliente(user.getUserDB().getTkclie(),
+        // user.getUserDB().getCdazie());
         long tkordi = 0;
 
         Object s_tkordi = WebUtils.getSessionAttribute(request, "tkordi");
@@ -98,14 +99,14 @@ public class CartController extends BaseAnnotationController {
             }
             tkordi = f_ordven.getCarrello(user.getUserDB().getTkutente(), user.getUserDB().getTkclie(), cdstato);
 
-            if (tkordi > 0) { //esiste un ordine provvisorio
+            if (tkordi > 0) { // esiste un ordine provvisorio
 
                 return vistosiShopManager.getCarrello(tkordi);
 
             }
 
         } catch (Exception ex_page) {
-            //log.error(ex_page);
+            // log.error(ex_page);
             try {
                 atk_sql.m_connection.rollback();
             } catch (Exception ex_page_sql) {
@@ -129,10 +130,8 @@ public class CartController extends BaseAnnotationController {
     }
 
     @RequestMapping(value = "/viewCart", method = RequestMethod.GET)
-    public String forceCart(@RequestParam(value = "tkordi", required = false) Long tkordi,
-            HttpServletRequest request,
-            HttpServletResponse response,
-            Model model) {
+    public String forceCart(@RequestParam(value = "tkordi", required = false) Long tkordi, HttpServletRequest request,
+            HttpServletResponse response, Model model) {
 
         request.getSession().removeAttribute("tkordi");
 
@@ -151,8 +150,7 @@ public class CartController extends BaseAnnotationController {
             log.debug(cart.getOrd_test() != null);
             log.debug("PR".equals(cart.getOrd_test().getCdstato()));
             log.debug(cart.getOrd_test().getTkutente() == tkutente);
-            if (cart != null && cart.getOrd_test() != null
-                    && "PR".equals(cart.getOrd_test().getCdstato())
+            if (cart != null && cart.getOrd_test() != null && "PR".equals(cart.getOrd_test().getCdstato())
                     && tkutente.equals(cart.getOrd_test().getTkutente())) {
 
                 request.getSession().setAttribute("tkordi", tkordi);
@@ -190,7 +188,7 @@ public class CartController extends BaseAnnotationController {
                 art.setVist_famiglia(vistosiShopManager.getVist_famigliaByKey(art.getCdvistfam()));
                 art.setVist_colori_vetro(vistosiShopManager.getVist_colori_vetroByKey(art.getCdvistcolv()));
                 art.setVist_finit_mont(vistosiShopManager.getVist_finit_montByKey(art.getCdvistfinm()));
-                art.setVist_finit_vetro(vistosiShopManager.getVist_finit_vetroByKey(art.getCdvistfinv()));
+                // art.setVist_finit_vetro(vistosiShopManager.getVist_finit_vetroByKey(art.getCdvistfinv()));
                 art.setVist_elettrificazioni(vistosiShopManager.getVist_elettrificazioniByKey(art.getCdvistelet()));
                 if (art.getCdvistv1() != null) {
                     art.setVist_var1(vistosiShopManager.getVist_var1ByKey(art.getCdvistv1()));
@@ -214,49 +212,53 @@ public class CartController extends BaseAnnotationController {
                     art.setVistTipiAlt(vistosiShopManager.getTipiAlt(art.getCdarti(), art.getCdvisttp()));
                 }
 
-                //ricerca file download
+                // ricerca file download
                 if (art != null) {
 
                     WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(request);
 
-                    //ricerca modelli
+                    // ricerca modelli
                     Vist_famiglia vist_fam = vistosiShopManager.getVist_famigliaByKey(art.getCdvistfam());
 
                     log.debug("filedis >>>" + art.getVist_filedis());
 
                     String path_modello = "fileresources/models";
                     String path_3D = path_modello + "/3D/";
-                    //String nome_modello = vist_fam.getCdvistfam_mPad() + art.getCdvisttp() + art.getCdvistv1Pad() + art.getCdvistv2Pad() + art.getCdvistv3Pad() +"-";
+                    // String nome_modello = vist_fam.getCdvistfam_mPad() + art.getCdvisttp() +
+                    // art.getCdvistv1Pad() + art.getCdvistv2Pad() + art.getCdvistv3Pad() +"-";
                     String nome_modello = art.getVist_filedis();
-                    //igs
-                    //String igs = path_3D + nome_modello + ".zip";
-//                    String igs = path_3D + nome_modello + (art.isLed() ? art.getCdvistelet() : "") + ".zip";
-//                    try {
-//                        String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), igs);
-//                        File f = new File(path_to_filemodel);
-//                        log.debug(path_to_filemodel);
-//                        art.setModel3D_igs(igs);
-//                        if (f.exists()) {
-//                            art.setModel3D_igsExists(Boolean.TRUE);
-//                        }
-//                    } catch (FileNotFoundException ex) {
-//                        log.error("file " + igs + " non trovato");
-//                    }
-                    //eprt
-//                    String eprt = path_3D + nome_modello + ".EPRT";
-//                    try {
-//                        String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), eprt);
-//                        File f = new File(path_to_filemodel);
-//                        log.debug(path_to_filemodel);
-//                        art.setModel3D_eprt(eprt);
-//                        if (f.exists()) {
-//                            art.setModel3D_eprtExists(Boolean.TRUE);
-//                        }
-//                    } catch (FileNotFoundException ex) {
-//                        log.error("file " + eprt + " non trovato");
-//                    }
-                    //easm
-                    //String easm = path_3D + nome_modello + ".EASM";
+                    // igs
+                    // String igs = path_3D + nome_modello + ".zip";
+                    // String igs = path_3D + nome_modello + (art.isLed() ? art.getCdvistelet() :
+                    // "") + ".zip";
+                    // try {
+                    // String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(),
+                    // igs);
+                    // File f = new File(path_to_filemodel);
+                    // log.debug(path_to_filemodel);
+                    // art.setModel3D_igs(igs);
+                    // if (f.exists()) {
+                    // art.setModel3D_igsExists(Boolean.TRUE);
+                    // }
+                    // } catch (FileNotFoundException ex) {
+                    // log.error("file " + igs + " non trovato");
+                    // }
+                    // eprt
+                    // String eprt = path_3D + nome_modello + ".EPRT";
+                    // try {
+                    // String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(),
+                    // eprt);
+                    // File f = new File(path_to_filemodel);
+                    // log.debug(path_to_filemodel);
+                    // art.setModel3D_eprt(eprt);
+                    // if (f.exists()) {
+                    // art.setModel3D_eprtExists(Boolean.TRUE);
+                    // }
+                    // } catch (FileNotFoundException ex) {
+                    // log.error("file " + eprt + " non trovato");
+                    // }
+                    // easm
+                    // String easm = path_3D + nome_modello + ".EASM";
                     String easm = path_3D + nome_modello + (art.isLed() ? art.getCdvistelet() : "") + ".EASM";
                     try {
                         String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), easm);
@@ -271,7 +273,7 @@ public class CartController extends BaseAnnotationController {
                     }
 
                     String path_2D = path_modello + "/2D/";
-                    //dwg cm
+                    // dwg cm
                     String dwg_vers = "cm/";
                     if ("en".equals(rc.getLocale().getLanguage())) {
                         dwg_vers = "po/";
@@ -290,7 +292,7 @@ public class CartController extends BaseAnnotationController {
                         log.error("file " + dwg + " non trovato");
                     }
 
-                    //techNews
+                    // techNews
                     Map techPars = new HashMap();
                     techPars.put("cdvistfam", art.getCdvistfam());
                     techPars.put("cdvisttp", art.getCdvisttp());
@@ -301,7 +303,7 @@ public class CartController extends BaseAnnotationController {
 
                     art.setTechNewsList(vistosiShopManager.getTechNews(techPars));
 
-                    //file certificati
+                    // file certificati
                     Vist_articoli_datiextra datiExtra = vistosiShopManager.getDatiExtraByCdartm(art.getCdartm());
                     String path_cert = "fileresources/cert/";
 
@@ -316,7 +318,8 @@ public class CartController extends BaseAnnotationController {
 
                                     techsheet = StringUtils.substringAfterLast(techsheet, "\\");
 
-                                    String path_to_techsheet = WebUtils.getRealPath(ctx.getServletContext(), path_techsheet + techsheet);
+                                    String path_to_techsheet = WebUtils.getRealPath(ctx.getServletContext(),
+                                            path_techsheet + techsheet);
                                     File f = new File(path_to_techsheet);
                                     log.debug(path_to_techsheet);
                                     Vist_articoli_img vist_articoli_img = new Vist_articoli_img();
@@ -340,14 +343,15 @@ public class CartController extends BaseAnnotationController {
 
                                     if (StringUtils.contains(nomefile, "/")) {
                                         nomefile = StringUtils.substringAfterLast(nomefile, "/");
-                                        //nomefile = nomefile + ".pdf";
+                                        // nomefile = nomefile + ".pdf";
                                     }
                                     if (StringUtils.contains(nomefile, "\\")) {
                                         nomefile = StringUtils.substringAfterLast(nomefile, "\\");
                                     }
 
                                     try {
-                                        String realPath = WebUtils.getRealPath(ctx.getServletContext(), path_cert + nomefile);
+                                        String realPath = WebUtils.getRealPath(ctx.getServletContext(),
+                                                path_cert + nomefile);
 
                                         File f = new File(realPath);
                                         if (f.exists()) {
@@ -357,15 +361,15 @@ public class CartController extends BaseAnnotationController {
 
                                             art.getCertList().addLast(certMap);
                                         } else {
-                                            //TODO???
+                                            // TODO???
                                         }
                                     } catch (FileNotFoundException ex) {
-                                        //log.debug("not exists");
+                                        // log.debug("not exists");
                                     }
                                 }
                             }
 
-                            //file classe energetica
+                            // file classe energetica
                             String fieldName = "arwCertificazione" + 10;
                             String nomefile = BeanUtils.getSimpleProperty(datiExtra, fieldName);
 
@@ -375,26 +379,30 @@ public class CartController extends BaseAnnotationController {
 
                             art.setEletDatiExtraMap(vistosiShopManager.getDatiExtraLampMap(datiExtra, ctx));
 
-                            //check esistenza specsheet
-//                            String realPathPdf = WebUtils.getRealPath(ctx.getServletContext(), SpecSheet.ROOT_RES + "/risorse/" + nome_modello + ".pdf");
-//                            String realPathU3D = WebUtils.getRealPath(ctx.getServletContext(), SpecSheet.ROOT_RES + "/risorse/" + nome_modello + ".U3D");
-//                            String realPathXlsx = WebUtils.getRealPath(ctx.getServletContext(), SpecSheet.ROOT_RES + "/risorse/" + nome_modello + "_" + rc.getLocale().getLanguage() + ".xlsx");
-//
-//                            File fPdf = new File(realPathPdf);
-//                            File fU3D = new File(realPathU3D);
-//                            File fXlsx = new File(realPathXlsx);
-//
-//                            if(fPdf.exists() && fU3D.exists() && fXlsx.exists()){
+                            // check esistenza specsheet
+                            // String realPathPdf = WebUtils.getRealPath(ctx.getServletContext(),
+                            // SpecSheet.ROOT_RES + "/risorse/" + nome_modello + ".pdf");
+                            // String realPathU3D = WebUtils.getRealPath(ctx.getServletContext(),
+                            // SpecSheet.ROOT_RES + "/risorse/" + nome_modello + ".U3D");
+                            // String realPathXlsx = WebUtils.getRealPath(ctx.getServletContext(),
+                            // SpecSheet.ROOT_RES + "/risorse/" + nome_modello + "_" +
+                            // rc.getLocale().getLanguage() + ".xlsx");
+                            //
+                            // File fPdf = new File(realPathPdf);
+                            // File fU3D = new File(realPathU3D);
+                            // File fXlsx = new File(realPathXlsx);
+                            //
+                            // if(fPdf.exists() && fU3D.exists() && fXlsx.exists()){
                             if (vistosiShopManager.checkSpecsheetExists(art, ctx, rc)) {
                                 art.setSpecsheetExists(true);
                             }
-                            //check esistenza specsheet modello                
+                            // check esistenza specsheet modello
                             if (vistosiShopManager.checkSpecsheetModelExists(art, ctx, rc)) {
                                 art.setSpecsheetModelExists(true);
                             }
 
-                            //} catch (FileNotFoundException ex) {
-                            //log.debug("not exists");
+                            // } catch (FileNotFoundException ex) {
+                            // log.debug("not exists");
                         } catch (IllegalAccessException ex) {
                             Logger.getLogger(SchedaArticoloController.class.getName()).log(Level.SEVERE, null, ex);
                         } catch (InvocationTargetException ex) {
@@ -429,15 +437,18 @@ public class CartController extends BaseAnnotationController {
 
                 if (StringUtils.isNotBlank(ord_positito.getCdartirif())) {
 
-                    art.setDatiRicambio(vistosiShopManager.getDatiRicambio(ord_positito.getCdartirif(), ord_positito.getCdarti()));
+                    art.setDatiRicambio(
+                            vistosiShopManager.getDatiRicambio(ord_positito.getCdartirif(), ord_positito.getCdarti()));
 
-                    Mrp_arch_articoli artrif = vistosiShopManager.getMrp_arch_articoliByKey(ord_positito.getCdartirif());
+                    Mrp_arch_articoli artrif = vistosiShopManager
+                            .getMrp_arch_articoliByKey(ord_positito.getCdartirif());
 
                     artrif.setVist_famiglia(vistosiShopManager.getVist_famigliaByKey(artrif.getCdvistfam()));
                     artrif.setVist_colori_vetro(vistosiShopManager.getVist_colori_vetroByKey(artrif.getCdvistcolv()));
                     artrif.setVist_finit_mont(vistosiShopManager.getVist_finit_montByKey(artrif.getCdvistfinm()));
-                    artrif.setVist_finit_vetro(vistosiShopManager.getVist_finit_vetroByKey(art.getCdvistfinv()));
-                    artrif.setVist_elettrificazioni(vistosiShopManager.getVist_elettrificazioniByKey(artrif.getCdvistelet()));
+                    // artrif.setVist_finit_vetro(vistosiShopManager.getVist_finit_vetroByKey(art.getCdvistfinv()));
+                    artrif.setVist_elettrificazioni(
+                            vistosiShopManager.getVist_elettrificazioniByKey(artrif.getCdvistelet()));
 
                     ord_positito.setArticolorif(artrif);
                 }
@@ -451,12 +462,14 @@ public class CartController extends BaseAnnotationController {
         model.addAttribute("famiglie", vistosiShopManager.getVist_famiglia(fpars));
         model.addAttribute("collezioni", vistosiShopManager.getVist_cp_collezioni());
         model.addAttribute("stati", vistosiShopManager.getAvailableStates());
-        //model.addAttribute("promo", vistosiShopManager.getPromoByTkclie(user.getUserDB().getTkclie()));
+        // model.addAttribute("promo",
+        // vistosiShopManager.getPromoByTkclie(user.getUserDB().getTkclie()));
         if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
 
-            //tkutente da verificare 
-            //  se utente realCustomer >> verifico il tkutente dello user attivo
-            //  se !realCustomer devo verificare il tkutente del cliente associato all'utente (se presente)
+            // tkutente da verificare
+            // se utente realCustomer >> verifico il tkutente dello user attivo
+            // se !realCustomer devo verificare il tkutente del cliente associato all'utente
+            // (se presente)
             Long tkutente = user.getUserDB().getTkutente();
             if (!user.isRealCustomer()) {
                 Ep_utente clieUser = vistosiShopManager.getClieUser(user.getCliente().getArchclie().getTkclie());
@@ -473,7 +486,8 @@ public class CartController extends BaseAnnotationController {
                 cart.setCondcAccepted((Boolean) condizioni.get("accepted"));
             }
 
-            model.addAttribute("promo", vistosiShopManager.getActivePromo(user.getUserDB().getTkclie(), user.getCliente().getArchclie().getCdagen()));
+            model.addAttribute("promo", vistosiShopManager.getActivePromo(user.getUserDB().getTkclie(),
+                    user.getCliente().getArchclie().getCdagen()));
         }
 
     }
@@ -481,8 +495,7 @@ public class CartController extends BaseAnnotationController {
     @RequestMapping(value = "/fullCart", method = RequestMethod.GET)
     public String getFullCart(HttpServletRequest request,
             @RequestParam(value = "azione", required = false) String azione,
-            @RequestParam(value = "tkposi_del", required = false) Long tkposi_del,
-            Model model) {
+            @RequestParam(value = "tkposi_del", required = false) Long tkposi_del, Model model) {
 
         RequestContext rc = new RequestContext(request);
 
@@ -492,7 +505,8 @@ public class CartController extends BaseAnnotationController {
             user = (ShopUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         }
 
-        //Cliente cliente = vistosiShopManager.getCliente(user.getUserDB().getTkclie(), user.getUserDB().getCdazie());
+        // Cliente cliente = vistosiShopManager.getCliente(user.getUserDB().getTkclie(),
+        // user.getUserDB().getCdazie());
         if ("delete".equals(azione)) {
 
             if (tkposi_del != null) {
@@ -521,23 +535,26 @@ public class CartController extends BaseAnnotationController {
                             if (AuthorityUtils.userHasAuthority("ROLE_SUBUTENTE")) {
                                 cdstato = "PN";
                             }
-                            tkordi = f_ordven.getCarrello(user.getUserDB().getTkutente(), user.getUserDB().getTkclie(), cdstato);
+                            tkordi = f_ordven.getCarrello(user.getUserDB().getTkutente(), user.getUserDB().getTkclie(),
+                                    cdstato);
                         }
                     }
 
-                    if (tkordi > 0) { //esiste un ordine provvisorio
+                    if (tkordi > 0) { // esiste un ordine provvisorio
                         int tot_rec = f_ordven.cancella_riga(tkordi, tkposi_del);
 
                         if (tot_rec > 0) {
 
                             f_ordven.m_connection.commit();
 
-                            model.addAttribute("message", getText("cart.item.deleted", new Object[]{}, "Riga Cancellata", rc.getLocale()));
+                            model.addAttribute("message",
+                                    getText("cart.item.deleted", new Object[] {}, "Riga Cancellata", rc.getLocale()));
 
                         } else {
 
                             f_ordven.m_connection.rollback();
-                            model.addAttribute("message", getText("cart.item.nodeleted", new Object[]{}, "Errore: nessun Articolo Cancellato", rc.getLocale()));
+                            model.addAttribute("message", getText("cart.item.nodeleted", new Object[] {},
+                                    "Errore: nessun Articolo Cancellato", rc.getLocale()));
 
                         }
 
@@ -568,45 +585,46 @@ public class CartController extends BaseAnnotationController {
         } else if ("delete_all".equals(azione)) {
         }
 
-//    if (azione.equals("delete")){
-//
-//        long r_tkposi_del = 0;
-//
-//        if (request.getParameter("tkposi_del") != null) r_tkposi_del = Long.parseLong(request.getParameter("tkposi_del"));
-//
-//        tot_rec = f_ordven.cancella_riga( tkordi, r_tkposi_del );
-//
-//        if (tot_rec > 0) {
-//
-//            f_ordven.m_connection.commit();
-//
-//            message = "Riga Cancellata\n";
-//        }else {
-//            f_ordven.m_connection.rollback();
-//            message = "Errore: nessun Articolo Cancellato";
-//        }
-//    }
-//
-//
-//
-//
-//
-//    if (azione.equals("delete_all")){
-//
-//
-//        tot_rec = f_ordven.cancella_righe( tkordi );
-//
-//        if (tot_rec > 0) {
-//
-//            f_ordven.m_connection.commit();
-//
-//            message = "Carrello Svuotato\n";
-//        }else {
-//            f_ordven.m_connection.rollback();
-//            message = "Errore: nessun Articolo Cancellato!";
-//        }
-//
-//    }
+        // if (azione.equals("delete")){
+        //
+        // long r_tkposi_del = 0;
+        //
+        // if (request.getParameter("tkposi_del") != null) r_tkposi_del =
+        // Long.parseLong(request.getParameter("tkposi_del"));
+        //
+        // tot_rec = f_ordven.cancella_riga( tkordi, r_tkposi_del );
+        //
+        // if (tot_rec > 0) {
+        //
+        // f_ordven.m_connection.commit();
+        //
+        // message = "Riga Cancellata\n";
+        // }else {
+        // f_ordven.m_connection.rollback();
+        // message = "Errore: nessun Articolo Cancellato";
+        // }
+        // }
+        //
+        //
+        //
+        //
+        //
+        // if (azione.equals("delete_all")){
+        //
+        //
+        // tot_rec = f_ordven.cancella_righe( tkordi );
+        //
+        // if (tot_rec > 0) {
+        //
+        // f_ordven.m_connection.commit();
+        //
+        // message = "Carrello Svuotato\n";
+        // }else {
+        // f_ordven.m_connection.rollback();
+        // message = "Errore: nessun Articolo Cancellato!";
+        // }
+        //
+        // }
         CarrelloItemForm cart = getBaseCart(request);
 
         referenceData(request, cart, model, user);
@@ -617,10 +635,11 @@ public class CartController extends BaseAnnotationController {
     }
 
     @RequestMapping(value = "/fullCart", method = RequestMethod.POST)
-    public String processSubmit(HttpServletRequest request,
-            @ModelAttribute("cart") CarrelloItemForm form, BindingResult result, Model model, SessionStatus status) throws IllegalAccessException, InvocationTargetException {
+    public String processSubmit(HttpServletRequest request, @ModelAttribute("cart") CarrelloItemForm form,
+            BindingResult result, Model model, SessionStatus status)
+            throws IllegalAccessException, InvocationTargetException {
 
-//        log.debug(form);
+        // log.debug(form);
         ShopUser user = null;
 
         if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
@@ -628,22 +647,24 @@ public class CartController extends BaseAnnotationController {
         }
 
         if (user.isRealCustomer() && !form.getCondcAccepted()) {
-            result.rejectValue("condcAccepted", "errors.mustaccept.condc", "Le condizioni di vendita devono essere accettate");
+            result.rejectValue("condcAccepted", "errors.mustaccept.condc",
+                    "Le condizioni di vendita devono essere accettate");
         }
 
         if (result.hasErrors()) {
-            //referenceData(request, form, model, user);
+            // referenceData(request, form, model, user);
             return "fullCart";
 
         } else {
-            //salvataggio note
+            // salvataggio note
             vistosiShopManager.saveCarrello(form);
 
             RequestContext rc = new RequestContext(request);
 
-            request.getSession().setAttribute("message", getText("cart.saved", new Object[]{}, "Carrello salvato", rc.getLocale()));
+            request.getSession().setAttribute("message",
+                    getText("cart.saved", new Object[] {}, "Carrello salvato", rc.getLocale()));
 
-//        log.debug("gotodest: " + request.getParameter("gotodest"));
+            // log.debug("gotodest: " + request.getParameter("gotodest"));
             boolean goon = ServletRequestUtils.getBooleanParameter(request, "gotodest", false);
 
             if (goon) {
@@ -683,7 +704,7 @@ public class CartController extends BaseAnnotationController {
 
             if (portalUrl != null) {
                 try {
-                    //url = StringUtils.replace(portalUrl, "portal", "eprogen");
+                    // url = StringUtils.replace(portalUrl, "portal", "eprogen");
                     url = of_trasformaURL(portalUrl, "portal", "eprogen");
                 } catch (Exception ex) {
                     Logger.getLogger(CartController.class.getName()).log(Level.SEVERE, null, ex);

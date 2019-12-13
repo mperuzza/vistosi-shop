@@ -82,74 +82,76 @@ public class SendWishlistFormController extends BaseFormController {
         this.vistosiShopManager = vistosiShopManager;
     }
 
-//    @RequestMapping(value = {"/temp"}, method = RequestMethod.GET)
-//    public String getTemp(HttpServletRequest request, Model model) {
-//            
-//        RequestContext rc = new RequestContext(request);
-//        
-//        String templateName = "temp.vm";
-//
-//        Locale locale = rc.getLocale();
-//        Map mailModel = new HashMap();
-//        
-//        CarrelloItemForm cart = new CarrelloItemForm();
-//        
-//        Mrp_arch_articoli a =  new Mrp_arch_articoli();
-//        
-//        Vist_famiglia f = new Vist_famiglia();
-//        f.setDsvistfam("giogali");
-//        f.setDsvistfam_eng("giogalieng");
-//        
-//        a.setVist_famiglia(f);
-//        
-//        Web_ord_positito p = new Web_ord_positito();
-//        
-//        p.setArticolo(a);
-//        cart.setOrd_posititos(Collections.singletonList(p));
-//        
-//        mailModel.put("cart", cart);
-//        String s_locale = locale.getLanguage();
-//        mailModel.put("s_locale", s_locale);
-//        
-//        if("it".equals(s_locale)){
-//            mailModel.put("atkLangSfx", "");
-//        }else
-//        if("en".equals(s_locale)){
-//            mailModel.put("atkLangSfx", "_eng");
-//        }else
-//        if("de".equals(s_locale)){
-//            mailModel.put("atkLangSfx", "_ted");
-//        }else
-//        if("es".equals(s_locale)){
-//            mailModel.put("atkLangSfx", "_spa");
-//        }else
-//        if("fr".equals(s_locale)){
-//            mailModel.put("atkLangSfx", "_fra");
-//        }else mailModel.put("atkLangSfx", "");
-//
-//;
-//        mailModel.put("resources", messageSource);
-//        mailModel.put("noArgs", new Object[]{});
-//        mailModel.put("languageId", "dsvistfam");
-//        mailModel.put("number", new NumberTool());
-//        mailModel.put("date", new DateTool());
-//        mailModel.put("render", new RenderTool());
-//        mailModel.put("applicationURL", RequestUtil.getAppURL(request));
-//
-//
-//        mailModel.put("sender",  "pippo");
-//
-//
-//        String object = "Vistosi wishlist";
-//
-//        
-//        String body = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, templateName, mailModel);
-//        log.debug(body); 
-//    
-//        return "send_wishlist";
-//    }
-    @RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
-    public String getForm(@RequestParam(value = "storelocator", required = false, defaultValue = "false") Boolean storeLocator,
+    // @RequestMapping(value = {"/temp"}, method = RequestMethod.GET)
+    // public String getTemp(HttpServletRequest request, Model model) {
+    //
+    // RequestContext rc = new RequestContext(request);
+    //
+    // String templateName = "temp.vm";
+    //
+    // Locale locale = rc.getLocale();
+    // Map mailModel = new HashMap();
+    //
+    // CarrelloItemForm cart = new CarrelloItemForm();
+    //
+    // Mrp_arch_articoli a = new Mrp_arch_articoli();
+    //
+    // Vist_famiglia f = new Vist_famiglia();
+    // f.setDsvistfam("giogali");
+    // f.setDsvistfam_eng("giogalieng");
+    //
+    // a.setVist_famiglia(f);
+    //
+    // Web_ord_positito p = new Web_ord_positito();
+    //
+    // p.setArticolo(a);
+    // cart.setOrd_posititos(Collections.singletonList(p));
+    //
+    // mailModel.put("cart", cart);
+    // String s_locale = locale.getLanguage();
+    // mailModel.put("s_locale", s_locale);
+    //
+    // if("it".equals(s_locale)){
+    // mailModel.put("atkLangSfx", "");
+    // }else
+    // if("en".equals(s_locale)){
+    // mailModel.put("atkLangSfx", "_eng");
+    // }else
+    // if("de".equals(s_locale)){
+    // mailModel.put("atkLangSfx", "_ted");
+    // }else
+    // if("es".equals(s_locale)){
+    // mailModel.put("atkLangSfx", "_spa");
+    // }else
+    // if("fr".equals(s_locale)){
+    // mailModel.put("atkLangSfx", "_fra");
+    // }else mailModel.put("atkLangSfx", "");
+    //
+    // ;
+    // mailModel.put("resources", messageSource);
+    // mailModel.put("noArgs", new Object[]{});
+    // mailModel.put("languageId", "dsvistfam");
+    // mailModel.put("number", new NumberTool());
+    // mailModel.put("date", new DateTool());
+    // mailModel.put("render", new RenderTool());
+    // mailModel.put("applicationURL", RequestUtil.getAppURL(request));
+    //
+    //
+    // mailModel.put("sender", "pippo");
+    //
+    //
+    // String object = "Vistosi wishlist";
+    //
+    //
+    // String body = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine,
+    // templateName, mailModel);
+    // log.debug(body);
+    //
+    // return "send_wishlist";
+    // }
+    @RequestMapping(value = { "", "/" }, method = RequestMethod.GET)
+    public String getForm(
+            @RequestParam(value = "storelocator", required = false, defaultValue = "false") Boolean storeLocator,
             HttpServletRequest request, Model model) throws Exception {
 
         long tkordi = 0;
@@ -176,22 +178,22 @@ public class SendWishlistFormController extends BaseFormController {
     public void validate(FormSendWishlist form, BindingResult result, HttpServletRequest request) {
 
         if (StringUtils.isBlank(form.getSender())) {
-            result.rejectValue("sender", "errors.required", new Object[]{"Email"}, "Mittente richiesto");
+            result.rejectValue("sender", "errors.required", new Object[] { "Email" }, "Mittente richiesto");
         } else {
             if (!ValidationUtils.validateEmail(form.getSender())) {
-                result.rejectValue("sender", "errors.invalid", new Object[]{"Email"}, "Indirizzo mail non valido");
+                result.rejectValue("sender", "errors.invalid", new Object[] { "Email" }, "Indirizzo mail non valido");
             }
         }
 
         if (StringUtils.isBlank(form.getDestinatari())) {
-            result.rejectValue("destinatari", "errors.required", new Object[]{"Email"}, "Destinatari richiesti");
+            result.rejectValue("destinatari", "errors.required", new Object[] { "Email" }, "Destinatari richiesti");
         } else {
 
             String emailStrings = form.getDestinatari().trim();
             String[] a_email = StringUtils.split(emailStrings, ',');
 
             if (a_email == null) {
-                result.rejectValue("destinatari", "errors.required", new Object[]{"Email"}, "Destinatari richiesti");
+                result.rejectValue("destinatari", "errors.required", new Object[] { "Email" }, "Destinatari richiesti");
             }
 
             a_email = StringUtils.stripAll(a_email);
@@ -200,7 +202,8 @@ public class SendWishlistFormController extends BaseFormController {
 
                 if (!ValidationUtils.validateEmail(email)) {
 
-                    result.rejectValue("destinatari", "errors.invalid", new Object[]{"Email"}, "Indirizzo mail non valido");
+                    result.rejectValue("destinatari", "errors.invalid", new Object[] { "Email" },
+                            "Indirizzo mail non valido");
 
                     break;
                 }
@@ -209,15 +212,16 @@ public class SendWishlistFormController extends BaseFormController {
 
             form.setToList(new ArrayList<String>(Arrays.asList(a_email)));
 
-//            for (String string : a_email) {
-//                log.debug(string);
-//            }
+            // for (String string : a_email) {
+            // log.debug(string);
+            // }
         }
 
     }
 
-    @RequestMapping(value = {"", "/"}, method = RequestMethod.POST)
-    public String sendWishlist(@ModelAttribute("formSendWishlist") FormSendWishlist form, BindingResult result, HttpServletRequest request) throws Exception {
+    @RequestMapping(value = { "", "/" }, method = RequestMethod.POST)
+    public String sendWishlist(@ModelAttribute("formSendWishlist") FormSendWishlist form, BindingResult result,
+            HttpServletRequest request) throws Exception {
 
         RequestContext rc = new RequestContext(request);
 
@@ -238,7 +242,7 @@ public class SendWishlistFormController extends BaseFormController {
                 art.setVist_famiglia(vistosiShopManager.getVist_famigliaByKey(art.getCdvistfam()));
                 art.setVist_colori_vetro(vistosiShopManager.getVist_colori_vetroByKey(art.getCdvistcolv()));
                 art.setVist_finit_mont(vistosiShopManager.getVist_finit_montByKey(art.getCdvistfinm()));
-                art.setVist_finit_vetro(vistosiShopManager.getVist_finit_vetroByKey(art.getCdvistfinv()));
+                // art.setVist_finit_vetro(vistosiShopManager.getVist_finit_vetroByKey(art.getCdvistfinv()));
                 art.setVist_elettrificazioni(vistosiShopManager.getVist_elettrificazioniByKey(art.getCdvistelet()));
                 if (art.getCdvistv1() != null) {
                     art.setVist_var1(vistosiShopManager.getVist_var1ByKey(art.getCdvistv1()));
@@ -258,49 +262,53 @@ public class SendWishlistFormController extends BaseFormController {
                     }
                 }
 
-                //ricerca file download
+                // ricerca file download
                 if (art != null) {
 
                     WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(request);
 
-                    //ricerca modelli
+                    // ricerca modelli
                     Vist_famiglia vist_fam = vistosiShopManager.getVist_famigliaByKey(art.getCdvistfam());
 
                     log.debug("filedis >>>" + art.getVist_filedis());
 
                     String path_modello = "fileresources/models";
                     String path_3D = path_modello + "/3D/";
-                    //String nome_modello = vist_fam.getCdvistfam_mPad() + art.getCdvisttp() + art.getCdvistv1Pad() + art.getCdvistv2Pad() + art.getCdvistv3Pad() +"-";
+                    // String nome_modello = vist_fam.getCdvistfam_mPad() + art.getCdvisttp() +
+                    // art.getCdvistv1Pad() + art.getCdvistv2Pad() + art.getCdvistv3Pad() +"-";
                     String nome_modello = art.getVist_filedis();
-                    //igs
-                    //String igs = path_3D + nome_modello + ".zip";
-//                    String igs = path_3D + nome_modello + (art.isLed() ? art.getCdvistelet() : "") + ".zip";
-//                    try {
-//                        String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), igs);
-//                        File f = new File(path_to_filemodel);
-//                        log.debug(path_to_filemodel);
-//                        art.setModel3D_igs(igs);
-//                        if (f.exists()) {
-//                            art.setModel3D_igsExists(Boolean.TRUE);
-//                        }
-//                    } catch (FileNotFoundException ex) {
-//                        log.error("file " + igs + " non trovato");
-//                    }
-                    //eprt
-//                    String eprt = path_3D + nome_modello + ".EPRT";
-//                    try {
-//                        String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), eprt);
-//                        File f = new File(path_to_filemodel);
-//                        log.debug(path_to_filemodel);
-//                        art.setModel3D_eprt(eprt);
-//                        if (f.exists()) {
-//                            art.setModel3D_eprtExists(Boolean.TRUE);
-//                        }
-//                    } catch (FileNotFoundException ex) {
-//                        log.error("file " + eprt + " non trovato");
-//                    }
-                    //easm
-                    //String easm = path_3D + nome_modello + ".EASM";
+                    // igs
+                    // String igs = path_3D + nome_modello + ".zip";
+                    // String igs = path_3D + nome_modello + (art.isLed() ? art.getCdvistelet() :
+                    // "") + ".zip";
+                    // try {
+                    // String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(),
+                    // igs);
+                    // File f = new File(path_to_filemodel);
+                    // log.debug(path_to_filemodel);
+                    // art.setModel3D_igs(igs);
+                    // if (f.exists()) {
+                    // art.setModel3D_igsExists(Boolean.TRUE);
+                    // }
+                    // } catch (FileNotFoundException ex) {
+                    // log.error("file " + igs + " non trovato");
+                    // }
+                    // eprt
+                    // String eprt = path_3D + nome_modello + ".EPRT";
+                    // try {
+                    // String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(),
+                    // eprt);
+                    // File f = new File(path_to_filemodel);
+                    // log.debug(path_to_filemodel);
+                    // art.setModel3D_eprt(eprt);
+                    // if (f.exists()) {
+                    // art.setModel3D_eprtExists(Boolean.TRUE);
+                    // }
+                    // } catch (FileNotFoundException ex) {
+                    // log.error("file " + eprt + " non trovato");
+                    // }
+                    // easm
+                    // String easm = path_3D + nome_modello + ".EASM";
                     String easm = path_3D + nome_modello + (art.isLed() ? art.getCdvistelet() : "") + ".EASM";
                     try {
                         String path_to_filemodel = WebUtils.getRealPath(ctx.getServletContext(), easm);
@@ -315,7 +323,7 @@ public class SendWishlistFormController extends BaseFormController {
                     }
 
                     String path_2D = path_modello + "/2D/";
-                    //dwg cm
+                    // dwg cm
                     String dwg_vers = "cm/";
                     if ("en".equals(rc.getLocale().getLanguage())) {
                         dwg_vers = "po/";
@@ -334,7 +342,7 @@ public class SendWishlistFormController extends BaseFormController {
                         log.error("file " + dwg + " non trovato");
                     }
 
-                    //file certificati
+                    // file certificati
                     Vist_articoli_datiextra datiExtra = vistosiShopManager.getDatiExtraByCdartm(art.getCdartm());
                     String path_cert = "fileresources/cert/";
 
@@ -348,7 +356,8 @@ public class SendWishlistFormController extends BaseFormController {
                                 try {
                                     techsheet = StringUtils.substringAfterLast(techsheet, "\\");
 
-                                    String path_to_techsheet = WebUtils.getRealPath(ctx.getServletContext(), path_techsheet + techsheet);
+                                    String path_to_techsheet = WebUtils.getRealPath(ctx.getServletContext(),
+                                            path_techsheet + techsheet);
                                     File f = new File(path_to_techsheet);
                                     log.debug(path_to_techsheet);
                                     Vist_articoli_img vist_articoli_img = new Vist_articoli_img();
@@ -378,7 +387,8 @@ public class SendWishlistFormController extends BaseFormController {
                                     }
 
                                     try {
-                                        String realPath = WebUtils.getRealPath(ctx.getServletContext(), path_cert + nomefile);
+                                        String realPath = WebUtils.getRealPath(ctx.getServletContext(),
+                                                path_cert + nomefile);
 
                                         File f = new File(realPath);
                                         if (f.exists()) {
@@ -388,15 +398,15 @@ public class SendWishlistFormController extends BaseFormController {
 
                                             art.getCertList().addLast(certMap);
                                         } else {
-                                            //TODO???
+                                            // TODO???
                                         }
                                     } catch (FileNotFoundException ex) {
-                                        //log.debug("not exists");
+                                        // log.debug("not exists");
                                     }
                                 }
                             }
 
-                            //file classe energetica
+                            // file classe energetica
                             String fieldName = "arwCertificazione" + 10;
                             String nomefile = BeanUtils.getSimpleProperty(datiExtra, fieldName);
 
@@ -406,23 +416,27 @@ public class SendWishlistFormController extends BaseFormController {
 
                             art.setEletDatiExtraMap(vistosiShopManager.getDatiExtraLampMap(datiExtra, ctx));
 
-                            //check esistenza specsheet
-//                            String realPathPdf = WebUtils.getRealPath(ctx.getServletContext(), SpecSheet.ROOT_RES + "/risorse/" + nome_modello + ".pdf");
-//                            String realPathU3D = WebUtils.getRealPath(ctx.getServletContext(), SpecSheet.ROOT_RES + "/risorse/" + nome_modello + ".U3D");
-//                            String realPathXlsx = WebUtils.getRealPath(ctx.getServletContext(), SpecSheet.ROOT_RES + "/risorse/" + nome_modello + "_" + rc.getLocale().getLanguage() + ".xlsx");
-//
-//                            File fPdf = new File(realPathPdf);
-//                            File fU3D = new File(realPathU3D);
-//                            File fXlsx = new File(realPathXlsx);
-//
-//                            if(fPdf.exists() && fU3D.exists() && fXlsx.exists()){                                
+                            // check esistenza specsheet
+                            // String realPathPdf = WebUtils.getRealPath(ctx.getServletContext(),
+                            // SpecSheet.ROOT_RES + "/risorse/" + nome_modello + ".pdf");
+                            // String realPathU3D = WebUtils.getRealPath(ctx.getServletContext(),
+                            // SpecSheet.ROOT_RES + "/risorse/" + nome_modello + ".U3D");
+                            // String realPathXlsx = WebUtils.getRealPath(ctx.getServletContext(),
+                            // SpecSheet.ROOT_RES + "/risorse/" + nome_modello + "_" +
+                            // rc.getLocale().getLanguage() + ".xlsx");
+                            //
+                            // File fPdf = new File(realPathPdf);
+                            // File fU3D = new File(realPathU3D);
+                            // File fXlsx = new File(realPathXlsx);
+                            //
+                            // if(fPdf.exists() && fU3D.exists() && fXlsx.exists()){
                             if (vistosiShopManager.checkSpecsheetExists(art, ctx, rc)) {
 
                                 art.setSpecsheetExists(true);
 
                             }
 
-                        //} catch (FileNotFoundException ex) {
+                            // } catch (FileNotFoundException ex) {
 
                         } catch (IllegalAccessException ex) {
                             Logger.getLogger(SchedaArticoloController.class.getName()).log(Level.SEVERE, null, ex);
@@ -440,10 +454,9 @@ public class SendWishlistFormController extends BaseFormController {
                 stpars.put("cdarti", art.getCdarti());
 
                 stpars.put("fgpromo", "S");
-                
+
                 vistosiShopManager.addToggleStateZEEFilter(stpars, request);
-                
-                
+
                 int countOff = vistosiShopManager.countOfferta(stpars);
                 if (countOff > 0) {
                     if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
@@ -463,39 +476,40 @@ public class SendWishlistFormController extends BaseFormController {
 
                 if (StringUtils.isNotBlank(ord_positito.getCdartirif())) {
 
-                    art.setDatiRicambio(vistosiShopManager.getDatiRicambio(ord_positito.getCdartirif(), ord_positito.getCdarti()));
+                    art.setDatiRicambio(
+                            vistosiShopManager.getDatiRicambio(ord_positito.getCdartirif(), ord_positito.getCdarti()));
 
-                    Mrp_arch_articoli artrif = vistosiShopManager.getMrp_arch_articoliByKey(ord_positito.getCdartirif());
+                    Mrp_arch_articoli artrif = vistosiShopManager
+                            .getMrp_arch_articoliByKey(ord_positito.getCdartirif());
 
                     artrif.setVist_famiglia(vistosiShopManager.getVist_famigliaByKey(artrif.getCdvistfam()));
                     artrif.setVist_colori_vetro(vistosiShopManager.getVist_colori_vetroByKey(artrif.getCdvistcolv()));
                     artrif.setVist_finit_mont(vistosiShopManager.getVist_finit_montByKey(artrif.getCdvistfinm()));
-                    artrif.setVist_finit_vetro(vistosiShopManager.getVist_finit_vetroByKey(art.getCdvistfinv()));
-                    artrif.setVist_elettrificazioni(vistosiShopManager.getVist_elettrificazioniByKey(artrif.getCdvistelet()));
+                    // artrif.setVist_finit_vetro(vistosiShopManager.getVist_finit_vetroByKey(art.getCdvistfinv()));
+                    artrif.setVist_elettrificazioni(
+                            vistosiShopManager.getVist_elettrificazioniByKey(artrif.getCdvistelet()));
 
                     ord_positito.setArticolorif(artrif);
                 }
             }
         }
 
-
         /*
-         * String cdlingua = "0"; RequestContext rc = new
-         * RequestContext(request); Locale locale = rc.getLocale();
-         * List<TabLingue> tabLingues =
-         * jpqlJpaController.findEntities(TabLingue.class,
-         * Filter.equal("codiceiso", locale.toString()));
-         * if(!Utils.isEmpty(tabLingues)){ cdlingua =
+         * String cdlingua = "0"; RequestContext rc = new RequestContext(request);
+         * Locale locale = rc.getLocale(); List<TabLingue> tabLingues =
+         * jpqlJpaController.findEntities(TabLingue.class, Filter.equal("codiceiso",
+         * locale.toString())); if(!Utils.isEmpty(tabLingues)){ cdlingua =
          * tabLingues.get(0).getCodicelingua(); }
          */
-//        String cdlingua = GeoIPInterceptor.getCountry(request).getCodicelingua();
-//        List<TabLingue> tabLingues = jpqlJpaController.findEntities(TabLingue.class, Filter.equal("codicelingua", cdlingua));
-//        Integer languageId = 0;
-//        if (!Utils.isEmpty(tabLingues)) {
-//            languageId = tabLingues.get(0).getIdrecord();
-//        }
-//
-//        model.put("languageId", languageId);
+        // String cdlingua = GeoIPInterceptor.getCountry(request).getCodicelingua();
+        // List<TabLingue> tabLingues = jpqlJpaController.findEntities(TabLingue.class,
+        // Filter.equal("codicelingua", cdlingua));
+        // Integer languageId = 0;
+        // if (!Utils.isEmpty(tabLingues)) {
+        // languageId = tabLingues.get(0).getIdrecord();
+        // }
+        //
+        // model.put("languageId", languageId);
         Map mailModel = new HashMap();
         mailModel.put("cart", cart);
 
@@ -504,13 +518,14 @@ public class SendWishlistFormController extends BaseFormController {
 
         List<String> dest = form.getToList();
 
-//        if (form.isSendSelf()) {
-//
-//            if (epUtente != null && StringUtils.isNotBlank(epUtente.getEmail()) && !form.getToList().contains(epUtente.getEmail())) {
-//
-//                form.getToList().add(epUtente.getEmail());
-//            }
-//        }
+        // if (form.isSendSelf()) {
+        //
+        // if (epUtente != null && StringUtils.isNotBlank(epUtente.getEmail()) &&
+        // !form.getToList().contains(epUtente.getEmail())) {
+        //
+        // form.getToList().add(epUtente.getEmail());
+        // }
+        // }
         String templateName = "share_wishlist.vm";
 
         ShopUser user = null;
@@ -538,16 +553,18 @@ public class SendWishlistFormController extends BaseFormController {
         }
 
         mailModel.put("resources", messageSource);
-        mailModel.put("noArgs", new Object[]{});
-        //${eprogenUrl}epRichiesta_risorse_pubblica_form.jsp?origine_richiesta=PUBBLICA&lang=${rc.locale}&cdling=${cdling}
+        mailModel.put("noArgs", new Object[] {});
+        // ${eprogenUrl}epRichiesta_risorse_pubblica_form.jsp?origine_richiesta=PUBBLICA&lang=${rc.locale}&cdling=${cdling}
         String cdling = (String) WebUtils.getSessionAttribute(request, "cdling");
         mailModel.put("cdling", cdling);
         mailModel.put("eprogenUrl", getEprogenUrl());
         mailModel.put("portalUrl", getPortalUrl());
-        mailModel.put("downloadUrl", getEprogenUrl() + "epRichiesta_risorse_pubblica_form.jsp?origine_richiesta=PUBBLICA&lang=" + s_locale + "&cdling=" + cdling);
-//        mailModel.put("number", new NumberTool());
-//        mailModel.put("date", new DateTool());
-//        mailModel.put("render", new RenderTool());
+        mailModel.put("downloadUrl",
+                getEprogenUrl() + "epRichiesta_risorse_pubblica_form.jsp?origine_richiesta=PUBBLICA&lang=" + s_locale
+                        + "&cdling=" + cdling);
+        // mailModel.put("number", new NumberTool());
+        // mailModel.put("date", new DateTool());
+        // mailModel.put("render", new RenderTool());
         mailModel.put("applicationURL", RequestUtil.getAppURL(request));
 
         Atk_sql atk_sql = new Atk_sql();
@@ -564,12 +581,13 @@ public class SendWishlistFormController extends BaseFormController {
             atk_sql.setProfilo((Atk_sql) f_eprogen_replace);
 
             HashMap of_setPar_BANNER = f_eprogen_replace.of_setPar_BANNER(null, cdling);
-            //tkordi = f_ordven.getCarrello(user.getUserDB().getTkutente(), user.getUserDB().getTkclie(), cdstato);        
+            // tkordi = f_ordven.getCarrello(user.getUserDB().getTkutente(),
+            // user.getUserDB().getTkclie(), cdstato);
 
             mailModel.put("banner", of_setPar_BANNER.get("${banner}"));
 
         } catch (Exception ex_page) {
-            //log.error(ex_page);
+            // log.error(ex_page);
             try {
                 atk_sql.m_connection.rollback();
             } catch (Exception ex_page_sql) {
@@ -596,25 +614,29 @@ public class SendWishlistFormController extends BaseFormController {
         String object = "Vistosi wishlist";
 
         try {
-            getMailEngine().sendHtmlMessage((String[]) form.getToList().toArray(new String[form.getToList().size()]), null, (form.getSender() != null) ? form.getSender() : "info@vistosi.it", object, templateName, mailModel, "atkim@ateikon.com");
+            getMailEngine().sendHtmlMessage((String[]) form.getToList().toArray(new String[form.getToList().size()]),
+                    null, (form.getSender() != null) ? form.getSender() : "info@vistosi.it", object, templateName,
+                    mailModel, "atkim@ateikon.com");
 
-            //String body = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, templateName, mailModel);
-            //log.debug(body); 
-            //messaggioFacade.store(sender, object, form.getToList(), body, attachments);
+            // String body = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine,
+            // templateName, mailModel);
+            // log.debug(body);
+            // messaggioFacade.store(sender, object, form.getToList(), body, attachments);
             saveMessage(request, getText("wishlist.sent", RequestContextUtils.getLocale(request)));
             model.put("status", "sent");
         } catch (MailException ex) {
             ex.printStackTrace();
-            //errors.reject("errors.sendmail","Errore invio mail");
+            // errors.reject("errors.sendmail","Errore invio mail");
             model.put("error", "Errore invio mail (mailex)");
         } catch (MessagingException ex) {
             ex.printStackTrace();
-            //errors.reject("errors.sendmail","Errore invio mail");
+            // errors.reject("errors.sendmail","Errore invio mail");
             model.put("error", "Errore invio mail (messex)");
         }
 
-        //inviteService.sendInvite(account, form.getInvitees(),  form.getInvitationText());
-        //FlashMap.setSuccessMessage("Your invitations have been sent");
+        // inviteService.sendInvite(account, form.getInvitees(),
+        // form.getInvitationText());
+        // FlashMap.setSuccessMessage("Your invitations have been sent");
         return "redirect:/wishlist";
     }
 
@@ -644,7 +666,7 @@ public class SendWishlistFormController extends BaseFormController {
 
             if (portalUrl != null) {
                 try {
-                    //url = StringUtils.replace(portalUrl, "portal", "eprogen");
+                    // url = StringUtils.replace(portalUrl, "portal", "eprogen");
                     url = of_trasformaURL(portalUrl, "portal", "eprogen");
                 } catch (Exception ex) {
                     Logger.getLogger(SendWishlistFormController.class.getName()).log(Level.SEVERE, null, ex);

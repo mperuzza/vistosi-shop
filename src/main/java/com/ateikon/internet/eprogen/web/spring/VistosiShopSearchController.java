@@ -47,7 +47,7 @@ public class VistosiShopSearchController {
     private Log log = LogFactory.getLog(this.getClass());
     private int pageSize = -1;
     private static final String NULL_PAR = "-";
-    //private List<String> DEFAULT_CDCLAS_A = Arrays.asList("L");
+    // private List<String> DEFAULT_CDCLAS_A = Arrays.asList("L");
     @Autowired
     private VistosiShopManager vistosiShopManager;
 
@@ -72,8 +72,8 @@ public class VistosiShopSearchController {
         String sort = ServletRequestUtils.getStringParameter(request, "sort", "dsarti");
         String dir = ServletRequestUtils.getStringParameter(request, "dir", "desc");
         vistosiShopManager.addCdclasFilter(pars, request);
-        vistosiShopManager.addToggleStateZEEFilter(pars, request);        
-          
+        vistosiShopManager.addToggleStateZEEFilter(pars, request);
+
         model.addAttribute("theList", vistosiShopManager.selectFamiglieByExamplePag(pars, sort, dir, page, pageSize));
         model.addAttribute("famView", true);
     }
@@ -114,54 +114,49 @@ public class VistosiShopSearchController {
             searchCollezioni(pars, request, model);
         }
 
-
     }
 
-//    @RequestMapping(value="/famiglia/{cdfam}/colore/{cdcol}", method=RequestMethod.GET)
-//    public String findByFamCol(@PathVariable("cdvisttp") String cdvisttp,
-//                            @PathVariable("cdfam") String cdvistfam,
-//                            @PathVariable("cdcol") String cdvistcolv,
-//                           Model model,
-//                           HttpServletRequest request){
-//
-//        log.debug("search per famiglia-colore: " + cdvistfam);
-//
-//
-//        return findByPars(cdvisttp, cdvistfam, cdvistcolv, null, model, request);
-//    }
-//     @RequestMapping(value="/colore/{cdcol}", method=RequestMethod.GET)
-//    public String findByColore(
-//                            @PathVariable("cdvisttp") String cdvisttp,
-//                            @PathVariable("cdcol") String cdvistcolv,
-//                           Model model,
-//                           HttpServletRequest request){
-//
-//        log.debug("search per colore: " + cdvistcolv);
-//
-//
-//        return findByPars(cdvisttp, null, cdvistcolv, null, model, request);
-//    }
+    // @RequestMapping(value="/famiglia/{cdfam}/colore/{cdcol}",
+    // method=RequestMethod.GET)
+    // public String findByFamCol(@PathVariable("cdvisttp") String cdvisttp,
+    // @PathVariable("cdfam") String cdvistfam,
+    // @PathVariable("cdcol") String cdvistcolv,
+    // Model model,
+    // HttpServletRequest request){
+    //
+    // log.debug("search per famiglia-colore: " + cdvistfam);
+    //
+    //
+    // return findByPars(cdvisttp, cdvistfam, cdvistcolv, null, model, request);
+    // }
+    // @RequestMapping(value="/colore/{cdcol}", method=RequestMethod.GET)
+    // public String findByColore(
+    // @PathVariable("cdvisttp") String cdvisttp,
+    // @PathVariable("cdcol") String cdvistcolv,
+    // Model model,
+    // HttpServletRequest request){
+    //
+    // log.debug("search per colore: " + cdvistcolv);
+    //
+    //
+    // return findByPars(cdvisttp, null, cdvistcolv, null, model, request);
+    // }
     @RequestMapping(value = "/met/{cdmet}", method = RequestMethod.GET)
-    public String findByMet(@PathVariable("cdvisttp") String cdvisttp,
-            @PathVariable("cdmet") String cdvistfinm,
-            Model model,
-            HttpServletRequest request) {
+    public String findByMet(@PathVariable("cdvisttp") String cdvisttp, @PathVariable("cdmet") String cdvistfinm,
+            Model model, HttpServletRequest request) {
 
         log.debug("search per metallo: " + cdvisttp);
-
 
         return findByPars(cdvisttp, null, null, null, null, cdvistfinm, null, model, request);
     }
 
     @RequestMapping(value = "/tipologia/{cdvisttp}/famiglia/{cdvistfam}", method = RequestMethod.GET)
-    public String findByTipoFam(@PathVariable("cdvisttp") String cdvisttp,
-            @PathVariable("cdvistfam") String cdvistfam,
+    public String findByTipoFam(@PathVariable("cdvisttp") String cdvisttp, @PathVariable("cdvistfam") String cdvistfam,
             @RequestParam(value = "dsvistccol", required = false) String dsvistccol,
             @RequestParam(value = "cdvistcolv", required = false) String cdvistcolv,
             @RequestParam(value = "cdvistfinv", required = false) String cdvistfinv,
             @RequestParam(value = "cdvistfinm", required = false) String cdvistfinm,
-            @RequestParam(value = "cdvistelet", required = false) String cdvistelet,
-            Model model,
+            @RequestParam(value = "cdvistelet", required = false) String cdvistelet, Model model,
             HttpServletRequest request) {
 
         log.debug("search per tipologia: " + cdvisttp);
@@ -176,18 +171,17 @@ public class VistosiShopSearchController {
             cdvistfam = null;
         }
 
-        return findByPars(cdvisttp, cdvistfam, dsvistccol, cdvistcolv, cdvistfinv, cdvistfinm, cdvistelet, model, request);
+        return findByPars(cdvisttp, cdvistfam, dsvistccol, cdvistcolv, cdvistfinv, cdvistfinm, cdvistelet, model,
+                request);
     }
 
     @RequestMapping(value = "/tipologia/{cdvisttp}/collezione/{dsvistccol}/famiglia/{cdvistfam}**", method = RequestMethod.GET)
-    public String findBy(@PathVariable("cdvisttp") String cdvisttp,
-            @PathVariable("cdvistfam") String cdvistfam,
+    public String findBy(@PathVariable("cdvisttp") String cdvisttp, @PathVariable("cdvistfam") String cdvistfam,
             @PathVariable("dsvistccol") String dsvistccol,
             @RequestParam(value = "cdvistcolv", required = false) String cdvistcolv,
             @RequestParam(value = "cdvistfinv", required = false) String cdvistfinv,
             @RequestParam(value = "cdvistfinm", required = false) String cdvistfinm,
-            @RequestParam(value = "cdvistelet", required = false) String cdvistelet,
-            Model model,
+            @RequestParam(value = "cdvistelet", required = false) String cdvistelet, Model model,
             HttpServletRequest request) {
 
         log.debug("search per tipologia: " + cdvisttp);
@@ -208,18 +202,17 @@ public class VistosiShopSearchController {
             cdvistfam = null;
         }
 
-        return findByPars(cdvisttp, cdvistfam, dsvistccol, cdvistcolv, cdvistfinv, cdvistfinm, cdvistelet, model, request);
+        return findByPars(cdvisttp, cdvistfam, dsvistccol, cdvistcolv, cdvistfinv, cdvistfinm, cdvistelet, model,
+                request);
     }
 
     @RequestMapping(value = "/famiglia/{cdvistfam}/tipologia/{cdvisttp}", method = RequestMethod.GET)
-    public String findByFamTipo(@PathVariable("cdvisttp") String cdvisttp,
-            @PathVariable("cdvistfam") String cdvistfam,
+    public String findByFamTipo(@PathVariable("cdvisttp") String cdvisttp, @PathVariable("cdvistfam") String cdvistfam,
             @RequestParam(value = "dsvistccol", required = false) String dsvistccol,
             @RequestParam(value = "cdvistcolv", required = false) String cdvistcolv,
             @RequestParam(value = "cdvistfinv", required = false) String cdvistfinv,
             @RequestParam(value = "cdvistfinm", required = false) String cdvistfinm,
-            @RequestParam(value = "cdvistelet", required = false) String cdvistelet,
-            Model model,
+            @RequestParam(value = "cdvistelet", required = false) String cdvistelet, Model model,
             HttpServletRequest request) {
 
         log.debug("search per famiglia: " + cdvistfam);
@@ -227,7 +220,8 @@ public class VistosiShopSearchController {
 
         model.addAttribute("rootFilter", cdvistfam);
 
-        return findByPars(cdvisttp, cdvistfam, dsvistccol, cdvistcolv, cdvistfinv, cdvistfinm, cdvistelet, model, request);
+        return findByPars(cdvisttp, cdvistfam, dsvistccol, cdvistcolv, cdvistfinv, cdvistfinm, cdvistelet, model,
+                request);
     }
 
     @RequestMapping(value = "*famiglia/{cdvistfam}", method = RequestMethod.GET)
@@ -236,8 +230,7 @@ public class VistosiShopSearchController {
             @RequestParam(value = "cdvistcolv", required = false) String cdvistcolv,
             @RequestParam(value = "cdvistfinv", required = false) String cdvistfinv,
             @RequestParam(value = "cdvistfinm", required = false) String cdvistfinm,
-            @RequestParam(value = "cdvistelet", required = false) String cdvistelet,
-            Model model,
+            @RequestParam(value = "cdvistelet", required = false) String cdvistelet, Model model,
             HttpServletRequest request) {
 
         log.debug("search per famiglia: " + cdvistfam);
@@ -253,8 +246,7 @@ public class VistosiShopSearchController {
             @RequestParam(value = "cdvistcolv", required = false) String cdvistcolv,
             @RequestParam(value = "cdvistfinv", required = false) String cdvistfinv,
             @RequestParam(value = "cdvistfinm", required = false) String cdvistfinm,
-            @RequestParam(value = "cdvistelet", required = false) String cdvistelet,
-            Model model,
+            @RequestParam(value = "cdvistelet", required = false) String cdvistelet, Model model,
             HttpServletRequest request) {
 
         log.debug("search per tipologia: " + cdvisttp);
@@ -267,11 +259,9 @@ public class VistosiShopSearchController {
     }
 
     @RequestMapping(value = "/immagininontrovate", method = RequestMethod.GET)
-    public String findImagesNotFound(Model model,
-            HttpServletRequest request) {
+    public String findImagesNotFound(Model model, HttpServletRequest request) {
 
         List<ImgShop> thumb_tipfam = new ArrayList<ImgShop>();
-
 
         WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(request);
         String path = "";
@@ -281,7 +271,6 @@ public class VistosiShopSearchController {
         pars.put("fgweb", "S");
 
         List<Vist_tipi> tipologie = vistosiShopManager.findVist_tipi(pars);
-
 
         for (Vist_tipi vist_tipi : tipologie) {
 
@@ -314,7 +303,8 @@ public class VistosiShopSearchController {
 
                 for (Mrp_arch_articoli modello : modelli) {
 
-                    nome_immagine = vist_famiglia.getCdvistfam_mPad() + vist_tipi.getCdvisttp_m() + modello.getCdvistv1Pad() + modello.getCdvistv2Pad() + modello.getCdvistv3Pad() + "-.jpg";
+                    nome_immagine = vist_famiglia.getCdvistfam_mPad() + vist_tipi.getCdvisttp_m()
+                            + modello.getCdvistv1Pad() + modello.getCdvistv2Pad() + modello.getCdvistv3Pad() + "-.jpg";
                     try {
                         path = "images/articoli/disegnitecnici/";
                         String realPath = WebUtils.getRealPath(ctx.getServletContext(), path + nome_immagine);
@@ -358,46 +348,36 @@ public class VistosiShopSearchController {
             }
         }
 
-
         model.addAttribute("immagini_tipfam", thumb_tipfam);
-
-
 
         return "imgnfList";
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String searchHome(Model model,
-            HttpServletRequest request) {
-
+    public String searchHome(Model model, HttpServletRequest request) {
 
         return "redirect:/index";
     }
 
-    private String findByPars(String cdvisttp,
-            String cdvistfam,
-            String dsvistccol,
-            String cdvistcolv,
-            String cdvistfinv,
-            String cdvistfinm,
-            String cdvistelet,
-            Model model,
-            HttpServletRequest request) {
+    private String findByPars(String cdvisttp, String cdvistfam, String dsvistccol, String cdvistcolv,
+            String cdvistfinv, String cdvistfinm, String cdvistelet, Model model, HttpServletRequest request) {
 
         HashMap pars = new HashMap();
 
-
-
         pars.put("fgweb", "S");
-        //ShopUser user = (ShopUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        // ShopUser user = (ShopUser)
+        // SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         vistosiShopManager.addCdclasFilter(pars, request);
         vistosiShopManager.addToggleStateZEEFilter(pars, request);
-//        if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
-//            ShopUser user = (ShopUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//            pars.put("cdclas_aList", user.getCdclas_aFilter()); //filtro solo articoli listino
-//        } else {
-//            pars.put("cdclas_aList", VistosiShopManager.DEFAULT_CDCLAS_A); //filtro solo articoli listino
-//        }
+        // if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
+        // ShopUser user = (ShopUser)
+        // SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        // pars.put("cdclas_aList", user.getCdclas_aFilter()); //filtro solo articoli
+        // listino
+        // } else {
+        // pars.put("cdclas_aList", VistosiShopManager.DEFAULT_CDCLAS_A); //filtro solo
+        // articoli listino
+        // }
         pars.put("cdvisttp", StringUtils.trimToNull(cdvisttp));
         pars.put("cdvistfam", StringUtils.trimToNull(cdvistfam));
         pars.put("dsvistccol", StringUtils.trimToNull(dsvistccol));
@@ -409,35 +389,36 @@ public class VistosiShopSearchController {
         Cookie ckViewOff = WebUtils.getCookie(request, "filter_off");
         pars.put("fgpromo", ((ckViewOff != null && "S".equals(ckViewOff.getValue())) ? "S" : null));
 
-
         HashMap menuPars = (HashMap) pars.clone();
         String rootFilter = (String) model.asMap().get("rootFilter");
-//        if(StringUtils.equals(rootFilter, cdvisttp)){
-//            menuPars.remove("cdvistfam");
-//            model.addAttribute("tipologie", vistosiShopManager.findVist_tipi(pars));
-//            model.addAttribute("famiglie", vistosiShopManager.findVist_famiglia(menuPars));
-//        }else
-//        if(StringUtils.equals(rootFilter, cdvistfam)){
-//            menuPars.remove("cdvisttp");
-//            model.addAttribute("tipologie", vistosiShopManager.findVist_tipi(menuPars));
-//            model.addAttribute("famiglie", vistosiShopManager.findVist_famiglia(pars));
-//        }
+        // if(StringUtils.equals(rootFilter, cdvisttp)){
+        // menuPars.remove("cdvistfam");
+        // model.addAttribute("tipologie", vistosiShopManager.findVist_tipi(pars));
+        // model.addAttribute("famiglie",
+        // vistosiShopManager.findVist_famiglia(menuPars));
+        // }else
+        // if(StringUtils.equals(rootFilter, cdvistfam)){
+        // menuPars.remove("cdvisttp");
+        // model.addAttribute("tipologie", vistosiShopManager.findVist_tipi(menuPars));
+        // model.addAttribute("famiglie", vistosiShopManager.findVist_famiglia(pars));
+        // }
 
-        //model.addAttribute("tipologie", vistosiShopManager.findVist_tipi(pars));
+        // model.addAttribute("tipologie", vistosiShopManager.findVist_tipi(pars));
         model.addAttribute("tipologie", vistosiShopManager.getVist_tipi());
-        //model.addAttribute("famiglie", vistosiShopManager.findVist_famiglia(pars));
+        // model.addAttribute("famiglie", vistosiShopManager.findVist_famiglia(pars));
         Map fpars = new HashMap();
-        vistosiShopManager.addCdclasFilter(fpars, request);   
+        vistosiShopManager.addCdclasFilter(fpars, request);
         vistosiShopManager.addToggleStateZEEFilter(fpars, request);
         model.addAttribute("famiglie", vistosiShopManager.getVist_famiglia(fpars));
         model.addAttribute("collezioni", vistosiShopManager.getVist_cp_collezioni());
-        //model.addAttribute("collezioni", vistosiShopManager.findVist_cp_collezioni(pars));
-        //model.addAttribute("colori", vistosiShopManager.findVist_colori_vetro(pars));
+        // model.addAttribute("collezioni",
+        // vistosiShopManager.findVist_cp_collezioni(pars));
+        // model.addAttribute("colori", vistosiShopManager.findVist_colori_vetro(pars));
         log.debug("modifica select colori");
         pars.put("ismenu", true);
-        //MPERUZZA 20121115
+        // MPERUZZA 20121115
         model.addAttribute("elettrificazioni", vistosiShopManager.findVist_elettrificazioni(pars));
-        //fine
+        // fine
         model.addAttribute("colori", vistosiShopManager.findVist_vetro(pars));
         model.addAttribute("partmet", vistosiShopManager.findVist_finit_mont(pars));
 
@@ -457,10 +438,9 @@ public class VistosiShopSearchController {
             pars.put("statiFilterList", statiFilter);
         }
 
-        //if (AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
-//            pars.put("statiEscludedList", Collections.singletonList("ZEE"));
-        //}
-
+        // if (AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
+        // pars.put("statiEscludedList", Collections.singletonList("ZEE"));
+        // }
 
         if (StringUtils.isNotBlank(cdvisttp)) {
             WebUtils.setSessionAttribute(request, "tipologiaFilter", vistosiShopManager.getVist_tipiByKey(cdvisttp));
@@ -468,50 +448,52 @@ public class VistosiShopSearchController {
             request.getSession().removeAttribute("tipologiaFilter");
         }
         if (StringUtils.isNotBlank(cdvistfam)) {
-            WebUtils.setSessionAttribute(request, "famigliaFilter", vistosiShopManager.getVist_famigliaByKey(cdvistfam));
+            WebUtils.setSessionAttribute(request, "famigliaFilter",
+                    vistosiShopManager.getVist_famigliaByKey(cdvistfam));
         } else {
             request.getSession().removeAttribute("famigliaFilter");
         }
         if (StringUtils.isNotBlank(dsvistccol)) {
-            WebUtils.setSessionAttribute(request, "collezioneFilter", dsvistccol); //vistosiShopManager.getVist_cp_collezioniByKey(cdvistccol));
+            WebUtils.setSessionAttribute(request, "collezioneFilter", dsvistccol); // vistosiShopManager.getVist_cp_collezioniByKey(cdvistccol));
         } else {
             request.getSession().removeAttribute("collezioneFilter");
         }
         if (StringUtils.isNotBlank(cdvistcolv)) {
-            WebUtils.setSessionAttribute(request, "coloreFilter", vistosiShopManager.getVist_colori_vetroByKey(cdvistcolv));
+            WebUtils.setSessionAttribute(request, "coloreFilter",
+                    vistosiShopManager.getVist_colori_vetroByKey(cdvistcolv));
         } else {
             request.getSession().removeAttribute("coloreFilter");
         }
-        //MPERUZZA 20121115
+        // MPERUZZA 20121115
         if (StringUtils.isNotBlank(cdvistelet)) {
-            WebUtils.setSessionAttribute(request, "eletFilter", vistosiShopManager.getVist_elettrificazioniByKey(cdvistelet));
+            WebUtils.setSessionAttribute(request, "eletFilter",
+                    vistosiShopManager.getVist_elettrificazioniByKey(cdvistelet));
         } else {
             request.getSession().removeAttribute("eletFilter");
         }
-        //fine
+        // fine
         if (StringUtils.isNotBlank(cdvistfinv)) {
-            WebUtils.setSessionAttribute(request, "finvetroFilter", vistosiShopManager.getVist_finit_vetroByKey(cdvistfinv));
+            WebUtils.setSessionAttribute(request, "finvetroFilter",
+                    vistosiShopManager.getVist_finit_vetroByKey(cdvistfinv));
         } else {
             request.getSession().removeAttribute("finvetroFilter");
         }
         if (StringUtils.isNotBlank(cdvistfinm)) {
-            WebUtils.setSessionAttribute(request, "finituraFilter", vistosiShopManager.getVist_finit_montByKey(cdvistfinm));
+            WebUtils.setSessionAttribute(request, "finituraFilter",
+                    vistosiShopManager.getVist_finit_montByKey(cdvistfinm));
         } else {
             request.getSession().removeAttribute("finituraFilter");
         }
 
-        //searchArticoli(pars, request, model);
+        // searchArticoli(pars, request, model);
         search(pars, request, model);
 
         return "index";
     }
 
     @RequestMapping(value = "*articoliAutoComp", method = RequestMethod.GET)
-    public String findArticoliByCdmDs(
-            @RequestParam(value = "omni", required = true) String omni,
-            Model model,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+    public String findArticoliByCdmDs(@RequestParam(value = "omni", required = true) String omni, Model model,
+            HttpServletRequest request, HttpServletResponse response) {
 
         Map pars = new HashMap();
 
@@ -548,31 +530,31 @@ public class VistosiShopSearchController {
         }
 
         log.debug(rc.getLocale().getLanguage());
-        
+
         if (rc.getLocale().getLanguage().equals(Locale.ENGLISH.getLanguage())) {
             pars.put("langSfx", "_eng");
-            pars.put("locale", "_"+rc.getLocale().getLanguage());
+            pars.put("locale", "_" + rc.getLocale().getLanguage());
             model.addAttribute("atkLangSfx", "_eng");
         }
         if (rc.getLocale().getLanguage().equals("de")) {
             pars.put("langSfx", "_ted");
-            pars.put("locale", "_"+rc.getLocale().getLanguage());
+            pars.put("locale", "_" + rc.getLocale().getLanguage());
             model.addAttribute("atkLangSfx", "_ted");
         }
         if (rc.getLocale().getLanguage().equals("es")) {
             pars.put("langSfx", "_spa");
-            pars.put("locale", "_"+rc.getLocale().getLanguage());
+            pars.put("locale", "_" + rc.getLocale().getLanguage());
             model.addAttribute("atkLangSfx", "_spa");
         }
         if (rc.getLocale().getLanguage().equals("fr")) {
             pars.put("langSfx", "_fra");
-            pars.put("locale", "_"+rc.getLocale().getLanguage());
+            pars.put("locale", "_" + rc.getLocale().getLanguage());
             model.addAttribute("atkLangSfx", "_fra");
         }
 
         ShopUser user = (ShopUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         vistosiShopManager.addCdclasFilter(pars, request);
-        
+
         List<Mrp_arch_articoli> articoliList = new ArrayList<Mrp_arch_articoli>();
 
         if (user.getIsSpecList()) {
@@ -587,7 +569,7 @@ public class VistosiShopSearchController {
                 artL.setVist_tipi(vistosiShopManager.getVist_tipiByKey(art.getCdvisttp()));
                 artL.setVist_colori_vetro(vistosiShopManager.getVist_colori_vetroByKey(art.getCdvistcolv()));
                 artL.setVist_finit_mont(vistosiShopManager.getVist_finit_montByKey(art.getCdvistfinm()));
-                artL.setVist_finit_vetro(vistosiShopManager.getVist_finit_vetroByKey(art.getCdvistfinv()));
+                // artL.setVist_finit_vetro(vistosiShopManager.getVist_finit_vetroByKey(art.getCdvistfinv()));
                 artL.setVist_elettrificazioni(vistosiShopManager.getVist_elettrificazioniByKey(art.getCdvistelet()));
                 if (artL.getCdvistv1() != null) {
                     artL.setVist_var1(vistosiShopManager.getVist_var1ByKey(art.getCdvistv1()));
@@ -602,9 +584,7 @@ public class VistosiShopSearchController {
                 articoliList.add(artL);
             }
 
-
         } else {
-
 
             articoliList = vistosiShopManager.searchArticoliByPars(pars, 1, 20);
 
@@ -614,7 +594,7 @@ public class VistosiShopSearchController {
                 art.setVist_tipi(vistosiShopManager.getVist_tipiByKey(art.getCdvisttp()));
                 art.setVist_colori_vetro(vistosiShopManager.getVist_colori_vetroByKey(art.getCdvistcolv()));
                 art.setVist_finit_mont(vistosiShopManager.getVist_finit_montByKey(art.getCdvistfinm()));
-                art.setVist_finit_vetro(vistosiShopManager.getVist_finit_vetroByKey(art.getCdvistfinv()));
+                // art.setVist_finit_vetro(vistosiShopManager.getVist_finit_vetroByKey(art.getCdvistfinv()));
                 art.setVist_elettrificazioni(vistosiShopManager.getVist_elettrificazioniByKey(art.getCdvistelet()));
                 if (art.getCdvistv1() != null) {
                     art.setVist_var1(vistosiShopManager.getVist_var1ByKey(art.getCdvistv1()));
@@ -627,21 +607,22 @@ public class VistosiShopSearchController {
                 }
 
             }
-            
+
         }
 
         if (articoliList.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_NO_CONTENT);
         }
 
-        //sort by description
+        // sort by description
         Transformer transformer = new Transformer() {
-              public Object transform(Object input) {
-                   return ((String)input).toLowerCase();
-              }
-        };   
+            public Object transform(Object input) {
+                return ((String) input).toLowerCase();
+            }
+        };
         Comparator comparator = new TransformingComparator(transformer);
-        BeanComparator comp = new BeanComparator("dsestesa" + (pars.get("langSfx")!=null?(String)pars.get("langSfx"):""),comparator);
+        BeanComparator comp = new BeanComparator(
+                "dsestesa" + (pars.get("langSfx") != null ? (String) pars.get("langSfx") : ""), comparator);
         Collections.sort(articoliList, comp);
 
         model.addAttribute("articoliList", articoliList);

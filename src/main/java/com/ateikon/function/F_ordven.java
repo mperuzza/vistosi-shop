@@ -4823,7 +4823,7 @@ public class F_ordven extends Atk_sql {
                 //MPERUZZA 20121015
                 String techsheet = "";
 
-                String[] cdrepa_escl_List = new String[]{"010", "018"};
+                String[] cdrepa_escl_List = new String[]{"10", "18"};
 
                 ls_sconto = atk_ctrl.descrSconti(new double[]{scont1, scont2, scont3, scont4, scrap1, scrap2});
 

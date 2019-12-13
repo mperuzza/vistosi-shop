@@ -191,7 +191,7 @@ public class SchedaArticoloController {
             mrp_arch_articoli.setVist_var3(vistosiShopManager.getVist_var3ByKey(mrp_arch_articoli.getCdvistv3()));
             mrp_arch_articoli.setVist_finit_mont(vistosiShopManager.getVist_finit_montByKey(mrp_arch_articoli.getCdvistfinm()));
             mrp_arch_articoli.setVist_colori_vetro(vistosiShopManager.getVist_colori_vetroByKey(mrp_arch_articoli.getCdvistcolv()));
-            mrp_arch_articoli.setVist_finit_vetro(vistosiShopManager.getVist_finit_vetroByKey(mrp_arch_articoli.getCdvistfinv()));
+            //mrp_arch_articoli.setVist_finit_vetro(vistosiShopManager.getVist_finit_vetroByKey(mrp_arch_articoli.getCdvistfinv()));
 
             if ((!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS") && user != null && user.getIsSpecList())
                     || (AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS") && GeoIPInterceptor.getCountry(request).equals("US"))) {

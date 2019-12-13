@@ -85,17 +85,13 @@ import org.springframework.web.util.WebUtils;
 public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiShopManager {
 
     private Log log = LogFactory.getLog(this.getClass());
-    private String[] cdrepa_escl_List = new String[]{"010", "018"};
-    private String[] statiEscludedList = new String[]{"ZEE"};
-    private String[] tipoFilterList = new String[]{"PB"};
+    private String[] cdrepa_escl_List = new String[] { "10", "18" };
+    private String[] statiEscludedList = new String[] { "ZEE" };
+    private String[] tipoFilterList = new String[] { "PB" };
 
     private Map<String, String> certImageMap;
-    private String[][] certImageValue = {
-        {"arwCertificazione1", "CE"},
-        {"arwCertificazione2", "ENEC"},
-        {"arwCertificazione3", "ETL"},
-        {"arwCertificazione4", "GOST"}
-    };
+    private String[][] certImageValue = { { "arwCertificazione1", "CE" }, { "arwCertificazione2", "ENEC" },
+            { "arwCertificazione3", "ETL" }, { "arwCertificazione4", "GOST" } };
 
     @Autowired
     private Vist_tipiDAO vist_tipiDAO;
@@ -103,174 +99,203 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
     public void setVist_tipiDAO(Vist_tipiDAO vist_tipiDAO) {
         this.vist_tipiDAO = vist_tipiDAO;
     }
+
     @Autowired
     private Vist_famigliaDAO vist_famigliaDAO;
 
     public void setVist_famigliaDAO(Vist_famigliaDAO vist_famigliaDAO) {
         this.vist_famigliaDAO = vist_famigliaDAO;
     }
+
     @Autowired
     private Vist_colori_vetroDAO vist_colori_vetroDAO;
 
     public void setVist_colori_vetroDAO(Vist_colori_vetroDAO vist_colori_vetroDAO) {
         this.vist_colori_vetroDAO = vist_colori_vetroDAO;
     }
+
     @Autowired
     private Vist_finit_montDAO vist_finit_montDAO;
 
     public void setVist_finit_montDAO(Vist_finit_montDAO vist_finit_montDAO) {
         this.vist_finit_montDAO = vist_finit_montDAO;
     }
+
     @Autowired
     private Vist_finit_vetroDAO vist_finit_vetroDAO;
 
     public void setVist_finit_vetroDAO(Vist_finit_vetroDAO vist_finit_vetroDAO) {
         this.vist_finit_vetroDAO = vist_finit_vetroDAO;
     }
+
     @Autowired
     private Mrp_arch_articoliDAO mrp_arch_articoliDAO;
 
     public void setMrp_arch_articoliDAO(Mrp_arch_articoliDAO mrp_arch_articoliDAO) {
         this.mrp_arch_articoliDAO = mrp_arch_articoliDAO;
     }
+
     @Autowired
     private Mrp_arch_articoli_ulDAO mrp_arch_articoli_ulDAO;
 
     public void setMrp_arch_articoli_ulDAO(Mrp_arch_articoli_ulDAO mrp_arch_articoli_ulDAO) {
         this.mrp_arch_articoli_ulDAO = mrp_arch_articoli_ulDAO;
     }
+
     @Autowired
     private Vist_var1DAO vist_var1DAO;
 
     public void setVist_var1DAO(Vist_var1DAO vist_var1DAO) {
         this.vist_var1DAO = vist_var1DAO;
     }
+
     @Autowired
     private Vist_var2DAO vist_var2DAO;
 
     public void setVist_elettrificazioniDAO(Vist_elettrificazioniDAO vist_elettrificazioniDAO) {
         this.vist_elettrificazioniDAO = vist_elettrificazioniDAO;
     }
+
     @Autowired
     private Vist_var3DAO vist_var3DAO;
 
     public void setVist_var2DAO(Vist_var2DAO vist_var2DAO) {
         this.vist_var2DAO = vist_var2DAO;
     }
+
     @Autowired
     private Vist_elettrificazioniDAO vist_elettrificazioniDAO;
 
     public void setVist_var3DAO(Vist_var3DAO vist_var3DAO) {
         this.vist_var3DAO = vist_var3DAO;
     }
+
     @Autowired
     private ArchclieDAO archclieDAO;
 
     public void setArchclieDAO(ArchclieDAO archclieDAO) {
         this.archclieDAO = archclieDAO;
     }
+
     @Autowired
     private ArchentiDAO archentiDAO;
 
     public void setArchentiDAO(ArchentiDAO archentiDAO) {
         this.archentiDAO = archentiDAO;
     }
+
     @Autowired
     private UnitalocaliDAO unitalocaliDAO;
 
     public void setUnitalocaliDAO(UnitalocaliDAO unitalocaliDAO) {
         this.unitalocaliDAO = unitalocaliDAO;
     }
+
     @Autowired
     private AssofiscalDAO assofiscalDAO;
 
     public void setAssofiscalDAO(AssofiscalDAO assofiscalDAO) {
         this.assofiscalDAO = assofiscalDAO;
     }
+
     @Autowired
     private Lis_listinoDAO lis_listinoDAO;
 
     public void setLis_listinoDAO(Lis_listinoDAO lis_listinoDAO) {
         this.lis_listinoDAO = lis_listinoDAO;
     }
+
     @Autowired
     private Web_ord_testDAO web_ord_testDAO;
 
     public void setWeb_ord_testDAO(Web_ord_testDAO web_ord_testDAO) {
         this.web_ord_testDAO = web_ord_testDAO;
     }
+
     @Autowired
     private Web_ord_posititoDAO web_ord_posititoDAO;
 
     public void setWeb_ord_posititoDAO(Web_ord_posititoDAO web_ord_posititoDAO) {
         this.web_ord_posititoDAO = web_ord_posititoDAO;
     }
+
     @Autowired
     private Mrp_file_giacenzaDAO mrp_file_giacenzaDAO;
 
     public void setMrp_file_giacenzaDAO(Mrp_file_giacenzaDAO mrp_file_giacenzaDAO) {
         this.mrp_file_giacenzaDAO = mrp_file_giacenzaDAO;
     }
+
     @Autowired
     private Vist_cp_collezioniDAO vist_cp_collezioniDAO;
 
     public void setVist_cp_collezioniDAO(Vist_cp_collezioniDAO vist_cp_collezioniDAO) {
         this.vist_cp_collezioniDAO = vist_cp_collezioniDAO;
     }
+
     @Autowired
     private Web_ord_test_noteDAO web_ord_test_noteDAO;
 
     public void setWeb_ord_test_noteDAO(Web_ord_test_noteDAO web_ord_test_noteDAO) {
         this.web_ord_test_noteDAO = web_ord_test_noteDAO;
     }
+
     @Autowired
     private Web_ord_posi_noteDAO web_ord_posi_noteDAO;
 
     public void setWeb_ord_posi_noteDAO(Web_ord_posi_noteDAO web_ord_posi_noteDAO) {
         this.web_ord_posi_noteDAO = web_ord_posi_noteDAO;
     }
+
     @Autowired
     private Vist_etichetteDAO vist_etichetteDAO;
 
     public void setVist_etichetteDAO(Vist_etichetteDAO vist_etichetteDAO) {
         this.vist_etichetteDAO = vist_etichetteDAO;
     }
+
     @Autowired
     private Vist_articoli_imgDAO vist_articoli_imgDAO;
 
     public void setVist_articoli_imgDAO(Vist_articoli_imgDAO vist_articoli_imgDAO) {
         this.vist_articoli_imgDAO = vist_articoli_imgDAO;
     }
+
     @Autowired
     private Vist_articoli_ricambiDAO vist_articoli_ricambiDAO;
 
     public void setVist_articoli_ricambiDAO(Vist_articoli_ricambiDAO vist_articoli_ricambiDAO) {
         this.vist_articoli_ricambiDAO = vist_articoli_ricambiDAO;
     }
+
     @Autowired
     private Vist_filtro_articoliDAO vist_filtro_articoliDAO;
 
     public void setVist_filtro_articoliDAO(Vist_filtro_articoliDAO vist_filtro_articoliDAO) {
         this.vist_filtro_articoliDAO = vist_filtro_articoliDAO;
     }
+
     @Autowired
     private Cms_promozioniDAO cms_promozioniDAO;
 
     public void setCms_promozioniDAO(Cms_promozioniDAO cms_promozioniDAO) {
         this.cms_promozioniDAO = cms_promozioniDAO;
     }
+
     @Autowired
     private Cms_promozioni_clienteDAO cms_promozioni_clienteDAO;
 
     public void setCms_promozioni_clienteDAO(Cms_promozioni_clienteDAO cms_promozioni_clienteDAO) {
         this.cms_promozioni_clienteDAO = cms_promozioni_clienteDAO;
     }
+
     @Autowired
     private Vist_semilavoratiDAO vist_semilavoratiDAO;
 
     public void setVist_semilavoratiDAO(Vist_semilavoratiDAO vist_semilavoratiDAO) {
         this.vist_semilavoratiDAO = vist_semilavoratiDAO;
     }
+
     @Autowired
     private DesignerDAO designerDAO;
 
@@ -281,6 +306,7 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
     public void setDesignerDAO(DesignerDAO designerDAO) {
         this.designerDAO = designerDAO;
     }
+
     @Autowired
     private Mrp_arch_statoDAO mrp_arch_statoDAO;
 
@@ -291,6 +317,7 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
     public void setMrp_arch_statoDAO(Mrp_arch_statoDAO mrp_arch_statoDAO) {
         this.mrp_arch_statoDAO = mrp_arch_statoDAO;
     }
+
     @Autowired
     private Vist_offerteDAO vist_offerteDAO;
 
@@ -301,6 +328,7 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
     public void setVist_offerteDAO(Vist_offerteDAO vist_offerteDAO) {
         this.vist_offerteDAO = vist_offerteDAO;
     }
+
     @Autowired
     private ArchrubricaDAO archrubricaDAO;
 
@@ -311,6 +339,7 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
     public void setArchrubricaDAO(ArchrubricaDAO archrubricaDAO) {
         this.archrubricaDAO = archrubricaDAO;
     }
+
     @Autowired
     private Archrubrica_tipoDAO archrubrica_tipoDAO;
 
@@ -321,6 +350,7 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
     public void setArchrubrica_tipoDAO(Archrubrica_tipoDAO archrubrica_tipoDAO) {
         this.archrubrica_tipoDAO = archrubrica_tipoDAO;
     }
+
     @Autowired
     private Archrubrica_condc_noteDAO archrubrica_condc_noteDAO;
 
@@ -331,6 +361,7 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
     public void setArchrubrica_condc_noteDAO(Archrubrica_condc_noteDAO archrubrica_condc_noteDAO) {
         this.archrubrica_condc_noteDAO = archrubrica_condc_noteDAO;
     }
+
     @Autowired
     private ClieattiDAO clieattiDAO;
 
@@ -341,6 +372,7 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
     public void setClieattiDAO(ClieattiDAO clieattiDAO) {
         this.clieattiDAO = clieattiDAO;
     }
+
     @Autowired
     private CliegrpattiDAO cliegrpattiDAO;
 
@@ -351,6 +383,7 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
     public void setCliegrpattiDAO(CliegrpattiDAO cliegrpattiDAO) {
         this.cliegrpattiDAO = cliegrpattiDAO;
     }
+
     @Autowired
     private Vist_condc_grpatti_noteDAO vist_condc_grpatti_noteDAO;
 
@@ -361,6 +394,7 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
     public void setVist_condc_grpatti_noteDAO(Vist_condc_grpatti_noteDAO vist_condc_grpatti_noteDAO) {
         this.vist_condc_grpatti_noteDAO = vist_condc_grpatti_noteDAO;
     }
+
     @Autowired
     private Vist_condc_accDAO vist_condc_accDAO;
 
@@ -371,6 +405,7 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
     public void setVist_condc_accDAO(Vist_condc_accDAO vist_condc_accDAO) {
         this.vist_condc_accDAO = vist_condc_accDAO;
     }
+
     @Autowired
     private Vist_condc_acc_posiDAO vist_condc_acc_posiDAO;
 
@@ -381,6 +416,7 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
     public void setVist_condc_acc_posiDAO(Vist_condc_acc_posiDAO vist_condc_acc_posiDAO) {
         this.vist_condc_acc_posiDAO = vist_condc_acc_posiDAO;
     }
+
     @Autowired
     private Vist_nazioni_refDAO vist_nazioni_refDAO;
 
@@ -391,18 +427,21 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
     public void setVist_nazioni_refDAO(Vist_nazioni_refDAO vist_nazioni_refDAO) {
         this.vist_nazioni_refDAO = vist_nazioni_refDAO;
     }
+
     @Autowired
     private Ep_utenteDAO ep_utenteDAO;
 
     public void setEp_utenteDAO(Ep_utenteDAO ep_utenteDAO) {
         this.ep_utenteDAO = ep_utenteDAO;
     }
+
     @Autowired
     private Ep_costantiDAO ep_costantiDAO;
 
     public void setEp_costantiDAO(Ep_costantiDAO ep_costantiDAO) {
         this.ep_costantiDAO = ep_costantiDAO;
     }
+
     @Autowired
     private Vist_articoli_datiextraDAO vist_articoli_datiextraDAO;
 
@@ -453,15 +492,15 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
          *
          * return vist_famigliaDAO.selectByExample(ex);
          */
-        //Map pars = new HashMap();
+        // Map pars = new HashMap();
         pars.put("cdrepa_escl_List", cdrepa_escl_List);
         pars.put("fgweb", "S");
 
         List<Vist_famiglia> list = findVist_famiglia(pars);
         pars.put("fgpromo", "S");
-        
+
         boolean userHasAuthority = AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS");
-        
+
         Mrp_arch_stato statoOff = new Mrp_arch_stato(51, 153, 51);
 
         for (Vist_famiglia vist_famiglia : list) {
@@ -470,13 +509,13 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
             int countOff = mrp_arch_articoliDAO.countOfferta(pars);
             if (countOff > 0 && !userHasAuthority) {
-                //if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
+                // if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
                 vist_famiglia.setStato(statoOff);
-                //}
+                // }
             } else {
                 List<Mrp_arch_stato> stlist = selectDistinctByPars(pars);
 
-                if (!stlist.isEmpty()){ // && stlist.size() == 1) {  //&& "S".equals(stlist.get(0).getVist_fgrgb())) {
+                if (!stlist.isEmpty()) { // && stlist.size() == 1) { //&& "S".equals(stlist.get(0).getVist_fgrgb())) {
                     vist_famiglia.setStato(stlist.get(0));
                 }
             }
@@ -587,14 +626,17 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
         return vist_cp_collezioniDAO.selectByPrimaryKey(cdvistccol);
     }
 
-    public DTPaginatedList selectArticoliByExamplePag(Map pars, String orderByClause, String direction, int pageNumber, int pageSize) {
+    public DTPaginatedList selectArticoliByExamplePag(Map pars, String orderByClause, String direction, int pageNumber,
+            int pageSize) {
 
-//        if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
-//            ShopUser user = (ShopUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//            pars.put("cdclas_aList", user.getCdclas_aFilter()); //filtro solo articoli listino        
-//        } else {
-//            pars.put("cdclas_aList", DEFAULT_CDCLAS_A); //filtro solo articoli listino        
-//        }
+        // if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
+        // ShopUser user = (ShopUser)
+        // SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        // pars.put("cdclas_aList", user.getCdclas_aFilter()); //filtro solo articoli
+        // listino
+        // } else {
+        // pars.put("cdclas_aList", DEFAULT_CDCLAS_A); //filtro solo articoli listino
+        // }
         pars.put("cdrepa_escl_List", cdrepa_escl_List);
         pars.put("fgweb", "S");
 
@@ -610,18 +652,21 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
             searchByPars = mrp_arch_articoliDAO.searchByPars(pars, pageNumber, pageSize);
         }
 
-        DTPaginatedList pl = new DTPaginatedList(size, searchByPars, pageNumber, pageSize, null, orderByClause, SortOrderEnum.fromName(direction + "ending"));
+        DTPaginatedList pl = new DTPaginatedList(size, searchByPars, pageNumber, pageSize, null, orderByClause,
+                SortOrderEnum.fromName(direction + "ending"));
         return pl;
     }
 
-    public DTPaginatedList selectFamiglieByExamplePag(Map pars, String orderByClause, String direction, int pageNumber, int pageSize) {
+    public DTPaginatedList selectFamiglieByExamplePag(Map pars, String orderByClause, String direction, int pageNumber,
+            int pageSize) {
 
         log.debug("selectFamiglieByExamplePag");
         log.debug(pars);
 
         int size = this.vist_famigliaDAO.countFind(pars);
 
-        List<Vist_famiglia> list = this.vist_famigliaDAO.find(pars, orderByClause + " " + direction, pageNumber, pageSize);
+        List<Vist_famiglia> list = this.vist_famigliaDAO.find(pars, orderByClause + " " + direction, pageNumber,
+                pageSize);
 
         for (Vist_famiglia vist_famiglia : list) {
 
@@ -633,16 +678,16 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
             stpars.put("fgpromo", "S");
             stpars.put("fgweb", "S");
-            if(pars.containsKey("statiEscludedList")){
+            if (pars.containsKey("statiEscludedList")) {
                 stpars.put("cdstato_escl_List", pars.get("statiEscludedList"));
             }
-            
+
             int countOff = mrp_arch_articoliDAO.countOfferta(stpars);
             if (countOff > 0 && !AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
-                //if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
+                // if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
                 Mrp_arch_stato statoOff = new Mrp_arch_stato(51, 153, 51);
                 vist_famiglia.setStato(statoOff);
-                //}
+                // }
             } else {
                 stpars.put("statiFilterList", pars.get("statiFilterList"));
                 List<Mrp_arch_stato> stlist = selectDistinctByPars(stpars);
@@ -654,17 +699,20 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
         }
 
-        DTPaginatedList pl = new DTPaginatedList(size, list, pageNumber, pageSize, null, orderByClause, SortOrderEnum.fromName(direction + "ending"));
+        DTPaginatedList pl = new DTPaginatedList(size, list, pageNumber, pageSize, null, orderByClause,
+                SortOrderEnum.fromName(direction + "ending"));
         return pl;
     }
 
-    public DTPaginatedList selectCollezioniByExamplePag(Map pars, String orderByClause, String direction, int pageNumber, int pageSize) {
+    public DTPaginatedList selectCollezioniByExamplePag(Map pars, String orderByClause, String direction,
+            int pageNumber, int pageSize) {
 
         log.debug("selectCollezioniByExamplePag");
 
-        int size = 0;//this.vist_famigliaDAO.countFind(pars);
+        int size = 0;// this.vist_famigliaDAO.countFind(pars);
 
-        List<Mrp_arch_articoli> list = this.vist_famigliaDAO.findColl(pars, orderByClause + " " + direction, pageNumber, pageSize);
+        List<Mrp_arch_articoli> list = this.vist_famigliaDAO.findColl(pars, orderByClause + " " + direction, pageNumber,
+                pageSize);
 
         for (Mrp_arch_articoli mrp_arch_articoli : list) {
 
@@ -676,15 +724,15 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
             stpars.put("fgpromo", "S");
             stpars.put("fgweb", "S");
-            if(pars.containsKey("statiEscludedList")){
+            if (pars.containsKey("statiEscludedList")) {
                 stpars.put("cdstato_escl_List", pars.get("statiEscludedList"));
-            }            
+            }
             int countOff = mrp_arch_articoliDAO.countOfferta(stpars);
             if (countOff > 0 && !AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
-                //if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
+                // if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
                 Mrp_arch_stato statoOff = new Mrp_arch_stato(51, 153, 51);
                 mrp_arch_articoli.getVist_famiglia().setStato(statoOff);
-                //}
+                // }
             } else {
                 stpars.put("statiFilterList", pars.get("statiFilterList"));
                 List<Mrp_arch_stato> stlist = selectDistinctByPars(stpars);
@@ -695,11 +743,13 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
             }
         }
 
-        DTPaginatedList pl = new DTPaginatedList(size, list, pageNumber, pageSize, null, orderByClause, SortOrderEnum.fromName(direction + "ending"));
+        DTPaginatedList pl = new DTPaginatedList(size, list, pageNumber, pageSize, null, orderByClause,
+                SortOrderEnum.fromName(direction + "ending"));
         return pl;
     }
 
-    public DTPaginatedList selectTipiByExamplePag(Map pars, String orderByClause, String direction, int pageNumber, int pageSize) {
+    public DTPaginatedList selectTipiByExamplePag(Map pars, String orderByClause, String direction, int pageNumber,
+            int pageSize) {
 
         log.debug("selectTipiByExamplePag");
         log.debug(pars);
@@ -718,15 +768,15 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
             stpars.put("fgpromo", "S");
             stpars.put("fgweb", "S");
-            if(pars.containsKey("statiEscludedList")){
+            if (pars.containsKey("statiEscludedList")) {
                 stpars.put("cdstato_escl_List", pars.get("statiEscludedList"));
-            }            
+            }
             int countOff = mrp_arch_articoliDAO.countOfferta(stpars);
             if (countOff > 0 && !AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
-                //if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
+                // if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
                 Mrp_arch_stato statoOff = new Mrp_arch_stato(51, 153, 51);
                 vist_tipi.setStato(statoOff);
-                //}
+                // }
             } else {
                 stpars.put("statiFilterList", pars.get("statiFilterList"));
                 List<Mrp_arch_stato> stlist = selectDistinctByPars(stpars);
@@ -738,19 +788,23 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
         }
 
-        DTPaginatedList pl = new DTPaginatedList(size, list, pageNumber, pageSize, null, orderByClause, SortOrderEnum.fromName(direction + "ending"));
+        DTPaginatedList pl = new DTPaginatedList(size, list, pageNumber, pageSize, null, orderByClause,
+                SortOrderEnum.fromName(direction + "ending"));
         return pl;
     }
-    //aggiunta per ricerca rapida
+    // aggiunta per ricerca rapida
 
-    public DTPaginatedList selectArticoliUlByExamplePag(Map pars, String orderByClause, String direction, int pageNumber, int pageSize) {
+    public DTPaginatedList selectArticoliUlByExamplePag(Map pars, String orderByClause, String direction,
+            int pageNumber, int pageSize) {
 
-//        if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
-//            ShopUser user = (ShopUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//            pars.put("cdclas_aList", user.getCdclas_aFilter()); //filtro solo articoli listino        
-//        } else {
-//            pars.put("cdclas_aList", DEFAULT_CDCLAS_A); //filtro solo articoli listino        
-//        }
+        // if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
+        // ShopUser user = (ShopUser)
+        // SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        // pars.put("cdclas_aList", user.getCdclas_aFilter()); //filtro solo articoli
+        // listino
+        // } else {
+        // pars.put("cdclas_aList", DEFAULT_CDCLAS_A); //filtro solo articoli listino
+        // }
         pars.put("cdrepa_escl_List", cdrepa_escl_List);
         pars.put("fgweb", "S");
 
@@ -766,7 +820,8 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
             searchByPars = mrp_arch_articoli_ulDAO.searchByPars(pars, pageNumber, pageSize);
         }
 
-        DTPaginatedList pl = new DTPaginatedList(size, searchByPars, pageNumber, pageSize, null, orderByClause, SortOrderEnum.fromName(direction + "ending"));
+        DTPaginatedList pl = new DTPaginatedList(size, searchByPars, pageNumber, pageSize, null, orderByClause,
+                SortOrderEnum.fromName(direction + "ending"));
         return pl;
     }
 
@@ -826,13 +881,14 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
             crit.andFgpromoEqualTo((String) pars.get("fgpromo"));
         }
         //
-        if (pars.containsKey("cdvistfinv") && !"ign".equals(pars.get("cdvistfinv"))) {
-            if (pars.get("cdvistfinv") != null) {
-                crit.andCdvistfinvEqualTo((String) pars.get("cdvistfinv"));
-            } else if (pars.get("cdvistcolv") != null) {
-                crit.andCdvistfinvIsNull();
-            }
-        }
+        // la finitura del vetro non è più gestita indipendente
+        // ora è inclusa nel colore vetro
+        /*
+         * if (pars.containsKey("cdvistfinv") && !"ign".equals(pars.get("cdvistfinv")))
+         * { if (pars.get("cdvistfinv") != null) { crit.andCdvistfinvEqualTo((String)
+         * pars.get("cdvistfinv")); } else if (pars.get("cdvistcolv") != null) {
+         * crit.andCdvistfinvIsNull(); } }
+         */
         if (pars.get("cdvistelet") != null) {
             crit.andCdvisteletEqualTo((String) pars.get("cdvistelet"));
         }
@@ -897,12 +953,14 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
         pars.put("cdrepa_escl_List", cdrepa_escl_List);
 
-//        if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
-//            ShopUser user = (ShopUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//            pars.put("cdclas_aList", user.getCdclas_aFilter()); //filtro solo articoli listino        
-//        } else {
-//            pars.put("cdclas_aList", DEFAULT_CDCLAS_A); //filtro solo articoli listino        
-//        }
+        // if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
+        // ShopUser user = (ShopUser)
+        // SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        // pars.put("cdclas_aList", user.getCdclas_aFilter()); //filtro solo articoli
+        // listino
+        // } else {
+        // pars.put("cdclas_aList", DEFAULT_CDCLAS_A); //filtro solo articoli listino
+        // }
         pars.put("fgweb", "S");
         return mrp_arch_articoliDAO.getModelli(pars);
     }
@@ -911,12 +969,14 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
         pars.put("cdrepa_escl_List", cdrepa_escl_List);
 
-//        if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
-//            ShopUser user = (ShopUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//            pars.put("cdclas_aList", user.getCdclas_aFilter()); //filtro solo articoli listino        
-//        } else {
-//            pars.put("cdclas_aList", DEFAULT_CDCLAS_A); //filtro solo articoli listino        
-//        }
+        // if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
+        // ShopUser user = (ShopUser)
+        // SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        // pars.put("cdclas_aList", user.getCdclas_aFilter()); //filtro solo articoli
+        // listino
+        // } else {
+        // pars.put("cdclas_aList", DEFAULT_CDCLAS_A); //filtro solo articoli listino
+        // }
         pars.put("fgweb", "S");
         return mrp_arch_articoliDAO.getModelliDis(pars);
     }
@@ -954,7 +1014,7 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
         }
 
-        //sort by country name
+        // sort by country name
         BeanComparator comp = new BeanComparator("archenti.ragcog");
         Collections.sort(clieList, comp);
 
@@ -991,7 +1051,8 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
         for (Web_ord_positito web_ord_positito : posititos) {
 
             Web_ord_posi_noteExample exP = new Web_ord_posi_noteExample();
-            exP.createCriteria().andTkordiEqualTo(cart.getOrd_test().getTkordi()).andTkposiEqualTo(web_ord_positito.getTkposi()).andRigaEqualTo(10).andTiponotaEqualTo("CLIENTE");
+            exP.createCriteria().andTkordiEqualTo(cart.getOrd_test().getTkordi())
+                    .andTkposiEqualTo(web_ord_positito.getTkposi()).andRigaEqualTo(10).andTiponotaEqualTo("CLIENTE");
 
             List<Web_ord_posi_note> noteP = web_ord_posi_noteDAO.selectByExample(exP);
 
@@ -1054,7 +1115,7 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
             Map condc = cart.getCondc();
 
-            String[] tipoNota = new String[]{"GENERALI"}; //new String[]{"CONDF", "ACCF", "SERV", "CONDL"};
+            String[] tipoNota = new String[] { "GENERALI" }; // new String[]{"CONDF", "ACCF", "SERV", "CONDL"};
 
             for (String tipo : tipoNota) {
 
@@ -1094,7 +1155,8 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
         log.debug("***************************");
         log.debug(test.getWeb_ord_test_note());
 
-        if (test.getWeb_ord_test_note().getTkordi() != null || StringUtils.isNotBlank(test.getWeb_ord_test_note().getTesto())) {
+        if (test.getWeb_ord_test_note().getTkordi() != null
+                || StringUtils.isNotBlank(test.getWeb_ord_test_note().getTesto())) {
             Web_ord_test_note notaT = test.getWeb_ord_test_note();
 
             if (notaT.getTkordi() == null) {
@@ -1111,7 +1173,8 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
         for (Web_ord_positito web_ord_positito : posititos) {
 
-            if (web_ord_positito.getWeb_ord_posi_note().getTkposi() != null || StringUtils.isNotBlank(web_ord_positito.getWeb_ord_posi_note().getTesto())) {
+            if (web_ord_positito.getWeb_ord_posi_note().getTkposi() != null
+                    || StringUtils.isNotBlank(web_ord_positito.getWeb_ord_posi_note().getTesto())) {
 
                 Web_ord_posi_note notaP = web_ord_positito.getWeb_ord_posi_note();
 
@@ -1202,13 +1265,15 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
                 mrp_arch_articoli.setVist_var3(getVist_var3ByKey(mrp_arch_articoli.getCdvistv3()));
                 mrp_arch_articoli.setVist_finit_mont(getVist_finit_montByKey(mrp_arch_articoli.getCdvistfinm()));
                 mrp_arch_articoli.setVist_colori_vetro(getVist_colori_vetroByKey(mrp_arch_articoli.getCdvistcolv()));
-                mrp_arch_articoli.setVist_finit_vetro(getVist_finit_vetroByKey(mrp_arch_articoli.getCdvistfinv()));
-                mrp_arch_articoli.setVist_elettrificazioni(getVist_elettrificazioniByKey(mrp_arch_articoli.getCdvistelet()));
+                // mrp_arch_articoli.setVist_finit_vetro(getVist_finit_vetroByKey(mrp_arch_articoli.getCdvistfinv()));
+                mrp_arch_articoli
+                        .setVist_elettrificazioni(getVist_elettrificazioniByKey(mrp_arch_articoli.getCdvistelet()));
                 if (StringUtils.isNotBlank(mrp_arch_articoli.getCdvistseml())) {
-                    mrp_arch_articoli.setVist_semilavorati(getVist_semilavoratiByKey(mrp_arch_articoli.getCdvistseml()));
+                    mrp_arch_articoli
+                            .setVist_semilavorati(getVist_semilavoratiByKey(mrp_arch_articoli.getCdvistseml()));
                 }
                 mrp_arch_articoli.setRicambio(true);
-                //overwrite con il nome immagine del ricambio
+                // overwrite con il nome immagine del ricambio
                 mrp_arch_articoli.setDatiRicambio(vist_articoli_ricambi);
 
                 ricambi.add(mrp_arch_articoli);
@@ -1315,12 +1380,14 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
         return promo;
     }
 
-    public DTPaginatedList selectCliePag(Map pars, String orderByClause, String direction, int pageNumber, int pageSize) {
+    public DTPaginatedList selectCliePag(Map pars, String orderByClause, String direction, int pageNumber,
+            int pageSize) {
         int size = this.archclieDAO.countCliePag(pars);
 
         List list = this.archclieDAO.selectCliePag(pars, orderByClause + " " + direction, pageNumber, pageSize);
 
-        DTPaginatedList pl = new DTPaginatedList(size, list, pageNumber, pageSize, null, orderByClause, SortOrderEnum.fromName(direction + "ending"));
+        DTPaginatedList pl = new DTPaginatedList(size, list, pageNumber, pageSize, null, orderByClause,
+                SortOrderEnum.fromName(direction + "ending"));
         return pl;
     }
 
@@ -1345,8 +1412,7 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
         if (finvetro.size() == 1) {
 
-            if (finvetro.get(0).getCol().getCdvistcolv() == null
-                    && finvetro.get(0).getFin().getCdvistfinv() == null) {
+            if (finvetro.get(0).getCol().getCdvistcolv() == null && finvetro.get(0).getFin().getCdvistfinv() == null) {
                 finvetro.remove(finvetro.get(0));
             }
         }
@@ -1370,7 +1436,7 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
         }
 
-        //sort by country descr
+        // sort by country descr
         BeanComparator comp = new BeanComparator("dsvistvetro");
         Collections.sort(finvetro, comp);
 
@@ -1387,9 +1453,9 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
     public List<Designer> getDesigner() {
 
-//        DesignerExample ex = new DesignerExample();
-//        ex.setOrderByClause("dtinse");
-        //return designerDAO.selectByExampleWithoutBLOBs(ex);
+        // DesignerExample ex = new DesignerExample();
+        // ex.setOrderByClause("dtinse");
+        // return designerDAO.selectByExampleWithoutBLOBs(ex);
         return designerDAO.getArchivio(null);
     }
 
@@ -1398,7 +1464,8 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
         return designerDAO.selectByPrimaryKey(cddesigner);
     }
 
-    public String getSchedaTec(String cdvisttp, String cdvistfam, String cdvistv1, String cdvistv2, String cdvistv3, String cdvistelet) {
+    public String getSchedaTec(String cdvisttp, String cdvistfam, String cdvistv1, String cdvistv2, String cdvistv3,
+            String cdvistelet) {
 
         String path = null;
         Map pars = new HashMap();
@@ -1444,14 +1511,18 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
     public List<Mrp_arch_articoli> searchArticoliByPars(Map pars, int pageNumber, int pagesize) {
 
-        //ShopUser user = (ShopUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        //pars.put("cdclas_aList", user.getCdclas_aFilter()); //filtro solo articoli listino
-//        if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
-//            ShopUser user = (ShopUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//            pars.put("cdclas_aList", user.getCdclas_aFilter()); //filtro solo articoli listino        
-//        } else {
-//            pars.put("cdclas_aList", DEFAULT_CDCLAS_A); //filtro solo articoli listino        
-//        }
+        // ShopUser user = (ShopUser)
+        // SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        // pars.put("cdclas_aList", user.getCdclas_aFilter()); //filtro solo articoli
+        // listino
+        // if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
+        // ShopUser user = (ShopUser)
+        // SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        // pars.put("cdclas_aList", user.getCdclas_aFilter()); //filtro solo articoli
+        // listino
+        // } else {
+        // pars.put("cdclas_aList", DEFAULT_CDCLAS_A); //filtro solo articoli listino
+        // }
         pars.put("cdrepa_escl_List", cdrepa_escl_List);
         pars.put("fgweb", "S");
 
@@ -1465,14 +1536,18 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
     public List<Mrp_arch_articoli_ul> searchArticoliUlByPars(Map pars, int pageNumber, int pagesize) {
 
-        //ShopUser user = (ShopUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        //pars.put("cdclas_aList", user.getCdclas_aFilter()); //filtro solo articoli listino
-//        if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
-//            ShopUser user = (ShopUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//            pars.put("cdclas_aList", user.getCdclas_aFilter()); //filtro solo articoli listino        
-//        } else {
-//            pars.put("cdclas_aList", DEFAULT_CDCLAS_A); //filtro solo articoli listino        
-//        }
+        // ShopUser user = (ShopUser)
+        // SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        // pars.put("cdclas_aList", user.getCdclas_aFilter()); //filtro solo articoli
+        // listino
+        // if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
+        // ShopUser user = (ShopUser)
+        // SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        // pars.put("cdclas_aList", user.getCdclas_aFilter()); //filtro solo articoli
+        // listino
+        // } else {
+        // pars.put("cdclas_aList", DEFAULT_CDCLAS_A); //filtro solo articoli listino
+        // }
         pars.put("cdrepa_escl_List", cdrepa_escl_List);
         pars.put("fgweb", "S");
 
@@ -1483,11 +1558,10 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
         }
 
     }
-    
+
     public Mrp_arch_stato getMrp_arch_statoByKey(String cd) {
         return mrp_arch_statoDAO.selectByPrimaryKey(cd);
     }
-    
 
     public List<Mrp_arch_stato> getAvailableStates() {
 
@@ -1509,12 +1583,14 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
         log.debug("pars filtro per gli stati" + pars);
         log.debug(SecurityContextHolder.getContext().getAuthentication());
         log.debug(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-//        if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
-//            ShopUser user = (ShopUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//            pars.put("cdclas_aList", user.getCdclas_aFilter()); //filtro solo articoli listino        
-//        } else {
-//            pars.put("cdclas_aList", DEFAULT_CDCLAS_A); //filtro solo articoli listino        
-//        }
+        // if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
+        // ShopUser user = (ShopUser)
+        // SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        // pars.put("cdclas_aList", user.getCdclas_aFilter()); //filtro solo articoli
+        // listino
+        // } else {
+        // pars.put("cdclas_aList", DEFAULT_CDCLAS_A); //filtro solo articoli listino
+        // }
         if (AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
             pars.put("cdstato_escl_List", Collections.singletonList("ZEE"));
         }
@@ -1586,7 +1662,7 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
         Map condcMap = new HashMap();
         String[] tipoNota;
-        
+
         Calendar dtulag_condc_default = Calendar.getInstance();
         dtulag_condc_default.set(Calendar.YEAR, 2018);
         dtulag_condc_default.set(Calendar.MONTH, Calendar.NOVEMBER);
@@ -1607,8 +1683,7 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
             ArchrubricaExample archrubricaExample = new ArchrubricaExample();
             archrubricaExample.createCriteria().andCdenteEqualTo(cliente.getArchclie().getCdente())
-                    .andTkrubr_tipoEqualTo(archRubrTipo.getTkrubr_tipo())
-                    .andDtannullatoIsNull();
+                    .andTkrubr_tipoEqualTo(archRubrTipo.getTkrubr_tipo()).andDtannullatoIsNull();
             List<Archrubrica> archrubricas = archrubricaDAO.selectByExample(archrubricaExample);
 
             if (!archrubricas.isEmpty() && archrubricas.size() == 1) {
@@ -1616,13 +1691,14 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
                 Archrubrica archrubrica = archrubricas.get(0);
 
                 condcMap.put("condcTableValue", archrubrica);
-                
-                tipoNota = new String[]{"GENERALI"};
+
+                tipoNota = new String[] { "GENERALI" };
 
                 for (String tipo : tipoNota) {
 
                     Archrubrica_condc_noteExample archrubrica_condc_noteExample = new Archrubrica_condc_noteExample();
-                    archrubrica_condc_noteExample.createCriteria().andTkrubrEqualTo(archrubrica.getTkrubr()).andTpnotaEqualTo(tipo);
+                    archrubrica_condc_noteExample.createCriteria().andTkrubrEqualTo(archrubrica.getTkrubr())
+                            .andTpnotaEqualTo(tipo);
                     archrubrica_condc_noteExample.setOrderByClause("nrposi, tkrubr_condc_n");
 
                     if (archrubrica_condc_noteDAO.countByExample(archrubrica_condc_noteExample) > 0) {
@@ -1630,20 +1706,20 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
                     }
 
                 }
-                
-                
-              
+
                 if (!condcMap.isEmpty()) {
                     condcMap.put("type", "assigned");
 
                     Date dtulagCondc = archrubrica.getDtulag_condc();
-                    if(dtulagCondc == null) {
-                        dtulagCondc = dtulag_condc_default.getTime();                        
+                    if (dtulagCondc == null) {
+                        dtulagCondc = dtulag_condc_default.getTime();
                     }
                     condcMap.put("dtulag_condc", dtulagCondc);
                     Vist_condc_acc lastCondcAcc = vist_condc_accDAO.getLastCondcAcc(tkutente);
 
-                    if ((lastCondcAcc != null && dtulagCondc == null) || (dtulagCondc != null && lastCondcAcc != null && lastCondcAcc.getDtaccettazione() != null && lastCondcAcc.getDtaccettazione().compareTo(dtulagCondc) > 0)) {
+                    if ((lastCondcAcc != null && dtulagCondc == null)
+                            || (dtulagCondc != null && lastCondcAcc != null && lastCondcAcc.getDtaccettazione() != null
+                                    && lastCondcAcc.getDtaccettazione().compareTo(dtulagCondc) > 0)) {
                         condcMap.put("accepted", true);
                         condcMap.put("lastCondcAcc", lastCondcAcc);
                     } else {
@@ -1651,163 +1727,169 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
                     }
 
                     /*
-                    //condizioni commerciali
-                    ClieattiKey clieattiKey = new ClieattiKey();
-                    clieattiKey.setCdatti(archrubrica.getCdatti());
-                    clieattiKey.setCdazie(archrubrica.getCdazie());
-                    Clieatti clieatti = clieattiDAO.selectByPrimaryKey(clieattiKey);
-                    if (StringUtils.isNotBlank(clieatti.getCdgrpatti())) {
-                        Vist_condc_grpatti_parExample vist_condc_grpatti_parExample = new Vist_condc_grpatti_parExample();
-                        vist_condc_grpatti_parExample.createCriteria().andCdgrpattiEqualTo(clieatti.getCdgrpatti());
-                        List<Vist_condc_grpatti_par> vist_condc_grpatti_pars = vist_condc_grpatti_parDAO.selectByExample(vist_condc_grpatti_parExample);
-
-                        LinkedHashMap<String, Vist_condc_grpatti_par> condcTable = getCondcTable(vist_condc_grpatti_pars);
-
-                        condcMap.put("condcTable", condcTable);
-                        condcMap.put("condcTableValue", archrubrica);
-                    }
-                    */
+                     * //condizioni commerciali ClieattiKey clieattiKey = new ClieattiKey();
+                     * clieattiKey.setCdatti(archrubrica.getCdatti());
+                     * clieattiKey.setCdazie(archrubrica.getCdazie()); Clieatti clieatti =
+                     * clieattiDAO.selectByPrimaryKey(clieattiKey); if
+                     * (StringUtils.isNotBlank(clieatti.getCdgrpatti())) {
+                     * Vist_condc_grpatti_parExample vist_condc_grpatti_parExample = new
+                     * Vist_condc_grpatti_parExample();
+                     * vist_condc_grpatti_parExample.createCriteria().andCdgrpattiEqualTo(clieatti.
+                     * getCdgrpatti()); List<Vist_condc_grpatti_par> vist_condc_grpatti_pars =
+                     * vist_condc_grpatti_parDAO.selectByExample(vist_condc_grpatti_parExample);
+                     * 
+                     * LinkedHashMap<String, Vist_condc_grpatti_par> condcTable =
+                     * getCondcTable(vist_condc_grpatti_pars);
+                     * 
+                     * condcMap.put("condcTable", condcTable); condcMap.put("condcTableValue",
+                     * archrubrica); }
+                     */
 
                 }
                 /*
-                
-                if (condcMap.isEmpty()) {
-
-                    //condizioni di default
-                    //recupero cdgrpatti
-                    ClieattiExample clieattiExample = new ClieattiExample();
-                    clieattiExample.createCriteria().andCdattiEqualTo(cliente.getArchclie().getCdatti());
-                    List<Clieatti> clieattis = clieattiDAO.selectByExample(clieattiExample);
-
-                    if (!clieattis.isEmpty() && clieattis.size() == 1) {
-
-                        Clieatti clieatti = clieattis.get(0);
-
-                        if (StringUtils.isNotBlank(clieatti.getCdgrpatti())) {
-
-                            tipoNota = new String[]{"SERV", "CONDL"};
-
-                            for (String tipo : tipoNota) {
-                                Vist_condc_grpatti_noteExample vist_condc_grpatti_noteExample = new Vist_condc_grpatti_noteExample();
-                                vist_condc_grpatti_noteExample.createCriteria().andCdgrpattiEqualTo(clieatti.getCdgrpatti())
-                                        .andTpnotaEqualTo(tipo);
-                                vist_condc_grpatti_noteExample.setOrderByClause("nrposi,tkcondc_grpa_n");
-
-                                if (vist_condc_grpatti_noteDAO.countByExample(vist_condc_grpatti_noteExample) > 0) {
-                                    condcMap.put(tipo, vist_condc_grpatti_noteDAO.selectByExample(vist_condc_grpatti_noteExample));
-                                }
-
-                            }
-
-                            if (!condcMap.isEmpty()) {
-                                condcMap.put("type", "default_cat");
-
-                                Cliegrpatti cliegrpatti = cliegrpattiDAO.selectByPrimaryKey(clieatti.getCdgrpatti());
-                                Date dtulagCondc = (cliegrpatti != null) ? cliegrpatti.getDtulag_condc() : null;
-
-                                condcMap.put("dtulag_condc", dtulagCondc);
-
-                                Vist_condc_acc lastCondcAcc = vist_condc_accDAO.getLastCondcAcc(tkutente);
-
-                                if ((lastCondcAcc != null && dtulagCondc == null) || (dtulagCondc != null && lastCondcAcc != null && lastCondcAcc.getDtaccettazione() != null && lastCondcAcc.getDtaccettazione().compareTo(dtulagCondc) > 0)) {
-                                    condcMap.put("accepted", true);
-                                    condcMap.put("lastCondcAcc", lastCondcAcc);
-                                } else {
-                                    condcMap.put("accepted", false);
-                                }
-
-                                //condizioni commerciali
-                                Vist_condc_grpatti_parExample vist_condc_grpatti_parExample = new Vist_condc_grpatti_parExample();
-                                vist_condc_grpatti_parExample.createCriteria().andCdgrpattiEqualTo(clieatti.getCdgrpatti());
-                                List<Vist_condc_grpatti_par> vist_condc_grpatti_pars = vist_condc_grpatti_parDAO.selectByExample(vist_condc_grpatti_parExample);
-
-                                LinkedHashMap<String, Vist_condc_grpatti_par> condcTable = getCondcTable(vist_condc_grpatti_pars);
-
-                                condcMap.put("condcTable", condcTable);
-                                condcMap.put("condcTableValue", archrubrica);
-
-                            }
-
-                        } else {
-                            //per nazioni ref
-                            Map pars = new HashMap();
-                            pars.put("tkclie", cliente.getArchclie().getTkclie());
-                            pars.put("cdazie", cliente.getArchclie().getCdazie());
-                            pars.put("fseleg", "S");
-                            pars.put("dtfval", new Date());
-                            List<Unitalocale> unilocs = getUnitalocali(pars);
-
-                            if (!unilocs.isEmpty() && unilocs.size() == 1) {
-
-                                Unitalocale sedeLegale = unilocs.get(0);
-
-                                if (sedeLegale.getUnitalocali() != null && StringUtils.isNotBlank(sedeLegale.getUnitalocali().getCdnazi())) {
-                                    Vist_nazioni_refExample vist_nazioni_refExample = new Vist_nazioni_refExample();
-                                    vist_nazioni_refExample.createCriteria().andCdnaziEqualTo(sedeLegale.getUnitalocali().getCdnazi())
-                                            .andCdruoloEqualTo("GRPATTI");
-                                    //aggiungere parametro ruolo per la select in base a indicazioni che darà Andrea
-                                    List<Vist_nazioni_ref> nazionis = vist_nazioni_refDAO.selectByExample(vist_nazioni_refExample);
-
-                                    if (!nazionis.isEmpty()) {
-
-                                        Vist_nazioni_ref nazione = nazionis.get(0);
-
-                                        if (StringUtils.isNotBlank(nazione.getCdgrpatti())) {
-
-                                            tipoNota = new String[]{"SERV", "CONDL"};
-
-                                            for (String tipo : tipoNota) {
-                                                Vist_condc_grpatti_noteExample vist_condc_grpatti_noteExample = new Vist_condc_grpatti_noteExample();
-                                                vist_condc_grpatti_noteExample.createCriteria().andCdgrpattiEqualTo(nazione.getCdgrpatti())
-                                                        .andTpnotaEqualTo(tipo);
-                                                vist_condc_grpatti_noteExample.setOrderByClause("nrposi,tkcondc_grpa_n");
-
-                                                if (vist_condc_grpatti_noteDAO.countByExample(vist_condc_grpatti_noteExample) > 0) {
-                                                    condcMap.put(tipo, vist_condc_grpatti_noteDAO.selectByExample(vist_condc_grpatti_noteExample));
-                                                }
-
-                                            }
-
-                                            if (!condcMap.isEmpty()) {
-                                                condcMap.put("type", "default_cat_naz");
-
-                                                Cliegrpatti cliegrpatti = cliegrpattiDAO.selectByPrimaryKey(nazione.getCdgrpatti());
-                                                Date dtulagCondc = (cliegrpatti != null) ? cliegrpatti.getDtulag_condc() : null;
-
-                                                condcMap.put("dtulag_condc", dtulagCondc);
-
-                                                Vist_condc_acc lastCondcAcc = vist_condc_accDAO.getLastCondcAcc(tkutente);
-
-                                                if ((lastCondcAcc != null && dtulagCondc == null) || (dtulagCondc != null && lastCondcAcc != null && lastCondcAcc.getDtaccettazione() != null && lastCondcAcc.getDtaccettazione().compareTo(dtulagCondc) > 0)) {
-                                                    condcMap.put("accepted", true);
-                                                    condcMap.put("lastCondcAcc", lastCondcAcc);
-                                                } else {
-                                                    condcMap.put("accepted", false);
-                                                }
-
-                                                Vist_condc_grpatti_parExample vist_condc_grpatti_parExample = new Vist_condc_grpatti_parExample();
-                                                vist_condc_grpatti_parExample.createCriteria().andCdgrpattiEqualTo(nazione.getCdgrpatti());
-                                                List<Vist_condc_grpatti_par> vist_condc_grpatti_pars = vist_condc_grpatti_parDAO.selectByExample(vist_condc_grpatti_parExample);
-
-                                                LinkedHashMap<String, Vist_condc_grpatti_par> condcTable = getCondcTable(vist_condc_grpatti_pars);
-
-                                                condcMap.put("condcTable", condcTable);
-                                                condcMap.put("condcTableValue", archrubrica);
-
-                                            }
-
-                                        }
-
-                                    }
-                                }
-
-                            }
-
-                        }
-
-                    }
-
-                }*/
+                 * 
+                 * if (condcMap.isEmpty()) {
+                 * 
+                 * //condizioni di default //recupero cdgrpatti ClieattiExample clieattiExample
+                 * = new ClieattiExample();
+                 * clieattiExample.createCriteria().andCdattiEqualTo(cliente.getArchclie().
+                 * getCdatti()); List<Clieatti> clieattis =
+                 * clieattiDAO.selectByExample(clieattiExample);
+                 * 
+                 * if (!clieattis.isEmpty() && clieattis.size() == 1) {
+                 * 
+                 * Clieatti clieatti = clieattis.get(0);
+                 * 
+                 * if (StringUtils.isNotBlank(clieatti.getCdgrpatti())) {
+                 * 
+                 * tipoNota = new String[]{"SERV", "CONDL"};
+                 * 
+                 * for (String tipo : tipoNota) { Vist_condc_grpatti_noteExample
+                 * vist_condc_grpatti_noteExample = new Vist_condc_grpatti_noteExample();
+                 * vist_condc_grpatti_noteExample.createCriteria().andCdgrpattiEqualTo(clieatti.
+                 * getCdgrpatti()) .andTpnotaEqualTo(tipo);
+                 * vist_condc_grpatti_noteExample.setOrderByClause("nrposi,tkcondc_grpa_n");
+                 * 
+                 * if (vist_condc_grpatti_noteDAO.countByExample(vist_condc_grpatti_noteExample)
+                 * > 0) { condcMap.put(tipo,
+                 * vist_condc_grpatti_noteDAO.selectByExample(vist_condc_grpatti_noteExample));
+                 * }
+                 * 
+                 * }
+                 * 
+                 * if (!condcMap.isEmpty()) { condcMap.put("type", "default_cat");
+                 * 
+                 * Cliegrpatti cliegrpatti =
+                 * cliegrpattiDAO.selectByPrimaryKey(clieatti.getCdgrpatti()); Date dtulagCondc
+                 * = (cliegrpatti != null) ? cliegrpatti.getDtulag_condc() : null;
+                 * 
+                 * condcMap.put("dtulag_condc", dtulagCondc);
+                 * 
+                 * Vist_condc_acc lastCondcAcc = vist_condc_accDAO.getLastCondcAcc(tkutente);
+                 * 
+                 * if ((lastCondcAcc != null && dtulagCondc == null) || (dtulagCondc != null &&
+                 * lastCondcAcc != null && lastCondcAcc.getDtaccettazione() != null &&
+                 * lastCondcAcc.getDtaccettazione().compareTo(dtulagCondc) > 0)) {
+                 * condcMap.put("accepted", true); condcMap.put("lastCondcAcc", lastCondcAcc); }
+                 * else { condcMap.put("accepted", false); }
+                 * 
+                 * //condizioni commerciali Vist_condc_grpatti_parExample
+                 * vist_condc_grpatti_parExample = new Vist_condc_grpatti_parExample();
+                 * vist_condc_grpatti_parExample.createCriteria().andCdgrpattiEqualTo(clieatti.
+                 * getCdgrpatti()); List<Vist_condc_grpatti_par> vist_condc_grpatti_pars =
+                 * vist_condc_grpatti_parDAO.selectByExample(vist_condc_grpatti_parExample);
+                 * 
+                 * LinkedHashMap<String, Vist_condc_grpatti_par> condcTable =
+                 * getCondcTable(vist_condc_grpatti_pars);
+                 * 
+                 * condcMap.put("condcTable", condcTable); condcMap.put("condcTableValue",
+                 * archrubrica);
+                 * 
+                 * }
+                 * 
+                 * } else { //per nazioni ref Map pars = new HashMap(); pars.put("tkclie",
+                 * cliente.getArchclie().getTkclie()); pars.put("cdazie",
+                 * cliente.getArchclie().getCdazie()); pars.put("fseleg", "S");
+                 * pars.put("dtfval", new Date()); List<Unitalocale> unilocs =
+                 * getUnitalocali(pars);
+                 * 
+                 * if (!unilocs.isEmpty() && unilocs.size() == 1) {
+                 * 
+                 * Unitalocale sedeLegale = unilocs.get(0);
+                 * 
+                 * if (sedeLegale.getUnitalocali() != null &&
+                 * StringUtils.isNotBlank(sedeLegale.getUnitalocali().getCdnazi())) {
+                 * Vist_nazioni_refExample vist_nazioni_refExample = new
+                 * Vist_nazioni_refExample();
+                 * vist_nazioni_refExample.createCriteria().andCdnaziEqualTo(sedeLegale.
+                 * getUnitalocali().getCdnazi()) .andCdruoloEqualTo("GRPATTI"); //aggiungere
+                 * parametro ruolo per la select in base a indicazioni che darà Andrea
+                 * List<Vist_nazioni_ref> nazionis =
+                 * vist_nazioni_refDAO.selectByExample(vist_nazioni_refExample);
+                 * 
+                 * if (!nazionis.isEmpty()) {
+                 * 
+                 * Vist_nazioni_ref nazione = nazionis.get(0);
+                 * 
+                 * if (StringUtils.isNotBlank(nazione.getCdgrpatti())) {
+                 * 
+                 * tipoNota = new String[]{"SERV", "CONDL"};
+                 * 
+                 * for (String tipo : tipoNota) { Vist_condc_grpatti_noteExample
+                 * vist_condc_grpatti_noteExample = new Vist_condc_grpatti_noteExample();
+                 * vist_condc_grpatti_noteExample.createCriteria().andCdgrpattiEqualTo(nazione.
+                 * getCdgrpatti()) .andTpnotaEqualTo(tipo);
+                 * vist_condc_grpatti_noteExample.setOrderByClause("nrposi,tkcondc_grpa_n");
+                 * 
+                 * if (vist_condc_grpatti_noteDAO.countByExample(vist_condc_grpatti_noteExample)
+                 * > 0) { condcMap.put(tipo,
+                 * vist_condc_grpatti_noteDAO.selectByExample(vist_condc_grpatti_noteExample));
+                 * }
+                 * 
+                 * }
+                 * 
+                 * if (!condcMap.isEmpty()) { condcMap.put("type", "default_cat_naz");
+                 * 
+                 * Cliegrpatti cliegrpatti =
+                 * cliegrpattiDAO.selectByPrimaryKey(nazione.getCdgrpatti()); Date dtulagCondc =
+                 * (cliegrpatti != null) ? cliegrpatti.getDtulag_condc() : null;
+                 * 
+                 * condcMap.put("dtulag_condc", dtulagCondc);
+                 * 
+                 * Vist_condc_acc lastCondcAcc = vist_condc_accDAO.getLastCondcAcc(tkutente);
+                 * 
+                 * if ((lastCondcAcc != null && dtulagCondc == null) || (dtulagCondc != null &&
+                 * lastCondcAcc != null && lastCondcAcc.getDtaccettazione() != null &&
+                 * lastCondcAcc.getDtaccettazione().compareTo(dtulagCondc) > 0)) {
+                 * condcMap.put("accepted", true); condcMap.put("lastCondcAcc", lastCondcAcc); }
+                 * else { condcMap.put("accepted", false); }
+                 * 
+                 * Vist_condc_grpatti_parExample vist_condc_grpatti_parExample = new
+                 * Vist_condc_grpatti_parExample();
+                 * vist_condc_grpatti_parExample.createCriteria().andCdgrpattiEqualTo(nazione.
+                 * getCdgrpatti()); List<Vist_condc_grpatti_par> vist_condc_grpatti_pars =
+                 * vist_condc_grpatti_parDAO.selectByExample(vist_condc_grpatti_parExample);
+                 * 
+                 * LinkedHashMap<String, Vist_condc_grpatti_par> condcTable =
+                 * getCondcTable(vist_condc_grpatti_pars);
+                 * 
+                 * condcMap.put("condcTable", condcTable); condcMap.put("condcTableValue",
+                 * archrubrica);
+                 * 
+                 * }
+                 * 
+                 * }
+                 * 
+                 * } }
+                 * 
+                 * }
+                 * 
+                 * }
+                 * 
+                 * }
+                 * 
+                 * }
+                 */
             }
         }
 
@@ -1815,7 +1897,8 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
     }
 
-    private LinkedHashMap<String, Vist_condc_grpatti_par> getCondcTable(List<Vist_condc_grpatti_par> vist_condc_grpatti_pars) {
+    private LinkedHashMap<String, Vist_condc_grpatti_par> getCondcTable(
+            List<Vist_condc_grpatti_par> vist_condc_grpatti_pars) {
         LinkedHashMap<String, Vist_condc_grpatti_par> condcTable = new LinkedHashMap<String, Vist_condc_grpatti_par>();
         for (Vist_condc_grpatti_par vist_condc_grpatti_par : vist_condc_grpatti_pars) {
 
@@ -1882,14 +1965,14 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
         String rootRes = "/images/articoli/specsheetres/";
         String pathimg = rootRes + "dati/";
-        //path immagini lampadine
+        // path immagini lampadine
         String pathlampimg = rootRes + "lampadine/";
 
         Map elettDatiExtra = new HashMap();
         ArrayList<Map> lampadine = new ArrayList<Map>();
 
-        //lampadina principale
-        int[] idxs = {1, 2, 7, 8};
+        // lampadina principale
+        int[] idxs = { 1, 2, 7, 8 };
         for (int pos : idxs) {
 
             Map lamp = new HashMap();
@@ -1904,10 +1987,12 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
                     String nomeimg = BeanUtils.getSimpleProperty(datiExtra, "arwSimbAttacco" + pos);
                     if (nomeimg != null) {
                         String[] split = nomeimg.split("\\\\");
-                        String acronimoLampada = (tipoLampadine.get(split[0]) != null ? tipoLampadine.get(split[0]) : split[0]) + ".jpg";
+                        String acronimoLampada = (tipoLampadine.get(split[0]) != null ? tipoLampadine.get(split[0])
+                                : split[0]) + ".jpg";
                         nomeimg = split[1];
 
-                        String realPathAcronimo = WebUtils.getRealPath(ctx.getServletContext(), pathimg + acronimoLampada);
+                        String realPathAcronimo = WebUtils.getRealPath(ctx.getServletContext(),
+                                pathimg + acronimoLampada);
                         File fAcronimo = new File(realPathAcronimo);
 
                         String realPath = WebUtils.getRealPath(ctx.getServletContext(), pathlampimg + nomeimg);
@@ -1921,14 +2006,16 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
                         }
                     }
 
-                    //descrizione
-                    //TODO sostituirlo con l'icona della lampadina quando le passeranno
+                    // descrizione
+                    // TODO sostituirlo con l'icona della lampadina quando le passeranno
                     String qtaPotenza = BeanUtils.getSimpleProperty(datiExtra, "arwQtaPotenza" + pos);
                     String potenza = BeanUtils.getSimpleProperty(datiExtra, "arwPotenza" + pos);
                     String tipoAttacco = BeanUtils.getSimpleProperty(datiExtra, "arwTipoAttacco" + pos);
-                    //String voltaggio = BeanUtils.getSimpleProperty(datiExtra, "arwVoltaggio" + i);
+                    // String voltaggio = BeanUtils.getSimpleProperty(datiExtra, "arwVoltaggio" +
+                    // i);
 
-                    String descrizione = StringUtils.trimToEmpty(qtaPotenza) + "x" + StringUtils.trimToEmpty(potenza) + " " + StringUtils.trimToEmpty(tipoAttacco);
+                    String descrizione = StringUtils.trimToEmpty(qtaPotenza) + "x" + StringUtils.trimToEmpty(potenza)
+                            + " " + StringUtils.trimToEmpty(tipoAttacco);
                     descrizione = StringUtils.trim(descrizione);
 
                     if (StringUtils.isNotBlank(descrizione)) {
@@ -1938,7 +2025,7 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
                     lampadine.add(lamp);
                 }
             } catch (FileNotFoundException ex) {
-                //log.debug("not exists");
+                // log.debug("not exists");
             } catch (IllegalAccessException ex) {
                 log.error(ex);
             } catch (InvocationTargetException ex) {
@@ -1952,7 +2039,7 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
             elettDatiExtra.put("main", (ArrayList<Map>) lampadine.clone());
 
-            int[] altIdxs = {3, 4, 9, 10, 5, 6, 11, 12};
+            int[] altIdxs = { 3, 4, 9, 10, 5, 6, 11, 12 };
 
             int counter = 1;
             boolean alt = false;
@@ -1981,7 +2068,8 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
                             String acronimoLampada = tipoLampadine.get(split[0]) + ".jpg";
                             nomeimg = split[1];
 
-                            String realPathAcronimo = WebUtils.getRealPath(ctx.getServletContext(), pathimg + acronimoLampada);
+                            String realPathAcronimo = WebUtils.getRealPath(ctx.getServletContext(),
+                                    pathimg + acronimoLampada);
                             File fAcronimo = new File(realPathAcronimo);
 
                             String realPath = WebUtils.getRealPath(ctx.getServletContext(), pathlampimg + nomeimg);
@@ -1996,11 +2084,12 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
                             }
                         }
 
-                        //descrizione
+                        // descrizione
                         String qtaPotenza = BeanUtils.getSimpleProperty(datiExtra, "arwQtaPotenza" + bidx);
                         String potenza = BeanUtils.getSimpleProperty(datiExtra, "arwPotenza" + bidx);
                         String tipoAttacco = BeanUtils.getSimpleProperty(datiExtra, "arwTipoAttacco" + bidx);
-                        String descrizione = StringUtils.trimToEmpty(qtaPotenza) + "x" + StringUtils.trimToEmpty(potenza) + " " + StringUtils.trimToEmpty(tipoAttacco);
+                        String descrizione = StringUtils.trimToEmpty(qtaPotenza) + "x"
+                                + StringUtils.trimToEmpty(potenza) + " " + StringUtils.trimToEmpty(tipoAttacco);
                         descrizione = StringUtils.trim(descrizione);
 
                         if (StringUtils.isNotBlank(descrizione)) {
@@ -2017,7 +2106,7 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
                     }
                 } catch (FileNotFoundException ex) {
-                    //log.debug("not exists");
+                    // log.debug("not exists");
                 } catch (IllegalAccessException ex) {
                     log.error(ex);
                 } catch (InvocationTargetException ex) {
@@ -2038,15 +2127,15 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
         if (!AuthorityUtils.userHasAuthority("ROLE_ANONYMOUS")) {
             ShopUser user = (ShopUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            pars.put("cdclas_aList", user.getCdclas_aFilter()); //filtro solo articoli listino
+            pars.put("cdclas_aList", user.getCdclas_aFilter()); // filtro solo articoli listino
 
         } else if (GeoIPInterceptor.getCountry(request).equals("US")) {
-            pars.put("cdclas_aList", VistosiShopManager.DEFAULT_CDCLAS_A_EUUS); //filtro eu + us
+            pars.put("cdclas_aList", VistosiShopManager.DEFAULT_CDCLAS_A_EUUS); // filtro eu + us
         } else {
-            pars.put("cdclas_aList", VistosiShopManager.DEFAULT_CDCLAS_A); //filtro solo articoli eu
+            pars.put("cdclas_aList", VistosiShopManager.DEFAULT_CDCLAS_A); // filtro solo articoli eu
         }
     }
-    
+
     public void addToggleStateZEEFilter(Map pars, HttpServletRequest request) {
 
         Mrp_arch_stato statoZEE = getMrp_arch_statoByKey("ZEE");
@@ -2058,10 +2147,10 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
                 pars.put("statiEscludedList", Collections.singletonList(statoZEE.getCdstato()));
                 pars.put("cdstato_escl_List", Collections.singletonList(statoZEE.getCdstato()));
             }
-        }else{
+        } else {
             pars.put("statiEscludedList", Collections.singletonList(statoZEE.getCdstato()));
             pars.put("cdstato_escl_List", Collections.singletonList(statoZEE.getCdstato()));
-        } 
+        }
     }
 
     public void addCdrepaFilter(Map pars, HttpServletRequest request) {
@@ -2071,21 +2160,19 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
     public boolean checkSpecsheetExists(Mrp_arch_articoli art, WebApplicationContext ctx, RequestContext rc) {
 
-         String[] noFallback = new String[]{"it", "en"};
-         List<String> noFallbackList = Arrays.asList(noFallback);
-         File fXlsxFallback = null;
-         
+        String[] noFallback = new String[] { "it", "en" };
+        List<String> noFallbackList = Arrays.asList(noFallback);
+        File fXlsxFallback = null;
+
         try {
 
             List<String> possibleFilenameList = new ArrayList<String>();
             String filename = art.getVist_filedis();
-            //possibleFilenameList.add(filename);
+            // possibleFilenameList.add(filename);
 
-            if ("UL".equals(art.getCdclas_a())
-                    || "ULL".equals(art.getCdclas_a())
-                    || "LOU".equals(art.getCdclas_a())) {
+            if ("UL".equals(art.getCdclas_a()) || "ULL".equals(art.getCdclas_a()) || "LOU".equals(art.getCdclas_a())) {
 
-                //possibleFilenameList.add(0, filename + "UL");
+                // possibleFilenameList.add(0, filename + "UL");
                 possibleFilenameList.add(0, filename + art.getCdvistelet() + "UL");
             } else {
                 filename += art.getCdvistelet();
@@ -2094,22 +2181,24 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
             for (String file : possibleFilenameList) {
 
-                String realPathPdf = WebUtils.getRealPath(ctx.getServletContext(), SpecSheet.ROOT_RES + "/risorse/" + file + ".pdf");
-                String realPathU3D = WebUtils.getRealPath(ctx.getServletContext(), SpecSheet.ROOT_RES + "/risorse/" + file + ".U3D");
-                String realPathXlsx = WebUtils.getRealPath(ctx.getServletContext(), SpecSheet.ROOT_RES + "/risorse/" + file + "_" + rc.getLocale().getLanguage() + ".xlsx");
-                if(!noFallbackList.contains(rc.getLocale().getLanguage())){
-                    String realPathXlsxFallback = WebUtils.getRealPath(ctx.getServletContext(), SpecSheet.ROOT_RES + "/risorse/" + file + "_" + "en" + ".xlsx");
+                String realPathPdf = WebUtils.getRealPath(ctx.getServletContext(),
+                        SpecSheet.ROOT_RES + "/risorse/" + file + ".pdf");
+                String realPathU3D = WebUtils.getRealPath(ctx.getServletContext(),
+                        SpecSheet.ROOT_RES + "/risorse/" + file + ".U3D");
+                String realPathXlsx = WebUtils.getRealPath(ctx.getServletContext(),
+                        SpecSheet.ROOT_RES + "/risorse/" + file + "_" + rc.getLocale().getLanguage() + ".xlsx");
+                if (!noFallbackList.contains(rc.getLocale().getLanguage())) {
+                    String realPathXlsxFallback = WebUtils.getRealPath(ctx.getServletContext(),
+                            SpecSheet.ROOT_RES + "/risorse/" + file + "_" + "en" + ".xlsx");
                     fXlsxFallback = new File(realPathXlsxFallback);
                 }
-                
+
                 File fPdf = new File(realPathPdf);
                 File fU3D = new File(realPathU3D);
                 File fXlsx = new File(realPathXlsx);
-                
 
-                if (fPdf.exists() /*&& fU3D.exists()*/ && (fXlsx.exists() ||
-                                                            (fXlsxFallback != null && fXlsxFallback.exists()))
-                                                            ) {
+                if (fPdf.exists() /* && fU3D.exists() */ && (fXlsx.exists()
+                        || (fXlsxFallback != null && fXlsxFallback.exists()))) {
                     return true;
                 }
 
@@ -2121,11 +2210,12 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
 
         return false;
     }
-    
+
     public boolean checkSpecsheetModelExists(Mrp_arch_articoli art, WebApplicationContext ctx, RequestContext rc) {
-        
+
         try {
-            String realPathPdf = WebUtils.getRealPath(ctx.getServletContext(), "/images/articoli/disegnitecnici/scheda_prodotto/" + art.getVist_filedis() + ".pdf");
+            String realPathPdf = WebUtils.getRealPath(ctx.getServletContext(),
+                    "/images/articoli/disegnitecnici/scheda_prodotto/" + art.getVist_filedis() + ".pdf");
 
             File fPdf = new File(realPathPdf);
 
@@ -2136,9 +2226,8 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
         } catch (FileNotFoundException ex) {
             Logger.getLogger(VistosiShopManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return false;
     }
-    
 
 }
