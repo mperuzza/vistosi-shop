@@ -231,8 +231,8 @@ public class SpecSheetModello {
             pars.put("cdvistfam", cdvistfam);
             pars.put("cdvistv1", StringUtils.trimToNull(cdvistv1));
             pars.put("cdvistv2", StringUtils.trimToNull(cdvistv2));
-            //pars.put("cdvistv3", StringUtils.trimToNull(cdvistv3));
-            pars.put("cdvistv3", null);
+            pars.put("cdvistv3", StringUtils.trimToNull(cdvistv3));
+            //pars.put("cdvistv3", null);
 
             List<Mrp_arch_articoli> arts = vistosiShopManager.selectMrp_arch_articoliByPars(pars);
 

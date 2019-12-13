@@ -862,6 +862,8 @@ public class SchedaArticoloController {
                     for (int i = 1; i < 10; i++) {
 
                         try {
+                            
+                            //TODO verificare il trim: le nuove stringhe non contengono più slash
                             String nomeimg = BeanUtils.getSimpleProperty(datiExtra, "arwSimbolo" + i);
 
                             nomeimg = StringUtils.substringBetween(nomeimg, "\\", ".");
