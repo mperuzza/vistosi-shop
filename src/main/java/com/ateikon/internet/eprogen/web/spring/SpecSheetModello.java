@@ -413,7 +413,7 @@ public class SpecSheetModello {
         if (vistosiShopManager.DEFAULT_CDCLAS_A_US.contains(art.getCdclas_a())) {
             version = "UL";
         }
-        paragraph = new Paragraph(descrFamiglia + " " + art.getCdvisttp() + (art.getCdvistv1() != null ? " " + art.getCdvistv1() : "") + (art.getCdvistv2() != null ? " " + art.getCdvistv2() : "") + (art.getCdvistv3() != null ? " " + art.getCdvistv3() : ""), new Font(baseFont, 12));
+        paragraph = new Paragraph(descrFamiglia + " " + art.getCdvisttp() + (art.getCdvistv1() != null && !"000".equals(art.getCdvistv1()) ? " " + art.getCdvistv1() : "") + (art.getCdvistv2() != null && !"0".equals(art.getCdvistv2()) ? " " + art.getCdvistv2() : "") + (art.getCdvistv3() != null && !"00".equals(art.getCdvistv3()) ? " " + art.getCdvistv3() : ""), new Font(baseFont, 12));
         paragraph.setLeading(8.5f);
         paragraph.setAlignment(Element.ALIGN_RIGHT);
         cell = new PdfPCell();
@@ -648,7 +648,7 @@ public class SpecSheetModello {
         if (vistosiShopManager.DEFAULT_CDCLAS_A_US.contains(art.getCdclas_a())) {
             version = "UL";
         }
-        paragraph = new Paragraph(descrFamiglia + " " + art.getCdvisttp() + (art.getCdvistv1() != null ? " " + art.getCdvistv1() : "") + (art.getCdvistv2() != null ? " " + art.getCdvistv2() : "") + (art.getCdvistv3() != null ? " " + art.getCdvistv3() : ""), new Font(baseFont, 12));
+        paragraph = new Paragraph(descrFamiglia + " " + art.getCdvisttp() + (art.getCdvistv1() != null && !"000".equals(art.getCdvistv1()) ? " " + art.getCdvistv1() : "") + (art.getCdvistv2() != null && !"0".equals(art.getCdvistv2())? " " + art.getCdvistv2() : "") + (art.getCdvistv3() != null && !"00".equals(art.getCdvistv3())? " " + art.getCdvistv3() : ""), new Font(baseFont, 12));
         cell = tableDescrModello.getDefaultCell();
         cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
         cell.setBorderWidthTop(0);
@@ -1762,7 +1762,8 @@ public class SpecSheetModello {
         cellCnt.setBorderWidth(.2f);
         cellCnt.setPaddingTop(2);
         cellCnt.setPaddingRight(5);
-        cellCnt.setPaddingBottom(4);
+        //cellCnt.setPaddingBottom(4);
+        cellCnt.setPaddingBottom(0);
         cellCnt.setPaddingLeft(5);
 
         table = new PdfPTable(1);
@@ -1791,7 +1792,8 @@ public class SpecSheetModello {
         img.setAlignment(Image.ALIGN_CENTER);
 
         cell = new PdfPCell(img, true);
-        cell.setFixedHeight(315);
+        //cell.setFixedHeight(315);
+        cell.setFixedHeight(230);
         cell.setBorder(PdfPCell.NO_BORDER);
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         cell.setVerticalAlignment(Element.ALIGN_CENTER);
@@ -2102,10 +2104,10 @@ public class SpecSheetModello {
                 blockTable.getDefaultCell().setBorderWidth(0f);
                 blockTable.getDefaultCell().setPadding(0f);
 
-                if ((!StringUtils.equals(art.getCdvistv1(), mrp_arch_articoli.getCdvistv1())
-                        || !StringUtils.equals(art.getCdvistv2(), mrp_arch_articoli.getCdvistv2()))
-                        && StringUtils.isBlank(mrp_arch_articoli.getCdvistv3())) {
-                    //|| !StringUtils.equals(art.getCdvistv3(), mrp_arch_articoli.getCdvistv3())) {
+                if (!StringUtils.equals(art.getCdvistv1(), mrp_arch_articoli.getCdvistv1())
+                        || !StringUtils.equals(art.getCdvistv2(), mrp_arch_articoli.getCdvistv2())
+                        || !StringUtils.equals(art.getCdvistv3(), mrp_arch_articoli.getCdvistv3())) {
+                        //&& StringUtils.isBlank(mrp_arch_articoli.getCdvistv3())) {
                     String filedis = mrp_arch_articoli.getVist_filedis();
 
                     String realPath = WebUtils.getRealPath(ctx.getServletContext(), "/images/articoli/disegnitecnici/" + filedis + ".jpg");

@@ -13,6 +13,7 @@
 <c:set var="dsv3">dsextvistv3${atkLangSfx}</c:set>
 <c:set var="dsext">dsestesa${atkLangSfx}</c:set>
 <c:set var="dsvistccol">dsvistccol${atkLangSfx}</c:set>
+<c:set var="dsric">descrizione${(rc.locale==null || rc.locale=='it')? '': '_'.concat(rc.locale)}</c:set>
 <c:choose>
     <c:when test="${rc.locale!='it'}">
         <c:set var="dsdesignerlang">dsextdesigner_eng</c:set>
@@ -542,9 +543,9 @@
                                             var pars = '&' + origine_richiesta + lang + cdling + tkutente_rif + nome_modello + cdvistelet;
                                             
                                             var descrFile = "${famiglia[dsfam]} "+ scheda.articolo.cdvisttp +
-                                                    ' ' + (scheda.articolo.cdvistv1 && scheda.articolo.vist_var1?scheda.articolo.vist_var1['${dsv1}'].toUpperCase():'') + 
-                                                    ' ' + (scheda.articolo.cdvistv2 && scheda.articolo.vist_var2?scheda.articolo.vist_var2['${dsv2}'].toUpperCase():'') + 
-                                                    ' ' + (scheda.articolo.cdvistv3 && scheda.articolo.vist_var3?scheda.articolo.vist_var3['${dsv3}'].toUpperCase():'') + 
+                                                    ' ' + (scheda.articolo.cdvistv1 && scheda.articolo.vist_var1 && scheda.articolo.vist_var1['${dsv1}']?scheda.articolo.vist_var1['${dsv1}'].toUpperCase():'') + 
+                                                    ' ' + (scheda.articolo.cdvistv2 && scheda.articolo.vist_var2 && scheda.articolo.vist_var2['${dsv2}']?scheda.articolo.vist_var2['${dsv2}'].toUpperCase():'') + 
+                                                    ' ' + (scheda.articolo.cdvistv3 && scheda.articolo.vist_var3 && scheda.articolo.vist_var3['${dsv3}']?scheda.articolo.vist_var3['${dsv3}'].toUpperCase():'') + 
                                                     ' ' + (scheda.articolo.cdvistelet && scheda.articolo.vist_elettrificazioni?scheda.articolo.vist_elettrificazioni['${dselet}'].toUpperCase():'');
                                             
                                             
@@ -1034,7 +1035,7 @@
                                         }
                                         <security:authorize ifNotGranted="ROLE_ANONYMOUS">
                                             if(scheda.ricambi && scheda.ricambi.length > 0){
-                                                updateDD(scheda, 'ricambi', 'sel_ric', 'cdarti', 'cdartiric', '${dsext}');
+                                                updateDD(scheda, 'ricambi', 'sel_ric', 'cdarti', 'cdartiric', '${dsric}');
                                                 $('ric-tab').setStyle('display', 'block');
                                                 $('ric-tab').set('opacity', 1);
                                                 $('ric-tab').active = true;
@@ -1441,14 +1442,14 @@
             <div id="addthis_cnt" class="addthis_cnt">
                 <c:set var="at_title" value="${famiglia[dsfam]}" />
                 <c:set var="at_content" value="${ep:abbreviateString(famiglia[dsextfam], 300)}" />
-                <c:set var="at_img"><c:url value="/static/images/articoli/foto/${fn:replace(articoli[0].cdartm,'/', '-')}.jpg"/></c:set>
+                <c:set var="at_img"><c:url value="/static/images/articoli/foto/${fn:replace(articoli[0].vist_filefoto,'/', '-')}.jpg"/></c:set>
                 <jsp:directive.include file="/WEB-INF/jspf/addthis.jspf"/>                
             </div>
             <div id="foto-art" class="">
                 <c:choose>
                     <c:when test="${!empty articoli}">
                         <div id="img-cnt">
-                            <img src="<c:url value="/static/images/articoli/foto/${fn:replace(articoli[0].cdartm,'/', '-')}.jpg"/>" name="foto" id="foto" alt="${articoli[0].cdartm}"/>
+                            <img src="<c:url value="/static/images/articoli/foto/${fn:replace(articoli[0].vist_filefoto,'/', '-')}.jpg"/>" name="foto" id="foto" alt="${articoli[0].vist_filefoto}"/>
                             <div id="caption">
                                 <%--${articoli[0][dsext]}--%>
                                 <%--span style="text-transform: capitalize">${fn:toLowerCase(articoli[0].vist_famiglia[dsfam])}</span> ${articoli[0].vist_tipi[dstp]} ${articoli[0].vist_var1[dsv1]} ${articoli[0].vist_var2[dsv2]} ${articoli[0].vist_var3[dsv3]} ${articoli[0].vist_colori_vetro[dscolv]} ${articoli[0].vist_finit_vetro[dscolv]}--%>
@@ -1465,7 +1466,7 @@
                         </div>
                         <div id="photo-link">
                             <c:forEach items="${articoli}" var="t" varStatus="s">
-                                <a id="${t.cdarti}_${t.cdvistv1}${t.cdvistv2}${t.cdvistv3}" href="<c:url value="/static/images/articoli/foto/${fn:replace(t.cdartm, '/', '-')}.jpg"/>" title="${fn:toLowerCase(t.vist_famiglia[dsfam])} ${fn:toLowerCase(t.vist_tipi[dstp])}::${fn:toLowerCase((!empty t.vist_var1)?t.vist_var1[dsv1]:"")} ${fn:toLowerCase((!empty t.vist_var2)?t.vist_var2[dsv2]:"")} ${fn:toLowerCase((!empty t.vist_var3)?t.vist_var3[dsv3]:"")}::${fn:toLowerCase((!empty t.vist_colori_vetro)?t.vist_colori_vetro[dscolv]:"")} ${fn:toLowerCase((!empty t.vist_finit_vetro)?t.vist_finit_vetro[dsfinv]:"")}::${fn:toLowerCase((!empty t.vist_finit_mont)?t.vist_finit_mont[dsfinm]:"")}::${fn:toLowerCase((!empty t.vist_elettrificazioni)?t.vist_elettrificazioni[dselet]:"")}" class="fotolink <c:if test='${s.count==1}'>current</c:if>"><img src="<c:url value="/static/images/articoli/foto/${fn:replace(t.cdartm, '/', '-')}.jpg"/>" width="30px"/></a>
+                                <a id="${t.cdarti}_${t.cdvistv1}${t.cdvistv2}${t.cdvistv3}" href="<c:url value="/static/images/articoli/foto/${fn:replace(t.vist_filefoto, '/', '-')}.jpg"/>" title="${fn:toLowerCase(t.vist_famiglia[dsfam])} ${fn:toLowerCase(t.vist_tipi[dstp])}::${fn:toLowerCase((!empty t.vist_var1)?t.vist_var1[dsv1]:"")} ${fn:toLowerCase((!empty t.vist_var2)?t.vist_var2[dsv2]:"")} ${fn:toLowerCase((!empty t.vist_var3)?t.vist_var3[dsv3]:"")}::${fn:toLowerCase((!empty t.vist_colori_vetro)?t.vist_colori_vetro[dscolv]:"")} ${fn:toLowerCase((!empty t.vist_finit_vetro)?t.vist_finit_vetro[dsfinv]:"")}::${fn:toLowerCase((!empty t.vist_finit_mont)?t.vist_finit_mont[dsfinm]:"")}::${fn:toLowerCase((!empty t.vist_elettrificazioni)?t.vist_elettrificazioni[dselet]:"")}" class="fotolink <c:if test='${s.count==1}'>current</c:if>"><img src="<c:url value="/static/images/articoli/foto/${fn:replace(t.vist_filefoto, '/', '-')}.jpg"/>" width="30px"/></a>
                             </c:forEach>
                         </div>
                         <script type="text/javascript">

@@ -16,7 +16,7 @@
 </security:authorize>
 <c:set var="hideCond" value="false"/>
 <security:authorize ifAnyGranted="ROLE_SUBUTENTE"><c:set var="hideCond" value="true"/></security:authorize>
-<c:choose><c:when test="${cdlist == 'LUS'}"><c:set var="valuta" value="USD"/></c:when><c:when test="${cdlist == 'LCA'}"><c:set var="valuta" value="CAD"/></c:when><c:otherwise><c:set var="valuta" value="€"/></c:otherwise></c:choose>
+<c:choose><c:when test="${cdlist == '7'}"><c:set var="valuta" value="USD"/></c:when><c:when test="${cdlist == '6'}"><c:set var="valuta" value="CAD"/></c:when><c:otherwise><c:set var="valuta" value="€"/></c:otherwise></c:choose>
 <jsp:directive.include file="/WEB-INF/jsp/header.jsp"/>
   <script type="text/javascript" src="<c:url value='/static/js/Observer.js' />"></script>
   <script type="text/javascript" src="<c:url value='/static/js/Autocompleter.js' />"></script>

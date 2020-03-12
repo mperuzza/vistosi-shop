@@ -11575,5 +11575,77 @@ public class Mrp_arch_articoliExample {
             addCriterion("descrizione_ru not between", value1, value2, "descrizione_ru");
             return this;
         }
+        
+        
+        //aggiunto vist_file_foto manualmente
+        public Criteria andVist_filefotoIsNull() {
+            addCriterion("vist_filefoto is null");
+            return this;
+        }
+
+        public Criteria andVist_filefotoIsNotNull() {
+            addCriterion("vist_filefoto is not null");
+            return this;
+        }
+
+        public Criteria andVist_filefotoEqualTo(String value) {
+            addCriterion("vist_filefoto =", value, "vist_filefoto");
+            return this;
+        }
+
+        public Criteria andVist_filefotoNotEqualTo(String value) {
+            addCriterion("vist_filefoto <>", value, "vist_filefoto");
+            return this;
+        }
+
+        public Criteria andVist_filefotoGreaterThan(String value) {
+            addCriterion("vist_filefoto >", value, "vist_filefoto");
+            return this;
+        }
+
+        public Criteria andVist_filefotoGreaterThanOrEqualTo(String value) {
+            addCriterion("vist_filefoto >=", value, "vist_filefoto");
+            return this;
+        }
+
+        public Criteria andVist_filefotoLessThan(String value) {
+            addCriterion("vist_filefoto <", value, "vist_filefoto");
+            return this;
+        }
+
+        public Criteria andVist_filefotoLessThanOrEqualTo(String value) {
+            addCriterion("vist_filefoto <=", value, "vist_filefoto");
+            return this;
+        }
+
+        public Criteria andVist_filefotoLike(String value) {
+            addCriterion("vist_filefoto like", value, "vist_filefoto");
+            return this;
+        }
+
+        public Criteria andVist_filefotoNotLike(String value) {
+            addCriterion("vist_filefoto not like", value, "vist_filefoto");
+            return this;
+        }
+
+        public Criteria andVist_filefotoIn(List<String> values) {
+            addCriterion("vist_filefoto in", values, "vist_filefoto");
+            return this;
+        }
+
+        public Criteria andVist_filefotoNotIn(List<String> values) {
+            addCriterion("vist_filefoto not in", values, "vist_filefoto");
+            return this;
+        }
+
+        public Criteria andVist_filefotoBetween(String value1, String value2) {
+            addCriterion("vist_filefoto between", value1, value2, "vist_filefoto");
+            return this;
+        }
+
+        public Criteria andVist_filefotoNotBetween(String value1, String value2) {
+            addCriterion("vist_filefoto not between", value1, value2, "vist_filefoto");
+            return this;
+        }        
     }
 }

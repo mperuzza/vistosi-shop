@@ -175,6 +175,7 @@
     <result column="descrizione_fr" jdbcType="VARCHAR" property="descrizione_fr" />
     <result column="descrizione_es" jdbcType="VARCHAR" property="descrizione_es" />
     <result column="descrizione_ru" jdbcType="VARCHAR" property="descrizione_ru" />
+    <result column="vist_filefoto" jdbcType="VARCHAR" property="vist_filefoto" />
   </resultMap>
   <sql id="ibatorgenerated_Example_Where_Clause">
     <!--
@@ -229,7 +230,7 @@
     cdvistfinm, cdvistros, cdvistcolv, cdvistfinv, cdvistelet, cdvistclass, cdvistpaesi, 
     cdvistrev, cdvistccol, fg_agg, nomenclatura_intra, dsarti_eng, dsarti_ted, dsarti_fra, 
     dsarti_spa, vist_filedis, vist_scheda_pdf, dsarti_rus, descrizione, descrizione_en, 
-    descrizione_de, descrizione_fr, descrizione_es, descrizione_ru
+    descrizione_de, descrizione_fr, descrizione_es, descrizione_ru, vist_filefoto
   </sql>
   <select id="ibatorgenerated_selectByExample" parameterClass="com.ateikon.internet.eprogen.domain.pgmr.Mrp_arch_articoliExample" resultMap="ibatorgenerated_BaseResultMap">
     <!--
@@ -314,7 +315,7 @@
       cdvistccol, fg_agg, nomenclatura_intra, dsarti_eng, 
       dsarti_ted, dsarti_fra, dsarti_spa, vist_filedis, 
       vist_scheda_pdf, dsarti_rus, descrizione, descrizione_en, 
-      descrizione_de, descrizione_fr, descrizione_es, descrizione_ru
+      descrizione_de, descrizione_fr, descrizione_es, descrizione_ru, vist_filefoto
       )
     values (#cdarti:VARCHAR#, #cdazie:VARCHAR#, #cdartm:VARCHAR#, #dsarti:VARCHAR#, #dtcrar:TIMESTAMP#, 
       #dtcsar:TIMESTAMP#, #cdtipa:VARCHAR#, #cdunim_1:VARCHAR#, #cdunim_2:VARCHAR#, #fatcnv:DOUBLE#, 
@@ -353,7 +354,8 @@
       #cdvistccol:VARCHAR#, #fg_agg:VARCHAR#, #nomenclatura_intra:VARCHAR#, #dsarti_eng:VARCHAR#, 
       #dsarti_ted:VARCHAR#, #dsarti_fra:VARCHAR#, #dsarti_spa:VARCHAR#, #vist_filedis:VARCHAR#, 
       #vist_scheda_pdf:VARCHAR#, #dsarti_rus:VARCHAR#, #descrizione:VARCHAR#, #descrizione_en:VARCHAR#, 
-      #descrizione_de:VARCHAR#, #descrizione_fr:VARCHAR#, #descrizione_es:VARCHAR#, #descrizione_ru:VARCHAR#
+      #descrizione_de:VARCHAR#, #descrizione_fr:VARCHAR#, #descrizione_es:VARCHAR#, #descrizione_ru:VARCHAR#, 
+      #vist_filefoto:VARCHAR#
       )
   </insert>
   <insert id="ibatorgenerated_insertSelective" parameterClass="com.ateikon.internet.eprogen.domain.pgmr.Mrp_arch_articoli">
@@ -870,6 +872,9 @@
       <isNotNull prepend="," property="descrizione_ru">
         descrizione_ru
       </isNotNull>
+      <isNotNull prepend="," property="vist_filefoto">
+        vist_filefoto
+      </isNotNull>
       )
     </dynamic>
     values
@@ -1380,6 +1385,9 @@
       </isNotNull>
       <isNotNull prepend="," property="descrizione_ru">
         #descrizione_ru:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="vist_filefoto">
+        #vist_filefoto:VARCHAR#
       </isNotNull>
       )
     </dynamic>
@@ -1906,6 +1914,9 @@
       <isNotNull prepend="," property="record.descrizione_ru">
         descrizione_ru = #record.descrizione_ru:VARCHAR#
       </isNotNull>
+      <isNotNull prepend="," property="record.vist_filefoto">
+        vist_filefoto = #record.vist_filefoto:VARCHAR#
+      </isNotNull>
     </dynamic>
     <isParameterPresent>
       <include refid="pgmr_mrp_arch_articoli.ibatorgenerated_Example_Where_Clause" />
@@ -2085,7 +2096,8 @@
       descrizione_de = #record.descrizione_de:VARCHAR#,
       descrizione_fr = #record.descrizione_fr:VARCHAR#,
       descrizione_es = #record.descrizione_es:VARCHAR#,
-      descrizione_ru = #record.descrizione_ru:VARCHAR#
+      descrizione_ru = #record.descrizione_ru:VARCHAR#,
+      vist_filefoto = #record.vist_filefoto:VARCHAR#
     <isParameterPresent>
       <include refid="pgmr_mrp_arch_articoli.ibatorgenerated_Example_Where_Clause" />
     </isParameterPresent>
@@ -2601,6 +2613,9 @@
       <isNotNull prepend="," property="descrizione_ru">
         descrizione_ru = #descrizione_ru:VARCHAR#
       </isNotNull>
+      <isNotNull prepend="," property="vist_filefoto">
+        vist_filefoto = #vist_filefoto:VARCHAR#
+      </isNotNull>
     </dynamic>
     where cdarti = #cdarti:VARCHAR#
   </update>
@@ -2777,7 +2792,8 @@
       descrizione_de = #descrizione_de:VARCHAR#,
       descrizione_fr = #descrizione_fr:VARCHAR#,
       descrizione_es = #descrizione_es:VARCHAR#,
-      descrizione_ru = #descrizione_ru:VARCHAR#
+      descrizione_ru = #descrizione_ru:VARCHAR#,
+      vist_filefoto = #vist_filefoto:VARCHAR#
     where cdarti = #cdarti:VARCHAR#
   </update>
 

@@ -165,12 +165,16 @@ public class SchedaArticoloController {
                 cddesigner = mrp_arch_articoli.getCddesigner();
             }
             try {
-                String realPath = WebUtils.getRealPath(ctx.getServletContext(), path + mrp_arch_articoli.getCdartm().replace('/', '-') + ".jpg");
-                log.debug(realPath);
-                File f = new File(realPath);
-                if (f.exists()) {
-                    log.debug("esiste");
-                    galleryArticoli.add(mrp_arch_articoli);
+
+                if (mrp_arch_articoli.getVist_filefoto() != null) {
+
+                    String realPath = WebUtils.getRealPath(ctx.getServletContext(), path + mrp_arch_articoli.getVist_filefoto().replace('/', '-') + ".jpg");
+                    log.debug(realPath);
+                    File f = new File(realPath);
+                    if (f.exists()) {
+                        log.debug("esiste");
+                        galleryArticoli.add(mrp_arch_articoli);
+                    }
                 }
             } catch (FileNotFoundException ex) {
             }
@@ -862,7 +866,7 @@ public class SchedaArticoloController {
                     for (int i = 1; i < 10; i++) {
 
                         try {
-                            
+
                             String nomeimg = BeanUtils.getSimpleProperty(datiExtra, "arwSimbolo" + i);
 
                             nomeimg = StringUtils.substringBetween(nomeimg, "\\", ".");

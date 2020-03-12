@@ -3,7 +3,7 @@
 <security:authentication property="principal.cliente.archclie.cdlist" var="cdlist"/>
 <div>
     <c:choose>
-        <c:when test="${cdlist == 'L01'}">
+        <c:when test="${cdlist == 'L01' || cdlist == '1'}">
             <c:choose><c:when test="${rc.locale.language =='it'}">
                     <h2><spring:message code="condc.label.condl" text="Condizioni fisse da listino"/></h2>
                     <dl>
@@ -185,7 +185,7 @@
                 </c:otherwise>
             </c:choose>
         </c:when>
-        <c:when test="${cdlist == 'LUS'}">
+        <c:when test="${cdlist == 'LUS' || cdlist == '7'}">
             <h2><spring:message code="condc.label.condl" text="Sales conditions"/></h2>
             <dl>
                 <dt>Customer service web site: MyVistosi - www.vistosi.it/portal</dt>
@@ -225,7 +225,7 @@
                 </dd>
             </dl>
         </c:when>
-        <c:when test="${cdlist == 'LCA'}">
+        <c:when test="${cdlist == 'LCA' || cdlist == '6'}">
             <c:choose>
                 <c:when test="${rc.locale.language =='fr'}">
                     <h2><spring:message code="condc.label.condl" text="Conditions de vente"/></h2> 

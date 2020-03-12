@@ -6607,9 +6607,13 @@ public class F_eprogen_replace extends Atk_sql {
    ls_tbl_order_details += "<table width=\"359\" class=\"parametri\">";
    ls_tbl_order_details += "<tr>";
    ls_tbl_order_details += "<th width=\"140\" align=\"left\" valign=\"top\" nowrap>"+html.text(totale_ordine_mail)+"<br/>"+html.text(iva_esclusa_mail)+":</th>";
-   if("LUS".equals(cdlist)) {
-       //se il cliente � americano stampo in dollari
+   if("7".equals(cdlist)) {
+       //se il cliente è americano stampo in dollari
        ls_tbl_order_details += "<td valign=\"top\" style=\"font-size:16px;font-weight:bold;\" align=\"right\">" + przFormat.format(lstr_tot.tot_importonettoriga) + " USD</td>";
+   } else 
+   if("6".equals(cdlist)) {
+       //se il cliente è canadese stampo in dollari americani
+       ls_tbl_order_details += "<td valign=\"top\" style=\"font-size:16px;font-weight:bold;\" align=\"right\">" + przFormat.format(lstr_tot.tot_importonettoriga) + " CAD</td>";
    } else {
        ls_tbl_order_details += "<td valign=\"top\" style=\"font-size:16px;font-weight:bold;\" align=\"right\">" + przFormat.format(lstr_tot.tot_importonettoriga) + " &euro;</td>";
    }
