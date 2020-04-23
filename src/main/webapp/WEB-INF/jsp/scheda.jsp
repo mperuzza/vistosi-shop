@@ -321,13 +321,15 @@
 
                 var e = lampList[idl];
 
+                /*
                 if(idl==0){
                     var acro = new Element('img', {src: '<c:url value="/static"/>' + (e.acro?e.acro:'/images/null.gif'), width: imgWidth, class: 'acro'});
                     itemList.adopt(acro);
                     //itemList.adopt('&nbsp;');
                 }else{
                     itemList.adopt(new Element('span', {text:' + '}));
-                }
+                }*/
+                
                 if(e.img){
                     var img = new Element('img', {src: '<c:url value="/static"/>' + e.img, width: imgWidth});
                     itemList.adopt(img);
@@ -343,6 +345,65 @@
             contList.adopt(itemList);
 
         }    
+        
+        
+        function atk_setup_downloadZipDirettoForm (tkc){
+        
+            $('downloadZipDirettoForm').empty();
+            
+            $('downloadZipForm').getElements('input[name=file_req]').each(function(item, index){
+               
+               var encode_file_req = '${portalUrl}download/'+ item.get('value') + '?f='+ item.get('value')  +'&tkc='+tkc +'&lang=${rc.locale}';
+                encode_file_req = encodeURI(encode_file_req);
+
+
+                var el_file_req = new Element('input', {  type: 'hidden'
+                                                        , name: 'file_req'
+                                                        , id: 'downloadZipDirettoForm_file_req'+ index
+                                                        , value: encode_file_req
+                                                    });
+                                                    
+                $('downloadZipDirettoForm').adopt(el_file_req); 
+            });
+
+        }
+        
+        
+        function requestZip(){
+            
+            var myHTMLRequest = new Request.JSON({
+                    url : '${eprogenUrl}epRichiesta_risorse_pubblica_ajax.jsp?',
+                    onSuccess: function(obj_response){
+                        
+                          if (obj_response){
+                              
+                              if (obj_response.il_token > 0){
+                                atk_setup_downloadZipDirettoForm(obj_response.il_token);
+                                $('downloadZipDirettoForm').submit();
+                              } else {
+                                  if (obj_response.message == ''){
+                                      alert('Attenzione: codice errore '+obj_response.rc );
+                                  }
+                              }
+                              //atk_hide_wait();
+                              if (obj_response.message != '') alert(obj_response.message);
+                              //if (obj_response.message_page != '') top.atk_show_message(obj_response.message_page);
+                          } else {
+                              //atk_hide_wait();
+                          }
+                    }
+                  , onFailure: function(xhr){
+                      alert('Server error (zip)');
+                          //atk_hide_wait();
+                          //atk_moo_onFailure(ls_url, xhr);
+                    }
+                  , onComplete: function(){
+                    }
+                }).post($('downloadZipForm')); 
+            
+                       
+        
+        }
        
         
         function updateScheda(scheda){
@@ -364,6 +425,7 @@
                 $('capt-image').empty();
                 $('dati-tecnici').setStyle('display', 'none');
                 $('file-dwl').empty();
+                $('file-dwl-1').empty();
                 $('file-dwl-2').empty();
                 $('art-cnt').setStyle('display', 'block');
                 $('art-tab').active = true;
@@ -483,7 +545,9 @@
                                         }
 
                                         $('file-dwl').empty();
+                                        $('file-dwl-1').empty();
                                         $('file-dwl-2').empty();
+                                        
                                         if(scheda.articolo!=null){
                                             var tit = new Element('h2', {text: '<spring:message code="downloads" text="Downloads"/>'});
                                             $('file-dwl').adopt(tit);
@@ -508,6 +572,7 @@
                                             var isAvailable = true;
                                             var public = false;
                                             var sep = '%7C';
+                                            var izip = 0;
                                             
                                             var form_req_pars = '&dscontatto=Generico' +
                                                                 '&email=generico@vistosi.it' +
@@ -527,6 +592,7 @@
                                                 var downloadUrlForm = '${eprogenUrl}epRichiesta_risorse_pubblica_form.jsp?';
                                                 //var downloadUrl = '${eprogenUrl}epRichiesta_risorse_pubblica_ajax.jsp?';
                                                 origine_richiesta = origine_richiesta+'PUBBLICA';
+                                                
                                                 //http://nbavendramin:8080/eprogen_vistosi/epRichiesta_risorse_pubblica_form.jsp?
                                                 //tipo_richiesta=no_res
                                                 //&file_req=fileresources/assembling_instructions/IM|SP|24PEA||||G9
@@ -537,6 +603,7 @@
                                             <security:authorize ifNotGranted="ROLE_ANONYMOUS">
                                                 //var downloadUrl = 'http://www.vistosi.it/download/?f=';
                                                 origine_richiesta = origine_richiesta+'SHOP';
+                                                
                                                 tkutente_rif = '&tkutente_rif=<security:authentication property="principal.userDB.tkutente"/>';
                                             </security:authorize>
                                               
@@ -559,6 +626,7 @@
                                             }
                                             titletipz = "<spring:message code="msg_file_exist" arguments="${istrLabel}" text="Disponibile. Clicca per effettuare il download."/>";
 
+
                                             <security:authorize ifAllGranted="ROLE_ANONYMOUS">
                                                 <spring:message code="msg_file_no_exist" arguments="${istrLabel}" text="Non disponibile. Clicca qui per richiederlo." var="msgFileNoExist"/>
                                                 public = true;
@@ -567,6 +635,7 @@
                                                     proxyurl = downloadRequestUrl+ pars + form_req_pars + tipo_richiesta + file + '&dsfile=' + '${istrLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsaIstruzioni;
                                                     dlink_class = 'downloadproxylink';
                                                     isAvailable = true;
+                                                    
                                                 }else{
                                                     url = downloadUrlForm + pars +tipo_richiesta + file + '&dsfile=' + '${istrLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsaIstruzioni;
                                                     dlink_class = 'x' + 'downloadlink';
@@ -584,6 +653,7 @@
                                                 proxyurl = downloadRequestUrl+ pars +tipo_richiesta + file + '&dsfile=' + '${istrLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsaIstruzioni;
                                                 dlink_class = 'downloadproxylink';
                                                 isAvailable = true;
+                                                
                                             }else{
                                                 url = downloadRequestUrl+ pars +tipo_richiesta + file + '&dsfile=' + '${istrLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsaIstruzioni;
                                                 dlink_class = 'downloadreqlink';
@@ -597,12 +667,49 @@
                                                     href: (isAvailable || !public) ? url : 'javascript:void(0)', 
                                                     target: (isAvailable || !public) ? '_blank' : '',
                                                     'data-purl': proxyurl,
-                                                    'class': dlink_class + ' ',
+                                                    'data-nome_modello': scheda.articolo.vist_filedis,
+                                                    'class': dlink_class + ' ' + (isAvailable ? 'toZip' : ''),
                                                     'title': titletipz
                                                 });
                                                 var ico = new Element('img', {src: (scheda.articolo.vist_articoli_img && scheda.articolo.vist_articoli_img.pathschtecExists?'<c:url value="/static/images/pdf-icon.gif"/>':'<c:url value="/static/images/no-pdf-icon.gif"/>')});
                                                 apdf.adopt(ico)
                                                 $('file-dwl').adopt(apdf);
+                                                
+                                                if(isAvailable){
+                                                    var el_freq = new Element('input', {  type: 'hidden'
+                                                                            , name: 'file_req'
+                                                                            , id: 'downloadZipForm_file_req'+ izip
+                                                                            , value: 'fileresources/assembling_instructions/' + scheda.articolo.vist_articoli_img.pathschtec
+                                                                                            });
+                                                    $('file-dwl').adopt(el_freq);
+                                                    var el_dsfile = new Element('input', {  type: 'hidden'
+                                                                        , name: 'dsfile'
+                                                                        , id: 'downloadZipForm_dsfile'+ izip
+                                                                        , value: '${istrLabel}' + ' ' + descrFile
+                                                                                        });
+                                                    $('file-dwl').adopt(el_dsfile);                                    
+                                                    var el_tiporisorsa = new Element('input', {  type: 'hidden'
+                                                                        , name: 'tiporisorsa'
+                                                                        , id: 'downloadZipForm_tiporisorsa'+ izip
+                                                                        , value: scheda.articolo.tiporisorsaIstruzioni
+                                                                                        });
+                                                    $('file-dwl').adopt(el_tiporisorsa);                                   
+                                                    var el_nome_modello = new Element('input', {  type: 'hidden'
+                                                                        , name: 'nome_modello'
+                                                                        , id: 'downloadZipForm_nome_modello'+ izip
+                                                                        , value: scheda.articolo.vist_filedis
+                                                                                        });
+                                                    $('file-dwl').adopt(el_nome_modello);
+                                                    var el_cdvistelet = new Element('input', {  type: 'hidden'
+                                                                        , name: 'cdvistelet'
+                                                                        , id: 'downloadZipForm_cdvistelet'+ izip
+                                                                        , value: scheda.articolo.cdvistelet
+                                                                                        });
+                                                    $('file-dwl').adopt(el_cdvistelet);  
+                                                    
+                                                    izip++;
+                                                }
+                                                
                                             //}
                                             //}
                                             //if(scheda.articolo.model2D_dwgExists){
@@ -617,6 +724,7 @@
                                                     proxyurl = downloadRequestUrl+ pars + form_req_pars + tipo_richiesta + file + '&dsfile=' + '${m2DLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsa2D_dwg;
                                                     dlink_class = 'downloadproxylink';
                                                     isAvailable = true;
+                                                                        
                                                 }else{
                                                     url = downloadUrlForm+ pars +tipo_richiesta + file + '&dsfile=' + '${m2DLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsa2D_dwg;
                                                     dlink_class = 'x' + 'downloadlink';
@@ -632,6 +740,7 @@
                                                 proxyurl = downloadRequestUrl+ pars +tipo_richiesta + file + '&dsfile=' + '${m2DLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsa2D_dwg;
                                                 dlink_class = 'downloadproxylink';
                                                 isAvailable = true;
+                                                
                                             }else{
                                                 url = downloadRequestUrl+ pars +tipo_richiesta + file + '&dsfile=' + '${m2DLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsa2D_dwg;
                                                 dlink_class = 'downloadreqlink';
@@ -645,12 +754,48 @@
                                                 href: (isAvailable || !public) ? url : 'javascript:void(0)', 
                                                 target: (isAvailable || !public) ? '_blank' : '',
                                                 'data-purl': proxyurl,
-                                                'class': dlink_class + ' ',
+                                                'class': dlink_class + ' ' + (isAvailable ? 'toZip' : ''),
                                                 'title': titletipz
                                                 });
                                                 var ico = new Element('img', {src: (scheda.articolo.model2D_dwgExists?'<c:url value="/static/images/dwg-icon.gif"/>':'<c:url value="/static/images/no-dwg-icon.gif"/>')});
                                                 apdf.adopt(ico)
                                                 $('file-dwl').adopt(apdf);
+                                                if(isAvailable){
+                                                    var el_freq = new Element('input', {  type: 'hidden'
+                                                                            , name: 'file_req'
+                                                                            , id: 'downloadZipForm_file_req'+ izip
+                                                                            , value: scheda.articolo.model2D_dwg
+                                                                                            });
+                                                    $('file-dwl').adopt(el_freq);
+                                                    var el_dsfile = new Element('input', {  type: 'hidden'
+                                                                        , name: 'dsfile'
+                                                                        , id: 'downloadZipForm_dsfile'+ izip
+                                                                        , value: '${m2DLabel}' + ' ' + descrFile
+                                                                                        });
+                                                    $('file-dwl').adopt(el_dsfile);                                    
+                                                    var el_tiporisorsa = new Element('input', {  type: 'hidden'
+                                                                        , name: 'tiporisorsa'
+                                                                        , id: 'downloadZipForm_tiporisorsa'+ izip
+                                                                        , value: scheda.articolo.tiporisorsa2D_dwg
+                                                                                        });
+                                                    $('file-dwl').adopt(el_tiporisorsa);                                   
+                                                    var el_nome_modello = new Element('input', {  type: 'hidden'
+                                                                        , name: 'nome_modello'
+                                                                        , id: 'downloadZipForm_nome_modello'+ izip
+                                                                        , value: scheda.articolo.vist_filedis
+                                                                                        });
+                                                    $('file-dwl').adopt(el_nome_modello);
+                                                    var el_cdvistelet = new Element('input', {  type: 'hidden'
+                                                                        , name: 'cdvistelet'
+                                                                        , id: 'downloadZipForm_cdvistelet'+ izip
+                                                                        , value: scheda.articolo.cdvistelet
+                                                                                        });
+                                                    $('file-dwl').adopt(el_cdvistelet);  
+                                                    
+                                                    izip++;
+                                                }
+                                                
+                                                
                                             //}
                                             //}
                                             //if(scheda.articolo.model3D_easmExists){
@@ -665,6 +810,7 @@
                                                     proxyurl = downloadRequestUrl+ pars + form_req_pars + tipo_richiesta + file + '&dsfile=' + '${m3DLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsa3D_easm;
                                                     dlink_class = 'downloadproxylink';
                                                     isAvailable = true;
+                                                    
                                                 }else{
                                                     url = downloadUrlForm+ pars +tipo_richiesta + file + '&dsfile=' + '${m3DLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsa3D_easm;
                                                     dlink_class = 'x' + 'downloadlink';
@@ -680,6 +826,7 @@
                                                 proxyurl = downloadRequestUrl+ pars +tipo_richiesta + file + '&dsfile=' + '${m3DLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsa3D_easm;
                                                 dlink_class = 'downloadproxylink';
                                                 isAvailable = true;
+                                                
                                             }else{
                                                 url = downloadRequestUrl+ pars +tipo_richiesta + file + '&dsfile=' + '${m3DLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsa3D_easm;
                                                 dlink_class = 'downloadreqlink';
@@ -692,12 +839,47 @@
                                                     href: (isAvailable || !public) ? url : 'javascript:void(0)', 
                                                     target: (isAvailable || !public) ? '_blank' : '',
                                                     'data-purl': proxyurl,
-                                                    'class': dlink_class + ' ',
+                                                    'class': dlink_class + ' ' + (isAvailable ? 'toZip' : ''),
                                                     'title': titletipz
                                                 });
                                                 var ico = new Element('img', {src: (scheda.articolo.model3D_easmExists?'<c:url value="/static/images/easm-icon.gif"/>':'<c:url value="/static/images/no-easm-icon.gif"/>')});
                                                 apdf.adopt(ico)
                                                 $('file-dwl').adopt(apdf);
+                                                
+                                                if(isAvailable){
+                                                    var el_freq = new Element('input', {  type: 'hidden'
+                                                                            , name: 'file_req'
+                                                                            , id: 'downloadZipForm_file_req'+ izip
+                                                                            , value: scheda.articolo.model3D_easm
+                                                                                            });
+                                                    $('file-dwl').adopt(el_freq);
+                                                    var el_dsfile = new Element('input', {  type: 'hidden'
+                                                                        , name: 'dsfile'
+                                                                        , id: 'downloadZipForm_dsfile'+ izip
+                                                                        , value: '${m3DLabel}' + ' ' + descrFile
+                                                                                        });
+                                                    $('file-dwl').adopt(el_dsfile);                                    
+                                                    var el_tiporisorsa = new Element('input', {  type: 'hidden'
+                                                                        , name: 'tiporisorsa'
+                                                                        , id: 'downloadZipForm_tiporisorsa'+ izip
+                                                                        , value: scheda.articolo.tiporisorsa3D_easm
+                                                                                        });
+                                                    $('file-dwl').adopt(el_tiporisorsa);                                   
+                                                    var el_nome_modello = new Element('input', {  type: 'hidden'
+                                                                        , name: 'nome_modello'
+                                                                        , id: 'downloadZipForm_nome_modello'+ izip
+                                                                        , value: scheda.articolo.vist_filedis
+                                                                                        });
+                                                    $('file-dwl').adopt(el_nome_modello);
+                                                    var el_cdvistelet = new Element('input', {  type: 'hidden'
+                                                                        , name: 'cdvistelet'
+                                                                        , id: 'downloadZipForm_cdvistelet'+ izip
+                                                                        , value: scheda.articolo.cdvistelet
+                                                                                        });
+                                                    $('file-dwl').adopt(el_cdvistelet);  
+                                                    
+                                                    izip++;
+                                                }
                                             //}
                                             //}
                                             //if(scheda.articolo.model3D_eprtExists){
@@ -779,6 +961,7 @@
                                                     url = '<c:url value="/specsheet/"/>'+scheda.articolo.cdartm;
                                                     dlink_class = '';
                                                     isAvailable = true;
+                                                    
                                                 }else{
                                                     url = downloadUrlForm + pars +tipo_richiesta + file + '&dsfile=' + '${specSheetLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsaSpecsheet;
                                                     dlink_class = 'x' + 'downloadlink';
@@ -793,6 +976,7 @@
                                                 url = '<c:url value="/specsheet/"/>'+scheda.articolo.cdartm;
                                                 dlink_class = '';
                                                 isAvailable = true;
+                                                
                                             }else{
                                                 url = downloadRequestUrl+ pars +tipo_richiesta + file + '&dsfile=' + '${specSheetLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsaSpecsheet;
                                                 dlink_class = 'downloadreqlink';
@@ -804,13 +988,47 @@
                                                 var apdf = new Element('a', {
                                                     href: (isAvailable || !public) ? url : 'javascript:void(0)', 
                                                     target: (isAvailable || !public) ? '_blank' : '',
-                                                    'class': dlink_class + ' ',
+                                                    'class': dlink_class + ' ' + (isAvailable ? 'toZip' : ''),
                                                     'title': titletipz
                                                 });
                                                 var ico = new Element('img', {src: (scheda.articolo.specsheetExists?'<c:url value="/static/images/spec-tech-icon.gif"/>':'<c:url value="/static/images/no-spec-tech-icon.gif"/>')});
                                                 apdf.adopt(ico)
                                                 $('file-dwl').adopt(apdf);
                                             //}
+                                            if(isAvailable){
+                                                    var el_freq = new Element('input', {  type: 'hidden'
+                                                                            , name: 'file_req'
+                                                                            , id: 'downloadZipForm_file_req'+ izip
+                                                                            , value: 'specsheet/'+scheda.articolo.cdartm
+                                                                                            });
+                                                    $('file-dwl').adopt(el_freq);
+                                                    var el_dsfile = new Element('input', {  type: 'hidden'
+                                                                        , name: 'dsfile'
+                                                                        , id: 'downloadZipForm_dsfile'+ izip
+                                                                        , value: '${specSheetLabel}' + ' ' + descrFile
+                                                                                        });
+                                                    $('file-dwl').adopt(el_dsfile);                                    
+                                                    var el_tiporisorsa = new Element('input', {  type: 'hidden'
+                                                                        , name: 'tiporisorsa'
+                                                                        , id: 'downloadZipForm_tiporisorsa'+ izip
+                                                                        , value: scheda.articolo.tiporisorsaSpecsheet
+                                                                                        });
+                                                    $('file-dwl').adopt(el_tiporisorsa);                                   
+                                                    var el_nome_modello = new Element('input', {  type: 'hidden'
+                                                                        , name: 'nome_modello'
+                                                                        , id: 'downloadZipForm_nome_modello'+ izip
+                                                                        , value: scheda.articolo.vist_filedis
+                                                                                        });
+                                                    $('file-dwl').adopt(el_nome_modello);
+                                                    var el_cdvistelet = new Element('input', {  type: 'hidden'
+                                                                        , name: 'cdvistelet'
+                                                                        , id: 'downloadZipForm_cdvistelet'+ izip
+                                                                        , value: scheda.articolo.cdvistelet
+                                                                                        });
+                                                    $('file-dwl').adopt(el_cdvistelet);  
+                                                    
+                                                    izip++;
+                                                }
                                             
                                             //specsheet modello
                                             tipo_richiesta = '&tipo_richiesta=' + (scheda.articolo.specsheetModelExists?'si_res':'no_res');
@@ -837,6 +1055,7 @@
                                                 url = '<c:url value="/fileresources/model_specsheet/"/>'+ 'SM' + sep + (scheda.articolo.cdclas_a?scheda.articolo.cdclas_a:'') + sep + (scheda.articolo.cdvisttp?scheda.articolo.cdvisttp:'') + sep + (scheda.articolo.cdvistfam?scheda.articolo.cdvistfam:'') + sep + (scheda.articolo.cdvistv1?scheda.articolo.cdvistv1:'') + sep + (scheda.articolo.cdvistv2?scheda.articolo.cdvistv2:'') + sep + (scheda.articolo.cdvistv3?scheda.articolo.cdvistv3:'') + sep; //TODO
                                                 dlink_class = '';
                                                 isAvailable = true;
+                                                
                                             }else{
                                                 url = downloadRequestUrl+ pars +tipo_richiesta + file + '&dsfile=' + '${specSheetModelLabel}' + ' ' + descrFile + tiporisorsa + scheda.articolo.tiporisorsaSpecsheetModel;
                                                 dlink_class = 'downloadreqlink';
@@ -848,15 +1067,71 @@
                                                 var apdf = new Element('a', {
                                                     href: (isAvailable || !public) ? url : 'javascript:void(0)', 
                                                     target: (isAvailable || !public) ? '_blank' : '',
-                                                    'class': dlink_class + ' ',
+                                                    'class': dlink_class + ' ' + (isAvailable ? 'toZip' : ''),
                                                     'title': titletipz
                                                 });
                                                 var ico = new Element('img', {src: (scheda.articolo.specsheetModelExists?'<c:url value="/static/images/mod-tech-icon.gif"/>':'<c:url value="/static/images/no-mod-tech-icon.gif"/>')});
                                                 apdf.adopt(ico)
                                                 $('file-dwl').adopt(apdf);
                                             //}
+                                            if(isAvailable){
+                                                    var el_freq = new Element('input', {  type: 'hidden'
+                                                                            , name: 'file_req'
+                                                                            , id: 'downloadZipForm_file_req'+ izip
+                                                                            , value: 'fileresources/model_specsheet/'+ 'SM' + sep + (scheda.articolo.cdclas_a?scheda.articolo.cdclas_a:'') + sep + (scheda.articolo.cdvisttp?scheda.articolo.cdvisttp:'') + sep + (scheda.articolo.cdvistfam?scheda.articolo.cdvistfam:'') + sep + (scheda.articolo.cdvistv1?scheda.articolo.cdvistv1:'') + sep + (scheda.articolo.cdvistv2?scheda.articolo.cdvistv2:'') + sep + (scheda.articolo.cdvistv3?scheda.articolo.cdvistv3:'') + sep
+                                                                                            });
+                                                    $('file-dwl').adopt(el_freq);
+                                                    var el_dsfile = new Element('input', {  type: 'hidden'
+                                                                        , name: 'dsfile'
+                                                                        , id: 'downloadZipForm_dsfile'+ izip
+                                                                        , value: '${specSheetModelLabel}' + ' ' + descrFile
+                                                                                        });
+                                                    $('file-dwl').adopt(el_dsfile);                                    
+                                                    var el_tiporisorsa = new Element('input', {  type: 'hidden'
+                                                                        , name: 'tiporisorsa'
+                                                                        , id: 'downloadZipForm_tiporisorsa'+ izip
+                                                                        , value: scheda.articolo.tiporisorsaSpecsheetModel
+                                                                                        });
+                                                    $('file-dwl').adopt(el_tiporisorsa);                                   
+                                                    var el_nome_modello = new Element('input', {  type: 'hidden'
+                                                                        , name: 'nome_modello'
+                                                                        , id: 'downloadZipForm_nome_modello'+ izip
+                                                                        , value: scheda.articolo.vist_filedis
+                                                                                        });
+                                                    $('file-dwl').adopt(el_nome_modello);
+                                                    var el_cdvistelet = new Element('input', {  type: 'hidden'
+                                                                        , name: 'cdvistelet'
+                                                                        , id: 'downloadZipForm_cdvistelet'+ izip
+                                                                        , value: scheda.articolo.cdvistelet
+                                                                                        });
+                                                    $('file-dwl').adopt(el_cdvistelet);  
+                                                    
+                                                    izip++;
+                                                }
+                                            
+                                            if($('downloadZipForm').getElements('input[name=file_req]') 
+                                                && $('downloadZipForm').getElements('input[name=file_req]').length > 0){
+                                                var bzip = new Element('a', {
+                                                    href: 'javascript:void(0)', 
+                                                    'class': 'zipBtn'
+                                                });
+                                                
+                                                bzip.addEvent('click', function(e){
+                                                    requestZip();
+                                                });
+                                                
+                                                var ico = new Element('img', {src: '<c:url value="/static/images/download_zip_on.gif"/>'});
+                                                bzip.adopt(ico)
+                                                $('file-dwl').adopt(bzip);
+                                            }
+                                            
+                                            
                                             
                                             if(scheda.articolo.energyClass!=null && scheda.articolo.energyClass!=''){
+                                                
+                                                var tit = new Element('h2', {text: '<spring:message code="energy_class" text="Energy Class"/>'});
+                                                $('file-dwl-1').adopt(tit);
+                                                
                                                 var apdf = new Element('a', {href: '${eprogenUrl}epRichiesta_download_energyclass.jsp?cdarti='+scheda.articolo.cdarti+'&cdling=${cdling}', 
                                                     target: '_blank',
                                                     'class': 'downloadlink' + ' ',
@@ -864,13 +1139,10 @@
                                                 });
                                                     var ico = new Element('img', {src: '<c:url value="/static/images/ce-icon.gif"/>'});
                                                     apdf.adopt(ico)
-                                                    $('file-dwl').adopt(apdf);
+                                                    $('file-dwl-1').adopt(apdf);
                                             }
                                             
-                                            
-                                            
-                                            
-                                            var allDownloadLink = $('file-dwl').getElements('a.downloadlink').each(function(item, index){
+                                            var allDownloadLink = $('file-dwl-1').getElements('a.downloadlink').each(function(item, index){
                                                 item.addEvent('click', function(e){
                                                     e.stop();
 
@@ -915,6 +1187,7 @@
                                             });
                                             
                                             iniTipz($('file-dwl'));
+                                            iniTipz($('file-dwl-1'));
                                             
                                             //certificazioni
                                             if(scheda.articolo.certList.length>0){
@@ -1208,6 +1481,9 @@
 
 
                     }
+
+
+
 
 
                     window.addEvent('domready', function() {
@@ -1564,8 +1840,31 @@
                 <div id="art-cnt">
                     <div id="art-cnt-sx">
                         <div id="art-image"></div>
-                        <div id="file-dwl"></div>
-                        <div id="file-dwl-2"></div>
+                        <form id="downloadZipDirettoForm" target="_blank" action="${eprogenUrl}zip/download.zip">
+                            <input name="f" value="" type="hidden">
+                            <input name="tkc" value="0" type="hidden">
+                            <input name="lang" value="" type="hidden">
+                        </form>
+                        <form id="downloadZipForm">
+                            <security:authorize ifAllGranted="ROLE_ANONYMOUS">
+                            <input type="hidden" name="origine_richiesta" value="PUBBLICA"/>
+                            <input type="hidden" name="dscontatto" value="Generico"/>
+                            <input type="hidden" name="email" value="generico@vistosi.it"/>
+                            <input type="hidden" name="ragsoc" value="Generico"/>
+                            <input type="hidden" name="citta" value="Mogliano Veneto"/>
+                            <input type="hidden" name="cdnazi" value="IT"/>
+                            <input type="hidden" name="fg_rivend_o_prof" value="S"/>
+                            <input type="hidden" name="fg_no_notif" value="S"/>
+                            </security:authorize>
+                            <security:authorize ifNotGranted="ROLE_ANONYMOUS">
+                            <input type="hidden" name="origine_richiesta" value="SHOP"/>
+                            <c:set var="tkutente_rif"><security:authentication property="principal.userDB.tkutente"/></c:set>
+                            <input type="hidden" name="tkutente_rif" value="${tkutente_rif}"/>
+                            </security:authorize>
+                        <div id="file-dwl" class="file-dwl-cnt"></div>
+                        </form>
+                        <div id="file-dwl-1" class="file-dwl-cnt"></div>
+                        <div id="file-dwl-2" class="file-dwl-cnt"></div>
                     </div>
                     <div id="art-cnt-dx">
                         <div id="modello" class="dd-scheda det-sel-row clearfix">

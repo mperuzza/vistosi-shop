@@ -72,7 +72,7 @@ body{
 }
 
 .input_avanzata {
-    width: 128px;
+    /*width: 128px;*/
     margin-right: 0px !important;
 }
 
@@ -87,7 +87,7 @@ body{
 }
 
 .form_menu {
-    width: 395px;
+    width: 396px;
     float:right;
 }
 
@@ -1036,7 +1036,7 @@ div#thumb.dis-item_hover{
     border: 1px solid 
         #CCC;
 }
-#file-dwl, #file-dwl-2{
+.file-dwl-cnt{
     margin-left: 15px;
     margin-top: 15px;
 }
@@ -1367,7 +1367,7 @@ div#thumb.dis-item_hover{
     font-size: 11px;
 }
 
-#file-dwl h2, #file-dwl-2 h2{
+.file-dwl-cnt h2{
     font-size: 12px;
     margin-bottom: 5px;
 }
@@ -1439,7 +1439,7 @@ div#thumb.dis-item_hover{
     text-align:left;
     font-size:12px;
     font-weight: normal;
-    padding: 1px 0px 1px 0;
+    padding: 1px 8px 1px 0;
 }
 #carrello-det  .thbold{
     font-weight: bold;
@@ -1468,8 +1468,9 @@ div#thumb.dis-item_hover{
 }
 
 .first_cart {
-    padding-left: 4px !important; 
-    width: 148px; 
+    padding-left: 8px !important; 
+    padding-right: 4px !important; 
+    /*width: 148px;*/ 
     /*border-left: 1px solid #fff; */
     padding-top: 0px !important; 
     margin-top: 5px;
@@ -1924,7 +1925,7 @@ div#thumb.dis-item_hover{
     text-decoration: none;
 }
 
-#file-dwl a{
+.file-dwl-cnt a{
     margin-right: 5px;
     height: 26px;
     width: 26px;
@@ -2315,8 +2316,7 @@ ul.socialIcons{
 
 #art-lamp div{
     border: 1px solid #000;
-    margin-left: 25px;
-    margin-right: 3px;
+    margin: 10px 15px 0 0;
     padding: 3px 3px 3px 0;
 }
 

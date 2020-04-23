@@ -72,7 +72,7 @@ body{
 }
 
 .input_avanzata {
-    width: 128px;
+    /*width: 128px;*/
     margin-right: 0px !important;
 }
 
@@ -87,7 +87,7 @@ body{
 }
 
 .form_menu {
-    width: 395px;
+    width: 396px;
     float:right;
 }
 
@@ -1439,7 +1439,7 @@ div#thumb.dis-item_hover{
     text-align:left;
     font-size:12px;
     font-weight: normal;
-    padding: 1px 0px 1px 0;
+    padding: 1px 8px 1px 0;
 }
 #carrello-det  .thbold{
     font-weight: bold;
@@ -1468,8 +1468,9 @@ div#thumb.dis-item_hover{
 }
 
 .first_cart {
-    padding-left: 4px !important; 
-    width: 148px; 
+    padding-left: 8px !important; 
+    padding-right: 4px !important; 
+    /*width: 148px;*/ 
     /*border-left: 1px solid #fff; */
     padding-top: 0px !important; 
     margin-top: 5px;

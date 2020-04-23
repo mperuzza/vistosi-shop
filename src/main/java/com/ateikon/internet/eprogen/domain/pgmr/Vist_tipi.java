@@ -1,7 +1,6 @@
 package com.ateikon.internet.eprogen.domain.pgmr;
 
 import org.apache.commons.lang.StringUtils;
-import sun.swing.StringUIClientPropertyKey;
 
 public class Vist_tipi extends BaseVist_tipi {
     /**
