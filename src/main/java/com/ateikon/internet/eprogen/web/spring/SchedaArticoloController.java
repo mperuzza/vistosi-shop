@@ -393,9 +393,9 @@ public class SchedaArticoloController {
 
         pars.put("cdvisttp", cdvisttp);
         pars.put("cdvistfam", cdvistfam);
-        pars.put("cdvistv1", cdvistv1);
-        pars.put("cdvistv2", cdvistv2);
-        pars.put("cdvistv3", cdvistv3);
+        pars.put("cdvistv1", StringUtils.isEmpty(cdvistv1)?"000":cdvistv1);
+        pars.put("cdvistv2", StringUtils.isEmpty(cdvistv2)?"0":cdvistv2);
+        pars.put("cdvistv3", StringUtils.isEmpty(cdvistv3)?"00":cdvistv3);
 
         //options
         log.debug("cdvistfinm=" + cdvistfinm);

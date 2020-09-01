@@ -545,7 +545,7 @@
                 vist_articoli.cdvistv1 = #cdvistv1:VARCHAR#
            </isNotEmpty>
            <isEmpty prepend="AND" property="cdvistv1">
-                vist_articoli.cdvistv1 is null
+                vist_articoli.cdvistv1 = '000'
            </isEmpty>
        </isPropertyAvailable>
        <isPropertyAvailable property="cdvistv2">           
@@ -553,7 +553,7 @@
                 vist_articoli.cdvistv2 = #cdvistv2:VARCHAR#
            </isNotEmpty>
            <isEmpty prepend="AND" property="cdvistv2">
-                vist_articoli.cdvistv2 is null
+                vist_articoli.cdvistv2 = '0'
            </isEmpty>
        </isPropertyAvailable>
        <isPropertyAvailable property="cdvistv3">           
@@ -561,7 +561,7 @@
                 vist_articoli.cdvistv3 = #cdvistv3:VARCHAR#
            </isNotEmpty>
            <isEmpty prepend="AND" property="cdvistv3">
-                vist_articoli.cdvistv3 is null
+                vist_articoli.cdvistv3 = '00'
            </isEmpty>
        </isPropertyAvailable>
        <isNotEmpty prepend="AND" property="cdvistelet">
