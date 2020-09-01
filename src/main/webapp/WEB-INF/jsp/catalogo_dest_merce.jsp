@@ -710,9 +710,7 @@ window.addEvent('load', function() {
                                         if (rs.getObject("cdnazi_m")!=null) ls_codice_m      = rs.getString("cdnazi_m").trim();
                                         if (rs.getObject("cdncee")!=null)   ls_cdncee      = rs.getString("cdncee").trim();
                                         if (rs.getObject("dsnazi")!=null)   ls_descrizione = rs.getString("dsnazi").trim();
-                                        if(ls_codice.equals(ls_cdncee)){
                                         %><option value="<%=ls_codice%>"><%=ls_descrizione%></option><%
-                                        }
                                     }
                                     %>
                                 </select>

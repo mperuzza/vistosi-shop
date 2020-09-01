@@ -378,13 +378,13 @@
             mrp_arch_articoli.cdvistv2 = #cdvistv2:VARCHAR#
        </isNotEmpty>
        <isEmpty property="cdvistv2" prepend="AND">
-            mrp_arch_articoli.cdvistv2 is null
+            mrp_arch_articoli.cdvistv2 = '0'
        </isEmpty>
        <isNotEmpty property="cdvistv3" prepend="AND">
             mrp_arch_articoli.cdvistv3 = #cdvistv3:VARCHAR#
        </isNotEmpty>
        <isEmpty property="cdvistv3" prepend="AND">
-            mrp_arch_articoli.cdvistv3 is null
+            mrp_arch_articoli.cdvistv3 = '00'
        </isEmpty>
        <isNotEmpty property="cdvistelet" prepend="AND">
             mrp_arch_articoli.cdvistelet = #cdvistelet:VARCHAR#

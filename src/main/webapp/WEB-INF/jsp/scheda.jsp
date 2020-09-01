@@ -1218,7 +1218,7 @@
                                                     
                                                     if(scheda.articolo.eletDatiExtraMap['alt1']){
                                                         
-                                                        var htit =  new Element('h4', {text: '<spring:message code="lampadine.alt" text="Alternative"/>'});
+                                                        var htit =  new Element('h4', {text: '<spring:message code="lampadine.alt" text="Alternative"/>: '});
                                                         var subcnt =  new Element('div');       
                                                         subcnt.adopt(htit);
                                                         contList.adopt(subcnt);

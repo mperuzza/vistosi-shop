@@ -2014,7 +2014,7 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
                     // String voltaggio = BeanUtils.getSimpleProperty(datiExtra, "arwVoltaggio" +
                     // i);
 
-                    String descrizione = StringUtils.trimToEmpty(qtaPotenza) + "x" + StringUtils.trimToEmpty(potenza)
+                    String descrizione = StringUtils.trimToEmpty(qtaPotenza) + "x" + StringUtils.trimToEmpty(StringUtils.upperCase(potenza))
                             + " " + StringUtils.trimToEmpty(tipoAttacco);
                     descrizione = StringUtils.trim(descrizione);
 
@@ -2089,7 +2089,7 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
                         String potenza = BeanUtils.getSimpleProperty(datiExtra, "arwPotenza" + bidx);
                         String tipoAttacco = BeanUtils.getSimpleProperty(datiExtra, "arwTipoAttacco" + bidx);
                         String descrizione = StringUtils.trimToEmpty(qtaPotenza) + "x"
-                                + StringUtils.trimToEmpty(potenza) + " " + StringUtils.trimToEmpty(tipoAttacco);
+                                + StringUtils.trimToEmpty(StringUtils.upperCase(potenza)) + " " + StringUtils.trimToEmpty(tipoAttacco);
                         descrizione = StringUtils.trim(descrizione);
 
                         if (StringUtils.isNotBlank(descrizione)) {
