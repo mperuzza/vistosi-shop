@@ -229,9 +229,18 @@ public class SpecSheetModello {
             pars.put("fgweb", "S");
             pars.put("cdvisttp", cdvisttp);
             pars.put("cdvistfam", cdvistfam);
-            pars.put("cdvistv1", StringUtils.trimToNull(cdvistv1));
-            pars.put("cdvistv2", StringUtils.trimToNull(cdvistv2));
-            pars.put("cdvistv3", StringUtils.trimToNull(cdvistv3));
+//            pars.put("cdvistv1", StringUtils.trimToNull(cdvistv1));
+//            pars.put("cdvistv2", StringUtils.trimToNull(cdvistv2));
+//            pars.put("cdvistv3", StringUtils.trimToNull(cdvistv3));
+            pars.put("cdvistv1", StringUtils.isEmpty(cdvistv1)?"000":cdvistv1);
+            pars.put("cdvistv2", StringUtils.isEmpty(cdvistv2)?"0":cdvistv2);
+            pars.put("cdvistv3", StringUtils.isEmpty(cdvistv3)?"00":cdvistv3); 
+            
+            Map attrpars = new HashMap(pars);
+            
+            if(StringUtils.isNotBlank(cdvistelet)){
+                pars.put("cdvistelet", cdvistelet);
+            }
             //pars.put("cdvistv3", null);
 
             List<Mrp_arch_articoli> arts = vistosiShopManager.selectMrp_arch_articoliByPars(pars);
@@ -242,17 +251,23 @@ public class SpecSheetModello {
             Mrp_arch_articoli artFallback = artsOrderedByCdclasa.get(0);
             Mrp_arch_articoli art = artFallback;
 
-            List<Vist_elettrificazioni> vist_elettrificazioni = vistosiShopManager.findVist_elettrificazioni(pars);
+            attrpars.put("vist_filedis", art.getVist_filedis());
+            //reset lista articoli senza filtro elettrificazione
+            arts = vistosiShopManager.selectMrp_arch_articoliByPars(attrpars);
+            
+            List<Vist_elettrificazioni> vist_elettrificazioni = vistosiShopManager.findVist_elettrificazioni(attrpars);
             //sort by country descr
             BeanComparator comp = new BeanComparator("dsextvistelet");
             Collections.sort(vist_elettrificazioni, comp);
 
-            pars.put("vist_filedis", art.getVist_filedis());
-            List<Vist_vetro> vist_vetro = vistosiShopManager.findVist_vetro(pars);
-            List<Vist_finit_mont> vist_finit_mont = vistosiShopManager.findVist_finit_mont(pars);
+            //pars.put("vist_filedis", art.getVist_filedis());
+            List<Vist_vetro> vist_vetro = vistosiShopManager.findVist_vetro(attrpars);
+            List<Vist_finit_mont> vist_finit_mont = vistosiShopManager.findVist_finit_mont(attrpars);
 
             //String cdvistelet = findPreferred(art, vist_elettrificazioni, request, true);
-            pars.put("cdvistelet", cdvistelet);
+            //EAR - 20201015 -> sembra sia ora necessario filtrare anche per elettrificazione la ricerca dell'articolo base 
+            //quindi setting del parametro spostato sopra
+            //pars.put("cdvistelet", cdvistelet);
 
             //response.setHeader("Content-Disposition", "attachment;filename=\"SG " + cdclas_a + " " + cdvisttp + " " + cdvistfam + " " + cdvistv1 + " " + cdvistv2 + " " + cdvistv3 + " " + cdvistelet + ".pdf\"");
             response.setHeader("Content-Disposition", "attachment;filename=\"SM " + cdclas_a + " " + cdvisttp + " " + cdvistfam + " " + cdvistv1 + " " + cdvistv2 + ".pdf\"");
@@ -2106,7 +2121,9 @@ public class SpecSheetModello {
 
                 if (!StringUtils.equals(art.getCdvistv1(), mrp_arch_articoli.getCdvistv1())
                         || !StringUtils.equals(art.getCdvistv2(), mrp_arch_articoli.getCdvistv2())
-                        || !StringUtils.equals(art.getCdvistv3(), mrp_arch_articoli.getCdvistv3())) {
+                        || !StringUtils.equals(art.getCdvistv3(), mrp_arch_articoli.getCdvistv3())
+                        || !StringUtils.equals(art.getVist_filedis(), mrp_arch_articoli.getVist_filedis())
+                        ) {
                         //&& StringUtils.isBlank(mrp_arch_articoli.getCdvistv3())) {
                     String filedis = mrp_arch_articoli.getVist_filedis();
 

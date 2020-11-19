@@ -222,9 +222,12 @@ public class SpecSheetGenerica {
             pars.put("fgweb", "S");
             pars.put("cdvisttp", cdvisttp);
             pars.put("cdvistfam", cdvistfam);
-            pars.put("cdvistv1", StringUtils.trimToNull(cdvistv1));
-            pars.put("cdvistv2", StringUtils.trimToNull(cdvistv2));
-            pars.put("cdvistv3", StringUtils.trimToNull(cdvistv3));
+//            pars.put("cdvistv1", StringUtils.trimToNull(cdvistv1));
+//            pars.put("cdvistv2", StringUtils.trimToNull(cdvistv2));
+//            pars.put("cdvistv3", StringUtils.trimToNull(cdvistv3));
+            pars.put("cdvistv1", StringUtils.isEmpty(cdvistv1)?"000":cdvistv1);
+            pars.put("cdvistv2", StringUtils.isEmpty(cdvistv2)?"0":cdvistv2);
+            pars.put("cdvistv3", StringUtils.isEmpty(cdvistv3)?"00":cdvistv3);            
 
             List<Mrp_arch_articoli> arts = vistosiShopManager.selectMrp_arch_articoliByPars(pars);
 
