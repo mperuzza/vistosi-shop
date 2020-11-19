@@ -1032,13 +1032,13 @@
                                             
                                             //specsheet modello
                                             tipo_richiesta = '&tipo_richiesta=' + (scheda.articolo.specsheetModelExists?'si_res':'no_res');
-                                            file = '&file_req=fileresources/model_specsheet/'+ 'SM' + sep + (scheda.articolo.cdclas_a?scheda.articolo.cdclas_a:'') + sep + (scheda.articolo.cdvisttp?scheda.articolo.cdvisttp:'') + sep + (scheda.articolo.cdvistfam?scheda.articolo.cdvistfam:'') + sep + (scheda.articolo.cdvistv1?scheda.articolo.cdvistv1:'') + sep + (scheda.articolo.cdvistv2?scheda.articolo.cdvistv2:'') + sep + (scheda.articolo.cdvistv3?scheda.articolo.cdvistv3:'') + sep;
+                                            file = '&file_req=fileresources/model_specsheet/'+ 'SM' + sep + (scheda.articolo.cdclas_a?scheda.articolo.cdclas_a:'') + sep + (scheda.articolo.cdvisttp?scheda.articolo.cdvisttp:'') + sep + (scheda.articolo.cdvistfam?scheda.articolo.cdvistfam:'') + sep + (scheda.articolo.cdvistv1?scheda.articolo.cdvistv1:'') + sep + (scheda.articolo.cdvistv2?scheda.articolo.cdvistv2:'') + sep + (scheda.articolo.cdvistv3?scheda.articolo.cdvistv3:'') + sep + (scheda.articolo.cdvistelet?scheda.articolo.cdvistelet:'');
                                             titletipz = "<spring:message code="msg_file_exist" arguments="${specSheetModelLabel}" text="Disponibile. Clicca per effettuare il download."/>";
                                             <security:authorize ifAllGranted="ROLE_ANONYMOUS">
                                                 public = true;
                                                 <spring:message code="msg_file_no_exist" arguments="${specSheetModelLabel}" text="Non disponibile. Clicca qui per richiederlo." var="msgFileNoExist"/>
                                                 if(scheda.articolo.specsheetModelExists){
-                                                    url = '<c:url value="/fileresources/model_specsheet/SM"/>' +sep + (scheda.articolo.cdclas_a?scheda.articolo.cdclas_a:'') + sep + (scheda.articolo.cdvisttp?scheda.articolo.cdvisttp:'') + sep + (scheda.articolo.cdvistfam?scheda.articolo.cdvistfam:'') + sep + (scheda.articolo.cdvistv1?scheda.articolo.cdvistv1:'') + sep + (scheda.articolo.cdvistv2?scheda.articolo.cdvistv2:'') + sep + (scheda.articolo.cdvistv3?scheda.articolo.cdvistv3:'') + sep; //TODO
+                                                    url = '<c:url value="/fileresources/model_specsheet/SM"/>' +sep + (scheda.articolo.cdclas_a?scheda.articolo.cdclas_a:'') + sep + (scheda.articolo.cdvisttp?scheda.articolo.cdvisttp:'') + sep + (scheda.articolo.cdvistfam?scheda.articolo.cdvistfam:'') + sep + (scheda.articolo.cdvistv1?scheda.articolo.cdvistv1:'') + sep + (scheda.articolo.cdvistv2?scheda.articolo.cdvistv2:'') + sep + (scheda.articolo.cdvistv3?scheda.articolo.cdvistv3:'') + sep + (scheda.articolo.cdvistelet?scheda.articolo.cdvistelet:''); //TODO
                                                     dlink_class = '';
                                                     isAvailable = true;
                                                 }else{
@@ -1052,7 +1052,7 @@
                                             <security:authorize ifNotGranted="ROLE_ANONYMOUS">
                                                 public = false;
                                             if(scheda.articolo.specsheetModelExists){
-                                                url = '<c:url value="/fileresources/model_specsheet/"/>'+ 'SM' + sep + (scheda.articolo.cdclas_a?scheda.articolo.cdclas_a:'') + sep + (scheda.articolo.cdvisttp?scheda.articolo.cdvisttp:'') + sep + (scheda.articolo.cdvistfam?scheda.articolo.cdvistfam:'') + sep + (scheda.articolo.cdvistv1?scheda.articolo.cdvistv1:'') + sep + (scheda.articolo.cdvistv2?scheda.articolo.cdvistv2:'') + sep + (scheda.articolo.cdvistv3?scheda.articolo.cdvistv3:'') + sep; //TODO
+                                                url = '<c:url value="/fileresources/model_specsheet/"/>'+ 'SM' + sep + (scheda.articolo.cdclas_a?scheda.articolo.cdclas_a:'') + sep + (scheda.articolo.cdvisttp?scheda.articolo.cdvisttp:'') + sep + (scheda.articolo.cdvistfam?scheda.articolo.cdvistfam:'') + sep + (scheda.articolo.cdvistv1?scheda.articolo.cdvistv1:'') + sep + (scheda.articolo.cdvistv2?scheda.articolo.cdvistv2:'') + sep + (scheda.articolo.cdvistv3?scheda.articolo.cdvistv3:'') + sep + (scheda.articolo.cdvistelet?scheda.articolo.cdvistelet:''); //TODO
                                                 dlink_class = '';
                                                 isAvailable = true;
                                                 
@@ -1078,7 +1078,7 @@
                                                     var el_freq = new Element('input', {  type: 'hidden'
                                                                             , name: 'file_req'
                                                                             , id: 'downloadZipForm_file_req'+ izip
-                                                                            , value: 'fileresources/model_specsheet/'+ 'SM' + sep + (scheda.articolo.cdclas_a?scheda.articolo.cdclas_a:'') + sep + (scheda.articolo.cdvisttp?scheda.articolo.cdvisttp:'') + sep + (scheda.articolo.cdvistfam?scheda.articolo.cdvistfam:'') + sep + (scheda.articolo.cdvistv1?scheda.articolo.cdvistv1:'') + sep + (scheda.articolo.cdvistv2?scheda.articolo.cdvistv2:'') + sep + (scheda.articolo.cdvistv3?scheda.articolo.cdvistv3:'') + sep
+                                                                            , value: 'fileresources/model_specsheet/'+ 'SM' + sep + (scheda.articolo.cdclas_a?scheda.articolo.cdclas_a:'') + sep + (scheda.articolo.cdvisttp?scheda.articolo.cdvisttp:'') + sep + (scheda.articolo.cdvistfam?scheda.articolo.cdvistfam:'') + sep + (scheda.articolo.cdvistv1?scheda.articolo.cdvistv1:'') + sep + (scheda.articolo.cdvistv2?scheda.articolo.cdvistv2:'') + sep + (scheda.articolo.cdvistv3?scheda.articolo.cdvistv3:'') + sep + (scheda.articolo.cdvistelet?scheda.articolo.cdvistelet:'')
                                                                                             });
                                                     $('file-dwl').adopt(el_freq);
                                                     var el_dsfile = new Element('input', {  type: 'hidden'
