@@ -4,3 +4,5 @@
 Thumbs*
 /dist/
 nbproject/
+
+nbbuild.xml

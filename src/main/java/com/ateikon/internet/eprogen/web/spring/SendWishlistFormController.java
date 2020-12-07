@@ -616,7 +616,7 @@ public class SendWishlistFormController extends BaseFormController {
         try {
             getMailEngine().sendHtmlMessage((String[]) form.getToList().toArray(new String[form.getToList().size()]),
                     null, (form.getSender() != null) ? form.getSender() : "info@vistosi.it", object, templateName,
-                    mailModel, "atkim@ateikon.com");
+                    mailModel, "atknotifiche@gmail.com");
 
             // String body = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine,
             // templateName, mailModel);
