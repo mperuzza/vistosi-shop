@@ -152,7 +152,7 @@ public class VistosiShopSearchController {
 
     @RequestMapping(value = "/tipologia/{cdvisttp}/famiglia/{cdvistfam}", method = RequestMethod.GET)
     public String findByTipoFam(@PathVariable("cdvisttp") String cdvisttp, @PathVariable("cdvistfam") String cdvistfam,
-            @RequestParam(value = "dsvistccol", required = false) String dsvistccol,
+            @RequestParam(value = "dsvistccol", defaultValue = "VISTOSI", required = false) String dsvistccol,
             @RequestParam(value = "cdvistcolv", required = false) String cdvistcolv,
             @RequestParam(value = "cdvistfinv", required = false) String cdvistfinv,
             @RequestParam(value = "cdvistfinm", required = false) String cdvistfinm,
@@ -196,7 +196,7 @@ public class VistosiShopSearchController {
             cdvisttp = null;
         }
         if (NULL_PAR.equals(dsvistccol)) {
-            dsvistccol = null;
+            dsvistccol = vistosiShopManager.DEFAULTCOLL_FILTER;
         }
         if (NULL_PAR.equals(cdvistfam)) {
             cdvistfam = null;
@@ -208,7 +208,7 @@ public class VistosiShopSearchController {
 
     @RequestMapping(value = "/famiglia/{cdvistfam}/tipologia/{cdvisttp}", method = RequestMethod.GET)
     public String findByFamTipo(@PathVariable("cdvisttp") String cdvisttp, @PathVariable("cdvistfam") String cdvistfam,
-            @RequestParam(value = "dsvistccol", required = false) String dsvistccol,
+            @RequestParam(value = "dsvistccol", defaultValue = "VISTOSI", required = false) String dsvistccol,
             @RequestParam(value = "cdvistcolv", required = false) String cdvistcolv,
             @RequestParam(value = "cdvistfinv", required = false) String cdvistfinv,
             @RequestParam(value = "cdvistfinm", required = false) String cdvistfinm,
@@ -226,7 +226,7 @@ public class VistosiShopSearchController {
 
     @RequestMapping(value = "*famiglia/{cdvistfam}", method = RequestMethod.GET)
     public String findByFam(@PathVariable("cdvistfam") String cdvistfam,
-            @RequestParam(value = "dsvistccol", required = false) String dsvistccol,
+            @RequestParam(value = "dsvistccol", defaultValue = "VISTOSI", required = false) String dsvistccol,
             @RequestParam(value = "cdvistcolv", required = false) String cdvistcolv,
             @RequestParam(value = "cdvistfinv", required = false) String cdvistfinv,
             @RequestParam(value = "cdvistfinm", required = false) String cdvistfinm,
@@ -242,7 +242,7 @@ public class VistosiShopSearchController {
 
     @RequestMapping(value = "*tipologia/{cdvisttp}", method = RequestMethod.GET)
     public String findByTipo(@PathVariable("cdvisttp") String cdvisttp,
-            @RequestParam(value = "dsvistccol", required = false) String dsvistccol,
+            @RequestParam(value = "dsvistccol", defaultValue = "VISTOSI", required = false) String dsvistccol,
             @RequestParam(value = "cdvistcolv", required = false) String cdvistcolv,
             @RequestParam(value = "cdvistfinv", required = false) String cdvistfinv,
             @RequestParam(value = "cdvistfinm", required = false) String cdvistfinm,

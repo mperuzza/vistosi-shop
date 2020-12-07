@@ -11646,6 +11646,77 @@ public class Mrp_arch_articoliExample {
         public Criteria andVist_filefotoNotBetween(String value1, String value2) {
             addCriterion("vist_filefoto not between", value1, value2, "vist_filefoto");
             return this;
+        }   
+        
+        //aggiunto vist_cdalias manualmente
+        public Criteria andVist_cdaliasIsNull() {
+            addCriterion("vist_cdalias is null");
+            return this;
+        }
+
+        public Criteria andVist_cdaliasIsNotNull() {
+            addCriterion("vist_cdalias is not null");
+            return this;
+        }
+
+        public Criteria andVist_cdaliasEqualTo(String value) {
+            addCriterion("vist_cdalias =", value, "vist_cdalias");
+            return this;
+        }
+
+        public Criteria andVist_cdaliasNotEqualTo(String value) {
+            addCriterion("vist_cdalias <>", value, "vist_cdalias");
+            return this;
+        }
+
+        public Criteria andVist_cdaliasGreaterThan(String value) {
+            addCriterion("vist_cdalias >", value, "vist_cdalias");
+            return this;
+        }
+
+        public Criteria andVist_cdaliasGreaterThanOrEqualTo(String value) {
+            addCriterion("vist_cdalias >=", value, "vist_cdalias");
+            return this;
+        }
+
+        public Criteria andVist_cdaliasLessThan(String value) {
+            addCriterion("vist_cdalias <", value, "vist_cdalias");
+            return this;
+        }
+
+        public Criteria andVist_cdaliasLessThanOrEqualTo(String value) {
+            addCriterion("vist_cdalias <=", value, "vist_cdalias");
+            return this;
+        }
+
+        public Criteria andVist_cdaliasLike(String value) {
+            addCriterion("vist_cdalias like", value, "vist_cdalias");
+            return this;
+        }
+
+        public Criteria andVist_cdaliasNotLike(String value) {
+            addCriterion("vist_cdalias not like", value, "vist_cdalias");
+            return this;
+        }
+
+        public Criteria andVist_cdaliasIn(List<String> values) {
+            addCriterion("vist_cdalias in", values, "vist_cdalias");
+            return this;
+        }
+
+        public Criteria andVist_cdaliasNotIn(List<String> values) {
+            addCriterion("vist_cdalias not in", values, "vist_cdalias");
+            return this;
+        }
+
+        public Criteria andVist_cdaliasBetween(String value1, String value2) {
+            addCriterion("vist_cdalias between", value1, value2, "vist_cdalias");
+            return this;
+        }
+
+        public Criteria andVist_cdaliasNotBetween(String value1, String value2) {
+            addCriterion("vist_cdalias not between", value1, value2, "vist_cdalias");
+            return this;
         }        
     }
 }

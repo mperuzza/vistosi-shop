@@ -164,11 +164,11 @@
                                         <c:otherwise>
                                             <c:set var="URItpl" value="/search"/>
                                             <c:set var="URItpl" value="${URItpl}/tipologia/{cdvisttp}"/>
-                                            <c:if test="${!empty collezioneFilter && !plainMenu}"><c:set var="URItpl" value="${URItpl}/collezione/{dsvistccol}"/></c:if>
+                                            <%--c:if test="${!empty collezioneFilter && !plainMenu}"><c:set var="URItpl" value="${URItpl}/collezione/{dsvistccol}"/></c:if--%>
                                             <c:if test="${!empty famigliaFilter && !plainMenu}"><c:set var="URItpl" value="${URItpl}/famiglia/{cdvistfam}"/></c:if>
                                             <spring:url var="baseURL" value="${URItpl}/">
                                                 <spring:param name="cdvisttp" value="${t.cdvisttp}" />
-                                                <c:if test="${!empty collezioneFilter && !plainMenu}"><spring:param name="dsvistccol" value="${collezioneFilter}" /></c:if>
+                                                <%--c:if test="${!empty collezioneFilter && !plainMenu}"><spring:param name="dsvistccol" value="${collezioneFilter}" /></c:if--%>
                                                 <c:if test="${!empty famigliaFilter && !plainMenu}"><spring:param name="cdvistfam" value="${famigliaFilter.cdvistfam}" /></c:if>
                                                 <c:if test="${!empty finituraFilter}"><spring:param name="cdvistfinm" value="${finituraFilter.cdvistfinm}" /></c:if>
                                                 <c:if test="${!empty coloreFilter}"><spring:param name="cdvistcolv" value="${coloreFilter.cdvistcolv}" /></c:if>                                                
@@ -184,7 +184,7 @@
                     </div>
                 </c:if>
             </li>
-            <li id="m-collezione" class="ddmenu<c:if test="${disableMenu}"> disabled </c:if>">
+            <%--li id="m-collezione" class="ddmenu<c:if test="${disableMenu}"> disabled </c:if>">
                 <c:set var="dsvistcol">dsvistccol</c:set>
                 <c:if test="${rc.locale.language!='it'}"><c:set var="dsvistcol">dsvistccol_${rc.locale.language}</c:set></c:if>
                 <h2><spring:message code="collection" text="Collezione"/></h2>
@@ -214,7 +214,7 @@
                             </c:if>
                             <c:if test="${s.last}"></ul></div></c:if>
                         </c:forEach>
-            </li>        
+            </li--%>        
             <li id="m-famiglia" class="ddmenu<c:if test="${disableMenu}"> disabled </c:if>">
                 <c:set var="dsfam">dsvistfam${atkLangSfx}</c:set>
 
@@ -224,17 +224,17 @@
                     <c:set var="colnum" value="0"/>
                     <c:set var="numfamiglie" value="${fn:length(famiglie)}"/>
                     <c:set var="blockColumn"><fmt:formatNumber pattern="##" value="${numfamiglie/8}"/></c:set>
-                    <c:set var="blockColumn" value="${blockColumn+1}"/>
+                    <%--c:set var="blockColumn" value="${blockColumn+1}"/--%>
                     <c:forEach items="${famiglie}" var="f" varStatus="s">
                         <c:if test='${s.index%blockColumn == 0}'><c:set var="colnum" value="${colnum+1}"/><c:choose><c:when test="${s.first}"><div class="list-cnt"></c:when><c:otherwise></ul></div></c:otherwise></c:choose>
                 <div class="list-wrapper"><ul></c:if>
                     <li class="column${colnum} menu_item <c:if test='${s.index%blockColumn == 0}'>coltopper</c:if><c:if test='${f.cdvistfam==famigliaFilter.cdvistfam}'> active</c:if>" >               
                         <c:set var="URItpl" value="/search"/>
                         <c:if test="${!empty tipologiaFilter && !plainMenu}"><c:set var="URItpl" value="${URItpl}/tipologia/{cdvisttp}"/></c:if>
-                        <c:if test="${!empty collezioneFilter && !plainMenu}"><c:set var="URItpl" value="${URItpl}/collezione/{dsvistccol}"/></c:if>
+                        <%--c:if test="${!empty collezioneFilter && !plainMenu}"><c:set var="URItpl" value="${URItpl}/collezione/{dsvistccol}"/></c:if--%>
                         <spring:url var="baseURL" value="${URItpl}/famiglia/{cdvistfam}/">
                             <c:if test="${!empty tipologiaFilter && !plainMenu}"><spring:param name="cdvisttp" value="${tipologiaFilter.cdvisttp}" /></c:if>
-                            <c:if test="${!empty collezioneFilter && !plainMenu}"><spring:param name="dsvistccol" value="${collezioneFilter}" /></c:if>
+                            <%--c:if test="${!empty collezioneFilter && !plainMenu}"><spring:param name="dsvistccol" value="${collezioneFilter}" /></c:if--%>
                             <spring:param name="cdvistfam" value="${f.cdvistfam}" />
                             <c:if test="${!empty finituraFilter}"><spring:param name="cdvistfinm" value="${finituraFilter.cdvistfinm}" /></c:if>
                             <c:if test="${!empty coloreFilter}"><spring:param name="cdvistcolv" value="${coloreFilter.cdvistcolv}" /></c:if>
@@ -260,11 +260,11 @@
                 <li  class="menu_item<c:if test='${t.cdvistelet==eletFilter.cdvistelet}'> active</c:if>">
                     <c:set var="URItpl" value="/search"/>
                     <c:if test="${!empty tipologiaFilter && !plainMenu}"><c:set var="URItpl" value="${URItpl}/tipologia/{cdvisttp}"/></c:if>
-                    <c:if test="${!empty collezioneFilter && !plainMenu}"><c:set var="URItpl" value="${URItpl}/collezione/{dsvistccol}"/></c:if>
+                    <%--c:if test="${!empty collezioneFilter && !plainMenu}"><c:set var="URItpl" value="${URItpl}/collezione/{dsvistccol}"/></c:if--%>
                     <c:if test="${!empty famigliaFilter && !plainMenu}"><c:set var="URItpl" value="${URItpl}/famiglia/{cdvistfam}"/></c:if>
                      <spring:url var="baseURL" value="${URItpl}/">
                         <c:if test="${!empty tipologiaFilter && !plainMenu}"><spring:param name="cdvisttp" value="${tipologiaFilter.cdvisttp}" /></c:if>
-                        <c:if test="${!empty collezioneFilter && !plainMenu}"><spring:param name="dsvistccol" value="${collezioneFilter}" /></c:if>
+                        <%--c:if test="${!empty collezioneFilter && !plainMenu}"><spring:param name="dsvistccol" value="${collezioneFilter}" /></c:if--%>
                         <c:if test="${!empty famigliaFilter && !plainMenu}"><spring:param name="cdvistfam" value="${famigliaFilter.cdvistfam}" /></c:if>
                         <spring:param name="cdvistelet" value="${t.cdvistelet}" />
                         <c:if test="${!empty eletFilter}"><spring:param name="cdvistelet" value="${eletFilter.cdvistelet}" /></c:if>
@@ -297,11 +297,11 @@
                 <li class="menu_item<c:if test='${t.cdvistvetro==coloreFilter.cdvistcolv}'> active</c:if>">
                     <c:set var="URItpl" value="/search"/>
                     <c:if test="${!empty tipologiaFilter && !plainMenu}"><c:set var="URItpl" value="${URItpl}/tipologia/{cdvisttp}"/></c:if>
-                    <c:if test="${!empty collezioneFilter && !plainMenu}"><c:set var="URItpl" value="${URItpl}/collezione/{dsvistccol}"/></c:if>
+                    <%--c:if test="${!empty collezioneFilter && !plainMenu}"><c:set var="URItpl" value="${URItpl}/collezione/{dsvistccol}"/></c:if--%>
                     <c:if test="${!empty famigliaFilter && !plainMenu}"><c:set var="URItpl" value="${URItpl}/famiglia/{cdvistfam}"/></c:if>
                     <spring:url var="baseURL" value="${URItpl}/">
                         <c:if test="${!empty tipologiaFilter && !plainMenu}"><spring:param name="cdvisttp" value="${tipologiaFilter.cdvisttp}" /></c:if>
-                        <c:if test="${!empty collezioneFilter && !plainMenu}"><spring:param name="dsvistccol" value="${collezioneFilter}" /></c:if>
+                        <%--c:if test="${!empty collezioneFilter && !plainMenu}"><spring:param name="dsvistccol" value="${collezioneFilter}" /></c:if--%>
                         <c:if test="${!empty famigliaFilter && !plainMenu}"><spring:param name="cdvistfam" value="${famigliaFilter.cdvistfam}" /></c:if>
                         <spring:param name="cdvistcolv" value="${t.col.cdvistcolv}" />
                         <spring:param name="cdvistfinv" value="${t.fin.cdvistfinv}" />
@@ -338,11 +338,11 @@
                     </spring:url--%>
                     <c:set var="URItpl" value="/search"/>
                     <c:if test="${!empty tipologiaFilter && !plainMenu}"><c:set var="URItpl" value="${URItpl}/tipologia/{cdvisttp}"/></c:if>
-                    <c:if test="${!empty collezioneFilter && !plainMenu}"><c:set var="URItpl" value="${URItpl}/collezione/{dsvistccol}"/></c:if>
+                    <%--c:if test="${!empty collezioneFilter && !plainMenu}"><c:set var="URItpl" value="${URItpl}/collezione/{dsvistccol}"/></c:if--%>
                     <c:if test="${!empty famigliaFilter && !plainMenu}"><c:set var="URItpl" value="${URItpl}/famiglia/{cdvistfam}"/></c:if>
                     <spring:url var="baseURL" value="${URItpl}/">
                         <c:if test="${!empty tipologiaFilter && !plainMenu}"><spring:param name="cdvisttp" value="${tipologiaFilter.cdvisttp}" /></c:if>
-                        <c:if test="${!empty collezioneFilter && !plainMenu}"><spring:param name="dsvistccol" value="${collezioneFilter}" /></c:if>
+                        <%--c:if test="${!empty collezioneFilter && !plainMenu}"><spring:param name="dsvistccol" value="${collezioneFilter}" /></c:if--%>
                         <c:if test="${!empty famigliaFilter && !plainMenu}"><spring:param name="cdvistfam" value="${famigliaFilter.cdvistfam}" /></c:if>
                         <spring:param name="cdvistfinm" value="${t.cdvistfinm}" />
                         <c:if test="${!empty coloreFilter}"><spring:param name="cdvistcolv" value="${coloreFilter.cdvistcolv}" /></c:if>
@@ -362,7 +362,7 @@
         <table>
             <tr>
                 <td class="m-tipologia head"><spring:message code="filter.active" text="Filtri attivi"/>:</td>
-                <td class="m-collezione"></td>
+                <%--td class="m-collezione"></td--%>
                 <td class="m-famiglia"></td>
                 <td class="m-elettrificazione"></td>
                 <td class="m-colvetro"></td>
@@ -371,17 +371,17 @@
             <tr>
                 <td class="m-tipologia"><c:if test="${!empty tipologiaFilter && !plainMenu}">
                         <c:set var="clearURL" value="/search"/>
-                        <c:if test="${!empty collezioneFilter && !plainMenu}"><c:set var="clearURL" value="${clearURL}/collezione/{dsvistccol}"/></c:if>
+                        <%--c:if test="${!empty collezioneFilter && !plainMenu}"><c:set var="clearURL" value="${clearURL}/collezione/{dsvistccol}"/></c:if--%>
                         <c:if test="${!empty famigliaFilter && !plainMenu}"><c:set var="clearURL" value="${clearURL}/famiglia/{cdvistfam}"/></c:if>
                         <spring:url var="clearURL" value="${clearURL}/">
-                            <c:if test="${!empty collezioneFilter && !plainMenu}"><spring:param name="dsvistccol" value="${collezioneFilter}" /></c:if>
+                            <%--c:if test="${!empty collezioneFilter && !plainMenu}"><spring:param name="dsvistccol" value="${collezioneFilter}" /></c:if--%>
                             <c:if test="${!empty famigliaFilter && !plainMenu}"><spring:param name="cdvistfam" value="${famigliaFilter.cdvistfam}" /></c:if>
                             <c:if test="${!empty finituraFilter}"><spring:param name="cdvistfinm" value="${finituraFilter.cdvistfinm}" /></c:if>
                             <c:if test="${!empty coloreFilter}"><spring:param name="cdvistcolv" value="${coloreFilter.cdvistcolv}" /></c:if>
                             <c:if test="${!empty finvetroFilter}"><spring:param name="cdvistfinv" value="${finvetroFilter.cdvistfinv}" /></c:if>
                         </spring:url>                       
                         <a href="${clearURL}" class="delete-filter"><c:out value="${fn:toLowerCase(tipologiaFilter[dstp])}"/></a></c:if></td>
-                <td class="m-collezione"><c:if test="${!empty collezioneFilter && !plainMenu}">
+                <%--td class="m-collezione"><c:if test="${!empty collezioneFilter && !plainMenu}">
                         <c:set var="clearURL" value="/search"/>
                         <c:if test="${!empty tipologiaFilter && !plainMenu}"><c:set var="clearURL" value="${clearURL}/tipologia/{cdvisttp}"/></c:if>
                         <c:if test="${!empty famigliaFilter && !plainMenu}"><c:set var="clearURL" value="${clearURL}/famiglia/{cdvistfam}"/></c:if>
@@ -392,14 +392,14 @@
                             <c:if test="${!empty coloreFilter}"><spring:param name="cdvistcolv" value="${coloreFilter.cdvistcolv}" /></c:if>
                             <c:if test="${!empty finvetroFilter}"><spring:param name="cdvistfinv" value="${finvetroFilter.cdvistfinv}" /></c:if>
                         </spring:url>                     
-                        <a href="${clearURL}" class="delete-filter"><c:out value="${fn:toLowerCase(collezioneFilter)}"/></a></c:if></td>
+                        <a href="${clearURL}" class="delete-filter"><c:out value="${fn:toLowerCase(collezioneFilter)}"/></a></c:if></td--%>
                 <td class="m-famiglia"><c:if test="${!empty famigliaFilter && !plainMenu}">
                         <c:set var="clearURL" value="/search"/>
                         <c:if test="${!empty tipologiaFilter && !plainMenu}"><c:set var="clearURL" value="${clearURL}/tipologia/{cdvisttp}"/></c:if>
-                        <c:if test="${!empty collezioneFilter && !plainMenu}"><c:set var="clearURL" value="${clearURL}/collezione/{dsvistccol}"/></c:if>
+                        <%--c:if test="${!empty collezioneFilter && !plainMenu}"><c:set var="clearURL" value="${clearURL}/collezione/{dsvistccol}"/></c:if--%>
                         <spring:url var="clearURL" value="${clearURL}/">
                             <c:if test="${!empty tipologiaFilter && !plainMenu}"><spring:param name="cdvisttp" value="${tipologiaFilter.cdvisttp}" /></c:if>
-                            <c:if test="${!empty collezioneFilter && !plainMenu}"><spring:param name="dsvistccol" value="${collezioneFilter}" /></c:if>
+                            <%--c:if test="${!empty collezioneFilter && !plainMenu}"><spring:param name="dsvistccol" value="${collezioneFilter}" /></c:if--%>
                             <c:if test="${!empty finituraFilter}"><spring:param name="cdvistfinm" value="${finituraFilter.cdvistfinm}" /></c:if>
                             <c:if test="${!empty coloreFilter}"><spring:param name="cdvistcolv" value="${coloreFilter.cdvistcolv}" /></c:if>
                             <c:if test="${!empty finvetroFilter}"><spring:param name="cdvistfinv" value="${finvetroFilter.cdvistfinv}" /></c:if>
@@ -408,11 +408,11 @@
                     <td class="m-elettrificazione"><c:if test="${!empty eletFilter && !plainMenu}">
                     <c:set var="clearURL" value="/search"/>
                         <c:if test="${!empty tipologiaFilter && !plainMenu}"><c:set var="clearURL" value="${clearURL}/tipologia/{cdvisttp}"/></c:if>
-                        <c:if test="${!empty collezioneFilter && !plainMenu}"><c:set var="clearURL" value="${clearURL}/collezione/{dsvistccol}"/></c:if>
+                        <%--c:if test="${!empty collezioneFilter && !plainMenu}"><c:set var="clearURL" value="${clearURL}/collezione/{dsvistccol}"/></c:if--%>
                         <c:if test="${!empty famigliaFilter && !plainMenu}"><c:set var="clearURL" value="${clearURL}/famiglia/{cdvistfam}"/></c:if>
                         <spring:url var="clearURL" value="${clearURL}/">
                             <c:if test="${!empty tipologiaFilter && !plainMenu}"><spring:param name="cdvisttp" value="${tipologiaFilter.cdvisttp}" /></c:if>
-                            <c:if test="${!empty collezioneFilter && !plainMenu}"><spring:param name="dsvistccol" value="${collezioneFilter}" /></c:if>
+                            <%--c:if test="${!empty collezioneFilter && !plainMenu}"><spring:param name="dsvistccol" value="${collezioneFilter}" /></c:if--%>
                             <c:if test="${!empty famigliaFilter && !plainMenu}"><spring:param name="cdvistfam" value="${famigliaFilter.cdvistfam}" /></c:if>
                             <c:if test="${!empty finituraFilter}"><spring:param name="cdvistfinm" value="${finituraFilter.cdvistfinm}" /></c:if>
                         </spring:url> 
@@ -421,11 +421,11 @@
                     <td class="m-colvetro"><c:if test="${(!empty coloreFilter || !empty finvetroFilter) && !plainMenu}">
                         <c:set var="clearURL" value="/search"/>
                         <c:if test="${!empty tipologiaFilter && !plainMenu}"><c:set var="clearURL" value="${clearURL}/tipologia/{cdvisttp}"/></c:if>
-                        <c:if test="${!empty collezioneFilter && !plainMenu}"><c:set var="clearURL" value="${clearURL}/collezione/{dsvistccol}"/></c:if>
+                        <%--c:if test="${!empty collezioneFilter && !plainMenu}"><c:set var="clearURL" value="${clearURL}/collezione/{dsvistccol}"/></c:if--%>
                         <c:if test="${!empty famigliaFilter && !plainMenu}"><c:set var="clearURL" value="${clearURL}/famiglia/{cdvistfam}"/></c:if>
                         <spring:url var="clearURL" value="${clearURL}/">
                             <c:if test="${!empty tipologiaFilter && !plainMenu}"><spring:param name="cdvisttp" value="${tipologiaFilter.cdvisttp}" /></c:if>
-                            <c:if test="${!empty collezioneFilter && !plainMenu}"><spring:param name="dsvistccol" value="${collezioneFilter}" /></c:if>
+                            <%--c:if test="${!empty collezioneFilter && !plainMenu}"><spring:param name="dsvistccol" value="${collezioneFilter}" /></c:if--%>
                             <c:if test="${!empty famigliaFilter && !plainMenu}"><spring:param name="cdvistfam" value="${famigliaFilter.cdvistfam}" /></c:if>
                             <c:if test="${!empty finituraFilter}"><spring:param name="cdvistfinm" value="${finituraFilter.cdvistfinm}" /></c:if>
                         </spring:url>  
@@ -434,11 +434,11 @@
                     <td class="m-finmont"><c:if test="${!empty finituraFilter && !plainMenu}">
                         <c:set var="clearURL" value="/search"/>
                         <c:if test="${!empty tipologiaFilter && !plainMenu}"><c:set var="clearURL" value="${clearURL}/tipologia/{cdvisttp}"/></c:if>
-                        <c:if test="${!empty collezioneFilter && !plainMenu}"><c:set var="clearURL" value="${clearURL}/collezione/{dsvistccol}"/></c:if>
+                        <%--c:if test="${!empty collezioneFilter && !plainMenu}"><c:set var="clearURL" value="${clearURL}/collezione/{dsvistccol}"/></c:if--%>
                         <c:if test="${!empty famigliaFilter && !plainMenu}"><c:set var="clearURL" value="${clearURL}/famiglia/{cdvistfam}"/></c:if>
                         <spring:url var="clearURL" value="${clearURL}/">
                             <c:if test="${!empty tipologiaFilter && !plainMenu}"><spring:param name="cdvisttp" value="${tipologiaFilter.cdvisttp}" /></c:if>
-                            <c:if test="${!empty collezioneFilter && !plainMenu}"><spring:param name="dsvistccol" value="${collezioneFilter}" /></c:if>
+                            <%--c:if test="${!empty collezioneFilter && !plainMenu}"><spring:param name="dsvistccol" value="${collezioneFilter}" /></c:if--%>
                             <c:if test="${!empty famigliaFilter && !plainMenu}"><spring:param name="cdvistfam" value="${famigliaFilter.cdvistfam}" /></c:if>
                             <c:if test="${!empty coloreFilter}"><spring:param name="cdvistcolv" value="${coloreFilter.cdvistcolv}" /></c:if>
                             <c:if test="${!empty finvetroFilter}"><spring:param name="cdvistfinv" value="${finvetroFilter.cdvistfinv}" /></c:if>

@@ -30,7 +30,7 @@
                 <c:when test="${!empty item.vist_filedis}"><c:set var="filedis">${item.vist_filedis}.jpg</c:set></c:when>
                 <c:otherwise><c:set var="filedis">${item.vist_famiglia.cdvistfam_mPad}${item.cdvisttp}${item.cdvistv1Pad}${item.cdvistv2Pad}${item.cdvistv3Pad}-.jpg</c:set></c:otherwise>
             </c:choose>
-                <li id="${item.cdarti}" style="clear: both" ><div class="item-cnt clearfix"><div style="float:left" class="item-img"><img width="50" src="<c:url value='/images/articoli/disegnitecnici/thumb/${filedis}'/>" title="${fn:trim(item[dsestesa])}" alt="${fn:trim(item[dsestesa])}"/></div><div class="fieldsearch" style="text-transform: uppercase">${fn:trim(item[dsestesa])}</div><div class="other-data">${item.cdartm}</div></div></li></c:otherwise>
+                <li id="${item.cdarti}" style="clear: both" ><div class="item-cnt clearfix"><div style="float:left" class="item-img"><img width="50" src="<c:url value='/images/articoli/disegnitecnici/thumb/${filedis}'/>" title="${fn:trim(item[dsestesa])}" alt="${fn:trim(item[dsestesa])}"/></div><div class="fieldsearch" style="text-transform: uppercase">${fn:trim(item[dsestesa])}</div><div class="other-data">${item.cdartm} / ${item.vist_cdalias}</div></div></li></c:otherwise>
     </c:choose>
 </c:forEach>
 <%--c:if test="${empty articoliList }">

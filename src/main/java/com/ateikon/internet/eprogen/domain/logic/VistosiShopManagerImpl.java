@@ -708,6 +708,9 @@ public class VistosiShopManagerImpl extends BaseManagerImpl implements VistosiSh
             int pageNumber, int pageSize) {
 
         log.debug("selectCollezioniByExamplePag");
+        
+        pars.put("cdrepa_escl_List", cdrepa_escl_List);
+        pars.put("fgweb", "S");
 
         int size = 0;// this.vist_famigliaDAO.countFind(pars);
 

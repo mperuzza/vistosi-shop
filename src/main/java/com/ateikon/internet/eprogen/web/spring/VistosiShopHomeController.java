@@ -61,6 +61,10 @@ public class VistosiShopHomeController {
     @Autowired
     private VistosiShopManager vistosiShopManager;
 
+    private int pageSize = -1;
+    
+    
+    
     public void setVistosiShopManager(VistosiShopManager vistosiShopManager) {
         this.vistosiShopManager = vistosiShopManager;
     }
@@ -94,6 +98,8 @@ public class VistosiShopHomeController {
         request.getSession().removeAttribute("coloreFilter");
         request.getSession().removeAttribute("finvetroFilter");
         request.getSession().removeAttribute("finituraFilter");
+        
+        
         //model.addAttribute("collezioni", vistosiShopManager.getVist_cp_collezioni());
         model.addAttribute("tipologie", vistosiShopManager.getVist_tipi());
         Map pars = new HashMap();
@@ -126,7 +132,31 @@ public class VistosiShopHomeController {
         vistosiShopManager.addToggleStateZEEFilter(pars, request);
         
         
-        model.addAttribute("tipologieThumb", vistosiShopManager.findVist_tipi(pars));
+        //model.addAttribute("tipologieThumb", vistosiShopManager.findVist_tipi(pars));
+        //default filtro collezioni attivo
+        model.addAttribute("rootFilter", "-");
+
+        model.addAttribute("coll", vistosiShopManager.DEFAULTCOLL_FILTER);
+        model.addAttribute("fam", "-");        
+        
+        pars.put("dsvistccol", vistosiShopManager.DEFAULTCOLL_FILTER);
+        pars.put("cdvisttp", null);
+        pars.put("cdvistfam", null);
+        pars.put("cdvistcolv", null);
+        pars.put("cdvistfinv", null);
+        pars.put("cdvistfinm", null);
+        pars.put("cdvistelet", null);        
+        
+        WebUtils.setSessionAttribute(request, "collezioneFilter", vistosiShopManager.DEFAULTCOLL_FILTER);         
+        int page = ServletRequestUtils.getIntParameter(request, "page", 1);
+        String sort = ServletRequestUtils.getStringParameter(request, "sort", "dsarti");
+        String dir = ServletRequestUtils.getStringParameter(request, "dir", "desc");
+        vistosiShopManager.addCdclasFilter(pars, request);
+        vistosiShopManager.addToggleStateZEEFilter(pars, request);
+        model.addAttribute("theList", vistosiShopManager.selectCollezioniByExamplePag(pars, sort, dir, page, pageSize));
+        model.addAttribute("colView", true);
+        
+        
         Map fpars = new HashMap();
         vistosiShopManager.addCdclasFilter(fpars, request);
         vistosiShopManager.addToggleStateZEEFilter(fpars, request);
