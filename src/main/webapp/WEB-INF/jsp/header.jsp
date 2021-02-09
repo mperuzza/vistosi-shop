@@ -6,8 +6,8 @@
   <jsp:directive.include file="/WEB-INF/jspf/meta.jspf"/>
 
   <link href='https://fonts.googleapis.com/css?family=Roboto:700,900' rel='stylesheet' type='text/css'/>
-  <style type="text/css" media="screen">   
-      @import url("<c:url value='/static/styles/vistosi-shop_v19.css?v=0'/>");
+  <style type="text/css" media="screen">
+      @import url("<c:url value='/static/styles/vistosi-shop_v19.css?v=1'/>");
     <c:if test="${rc.locale=='en'}">
         @import url("<c:url value='/static/styles/vistosi-shop_en.css'/>");
     </c:if>
@@ -15,7 +15,7 @@
         @import url("<c:url value='/static/styles/vistosi-shop_de.css'/>");
     </c:if>
 
-  </style>     
+  </style>
 <style type="text/css">
     .alertbar {
         background: none repeat scroll 0 0 #3399CC;
@@ -54,7 +54,7 @@
     }
 
 </style>
-  
+
   <script type="text/javascript" src="<c:url value='/static/js/mootools-1.2.5-core-yc.js' />"> </script>
   <script type="text/javascript" src="<c:url value='/static/js/mootools-1.2.5.1-more.js' />"> </script>
   <%--script type="text/javascript" src="<c:url value='/static/js/mootools-1.2.3-core-yc.js' />"> </script>
@@ -82,11 +82,12 @@ from 00:00 (GMT+1.00) on the day 02/01/2017 to 23:59 (GMT+1.00) of the day 04/01
     <fmt:parseDate var="startDate" type="date" pattern="dd/MM/yyyy HH:mm" value="27/12/2016 00:00"/>
     <fmt:parseDate var="endDate" type="date" pattern="dd/MM/yyyy HH:mm" value="04/01/2017 12:00"/>
     <c:if test="${now > startDate && now < endDate}">
-    <div style="display: none;" class="alertbar position-top" id="alertbar"><span class="alertbar-cta"><p class="text">${alert}</p><p class="downarrow"><a id="alerttrigger" href="javascript:void(0)"><img alt="Arrow Up" class="alerttrigger arrow" src="<c:url value='/static/images/arrow-up.png'/>"></a></p></span></div>    
+    <div style="display: none;" class="alertbar position-top" id="alertbar"><span class="alertbar-cta"><p class="text">${alert}</p><p class="downarrow"><a id="alerttrigger" href="javascript:void(0)"><img alt="Arrow Up" class="alerttrigger arrow" src="<c:url value='/static/images/arrow-up.png'/>"></a></p></span></div>
     </c:if>
   <div id="wrap">
-  
+
   	<div id="menu">
     	<%@ include file="/WEB-INF/jsp/menu.jsp" %>
     </div>
+        -${useSpeclist}-
     <div id="main">
