@@ -93,7 +93,7 @@
                                                 <c:set var="downloadUrl" value="${portalUrl}download/"/>
                                                 <c:set var="dlink_class" value=""/>
                                             </security:authorize>
-                                            <c:set var="dselet">dsextvistelet${atkLangSfx}</c:set>
+                                            <c:set var="dselet">dsextvistelet${useSpeclist?'_ul':''}${atkLangSfx}</c:set>
                                             <c:set var="dsv1">dsextvistv1${atkLangSfx}</c:set>
                                             <c:set var="dsv2">dsextvistv2${atkLangSfx}</c:set>
                                             <c:set var="dsv3">dsextvistv3${atkLangSfx}</c:set>

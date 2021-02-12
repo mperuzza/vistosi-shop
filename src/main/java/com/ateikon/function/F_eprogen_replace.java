@@ -929,7 +929,7 @@ public class F_eprogen_replace extends Atk_sql {
          * - DE per i clienti con nazione DE
          * - ES per i clienti con nazione ES
          * - FR per i clienti con nazione FR
-         * - USA per i clienti con listino LUS
+         * - USA per i clienti con listino americano
          * - ZZ per tutti gli altri
          * 
          */
@@ -949,7 +949,7 @@ public class F_eprogen_replace extends Atk_sql {
             pstm.setString(ind++, "ES");
         } else if (clie_cdnazi_m.equals("FR")){
             pstm.setString(ind++, "FR");
-        } else if (clie_cdlist.equals("LUS")){
+        } else if (clie_cdlist.equals(CDLIST_USA)){
             pstm.setString(ind++, "USA");
         } else {
             pstm.setString(ind++, "ZZ");
@@ -2846,14 +2846,15 @@ public class F_eprogen_replace extends Atk_sql {
 
       }
 
-      url_spedizione          = f_bolla_test.getLink_spedizione(ls_cdvett1, s_cdling, ls_cdnazi, ""+ll_nrboll);
-      url_spedizione_DROPSHIP = f_bolla_test.getLink_spedizione(ls_cdvett1, s_cdling, ls_cdnazi, ""+ll_nrboll, "DROPSHIP");
+      url_spedizione          = f_bolla_test.getLink_spedizione(ls_cdvett1, s_cdling, ls_cdnazi, ll_nrboll, "");
+      url_spedizione_DROPSHIP = f_bolla_test.getLink_spedizione(ls_cdvett1, s_cdling, ls_cdnazi, ll_nrboll, "", "DROPSHIP");
       
     } else if (tkfatt > 0){
 
       String ls_cdvett1  = "";
       String ls_cdnazi   = "";
       long   ll_conpro   = 0;
+      String ls_descr_prot_iva = "";
 
       rs = bolla_test.getKey_fatt(tkfatt);
 
@@ -2869,10 +2870,11 @@ public class F_eprogen_replace extends Atk_sql {
         if (rs.getObject("cdvett1"  ) != null)  ls_cdvett1  = rs.getString("cdvett1");
         if (rs.getObject("cdnazi_sl") != null)  ls_cdnazi   = rs.getString("cdnazi_sl");
         if (rs.getObject("conpro"   ) != null)  ll_conpro   = rs.getLong  ("conpro");
+        if (rs.getObject("descr_prot_iva") != null)  ls_descr_prot_iva   = rs.getString("descr_prot_iva");
       }
 
-      url_spedizione          = f_bolla_test.getLink_spedizione(ls_cdvett1, s_cdling, ls_cdnazi, ""+ll_conpro);
-      url_spedizione_DROPSHIP = f_bolla_test.getLink_spedizione(ls_cdvett1, s_cdling, ls_cdnazi, ""+ll_conpro, "DROPSHIP");
+      url_spedizione          = f_bolla_test.getLink_spedizione(ls_cdvett1, s_cdling, ls_cdnazi, ll_conpro, ls_descr_prot_iva);
+      url_spedizione_DROPSHIP = f_bolla_test.getLink_spedizione(ls_cdvett1, s_cdling, ls_cdnazi, ll_conpro, ls_descr_prot_iva, "DROPSHIP");
     }
 
     
@@ -3820,6 +3822,7 @@ public class F_eprogen_replace extends Atk_sql {
     String ls_label_totali_imponibile   = atk_dwlingua.getLabel("epMpron_ordven_ord_posi", cdling, "Totale netto merce" , "", null);
     String ls_label_totali_imposta   = atk_dwlingua.getLabel("epMpron_ordven_ord_posi", cdling, "Totale IVA" , "", null);
     String ls_label_totali_importo   = atk_dwlingua.getLabel("epMpron_ordven_ord_posi", cdling, "Importo" , "", null);
+    String ls_label_totali_totale_merce_spese   = atk_dwlingua.getLabel("epMpron_ordven_ord_posi", cdling, "Spese di trasporto" , "", null);
     
     com.ateikon.structure.Str_totati_ord_test   str_totati_ord_test = new com.ateikon.structure.Str_totati_ord_test();
     
@@ -4012,10 +4015,13 @@ public class F_eprogen_replace extends Atk_sql {
       
       String ls_tbl_righe_ov_imponibile_no_scocas = "";
       String ls_tbl_righe_ov_totale_scocas = "";
+      double ld_tbl_righe_ov_totale_scocas = 0;
       String ls_tbl_righe_ov_imponibile = "";
       String ls_tbl_righe_ov_imposta = "";
       String ls_tbl_righe_ov_totale_documento = "";
       double ld_tbl_righe_ov_imposta = 0;
+      double ld_tbl_righe_ov_totale_merce_spese = 0;
+      String ls_tbl_righe_ov_totale_merce_spese = "";
       
       //SE valute uguali
       if (li_tot_righe_ov_count_vacodi == 1){
@@ -4024,11 +4030,14 @@ public class F_eprogen_replace extends Atk_sql {
         ls_tbl_righe_ov_tot_importo_vadesc = ""+ ls_tot_righe_ov_vadesc;
         ls_tbl_righe_ov_imponibile_no_scocas = ""+ przFormat.format(str_totati_ord_test.imponibile_no_scocas);
         ls_tbl_righe_ov_totale_scocas = ""+ przFormat.format(str_totati_ord_test.totale_scocas);
+        ld_tbl_righe_ov_totale_scocas = str_totati_ord_test.totale_scocas;
         ls_tbl_righe_ov_imponibile = ""+ przFormat.format(str_totati_ord_test.imponibile);
         ls_tbl_righe_ov_imposta = ""+ przFormat.format(str_totati_ord_test.imposta);
         ls_tbl_righe_ov_totale_documento = ""+ przFormat.format(str_totati_ord_test.totale_documento);
         lb_tot_documento_ov = str_totati_ord_test.totale_documento;
         ld_tbl_righe_ov_imposta = str_totati_ord_test.imposta;
+        ld_tbl_righe_ov_totale_merce_spese = str_totati_ord_test.totale_merce_spese;
+        ls_tbl_righe_ov_totale_merce_spese = ""+ przFormat.format(str_totati_ord_test.totale_merce_spese);
         
       } else {
         
@@ -4036,11 +4045,14 @@ public class F_eprogen_replace extends Atk_sql {
         ls_tbl_righe_ov_tot_importo_vadesc = "&euro;";
         ls_tbl_righe_ov_imponibile_no_scocas = ""+ przFormat.format(str_totati_ord_test.imponibile_no_scocas);
         ls_tbl_righe_ov_totale_scocas = ""+ przFormat.format(str_totati_ord_test.totale_scocas);
+        ld_tbl_righe_ov_totale_scocas = str_totati_ord_test.totale_scocas;
         ls_tbl_righe_ov_imponibile = ""+ przFormat.format(str_totati_ord_test_c.imponibile);
         ls_tbl_righe_ov_imposta = ""+ przFormat.format(str_totati_ord_test_c.imposta);
         ls_tbl_righe_ov_totale_documento = ""+ przFormat.format(str_totati_ord_test_c.totale_documento);
         lb_tot_documento_ov = str_totati_ord_test_c.totale_documento;
         ld_tbl_righe_ov_imposta = str_totati_ord_test_c.imposta;
+        ld_tbl_righe_ov_totale_merce_spese = str_totati_ord_test_c.totale_merce_spese;
+        ls_tbl_righe_ov_totale_merce_spese = ""+ przFormat.format(str_totati_ord_test_c.totale_merce_spese);
       }
 
       ls_tbl_righe_ov += " <tr>                                                                                                                                                                                 \n";
@@ -4052,7 +4064,14 @@ public class F_eprogen_replace extends Atk_sql {
       ls_tbl_righe_ov += "     <th style=\"padding-left:5px;\" valign=\"top\" align=\"right\" class=\"Stile1\">"+ ls_tbl_righe_ov_tot_importo      +" "+ ls_tbl_righe_ov_tot_importo_vadesc +"</th>             \n";
       ls_tbl_righe_ov += " </tr>                                                                                                                                                                                \n";
 
-      if (str_totati_ord_test.totale_scocas > 0){
+      if (ld_tbl_righe_ov_totale_merce_spese > 0){
+        ls_tbl_righe_ov += "   <tr style=\"color:#000000; background-color: #cccccc;\">                                                                                                                                                    \n";
+        ls_tbl_righe_ov += "     <th style=\"padding-left:5px; border-right: 1px solid #ffffff; border-bottom: 1px solid #ffffff;\" align=\"right\" valign=\"top\" class=\"Stile1\" colspan=\"8\" >"+ ls_label_totali_totale_merce_spese +"</th>           \n";
+        ls_tbl_righe_ov += "     <th style=\"padding-left:5px; width:90px; min-width:90px; max-width:90px; border-bottom: 1px solid #ffffff;\" align=\"right\" valign=\"top\" class=\"Stile1\">"+ ls_tbl_righe_ov_totale_merce_spese + " " + ls_tbl_righe_ov_tot_importo_vadesc +"</th>                        \n";
+        ls_tbl_righe_ov += "   </tr>                                                                                                                                                      \n";
+      }
+      
+      if (ld_tbl_righe_ov_totale_scocas > 0){
         ls_tbl_righe_ov += "   <tr style=\"color:#000000; background-color: #cccccc;\">                                                                                                                                                    \n";
         ls_tbl_righe_ov += "     <th style=\"padding-left:5px; border-right: 1px solid #ffffff; border-bottom: 1px solid #ffffff;\" align=\"right\" valign=\"top\" class=\"Stile1\" colspan=\"8\" >"+ ls_label_totali_imponibile_no_scocas +"</th>           \n";
         ls_tbl_righe_ov += "     <th style=\"padding-left:5px; width:90px; min-width:90px; max-width:90px; border-bottom: 1px solid #ffffff;\" align=\"right\" valign=\"top\" class=\"Stile1\">"+ ls_tbl_righe_ov_imponibile_no_scocas + " " + ls_tbl_righe_ov_tot_importo_vadesc +"</th>                        \n";
@@ -5106,6 +5125,15 @@ public class F_eprogen_replace extends Atk_sql {
     }
     pstm.close();
     pstm = null;
+    
+    l_query   = "";
+    l_query  += "  select cdlist                                                  \n";
+    l_query  += "    from pgmr.archclie                                           \n";
+    l_query  += "   where tkclie = '"+ tkclie +"'                                 \n";
+
+    String cdlist_clie = sql_String(l_query);
+    
+    
     // --- Verifico se ci sono righe senza pacco
     String suff_vist_famiglia = of_suff_lingua("vist_famiglia", cdling);
     String suff_vist_var1 = of_suff_lingua("vist_var1", cdling);
@@ -5145,6 +5173,7 @@ public class F_eprogen_replace extends Atk_sql {
     l_query += "      , art.fgweb                                                                   \n";
     l_query += "      , art.vist_filedis                                                            \n";
     l_query += "      , elet.dsextvistelet"+suff_vist_elettrificazione+"                            \n";
+    l_query += "      , elet.dsextvistelet_ul"+suff_vist_elettrificazione+"                         \n";
     l_query += "      , art.cdrepa                                                                  \n";
     l_query += "      , art.cdclas_a                                                                \n";
     l_query += "      , op.tkposi                                                                   \n";
@@ -5373,6 +5402,7 @@ public class F_eprogen_replace extends Atk_sql {
             String cdclas_a = "";
             Timestamp dtprdisp = null;
             double qtadisp = 0;
+            String dsextvistelet_ul = "";
 
 
             if (rs.getObject("tkposi") != null)                 tkposi = rs.getLong("tkposi");
@@ -5432,6 +5462,7 @@ public class F_eprogen_replace extends Atk_sql {
 //            if (rs.getObject("dsextvistelet") != null)                 dsextvistelet = rs.getString("dsextvistelet");
             if (rs.getObject("cdrepa") != null)                                     cdrepa = rs.getString("cdrepa");
             if (rs.getObject("cdclas_a") != null)                                   cdclas_a = rs.getString("cdclas_a");
+            if (rs.getObject("dsextvistelet_ul"+suff_vist_elettrificazione) != null)   dsextvistelet_ul = rs.getString("dsextvistelet_ul"+suff_vist_elettrificazione);
 
             F_decode_barcode f_decode_barcode = new F_decode_barcode();
 
@@ -5932,7 +5963,7 @@ public class F_eprogen_replace extends Atk_sql {
                ls_tbl_order_details += "<td valign=\"bottom\" class=\"al\" nowrap>" + (org.apache.commons.lang.StringUtils.isNotBlank(dsextvistv1) ? html.text(dsextvistv1) : cdvistv1) + " " + (org.apache.commons.lang.StringUtils.isNotBlank(dsextvistv2) ? html.text(dsextvistv2) : cdvistv2) + " " + (org.apache.commons.lang.StringUtils.isNotBlank(dsextvistv3) ? html.text(dsextvistv3) : cdvistv3) + "</td>";
                ls_tbl_order_details += "<td valign=\"bottom\" class=\"al\" nowrap>" + html.text(dsextvistcolv) + " " + html.text(dsextvistfinv) + "</td>";
                ls_tbl_order_details += "<td valign=\"bottom\" class=\"al\" nowrap>" + html.text(dsextvistfinm) + "</td>";
-               ls_tbl_order_details += "<td valign=\"bottom\" class=\"al\" style=\"padding-right:4px;padding-left:4px\">" + html.text(dsextvistelet) + "</td>";
+               ls_tbl_order_details += "<td valign=\"bottom\" class=\"al\" style=\"padding-right:4px;padding-left:4px\">" + html.text((cdlist_clie.equals(CDLIST_USA) || cdlist_clie.equals(CDLIST_CA) ? dsextvistelet_ul : dsextvistelet)) + "</td>"; //CABLATO
                ls_tbl_order_details += "<td align=\"right\" style=\"padding-right:4px;padding-left:4px\">" + przFormat.format(nrpeso_l) + "</td>";      //peso lordo
                ls_tbl_order_details += "<td align=\"right\" style=\"padding-right:4px;padding-left:4px\">" + przFormat.format(nrpeso_n) + "</td>";      //peso netto
                ls_tbl_order_details += "<td align=\"right\" style=\"padding-right:4px;padding-left:4px\">" + przFormat.format(vlunlt) + "</td>";     //volume  
@@ -6607,13 +6638,9 @@ public class F_eprogen_replace extends Atk_sql {
    ls_tbl_order_details += "<table width=\"359\" class=\"parametri\">";
    ls_tbl_order_details += "<tr>";
    ls_tbl_order_details += "<th width=\"140\" align=\"left\" valign=\"top\" nowrap>"+html.text(totale_ordine_mail)+"<br/>"+html.text(iva_esclusa_mail)+":</th>";
-   if("7".equals(cdlist)) {
-       //se il cliente è americano stampo in dollari
+   if(  CDLIST_USA.equals(cdlist)) {
+       //se il cliente � americano stampo in dollari
        ls_tbl_order_details += "<td valign=\"top\" style=\"font-size:16px;font-weight:bold;\" align=\"right\">" + przFormat.format(lstr_tot.tot_importonettoriga) + " USD</td>";
-   } else 
-   if("6".equals(cdlist)) {
-       //se il cliente è canadese stampo in dollari americani
-       ls_tbl_order_details += "<td valign=\"top\" style=\"font-size:16px;font-weight:bold;\" align=\"right\">" + przFormat.format(lstr_tot.tot_importonettoriga) + " CAD</td>";
    } else {
        ls_tbl_order_details += "<td valign=\"top\" style=\"font-size:16px;font-weight:bold;\" align=\"right\">" + przFormat.format(lstr_tot.tot_importonettoriga) + " &euro;</td>";
    }
@@ -7375,4 +7402,7 @@ public class F_eprogen_replace extends Atk_sql {
   public static String CDPTIT_DEF = "";
   public static String CDTPSESSO_FEMMINILE = "F";
   public static String CDTPSESSO_MASCHILE = "M";
+  
+  private static final String CDLIST_USA = "7";
+  private static final String CDLIST_CA = "6";
 }

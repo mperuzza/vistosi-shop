@@ -5,7 +5,7 @@
 <c:set var="dsextfam">dsextvistfam${atkLangSfx}</c:set>
 <c:set var="dscolv">dsextvistcolv${atkLangSfx}</c:set>
 <c:set var="dsvetro">dsextvistvetro${atkLangSfx}</c:set>
-<c:set var="dselet">dsextvistelet${atkLangSfx}</c:set>
+<c:set var="dselet">dsextvistelet${useSpeclist?'_ul':''}${atkLangSfx}</c:set>
 <c:set var="dsfinm">dsextvistfinm${atkLangSfx}</c:set>
 <c:set var="dsfinv">dsextvistfinv${atkLangSfx}</c:set>
 <c:set var="dsv1">dsextvistv1${atkLangSfx}</c:set>

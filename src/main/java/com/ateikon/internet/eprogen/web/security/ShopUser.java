@@ -25,7 +25,7 @@ public class ShopUser extends User{
 
     private Log log = LogFactory.getLog(this.getClass());
 
-    public static List<String> AMERICA_CDLISTS = Arrays.asList(new String[]{"LUS", "LCA"});
+    public static List<String> AMERICA_CDLISTS = Arrays.asList(new String[]{"6", "7"});
 
     private Ep_utente userDB;
 

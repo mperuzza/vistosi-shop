@@ -251,7 +251,7 @@
 </li>
 
 <li id="m-elettrificazione" class="ddmenu <c:if test="${empty elettrificazioni}">disabled</c:if>">
-    <c:set var="dselet">dsextvistelet${atkLangSfx}</c:set>
+    <c:set var="dselet">dsextvistelet${useSpeclist?'_ul':''}${atkLangSfx}</c:set>
     <h2><spring:message code="elettr" text="Elettrificazione"/></h2>
     <c:forEach items="${elettrificazioni}" var="t" varStatus="s">
         <c:if test="${s.first}">

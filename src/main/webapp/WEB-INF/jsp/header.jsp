@@ -89,5 +89,5 @@ from 00:00 (GMT+1.00) on the day 02/01/2017 to 23:59 (GMT+1.00) of the day 04/01
   	<div id="menu">
     	<%@ include file="/WEB-INF/jsp/menu.jsp" %>
     </div>
-        -${useSpeclist}-
+        
     <div id="main">

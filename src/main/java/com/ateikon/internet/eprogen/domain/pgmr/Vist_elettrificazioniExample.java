@@ -1654,5 +1654,426 @@ public class Vist_elettrificazioniExample {
             addCriterion("dsvistelet_rus not between", value1, value2, "dsvistelet_rus");
             return this;
         }
+        
+        public Criteria andDsextvistelet_ulIsNull() {
+            addCriterion("dsextvistelet_ul is null");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ulIsNotNull() {
+            addCriterion("dsextvistelet_ul is not null");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ulEqualTo(String value) {
+            addCriterion("dsextvistelet_ul =", value, "dsextvistelet_ul");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ulNotEqualTo(String value) {
+            addCriterion("dsextvistelet_ul <>", value, "dsextvistelet_ul");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ulGreaterThan(String value) {
+            addCriterion("dsextvistelet_ul >", value, "dsextvistelet_ul");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ulGreaterThanOrEqualTo(String value) {
+            addCriterion("dsextvistelet_ul >=", value, "dsextvistelet_ul");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ulLessThan(String value) {
+            addCriterion("dsextvistelet_ul <", value, "dsextvistelet_ul");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ulLessThanOrEqualTo(String value) {
+            addCriterion("dsextvistelet_ul <=", value, "dsextvistelet_ul");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ulLike(String value) {
+            addCriterion("dsextvistelet_ul like", value, "dsextvistelet_ul");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ulNotLike(String value) {
+            addCriterion("dsextvistelet_ul not like", value, "dsextvistelet_ul");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ulIn(List<String> values) {
+            addCriterion("dsextvistelet_ul in", values, "dsextvistelet_ul");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ulNotIn(List<String> values) {
+            addCriterion("dsextvistelet_ul not in", values, "dsextvistelet_ul");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ulBetween(String value1, String value2) {
+            addCriterion("dsextvistelet_ul between", value1, value2, "dsextvistelet_ul");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ulNotBetween(String value1, String value2) {
+            addCriterion("dsextvistelet_ul not between", value1, value2, "dsextvistelet_ul");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_engIsNull() {
+            addCriterion("dsextvistelet_ul_eng is null");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_engIsNotNull() {
+            addCriterion("dsextvistelet_ul_eng is not null");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_engEqualTo(String value) {
+            addCriterion("dsextvistelet_ul_eng =", value, "dsextvistelet_ul_eng");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_engNotEqualTo(String value) {
+            addCriterion("dsextvistelet_ul_eng <>", value, "dsextvistelet_ul_eng");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_engGreaterThan(String value) {
+            addCriterion("dsextvistelet_ul_eng >", value, "dsextvistelet_ul_eng");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_engGreaterThanOrEqualTo(String value) {
+            addCriterion("dsextvistelet_ul_eng >=", value, "dsextvistelet_ul_eng");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_engLessThan(String value) {
+            addCriterion("dsextvistelet_ul_eng <", value, "dsextvistelet_ul_eng");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_engLessThanOrEqualTo(String value) {
+            addCriterion("dsextvistelet_ul_eng <=", value, "dsextvistelet_ul_eng");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_engLike(String value) {
+            addCriterion("dsextvistelet_ul_eng like", value, "dsextvistelet_ul_eng");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_engNotLike(String value) {
+            addCriterion("dsextvistelet_ul_eng not like", value, "dsextvistelet_ul_eng");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_engIn(List<String> values) {
+            addCriterion("dsextvistelet_ul_eng in", values, "dsextvistelet_ul_eng");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_engNotIn(List<String> values) {
+            addCriterion("dsextvistelet_ul_eng not in", values, "dsextvistelet_ul_eng");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_engBetween(String value1, String value2) {
+            addCriterion("dsextvistelet_ul_eng between", value1, value2, "dsextvistelet_ul_eng");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_engNotBetween(String value1, String value2) {
+            addCriterion("dsextvistelet_ul_eng not between", value1, value2, "dsextvistelet_ul_eng");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_tedIsNull() {
+            addCriterion("dsextvistelet_ul_ted is null");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_tedIsNotNull() {
+            addCriterion("dsextvistelet_ul_ted is not null");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_tedEqualTo(String value) {
+            addCriterion("dsextvistelet_ul_ted =", value, "dsextvistelet_ul_ted");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_tedNotEqualTo(String value) {
+            addCriterion("dsextvistelet_ul_ted <>", value, "dsextvistelet_ul_ted");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_tedGreaterThan(String value) {
+            addCriterion("dsextvistelet_ul_ted >", value, "dsextvistelet_ul_ted");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_tedGreaterThanOrEqualTo(String value) {
+            addCriterion("dsextvistelet_ul_ted >=", value, "dsextvistelet_ul_ted");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_tedLessThan(String value) {
+            addCriterion("dsextvistelet_ul_ted <", value, "dsextvistelet_ul_ted");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_tedLessThanOrEqualTo(String value) {
+            addCriterion("dsextvistelet_ul_ted <=", value, "dsextvistelet_ul_ted");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_tedLike(String value) {
+            addCriterion("dsextvistelet_ul_ted like", value, "dsextvistelet_ul_ted");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_tedNotLike(String value) {
+            addCriterion("dsextvistelet_ul_ted not like", value, "dsextvistelet_ul_ted");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_tedIn(List<String> values) {
+            addCriterion("dsextvistelet_ul_ted in", values, "dsextvistelet_ul_ted");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_tedNotIn(List<String> values) {
+            addCriterion("dsextvistelet_ul_ted not in", values, "dsextvistelet_ul_ted");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_tedBetween(String value1, String value2) {
+            addCriterion("dsextvistelet_ul_ted between", value1, value2, "dsextvistelet_ul_ted");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_tedNotBetween(String value1, String value2) {
+            addCriterion("dsextvistelet_ul_ted not between", value1, value2, "dsextvistelet_ul_ted");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_fraIsNull() {
+            addCriterion("dsextvistelet_ul_fra is null");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_fraIsNotNull() {
+            addCriterion("dsextvistelet_ul_fra is not null");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_fraEqualTo(String value) {
+            addCriterion("dsextvistelet_ul_fra =", value, "dsextvistelet_ul_fra");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_fraNotEqualTo(String value) {
+            addCriterion("dsextvistelet_ul_fra <>", value, "dsextvistelet_ul_fra");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_fraGreaterThan(String value) {
+            addCriterion("dsextvistelet_ul_fra >", value, "dsextvistelet_ul_fra");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_fraGreaterThanOrEqualTo(String value) {
+            addCriterion("dsextvistelet_ul_fra >=", value, "dsextvistelet_ul_fra");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_fraLessThan(String value) {
+            addCriterion("dsextvistelet_ul_fra <", value, "dsextvistelet_ul_fra");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_fraLessThanOrEqualTo(String value) {
+            addCriterion("dsextvistelet_ul_fra <=", value, "dsextvistelet_ul_fra");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_fraLike(String value) {
+            addCriterion("dsextvistelet_ul_fra like", value, "dsextvistelet_ul_fra");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_fraNotLike(String value) {
+            addCriterion("dsextvistelet_ul_fra not like", value, "dsextvistelet_ul_fra");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_fraIn(List<String> values) {
+            addCriterion("dsextvistelet_ul_fra in", values, "dsextvistelet_ul_fra");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_fraNotIn(List<String> values) {
+            addCriterion("dsextvistelet_ul_fra not in", values, "dsextvistelet_ul_fra");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_fraBetween(String value1, String value2) {
+            addCriterion("dsextvistelet_ul_fra between", value1, value2, "dsextvistelet_ul_fra");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_fraNotBetween(String value1, String value2) {
+            addCriterion("dsextvistelet_ul_fra not between", value1, value2, "dsextvistelet_ul_fra");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_spaIsNull() {
+            addCriterion("dsextvistelet_ul_spa is null");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_spaIsNotNull() {
+            addCriterion("dsextvistelet_ul_spa is not null");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_spaEqualTo(String value) {
+            addCriterion("dsextvistelet_ul_spa =", value, "dsextvistelet_ul_spa");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_spaNotEqualTo(String value) {
+            addCriterion("dsextvistelet_ul_spa <>", value, "dsextvistelet_ul_spa");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_spaGreaterThan(String value) {
+            addCriterion("dsextvistelet_ul_spa >", value, "dsextvistelet_ul_spa");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_spaGreaterThanOrEqualTo(String value) {
+            addCriterion("dsextvistelet_ul_spa >=", value, "dsextvistelet_ul_spa");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_spaLessThan(String value) {
+            addCriterion("dsextvistelet_ul_spa <", value, "dsextvistelet_ul_spa");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_spaLessThanOrEqualTo(String value) {
+            addCriterion("dsextvistelet_ul_spa <=", value, "dsextvistelet_ul_spa");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_spaLike(String value) {
+            addCriterion("dsextvistelet_ul_spa like", value, "dsextvistelet_ul_spa");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_spaNotLike(String value) {
+            addCriterion("dsextvistelet_ul_spa not like", value, "dsextvistelet_ul_spa");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_spaIn(List<String> values) {
+            addCriterion("dsextvistelet_ul_spa in", values, "dsextvistelet_ul_spa");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_spaNotIn(List<String> values) {
+            addCriterion("dsextvistelet_ul_spa not in", values, "dsextvistelet_ul_spa");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_spaBetween(String value1, String value2) {
+            addCriterion("dsextvistelet_ul_spa between", value1, value2, "dsextvistelet_ul_spa");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_spaNotBetween(String value1, String value2) {
+            addCriterion("dsextvistelet_ul_spa not between", value1, value2, "dsextvistelet_ul_spa");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_rusIsNull() {
+            addCriterion("dsextvistelet_ul_rus is null");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_rusIsNotNull() {
+            addCriterion("dsextvistelet_ul_rus is not null");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_rusEqualTo(String value) {
+            addCriterion("dsextvistelet_ul_rus =", value, "dsextvistelet_ul_rus");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_rusNotEqualTo(String value) {
+            addCriterion("dsextvistelet_ul_rus <>", value, "dsextvistelet_ul_rus");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_rusGreaterThan(String value) {
+            addCriterion("dsextvistelet_ul_rus >", value, "dsextvistelet_ul_rus");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_rusGreaterThanOrEqualTo(String value) {
+            addCriterion("dsextvistelet_ul_rus >=", value, "dsextvistelet_ul_rus");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_rusLessThan(String value) {
+            addCriterion("dsextvistelet_ul_rus <", value, "dsextvistelet_ul_rus");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_rusLessThanOrEqualTo(String value) {
+            addCriterion("dsextvistelet_ul_rus <=", value, "dsextvistelet_ul_rus");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_rusLike(String value) {
+            addCriterion("dsextvistelet_ul_rus like", value, "dsextvistelet_ul_rus");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_rusNotLike(String value) {
+            addCriterion("dsextvistelet_ul_rus not like", value, "dsextvistelet_ul_rus");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_rusIn(List<String> values) {
+            addCriterion("dsextvistelet_ul_rus in", values, "dsextvistelet_ul_rus");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_rusNotIn(List<String> values) {
+            addCriterion("dsextvistelet_ul_rus not in", values, "dsextvistelet_ul_rus");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_rusBetween(String value1, String value2) {
+            addCriterion("dsextvistelet_ul_rus between", value1, value2, "dsextvistelet_ul_rus");
+            return this;
+        }
+
+        public Criteria andDsextvistelet_ul_rusNotBetween(String value1, String value2) {
+            addCriterion("dsextvistelet_ul_rus not between", value1, value2, "dsextvistelet_ul_rus");
+            return this;
+        }        
+        
     }
 }

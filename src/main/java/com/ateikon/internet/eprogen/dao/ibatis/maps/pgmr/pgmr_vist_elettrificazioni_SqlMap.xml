@@ -27,6 +27,12 @@
     <result column="dsextvistelet_spa" jdbcType="VARCHAR" property="dsextvistelet_spa" />
     <result column="dsextvistelet_rus" jdbcType="VARCHAR" property="dsextvistelet_rus" />
     <result column="dsvistelet_rus" jdbcType="VARCHAR" property="dsvistelet_rus" />
+    <result column="dsextvistelet_ul" jdbcType="VARCHAR" property="dsextvistelet_ul" />
+    <result column="dsextvistelet_ul_eng" jdbcType="VARCHAR" property="dsextvistelet_ul_eng" />
+    <result column="dsextvistelet_ul_ted" jdbcType="VARCHAR" property="dsextvistelet_ul_ted" />
+    <result column="dsextvistelet_ul_fra" jdbcType="VARCHAR" property="dsextvistelet_ul_fra" />
+    <result column="dsextvistelet_ul_spa" jdbcType="VARCHAR" property="dsextvistelet_ul_spa" />
+    <result column="dsextvistelet_ul_rus" jdbcType="VARCHAR" property="dsextvistelet_ul_rus" />    
   </resultMap>
   <sql id="ibatorgenerated_Example_Where_Clause">
     <!--
@@ -66,6 +72,7 @@
     vist_elettrificazioni.dsvistelet_spa, vist_elettrificazioni.cdazie, vist_elettrificazioni.cddipa, vist_elettrificazioni.profil, vist_elettrificazioni.dtinse, vist_elettrificazioni.dtulag, vist_elettrificazioni.cdul, vist_elettrificazioni.fg_agg, vist_elettrificazioni.dsextvistelet, 
     vist_elettrificazioni.dsextvistelet_eng, vist_elettrificazioni.dsextvistelet_ted, vist_elettrificazioni.dsextvistelet_fra, vist_elettrificazioni.dsextvistelet_spa, vist_elettrificazioni.dsextvistelet_rus, 
     vist_elettrificazioni.dsvistelet_rus
+    , vist_elettrificazioni.dsextvistelet_ul, vist_elettrificazioni.dsextvistelet_ul_eng, vist_elettrificazioni.dsextvistelet_ul_ted, vist_elettrificazioni.dsextvistelet_ul_fra, vist_elettrificazioni.dsextvistelet_ul_spa, vist_elettrificazioni.dsextvistelet_ul_rus 
   </sql>
   <select id="ibatorgenerated_selectByExample" parameterClass="com.ateikon.internet.eprogen.domain.pgmr.Vist_elettrificazioniExample" resultMap="ibatorgenerated_BaseResultMap">
     <!--
@@ -118,13 +125,15 @@
       cddipa, profil, dtinse, dtulag, cdul, 
       fg_agg, dsextvistelet, dsextvistelet_eng, dsextvistelet_ted, 
       dsextvistelet_fra, dsextvistelet_spa, dsextvistelet_rus, 
-      dsvistelet_rus)
+      dsvistelet_rus, dsextvistelet_ul, dsextvistelet_ul_eng, dsextvistelet_ul_ted, 
+      dsextvistelet_ul_fra, dsextvistelet_ul_spa, dsextvistelet_ul_rus )
     values (#cdvistelet:VARCHAR#, #cdvistelet_m:VARCHAR#, #dsvistelet:VARCHAR#, #dsvistelet_eng:VARCHAR#, 
       #dsvistelet_ted:VARCHAR#, #dsvistelet_fra:VARCHAR#, #dsvistelet_spa:VARCHAR#, #cdazie:VARCHAR#, 
       #cddipa:VARCHAR#, #profil:VARCHAR#, #dtinse:TIMESTAMP#, #dtulag:TIMESTAMP#, #cdul:VARCHAR#, 
       #fg_agg:VARCHAR#, #dsextvistelet:VARCHAR#, #dsextvistelet_eng:VARCHAR#, #dsextvistelet_ted:VARCHAR#, 
       #dsextvistelet_fra:VARCHAR#, #dsextvistelet_spa:VARCHAR#, #dsextvistelet_rus:VARCHAR#, 
-      #dsvistelet_rus:VARCHAR#)
+      #dsvistelet_rus:VARCHAR#, #dsextvistelet_ul:VARCHAR#, #dsextvistelet_ul_eng:VARCHAR#, #dsextvistelet_ul_ted:VARCHAR#, 
+      #dsextvistelet_ul_fra:VARCHAR#, #dsextvistelet_ul_spa:VARCHAR#, #dsextvistelet_ul_rus:VARCHAR#)
   </insert>
   <insert id="ibatorgenerated_insertSelective" parameterClass="com.ateikon.internet.eprogen.domain.pgmr.Vist_elettrificazioni">
     <!--
@@ -196,6 +205,24 @@
       <isNotNull prepend="," property="dsvistelet_rus">
         dsvistelet_rus
       </isNotNull>
+      <isNotNull prepend="," property="dsextvistelet_ul">
+        dsextvistelet_ul
+      </isNotNull>
+      <isNotNull prepend="," property="dsextvistelet_ul_eng">
+        dsextvistelet_ul_eng
+      </isNotNull>
+      <isNotNull prepend="," property="dsextvistelet_ul_ted">
+        dsextvistelet_ul_ted
+      </isNotNull>
+      <isNotNull prepend="," property="dsextvistelet_ul_fra">
+        dsextvistelet_ul_fra
+      </isNotNull>
+      <isNotNull prepend="," property="dsextvistelet_ul_spa">
+        dsextvistelet_ul_spa
+      </isNotNull>
+      <isNotNull prepend="," property="dsextvistelet_ul_rus">
+        dsextvistelet_ul_rus
+      </isNotNull>      
       )
     </dynamic>
     values
@@ -263,6 +290,24 @@
       <isNotNull prepend="," property="dsvistelet_rus">
         #dsvistelet_rus:VARCHAR#
       </isNotNull>
+      <isNotNull prepend="," property="dsextvistelet_ul">
+        #dsextvistelet_ul:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="dsextvistelet_ul_eng">
+        #dsextvistelet_ul_eng:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="dsextvistelet_ul_ted">
+        #dsextvistelet_ul_ted:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="dsextvistelet_ul_fra">
+        #dsextvistelet_ul_fra:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="dsextvistelet_ul_spa">
+        #dsextvistelet_ul_spa:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="dsextvistelet_ul_rus">
+        #dsextvistelet_ul_rus:VARCHAR#
+      </isNotNull>      
       )
     </dynamic>
   </insert>
@@ -344,6 +389,24 @@
       <isNotNull prepend="," property="record.dsvistelet_rus">
         dsvistelet_rus = #record.dsvistelet_rus:VARCHAR#
       </isNotNull>
+      <isNotNull prepend="," property="record.dsextvistelet_ul">
+        dsextvistelet_ul = #record.dsextvistelet_ul:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="record.dsextvistelet_ul_eng">
+        dsextvistelet_ul_eng = #record.dsextvistelet_ul_eng:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="record.dsextvistelet_ul_ted">
+        dsextvistelet_ul_ted = #record.dsextvistelet_ul_ted:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="record.dsextvistelet_ul_fra">
+        dsextvistelet_ul_fra = #record.dsextvistelet_ul_fra:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="record.dsextvistelet_ul_spa">
+        dsextvistelet_ul_spa = #record.dsextvistelet_ul_spa:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="record.dsextvistelet_ul_rus">
+        dsextvistelet_ul_rus = #record.dsextvistelet_ul_rus:VARCHAR#
+      </isNotNull>      
     </dynamic>
     <isParameterPresent>
       <include refid="pgmr_vist_elettrificazioni.ibatorgenerated_Example_Where_Clause" />
@@ -375,7 +438,13 @@
       dsextvistelet_fra = #record.dsextvistelet_fra:VARCHAR#,
       dsextvistelet_spa = #record.dsextvistelet_spa:VARCHAR#,
       dsextvistelet_rus = #record.dsextvistelet_rus:VARCHAR#,
-      dsvistelet_rus = #record.dsvistelet_rus:VARCHAR#
+      dsvistelet_rus = #record.dsvistelet_rus:VARCHAR#,
+      dsextvistelet_ul = #record.dsextvistelet_ul:VARCHAR#,
+      dsextvistelet_ul_eng = #record.dsextvistelet_ul_eng:VARCHAR#,
+      dsextvistelet_ul_ted = #record.dsextvistelet_ul_ted:VARCHAR#,
+      dsextvistelet_ul_fra = #record.dsextvistelet_ul_fra:VARCHAR#,
+      dsextvistelet_ul_spa = #record.dsextvistelet_ul_spa:VARCHAR#,
+      dsextvistelet_ul_rus = #record.dsextvistelet_ul_rus:VARCHAR#      
     <isParameterPresent>
       <include refid="pgmr_vist_elettrificazioni.ibatorgenerated_Example_Where_Clause" />
     </isParameterPresent>
@@ -447,6 +516,24 @@
       <isNotNull prepend="," property="dsvistelet_rus">
         dsvistelet_rus = #dsvistelet_rus:VARCHAR#
       </isNotNull>
+      <isNotNull prepend="," property="dsextvistelet_ul">
+        dsextvistelet_ul = #dsextvistelet_ul:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="dsextvistelet_ul_eng">
+        dsextvistelet_ul_eng = #dsextvistelet_ul_eng:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="dsextvistelet_ul_ted">
+        dsextvistelet_ul_ted = #dsextvistelet_ul_ted:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="dsextvistelet_ul_fra">
+        dsextvistelet_ul_fra = #dsextvistelet_ul_fra:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="dsextvistelet_ul_spa">
+        dsextvistelet_ul_spa = #dsextvistelet_ul_spa:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="dsextvistelet_ul_rus">
+        dsextvistelet_ul_rus = #dsextvistelet_ul_rus:VARCHAR#
+      </isNotNull>      
     </dynamic>
     where cdvistelet = #cdvistelet:VARCHAR#
   </update>
@@ -475,7 +562,13 @@
       dsextvistelet_fra = #dsextvistelet_fra:VARCHAR#,
       dsextvistelet_spa = #dsextvistelet_spa:VARCHAR#,
       dsextvistelet_rus = #dsextvistelet_rus:VARCHAR#,
-      dsvistelet_rus = #dsvistelet_rus:VARCHAR#
+      dsvistelet_rus = #dsvistelet_rus:VARCHAR#,
+      dsextvistelet_ul = #dsextvistelet_ul:VARCHAR#,
+      dsextvistelet_ul_eng = #dsextvistelet_ul_eng:VARCHAR#,
+      dsextvistelet_ul_ted = #dsextvistelet_ul_ted:VARCHAR#,
+      dsextvistelet_ul_fra = #dsextvistelet_ul_fra:VARCHAR#,
+      dsextvistelet_ul_spa = #dsextvistelet_ul_spa:VARCHAR#,
+      dsextvistelet_ul_rus = #dsextvistelet_ul_rus:VARCHAR#
     where cdvistelet = #cdvistelet:VARCHAR#
   </update>
 

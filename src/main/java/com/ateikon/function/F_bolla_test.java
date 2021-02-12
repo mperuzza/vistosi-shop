@@ -18,14 +18,16 @@ public class F_bolla_test extends Atk_sql {
     public String getLink_spedizione   ( String cdvett
                                        , String cdling
                                        , String cdnazi
-                                       , String docmit
+                                       , long nrdoc
+                                       , String protdoc
                                                              ) throws Exception{
 
 
        return getLink_spedizione   ( cdvett
                                    , cdling
                                    , cdnazi
-                                   , docmit
+                                   , nrdoc
+                                   , protdoc
                                    , "DIRECTSHIP"
                                             );
 
@@ -36,7 +38,8 @@ public class F_bolla_test extends Atk_sql {
     public String getLink_spedizione   ( String cdvett
                                        , String cdling
                                        , String cdnazi
-                                       , String docmit
+                                       , long nrdoc
+                                       , String protdoc
                                        , String fgtipo  //avendramin20101228
                                                              ) throws Exception{
 
